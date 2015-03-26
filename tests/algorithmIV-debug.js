@@ -104,11 +104,6 @@
    */
   _return.newDebug = function(settings) {
 
-    if (DEBUG) {
-      debug.start('newDebug', settings);
-      debug.args('newDebug', settings, 'object=');
-    }
-
     /**
      * @type {!string}
      * @private
@@ -160,23 +155,6 @@
  * | The Public Variables for the Module                                       |
  * v ------------------------------------------------------------------------- v
                                                              module-vars.js */
-  /**
-   * -----------------------------------------------------
-   * Public Variable (DEBUG)
-   * -----------------------------------------------------
-   * @desc Allows compiler to remove the debug code.
-   * @define {boolean}
-   */
-  var DEBUG = true;
-
-  /**
-   * ----------------------------------------------- 
-   * Public Variable (debug)
-   * -----------------------------------------------
-   * @desc The Debug instance for the module's public methods.
-   * @type {Debug}
-   */
-  var debug = (DEBUG) ? new Debug('module') : null;
 
 
 /* -----------------------------------------------------------------------------

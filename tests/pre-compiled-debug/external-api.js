@@ -27,11 +27,6 @@
    */
   _return.newDebug = function(settings) {
 
-    if (DEBUG) {
-      debug.start('newDebug', settings);
-      debug.args('newDebug', settings, 'object=');
-    }
-
     /**
      * @type {!string}
      * @private
