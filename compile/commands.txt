@@ -1,0 +1,127 @@
+COMPILE AND MINIFY COMMANDS                                    |
+-------------------------------------------------------------- |
+Requirements:                                                  |
+GNU Sed (http://www.gnu.org/software/sed/)                     |
+Java (http://www.oracle.com/technetwork/java/javase/overview/) |
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+COMPILE TEST               |
+-------------------------- |    |
+File:                      |    |
+tests/algorithmIV-debug.js |    |
+----------------------------    v
+
+## UNIX Commands
+cd tests/pre-compiled-debug
+sed \
+  -e "/public-api.js/ r public-api.js" \
+  -e "/external-api.js/ r external-api.js" \
+  -e "/module-vars.js/ r module-vars.js" \
+  -e "/module-methods.js/ r module-methods.js" \
+  -e "/debug-class.js/ r debug-class.js" <skeleton.js>algorithmIV-debug-temp.js
+cd ..
+cp -u pre-compiled-debug/algorithmIV-debug-temp.js algorithmIV-debug.js
+rm -f pre-compiled-debug/algorithmIV-debug-temp.js
+
+## MS-DOS Commands
+cd tests/pre-compiled-debug
+sed ^
+  -e "/public-api.js/ r public-api.js" ^
+  -e "/external-api.js/ r external-api.js" ^
+  -e "/module-vars.js/ r module-vars.js" ^
+  -e "/module-methods.js/ r module-methods.js" ^
+  -e "/debug-class.js/ r debug-class.js" <skeleton.js>algorithmIV-debug-temp.js
+cd ..
+copy /y pre-compiled-debug\algorithmIV-debug-temp.js algorithmIV-debug.js
+del /f pre-compiled-debug\algorithmIV-debug-temp.js
+
+----------------------------------------------------------------
+COMPILE TEST               |
+-------------------------- |    |
+File:                      |    |
+tests/algorithmIV-tests.js |    |
+----------------------------    v
+
+## UNIX Commands
+cd tests/pre-compiled-tests
+sed \
+  -e "/public-api.js/ r public-api.js" \
+  -e "/external-api.js/ r external-api.js" \
+  -e "/module-vars.js/ r module-vars.js" \
+  -e "/module-methods.js/ r module-methods.js" \
+  -e "/dummy-app.js/ r dummy-app.js" \
+  -e "/test-results.js/ r test-results.js" <skeleton.js>algorithmIV-tests-temp.js
+cd ..
+cp -u pre-compiled-tests/algorithmIV-tests-temp.js algorithmIV-tests.js
+rm -f pre-compiled-tests/algorithmIV-tests-temp.js
+
+## MS-DOS Commands
+cd tests/pre-compiled-tests
+sed ^
+  -e "/public-api.js/ r public-api.js" ^
+  -e "/external-api.js/ r external-api.js" ^
+  -e "/module-vars.js/ r module-vars.js" ^
+  -e "/dummy-app.js/ r dummy-app.js" ^
+  -e "/test-results.js/ r test-results.js" <skeleton.js>algorithmIV-tests-temp.js
+cd ..
+copy /y pre-compiled-tests\algorithmIV-tests-temp.js algorithmIV-tests.js
+del /f pre-compiled-tests\algorithmIV-tests-temp.js
+
+----------------------------------------------------------------
+COMPILE SRC                |
+-------------------------- |    |
+File:                      |    |
+src/algorithmIV-debug.js   |    |
+----------------------------    v
+
+## UNIX Commands
+cd src/pre-compiled-parts
+sed \
+  ## Sed commands here
+cd ..
+cp -u pre-compiled-parts/algorithmIV-debug-temp.js algorithmIV-debug.js
+rm -f pre-compiled-parts/algorithmIV-debug-temp.js
+
+## MS-DOS Commands
+cd src\pre-compiled-parts
+sed ^
+  ## Sed commands here
+cd ..
+copy /y pre-compiled-parts\algorithmIV-debug-temp.js algorithmIV-debug-test.js
+del /f pre-compiled-parts\algorithmIV-debug-temp.js
+
+----------------------------------------------------------------
+MINIFY SRC                 |
+-------------------------- |    |
+File:                      |    |
+src/algorithmIV-debug.js   |    |
+----------------------------    v
+
+## UNIX Commands
+sed "3,24 d" <src/algorithmIV-debug.js>compile/algorithmIV-debug.js
+cd compile
+java \
+  -jar compiler.jar \
+  --js algorithmIV-debug.js \
+  --js_output_file algorithmIV-debug.min.js
+rm -f algorithmIV-debug.js
+cd ..
+sed \
+  -e "2 r compile/copyright.txt" \
+  -e "1,2 d" <compile/algorithmIV-debug.min.js>src/algorithmIV-debug.min.js
+rm -f compile/algorithmIV-debug.min.js
+
+## MS-DOS Commands
+sed "3,24 d" <src\algorithmIV-debug.js>compile\algorithmIV-debug.js
+cd compile
+java ^
+  -jar compiler.jar ^
+  --js algorithmIV-debug.js ^
+  --js_output_file algorithmIV-debug.min.js
+del /f algorithmIV-debug.js
+cd ..
+sed ^
+  -e "2 r compile\copyright.txt" ^
+  -e "1,2 d" <compile\algorithmIV-debug.min.js>src\algorithmIV-debug.min.js
+del /f compile\algorithmIV-debug.min.js
