@@ -168,9 +168,18 @@
 
       // Setup for the tests
       tests = {
-        all: aIV.debug({ turnOffTypes: 'all' }),
-        str: aIV.debug({ turnOffTypes: 'fail state' }),
-        arr: aIV.debug({ turnOffTypes: [ 'fail', 'state' ] })
+        all: aIV.debug({
+          classTitle  : 'checkTurnOffTypes.tests.all',
+          turnOffTypes: 'all'
+        }),
+        str: aIV.debug({
+          classTitle  : 'checkTurnOffTypes.tests.str',
+          turnOffTypes: 'fail state'
+        }),
+        arr: aIV.debug({
+          classTitle  : 'checkTurnOffTypes.tests.arr',
+          turnOffTypes: [ 'fail', 'state' ]
+        })
       };
 
       // Run the tests
@@ -219,16 +228,85 @@
 
     /**
      * -------------------------------------------------
-     * Private Method (check)
+     * Private Method (checkTurnOnDebuggers)
      * -------------------------------------------------
-     * @desc Checks .
+     * @desc Checks the setting of the turnOnDebuggers param.
      * @type {function()}
      */
-    function check() {
+    function checkTurnOnDebuggers() {
 
-      console.groupCollapsed('check');
+      /** @type {TestResults} */
+      var results;
+      /** @type {boolean} */
+      var result;
+      /** @type {string} */
+      var msg;
+      /** @type {Object} */
+      var tests;
 
-      // ACTION
+      console.groupCollapsed('checkTurnOnDebuggers');
+
+      results = new TestResults('checkTurnOnDebuggers');
+      Object.freeze(results);
+
+      result = true;
+
+      // Setup for the tests
+      tests = {
+        all: aIV.debug({
+          classTitle     : 'checkTurnOnDebuggers.tests.all',
+          turnOnDebuggers: 'all'
+        }),
+        str: aIV.debug({
+          classTitle     : 'checkTurnOnDebuggers.tests.str',
+          turnOnDebuggers: 'fail state'
+        }),
+        arr: aIV.debug({
+          classTitle     : 'checkTurnOnDebuggers.tests.arr',
+          turnOnDebuggers: [ 'fail', 'state' ]
+        })
+      };
+
+      // Run the tests
+      if (tests.all.getBugger('start') ||
+          tests.all.getBugger('args')  ||
+          tests.all.getBugger('fail')  ||
+          tests.all.getBugger('group') ||
+          tests.all.getBugger('state') ||
+          tests.all.getBugger('misc')) {
+        result = false;
+        msg = 'The turnOnDebuggers \'all\' value failed to turn ';
+        msg += 'on all the debuggers.';
+        console.error(msg);
+      }
+
+      if (!tests.str.getBugger('start') ||
+          !tests.str.getBugger('args')  ||
+          tests.str.getBugger('fail')   ||
+          !tests.str.getBugger('group') ||
+          tests.str.getBugger('state')  ||
+          !tests.str.getBugger('misc')) {
+        result = false;
+        msg = 'The turnOnDebuggers \'fail state\' value failed to turn ';
+        msg += 'on the correct debuggers.';
+        console.error(msg);
+      }
+
+      if (!tests.arr.getBugger('start') ||
+          !tests.arr.getBugger('args')  ||
+          tests.arr.getBugger('fail')   ||
+          !tests.arr.getBugger('group') ||
+          tests.arr.getBugger('state')  ||
+          !tests.arr.getBugger('misc')) {
+        result = false;
+        msg = 'The turnOnDebuggers [ \'fail\', \'state\' ] value failed to ';
+        msg += 'turn on the correct debuggers.';
+        console.error(msg);
+      }
+
+      // Save the results
+      results.set(result);
+      that.results.push(results);
 
       console.groupEnd();
     }
@@ -242,11 +320,46 @@
      */
     function checkInstances() {
 
+      /** @type {TestResults} */
+      var results;
+      /** @type {boolean} */
+      var result;
+      /** @type {string} */
+      var msg;
+      /** @type {Object} */
+      var tests;
+
       console.groupCollapsed('checkInstances');
 
-      results.debugInst.misc('checkInst', 'This debugger should be turned on.');
-      results.debug.turnOffDebugger('misc');
-      results.debugInst.misc('checkInst', 'This debugger should be turned off.');
+      results = new TestResults('checkInstances');
+      Object.freeze(results);
+
+      result = true;
+
+      // Setup for the tests
+      tests = {
+        first : aIV.debug('checkInstances.tests'),
+        second: aIV.debug({
+          classTitle  : 'checkInstances.tests',
+          turnOffTypes: 'misc'
+        })
+      };
+
+      // Run the tests
+      tests.first.misc('test1', 'Test 1 - This log should be shown.');
+      tests.second.misc('test2', 'Test 2 - This log should be shown.');
+      result = confirm('Did test1 and test2 get logged?');
+
+      tests.first.setType('misc', false);
+      tests.first.misc('test3', 'Test 3 - This log should NOT be shown.');
+      tests.second.misc('test4', 'Test 4 - This log should NOT be shown.');
+      if (result) {
+        result = confirm('Did test3 and test4 get logged?');
+      }
+
+      // Save the results
+      results.set(result);
+      that.results.push(results);
 
       console.groupEnd();
     }
