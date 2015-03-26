@@ -20,14 +20,6 @@
     });
 
     /**
-     * ---------------------------------------------------
-     * Private Property (TestResults.debugInst)
-     * ---------------------------------------------------
-     * @type {Object}
-     */
-    this.debugInst = aIV.debug('TestResults');
-
-    /**
      * ----------------------------------------------- 
      * Protected Property (TestResults.result)
      * -----------------------------------------------
