@@ -9,24 +9,13 @@
   var TestResults = function(type) {
 
     /**
-     * ---------------------------------------------------
-     * Private Property (TestResults.debug)
-     * ---------------------------------------------------
-     * @type {Object}
-     */
-    this.debug = aIV.debug({
-      classTitle     : 'TestResults',
-      turnOnDebuggers: 'misc'
-    });
-
-    /**
      * ----------------------------------------------- 
      * Protected Property (TestResults.result)
      * -----------------------------------------------
      * @desc The test results.
      * @type {boolean}
      */
-    var result;
+    var result = true;
 
     /**
      * ----------------------------------------------- 
