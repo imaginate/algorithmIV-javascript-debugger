@@ -45,7 +45,7 @@
       msg = (result) ? 'Success' : 'Failure';
       report = '' +
         '<li class="' + name + '">' +
-          type + ' => ' + msg +
+          type + ' =&gt; ' + msg +
         '</li>';
 
       return report;
