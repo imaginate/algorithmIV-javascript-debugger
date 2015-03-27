@@ -53,9 +53,6 @@
      * @type {HTMLElement}
      */
     this.yes = getID('yes');
-    this.yes.onclick = function () {
-      choice = true;
-    };
 
     /**
      * ---------------------------------------------------
@@ -65,9 +62,6 @@
      * @type {HTMLElement}
      */
     this.no = getID('no');
-    this.no.onclick = function () {
-      choice = false;
-    };
   };
 
   // Ensure constructor is set to this class.
