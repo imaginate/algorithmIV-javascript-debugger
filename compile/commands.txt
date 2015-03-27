@@ -52,7 +52,8 @@ sed \
   -e "/module-methods.js/ r module-methods.js" \
   -e "/app.js/ r classes/app.js" \
   -e "/elems.js/ r classes/elems.js" \
-  -e "/test-results.js/ r classes/test-results.js" <skeleton.js>algorithmIV-tests-temp.js
+  -e "/test-results.js/ r classes/test-results.js" \
+  -e "/choice.js/ r classes/choice.js" <skeleton.js>algorithmIV-tests-temp.js
 cd ..
 cp -u pre-compiled-tests/algorithmIV-tests-temp.js algorithmIV-tests.js
 rm -f pre-compiled-tests/algorithmIV-tests-temp.js
@@ -66,7 +67,8 @@ sed ^
   -e "/module-methods.js/ r module-methods.js" ^
   -e "/app.js/ r classes/app.js" ^
   -e "/elems.js/ r classes/elems.js" ^
-  -e "/test-results.js/ r classes/test-results.js" <skeleton.js>algorithmIV-tests-temp.js
+  -e "/test-results.js/ r classes/test-results.js" ^
+  -e "/choice.js/ r classes/choice.js"  <skeleton.js>algorithmIV-tests-temp.js
 cd ..
 copy /y pre-compiled-tests\algorithmIV-tests-temp.js algorithmIV-tests.js
 del /f pre-compiled-tests\algorithmIV-tests-temp.js
