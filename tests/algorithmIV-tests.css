@@ -199,7 +199,8 @@ h2 {
  * ------------------------------- */
 
 #results,
-#errors {
+#errors,
+#subErrors {
   display:block;
   margin:0 auto 20px;
   text-align:left;
@@ -207,9 +208,10 @@ h2 {
   list-style-type:disc;
 }
 
-#errors {
-  margin:0 auto 0;
-}
+#errors { margin:0 auto; }
+#subErrors { margin:10px auto 0; }
+#errors li { margin:0 0 10px; }
+#subErrors li { margin:0 0 10px; }
 
 /* ------------------------------- *
  * New Section:

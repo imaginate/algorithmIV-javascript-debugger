@@ -74,9 +74,9 @@
         report = '<li>' + type;
 
         // The errors
-        report += '<ol>';
+        report += '<ol id="subErrors">';
 
-        len = errors.len;
+        len = errors.length;
         i = -1;
 
         while (++i < len) {
