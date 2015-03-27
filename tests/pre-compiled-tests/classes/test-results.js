@@ -30,41 +30,112 @@
 
     /**
      * ----------------------------------------------- 
-     * Public Method (TestResults.report)
+     * Protected Property (TestResults.errors)
+     * -----------------------------------------------
+     * @desc The test errors.
+     * @type {?strings}
+     */
+    var errors = null;
+
+    /**
+     * ----------------------------------------------- 
+     * Public Method (TestResults.reportResult)
      * -----------------------------------------------
      * @desc Reports the tests and their results.
      * @return {string} The test's type followed by its results.
      */
-    this.report = function() {
+    this.reportResult = function() {
+      /** @type {string} */
+      var name;
+      /** @type {string} */
+      var msg;
       /** @type {string} */
       var report;
 
-      report = type + ' => ';
-      report += (result) ? 'Success' : 'Failure';
+      name = (result) ? 'green' : 'red';
+      msg = (result) ? 'Success' : 'Failure';
+      report = '' +
+        '<li class="' + name + '">' +
+          type + ' => ' + msg +
+        '</li>';
 
       return report;
     };
 
     /**
      * ----------------------------------------------- 
-     * Public Method (TestResults.get)
+     * Public Method (TestResults.reportErrors)
+     * -----------------------------------------------
+     * @desc Reports the tests and their errors.
+     * @return {?string} The test's type followed by its errors.
+     */
+    this.reportErrors = function() {
+      /** @type {number} */
+      var len;
+      /** @type {number} */
+      var i;
+      /** @type {?string} */
+      var report;
+
+      report = null;
+
+      if (errors && errors.length) {
+
+        // The type of results name
+        report = '<li>' + type + '</li>';
+
+        // The errors
+        report += '<li><ol>';
+
+        len = errors.len;
+        i = -1;
+
+        while (++i < len) {
+          report += '<li>' + errors[i] + '</li>';
+        }
+
+        report += '</ol></li>';
+      }
+
+      return report;
+    };
+
+    /**
+     * ----------------------------------------------- 
+     * Public Method (TestResults.getResult)
      * -----------------------------------------------
      * @desc Gets the test results.
      * @return {boolean} The test's results.
      */
-    this.get = function() {
+    this.getResult = function() {
       return result;
     };
 
     /**
      * ----------------------------------------------- 
-     * Public Method (TestResults.set)
+     * Public Method (TestResults.setResult)
      * -----------------------------------------------
      * @desc Sets the test results.
      * @param {boolean} pass - The test results.
      */
-    this.set = function(pass) {
+    this.setResult = function(pass) {
       result = pass;
+    };
+
+    /**
+     * ----------------------------------------------- 
+     * Public Method (TestResults.addError)
+     * -----------------------------------------------
+     * @desc Adds an error to the test results.
+     * @param {string} msg - The error message.
+     */
+    this.addError = function(msg) {
+      if (errors) {
+        errors.push(msg);
+      }
+      else {
+        errors = [ msg ];
+      }
     };
   };
 
