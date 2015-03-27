@@ -50,6 +50,7 @@ sed \
   -e "/external-api.js/ r external-api.js" \
   -e "/module-vars.js/ r module-vars.js" \
   -e "/module-methods.js/ r module-methods.js" \
+  -e "/tests.js/ r classes/tests.js" \
   -e "/app.js/ r classes/app.js" \
   -e "/elems.js/ r classes/elems.js" \
   -e "/test-results.js/ r classes/test-results.js" \
@@ -65,6 +66,7 @@ sed ^
   -e "/external-api.js/ r external-api.js" ^
   -e "/module-vars.js/ r module-vars.js" ^
   -e "/module-methods.js/ r module-methods.js" ^
+  -e "/tests.js/ r classes/tests.js" ^
   -e "/app.js/ r classes/app.js" ^
   -e "/elems.js/ r classes/elems.js" ^
   -e "/test-results.js/ r classes/test-results.js" ^
