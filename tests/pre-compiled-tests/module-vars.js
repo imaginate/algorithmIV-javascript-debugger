@@ -18,12 +18,3 @@
    * @type {DummyApp}
    */
   var app;
-
-  /**
-   * ----------------------------------------------- 
-   * Public Variable (choice)
-   * -----------------------------------------------
-   * @desc The result of a UI interaction with #choose.
-   * @type {boolean}
-   */
-  var choice;
