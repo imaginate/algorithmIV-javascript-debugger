@@ -71,10 +71,10 @@
       if (errors && errors.length) {
 
         // The type of results name
-        report = '<li>' + type + '</li>';
+        report = '<li>' + type;
 
         // The errors
-        report += '<li><ol>';
+        report += '<ol>';
 
         len = errors.len;
         i = -1;

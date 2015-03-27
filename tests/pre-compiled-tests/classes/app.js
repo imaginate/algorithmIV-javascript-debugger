@@ -454,7 +454,8 @@
     /** @type {?string} */
     var errors;
 
-    results = '<ol>';
+    results = '<h2>Results</h2>';
+    results += '<ol id="results">';
     len = this.results.length;
 
     i = -1;
@@ -463,7 +464,8 @@
     }
 
     results += '</ol>';
-    results += '<ol>';
+    results += '<h2>Errors</h2>';
+    results += '<ol id="errors">';
 
     i = -1;
     while (++i < len) {
