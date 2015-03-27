@@ -86,8 +86,8 @@
     checkTurnOnDebugger();
     checkTurnOffDebugger();
 
-    // Record the results
-    reportResults();
+    // Run the choices and record the results
+    this.runChoices();
 
     /* ------------------  |  *
      * TEST METHODS BELOW  |  *
@@ -110,8 +110,6 @@
       var msg;
       /** @type {Object} */
       var tests;
-
-      console.groupCollapsed('checkClassTitle');
 
       results = new TestResults('checkClassTitle');
       Object.freeze(results);
@@ -150,8 +148,6 @@
       // Save the results
       results.setResult(result);
       that.results.push(results);
-
-      console.groupEnd();
     }
 
     /**
@@ -171,8 +167,6 @@
       var msg;
       /** @type {Object} */
       var tests;
-
-      console.groupCollapsed('checkTurnOffTypes');
 
       results = new TestResults('checkTurnOffTypes');
       Object.freeze(results);
@@ -205,7 +199,7 @@
         result = false;
         msg = 'The turnOffTypes \'all\' value failed to turn ';
         msg += 'off all the types.';
-        console.error(msg);
+        results.addError(msg);
       }
 
       if (!tests.str.getType('start') ||
@@ -217,7 +211,7 @@
         result = false;
         msg = 'The turnOffTypes \'fail state\' value failed to turn ';
         msg += 'off the correct types.';
-        console.error(msg);
+        results.addError(msg);
       }
 
       if (!tests.arr.getType('start') ||
@@ -229,14 +223,12 @@
         result = false;
         msg = 'The turnOffTypes [ \'fail\', \'state\' ] value failed to ';
         msg += 'turn off the correct types.';
-        console.error(msg);
+        results.addError(msg);
       }
 
       // Save the results
-      results.set(result);
+      results.setResult(result);
       that.results.push(results);
-
-      console.groupEnd();
     }
 
     /**
@@ -256,8 +248,6 @@
       var msg;
       /** @type {Object} */
       var tests;
-
-      console.groupCollapsed('checkTurnOnDebuggers');
 
       results = new TestResults('checkTurnOnDebuggers');
       Object.freeze(results);
@@ -290,7 +280,7 @@
         result = false;
         msg = 'The turnOnDebuggers \'all\' value failed to turn ';
         msg += 'on all the debuggers.';
-        console.error(msg);
+        results.addError(msg);
       }
 
       if (!tests.str.getBugger('start') ||
@@ -302,7 +292,7 @@
         result = false;
         msg = 'The turnOnDebuggers \'fail state\' value failed to turn ';
         msg += 'on the correct debuggers.';
-        console.error(msg);
+        results.addError(msg);
       }
 
       if (!tests.arr.getBugger('start') ||
@@ -314,14 +304,12 @@
         result = false;
         msg = 'The turnOnDebuggers [ \'fail\', \'state\' ] value failed to ';
         msg += 'turn on the correct debuggers.';
-        console.error(msg);
+        results.addError(msg);
       }
 
       // Save the results
-      results.set(result);
+      results.setResult(result);
       that.results.push(results);
-
-      console.groupEnd();
     }
 
     /**
@@ -335,19 +323,15 @@
 
       /** @type {TestResults} */
       var results;
-      /** @type {boolean} */
-      var result;
+      /** @type {string} */
+      var choice;
       /** @type {string} */
       var msg;
       /** @type {Object} */
       var tests;
 
-      console.group('checkInstances');
-
       results = new TestResults('checkInstances');
       Object.freeze(results);
-
-      result = true;
 
       // Setup for the tests
       tests = {
@@ -359,22 +343,23 @@
       };
 
       // Run the tests
-      tests.first.misc('test1', 'Test 1 - This log should be shown.');
-      tests.second.misc('test2', 'Test 2 - This log should be shown.');
-      result = confirm('Did test1 and test2 get logged?');
+      choice = 'Did test1 and test2 get logged?';
+      msg = 'checkInstances.tests.first failed.';
+      that.addChoice(choice, results, msg, function() {
+        tests.first.misc('test1', 'Test 1 - This log should be shown.');
+        tests.second.misc('test2', 'Test 2 - This log should be shown.');
+      });
 
-      tests.first.setType('misc', false);
-      tests.first.misc('test3', 'Test 3 - This log should NOT be shown.');
-      tests.second.misc('test4', 'Test 4 - This log should NOT be shown.');
-      if (result) {
-        result = confirm('Did test3 and test4 get logged?');
-      }
+      choice = 'Did test3 and test4 NOT get logged?';
+      msg = 'checkInstances.tests.second failed.';
+      that.addChoice(choice, results, msg, function() {
+        tests.first.setType('misc', false);
+        tests.first.misc('test3', 'Test 3 - This log should NOT be shown.');
+        tests.second.misc('test4', 'Test 4 - This log should NOT be shown.');
+      });
 
       // Save the results
-      results.set(result);
       that.results.push(results);
-
-      console.groupEnd();
     }
   };
 
@@ -417,16 +402,17 @@
 
     if (!this.choices.length) {
       this.shareResults();
+      return;
     }
 
-    choice = this.results.unshift();
+    choice = this.choices.splice(0, 1)[0];
 
     // Hide the UI while setup is occurring
     this.elems.ui.style.opacity = '0';
 
-    choice.before();
-
     console.clear();
+
+    choice.before();
 
     setTimeout(function() {
 
@@ -460,9 +446,9 @@
    */
   App.prototype.shareResults = function() {
     /** @type {number} */
-      var len;
-      /** @type {number} */
-      var i;
+    var len;
+    /** @type {number} */
+    var i;
     /** @type {string} */
     var results;
     /** @type {?string} */
@@ -489,5 +475,11 @@
 
     results += '</ol>';
 
-    app.elems.ui.innerHTML = results;
+    // Hide the UI while setup is occurring
+    this.elems.ui.style.opacity = '0';
+
+    setTimeout(function() {
+      app.elems.ui.innerHTML = results;
+      app.elems.ui.style.opacity = '1';
+    }, 500);
   };
