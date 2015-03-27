@@ -16,4 +16,4 @@
    * @type {function()}
    * @global
    */
-  aIV.tests = tests.init();
+  aIV.tests = tests.init;
