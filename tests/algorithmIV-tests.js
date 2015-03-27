@@ -109,9 +109,7 @@
       Object.freeze(app);
 
       // Run the tests
-      document.addEventListener('DOMContentLoaded', function() {
-        app.runTests();
-      });
+      app.runTests();
     }
   };
 
@@ -140,15 +138,6 @@
    * @type {DummyApp}
    */
   var app;
-
-  /**
-   * ----------------------------------------------- 
-   * Public Variable (choice)
-   * -----------------------------------------------
-   * @desc The result of a UI interaction with #choose.
-   * @type {boolean}
-   */
-  var choice;
 
 
 /* -----------------------------------------------------------------------------
@@ -251,15 +240,6 @@
 
     /**
      * ---------------------------------------------------
-     * Private Property (App.debug)
-     * ---------------------------------------------------
-     * @desc The Debug instance for this class.
-     * @type {Object}
-     */
-    this.debug = aIV.debug('App');
-
-    /**
-     * ---------------------------------------------------
      * Private Property (App.elems)
      * ---------------------------------------------------
      * @desc The elements for this app.
@@ -276,6 +256,15 @@
      * @type {Array<TestResults>}
      */
     this.results = [];
+
+    /**
+     * ----------------------------------------------- 
+     * Public Property (App.choices)
+     * -----------------------------------------------
+     * @desc Saves the choices to be executed.
+     * @type {Array<Choices>}
+     */
+    this.choices = [];
   };
 
   // Ensure constructor is set to this class.
@@ -312,7 +301,6 @@
     // Check instance 
     checkInstances();
 
-    /*
     // Check the type methods
     checkStart();
     checkArgs();
@@ -327,10 +315,8 @@
     checkTurnOnDebugger();
     checkTurnOffDebugger();
 
-    // Record the results
-    console.group('The Results');
-    reportResults();
-    console.groupEnd();*/
+    // Run the choices and record the results
+    this.runChoices();
 
     /* ------------------  |  *
      * TEST METHODS BELOW  |  *
@@ -352,9 +338,7 @@
       /** @type {string} */
       var msg;
       /** @type {Object} */
-      var unknown;
-
-      console.groupCollapsed('checkClassTitle');
+      var tests;
 
       results = new TestResults('checkClassTitle');
       Object.freeze(results);
@@ -362,38 +346,37 @@
       result = true;
 
       // Setup for the tests
-      unknown = aIV.debug({
-        turnOffTypes   : [ 'fail', 'state' ],
-        turnOnDebuggers: 'all'
-      });
+      tests = {
+        prop: aIV.debug({ classTitle: 'checkClassTitle.tests.prop' }),
+        str : aIV.debug('checkClassTitle.tests.str'),
+        none: aIV.debug()
+      };
 
       // Run the tests
-      if (that.debug.classTitle !== 'App.') {
+      if (tests.prop.classTitle !== 'checkClassTitle.tests.prop.') {
         result = false;
-        msg = 'The classTitle for App was incorrect. ';
-        msg += 'classTitle = %s';
-        console.error(msg, that.debug.classTitle);
+        msg = 'checkClassTitle.tests.prop failed. ';
+        msg += tests.prop.classTitle + ' !== checkClassTitle.tests.prop.';
+        results.addError(msg);
       }
 
-      if (unknown.classTitle !== 'unknown.') {
+      if (tests.str.classTitle !== 'checkClassTitle.tests.str.') {
         result = false;
-        msg = 'The classTitle for unknown was incorrect. ';
-        msg += 'classTitle = %s';
-        console.error(msg, unknown.classTitle);
+        msg = 'checkClassTitle.tests.str failed. ';
+        msg += tests.str.classTitle + ' !== checkClassTitle.tests.str.';
+        results.addError(msg);
       }
 
-      if (debug.classTitle !== 'module.') {
+      if (tests.none.classTitle !== 'unknown.') {
         result = false;
-        msg = 'The classTitle for module was incorrect. ';
-        msg += 'classTitle = %s';
-        console.error(msg, debug.classTitle);
+        msg = 'checkClassTitle.tests.none failed. ';
+        msg += tests.none.classTitle + ' !== unknown.';
+        results.addError(msg);
       }
 
       // Save the results
-      results.set(result);
+      results.setResult(result);
       that.results.push(results);
-
-      console.groupEnd();
     }
 
     /**
@@ -413,8 +396,6 @@
       var msg;
       /** @type {Object} */
       var tests;
-
-      console.groupCollapsed('checkTurnOffTypes');
 
       results = new TestResults('checkTurnOffTypes');
       Object.freeze(results);
@@ -447,7 +428,7 @@
         result = false;
         msg = 'The turnOffTypes \'all\' value failed to turn ';
         msg += 'off all the types.';
-        console.error(msg);
+        results.addError(msg);
       }
 
       if (!tests.str.getType('start') ||
@@ -459,7 +440,7 @@
         result = false;
         msg = 'The turnOffTypes \'fail state\' value failed to turn ';
         msg += 'off the correct types.';
-        console.error(msg);
+        results.addError(msg);
       }
 
       if (!tests.arr.getType('start') ||
@@ -471,14 +452,12 @@
         result = false;
         msg = 'The turnOffTypes [ \'fail\', \'state\' ] value failed to ';
         msg += 'turn off the correct types.';
-        console.error(msg);
+        results.addError(msg);
       }
 
       // Save the results
-      results.set(result);
+      results.setResult(result);
       that.results.push(results);
-
-      console.groupEnd();
     }
 
     /**
@@ -498,8 +477,6 @@
       var msg;
       /** @type {Object} */
       var tests;
-
-      console.groupCollapsed('checkTurnOnDebuggers');
 
       results = new TestResults('checkTurnOnDebuggers');
       Object.freeze(results);
@@ -532,7 +509,7 @@
         result = false;
         msg = 'The turnOnDebuggers \'all\' value failed to turn ';
         msg += 'on all the debuggers.';
-        console.error(msg);
+        results.addError(msg);
       }
 
       if (!tests.str.getBugger('start') ||
@@ -544,7 +521,7 @@
         result = false;
         msg = 'The turnOnDebuggers \'fail state\' value failed to turn ';
         msg += 'on the correct debuggers.';
-        console.error(msg);
+        results.addError(msg);
       }
 
       if (!tests.arr.getBugger('start') ||
@@ -556,14 +533,12 @@
         result = false;
         msg = 'The turnOnDebuggers [ \'fail\', \'state\' ] value failed to ';
         msg += 'turn on the correct debuggers.';
-        console.error(msg);
+        results.addError(msg);
       }
 
       // Save the results
-      results.set(result);
+      results.setResult(result);
       that.results.push(results);
-
-      console.groupEnd();
     }
 
     /**
@@ -577,19 +552,15 @@
 
       /** @type {TestResults} */
       var results;
-      /** @type {boolean} */
-      var result;
+      /** @type {string} */
+      var choice;
       /** @type {string} */
       var msg;
       /** @type {Object} */
       var tests;
 
-      console.group('checkInstances');
-
       results = new TestResults('checkInstances');
       Object.freeze(results);
-
-      result = true;
 
       // Setup for the tests
       tests = {
@@ -601,23 +572,145 @@
       };
 
       // Run the tests
-      tests.first.misc('test1', 'Test 1 - This log should be shown.');
-      tests.second.misc('test2', 'Test 2 - This log should be shown.');
-      result = confirm('Did test1 and test2 get logged?');
+      choice = 'Did test1 and test2 get logged?';
+      msg = 'checkInstances.tests.first failed.';
+      that.addChoice(choice, results, msg, function() {
+        tests.first.misc('test1', 'Test 1 - This log should be shown.');
+        tests.second.misc('test2', 'Test 2 - This log should be shown.');
+      });
 
-      tests.first.setType('misc', false);
-      tests.first.misc('test3', 'Test 3 - This log should NOT be shown.');
-      tests.second.misc('test4', 'Test 4 - This log should NOT be shown.');
-      if (result) {
-        result = confirm('Did test3 and test4 get logged?');
-      }
+      choice = 'Did test3 and test4 NOT get logged?';
+      msg = 'checkInstances.tests.second failed.';
+      that.addChoice(choice, results, msg, function() {
+        tests.first.setType('misc', false);
+        tests.first.misc('test3', 'Test 3 - This log should NOT be shown.');
+        tests.second.misc('test4', 'Test 4 - This log should NOT be shown.');
+      });
 
       // Save the results
-      results.set(result);
       that.results.push(results);
-
-      console.groupEnd();
     }
+  };
+
+  /**
+   * -----------------------------------------------
+   * Public Method (App.prototype.addChoice)
+   * -----------------------------------------------
+   * @desc Adds a new choice to the app.
+   * @param {string} choiceMsg - The choice message.
+   * @param {TestResults} results - The results object.
+   * @param {string} errorMsg - The error message.
+   * @param {?Object=} before - A function that gets called before
+   *   the choice is shown.
+   * @param {?Object=} after - A function that gets called after
+   *   a choice is completed.
+   */
+  App.prototype.addChoice = function(choiceMsg, results, errorMsg, before, after) {
+    /** @type {Choice} */
+    var choice;
+
+    before = before || null;
+    after  = after  || null;
+
+    choice = new Choice(choiceMsg, results, errorMsg, before, after);
+    Object.freeze(choice);
+
+    this.choices.push(choice);
+  };
+
+  /**
+   * -----------------------------------------------
+   * Public Method (App.prototype.runChoices)
+   * -----------------------------------------------
+   * @desc .
+   * @type {function()}
+   */
+  App.prototype.runChoices = function() {
+    /** @type {Choice} */
+    var choice;
+
+    if (!this.choices.length) {
+      this.shareResults();
+      return;
+    }
+
+    choice = this.choices.splice(0, 1)[0];
+
+    // Hide the UI while setup is occurring
+    this.elems.ui.style.opacity = '0';
+
+    console.clear();
+
+    choice.before();
+
+    setTimeout(function() {
+
+      // Give the choice directions
+      app.elems.msg.textContent = choice.msg;
+
+      // Set the #yes onClick event
+      app.elems.yes.onclick = function() {
+        choice.after();
+        app.runChoices();
+      };
+
+      // Set the #no onClick event
+      app.elems.no.onclick = function() {
+        choice.fail();
+        choice.after();
+        app.runChoices();
+      };
+
+      app.elems.choose.style.display = 'block';
+      app.elems.ui.style.opacity = '1';
+    }, 500);
+  };
+
+  /**
+   * -----------------------------------------------
+   * Public Method (App.prototype.shareResults)
+   * -----------------------------------------------
+   * @desc .
+   * @type {function()}
+   */
+  App.prototype.shareResults = function() {
+    /** @type {number} */
+    var len;
+    /** @type {number} */
+    var i;
+    /** @type {string} */
+    var results;
+    /** @type {?string} */
+    var errors;
+
+    results = '<ol>';
+    len = this.results.length;
+
+    i = -1;
+    while (++i < len) {
+      results += this.results[i].reportResult();
+    }
+
+    results += '</ol>';
+    results += '<ol>';
+
+    i = -1;
+    while (++i < len) {
+      errors = this.results[i].reportErrors();
+      if (errors) {
+        results += errors;
+      }
+    }
+
+    results += '</ol>';
+
+    // Hide the UI while setup is occurring
+    this.elems.ui.style.opacity = '0';
+
+    setTimeout(function() {
+      app.elems.ui.innerHTML = results;
+      app.elems.ui.style.opacity = '1';
+    }, 500);
   };
 
 
@@ -680,9 +773,6 @@
      * @type {HTMLElement}
      */
     this.yes = getID('yes');
-    this.yes.onclick = function () {
-      choice = true;
-    };
 
     /**
      * ---------------------------------------------------
@@ -692,9 +782,6 @@
      * @type {HTMLElement}
      */
     this.no = getID('no');
-    this.no.onclick = function () {
-      choice = false;
-    };
   };
 
   // Ensure constructor is set to this class.
@@ -786,67 +873,200 @@
   var TestResults = function(type) {
 
     /**
-     * ---------------------------------------------------
-     * Private Property (TestResults.debug)
-     * ---------------------------------------------------
-     * @type {Object}
-     */
-    this.debug = aIV.debug({
-      classTitle     : 'TestResults',
-      turnOnDebuggers: 'misc'
-    });
-
-    /**
      * ----------------------------------------------- 
      * Protected Property (TestResults.result)
      * -----------------------------------------------
      * @desc The test results.
      * @type {boolean}
      */
-    var result;
+    var result = true;
 
     /**
      * ----------------------------------------------- 
-     * Public Method (TestResults.report)
+     * Protected Property (TestResults.errors)
+     * -----------------------------------------------
+     * @desc The test errors.
+     * @type {?strings}
+     */
+    var errors = null;
+
+    /**
+     * ----------------------------------------------- 
+     * Public Method (TestResults.reportResult)
      * -----------------------------------------------
      * @desc Reports the tests and their results.
      * @return {string} The test's type followed by its results.
      */
-    this.report = function() {
+    this.reportResult = function() {
+      /** @type {string} */
+      var name;
+      /** @type {string} */
+      var msg;
       /** @type {string} */
       var report;
 
-      report = type + ' => ';
-      report += (result) ? 'Success' : 'Failure';
+      name = (result) ? 'green' : 'red';
+      msg = (result) ? 'Success' : 'Failure';
+      report = '' +
+        '<li class="' + name + '">' +
+          type + ' =&gt; ' + msg +
+        '</li>';
 
       return report;
     };
 
     /**
      * ----------------------------------------------- 
-     * Public Method (TestResults.get)
+     * Public Method (TestResults.reportErrors)
+     * -----------------------------------------------
+     * @desc Reports the tests and their errors.
+     * @return {?string} The test's type followed by its errors.
+     */
+    this.reportErrors = function() {
+      /** @type {number} */
+      var len;
+      /** @type {number} */
+      var i;
+      /** @type {?string} */
+      var report;
+
+      report = null;
+
+      if (errors && errors.length) {
+
+        // The type of results name
+        report = '<li>' + type + '</li>';
+
+        // The errors
+        report += '<li><ol>';
+
+        len = errors.len;
+        i = -1;
+
+        while (++i < len) {
+          report += '<li>' + errors[i] + '</li>';
+        }
+
+        report += '</ol></li>';
+      }
+
+      return report;
+    };
+
+    /**
+     * ----------------------------------------------- 
+     * Public Method (TestResults.getResult)
      * -----------------------------------------------
      * @desc Gets the test results.
      * @return {boolean} The test's results.
      */
-    this.get = function() {
+    this.getResult = function() {
       return result;
     };
 
     /**
      * ----------------------------------------------- 
-     * Public Method (TestResults.set)
+     * Public Method (TestResults.setResult)
      * -----------------------------------------------
      * @desc Sets the test results.
      * @param {boolean} pass - The test results.
      */
-    this.set = function(pass) {
+    this.setResult = function(pass) {
       result = pass;
+    };
+
+    /**
+     * ----------------------------------------------- 
+     * Public Method (TestResults.addError)
+     * -----------------------------------------------
+     * @desc Adds an error to the test results.
+     * @param {string} msg - The error message.
+     */
+    this.addError = function(msg) {
+      if (errors) {
+        errors.push(msg);
+      }
+      else {
+        errors = [ msg ];
+      }
     };
   };
 
   // Ensure constructor is set to this class.
   TestResults.prototype.constructor = TestResults;
+
+
+/* -----------------------------------------------------------------------------
+ * | The Choice Class                                                          |
+ * v ------------------------------------------------------------------------- v
+                                                          classes/choice.js */
+  /**
+   * -----------------------------------------------------
+   * Public Class (Choice)
+   * -----------------------------------------------------
+   * @desc A choice to be executed.
+   * @param {string} choiceMsg - The choice message.
+   * @param {TestResults} results - The results object.
+   * @param {string} errorMsg - The error message.
+   * @param {?Object} before - A function that gets called before
+   *   the choice is shown.
+   * @param {?Object} after - A function that gets called after
+   *   a choice is completed.
+   * @constructor
+   */
+  var Choice = function(choiceMsg, results, errorMsg, before, after) {
+
+    /**
+     * ----------------------------------------------- 
+     * Protected Property (Choice.msg)
+     * -----------------------------------------------
+     * @desc The choice directions.
+     * @type {string}
+     */
+    this.msg = choiceMsg;
+
+    /**
+     * ----------------------------------------------- 
+     * Public Method (Choice.fail)
+     * -----------------------------------------------
+     * @desc A function that records an error and the failure
+     *   of a test.
+     * @type {function()}
+     */
+    this.fail = function() {
+      results.addError(errorMsg);
+      results.setResult(false);
+    };
+
+    /**
+     * ----------------------------------------------- 
+     * Public Method (Choice.before)
+     * -----------------------------------------------
+     * @desc Logic to call before showing the choice.
+     * @type {function()}
+     */
+    this.before = function() {
+      if (typeof before === 'function') {
+        before();
+      }
+    };
+
+    /**
+     * ----------------------------------------------- 
+     * Public Method (Choice.after)
+     * -----------------------------------------------
+     * @desc Logic to call after completing the choice.
+     * @type {function()}
+     */
+    this.after = function() {
+      if (typeof after === 'function') {
+        after();
+      }
+    };
+  };
+
+  // Ensure constructor is set to this class.
+  Choice.prototype.constructor = Choice;
 
 
 /* -----------------------------------------------------------------------------
