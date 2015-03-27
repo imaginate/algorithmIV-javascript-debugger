@@ -11,15 +11,6 @@
 
     /**
      * ---------------------------------------------------
-     * Private Property (App.debug)
-     * ---------------------------------------------------
-     * @desc The Debug instance for this class.
-     * @type {Object}
-     */
-    this.debug = aIV.debug('App');
-
-    /**
-     * ---------------------------------------------------
      * Private Property (App.elems)
      * ---------------------------------------------------
      * @desc The elements for this app.
@@ -36,6 +27,15 @@
      * @type {Array<TestResults>}
      */
     this.results = [];
+
+    /**
+     * ----------------------------------------------- 
+     * Public Property (App.choices)
+     * -----------------------------------------------
+     * @desc Saves the choices to be executed.
+     * @type {Array<Choices>}
+     */
+    this.choices = [];
   };
 
   // Ensure constructor is set to this class.
@@ -72,7 +72,6 @@
     // Check instance 
     checkInstances();
 
-    /*
     // Check the type methods
     checkStart();
     checkArgs();
@@ -88,9 +87,7 @@
     checkTurnOffDebugger();
 
     // Record the results
-    console.group('The Results');
     reportResults();
-    console.groupEnd();*/
 
     /* ------------------  |  *
      * TEST METHODS BELOW  |  *
@@ -112,7 +109,7 @@
       /** @type {string} */
       var msg;
       /** @type {Object} */
-      var unknown;
+      var tests;
 
       console.groupCollapsed('checkClassTitle');
 
@@ -122,35 +119,36 @@
       result = true;
 
       // Setup for the tests
-      unknown = aIV.debug({
-        turnOffTypes   : [ 'fail', 'state' ],
-        turnOnDebuggers: 'all'
-      });
+      tests = {
+        prop: aIV.debug({ classTitle: 'checkClassTitle.tests.prop' }),
+        str : aIV.debug('checkClassTitle.tests.str'),
+        none: aIV.debug()
+      };
 
       // Run the tests
-      if (that.debug.classTitle !== 'App.') {
+      if (tests.prop.classTitle !== 'checkClassTitle.tests.prop.') {
         result = false;
-        msg = 'The classTitle for App was incorrect. ';
-        msg += 'classTitle = %s';
-        console.error(msg, that.debug.classTitle);
+        msg = 'checkClassTitle.tests.prop failed. ';
+        msg += tests.prop.classTitle + ' !== checkClassTitle.tests.prop.';
+        results.addError(msg);
       }
 
-      if (unknown.classTitle !== 'unknown.') {
+      if (tests.str.classTitle !== 'checkClassTitle.tests.str.') {
         result = false;
-        msg = 'The classTitle for unknown was incorrect. ';
-        msg += 'classTitle = %s';
-        console.error(msg, unknown.classTitle);
+        msg = 'checkClassTitle.tests.str failed. ';
+        msg += tests.str.classTitle + ' !== checkClassTitle.tests.str.';
+        results.addError(msg);
       }
 
-      if (debug.classTitle !== 'module.') {
+      if (tests.none.classTitle !== 'unknown.') {
         result = false;
-        msg = 'The classTitle for module was incorrect. ';
-        msg += 'classTitle = %s';
-        console.error(msg, debug.classTitle);
+        msg = 'checkClassTitle.tests.none failed. ';
+        msg += tests.none.classTitle + ' !== unknown.';
+        results.addError(msg);
       }
 
       // Save the results
-      results.set(result);
+      results.setResult(result);
       that.results.push(results);
 
       console.groupEnd();
@@ -378,4 +376,118 @@
 
       console.groupEnd();
     }
+  };
+
+  /**
+   * -----------------------------------------------
+   * Public Method (App.prototype.addChoice)
+   * -----------------------------------------------
+   * @desc Adds a new choice to the app.
+   * @param {string} choiceMsg - The choice message.
+   * @param {TestResults} results - The results object.
+   * @param {string} errorMsg - The error message.
+   * @param {?Object=} before - A function that gets called before
+   *   the choice is shown.
+   * @param {?Object=} after - A function that gets called after
+   *   a choice is completed.
+   */
+  App.prototype.addChoice = function(choiceMsg, results, errorMsg, before, after) {
+    /** @type {Choice} */
+    var choice;
+
+    before = before || null;
+    after  = after  || null;
+
+    choice = new Choice(choiceMsg, results, errorMsg, before, after);
+    Object.freeze(choice);
+
+    this.choices.push(choice);
+  };
+
+  /**
+   * -----------------------------------------------
+   * Public Method (App.prototype.runChoices)
+   * -----------------------------------------------
+   * @desc .
+   * @type {function()}
+   */
+  App.prototype.runChoices = function() {
+    /** @type {Choice} */
+    var choice;
+
+    if (!this.choices.length) {
+      this.shareResults();
+    }
+
+    choice = this.results.unshift();
+
+    // Hide the UI while setup is occurring
+    this.elems.ui.style.opacity = '0';
+
+    choice.before();
+
+    console.clear();
+
+    setTimeout(function() {
+
+      // Give the choice directions
+      app.elems.msg.textContent = choice.msg;
+
+      // Set the #yes onClick event
+      app.elems.yes.onclick = function() {
+        choice.after();
+        app.runChoices();
+      };
+
+      // Set the #no onClick event
+      app.elems.no.onclick = function() {
+        choice.fail();
+        choice.after();
+        app.runChoices();
+      };
+
+      app.elems.choose.style.display = 'block';
+      app.elems.ui.style.opacity = '1';
+    }, 500);
+  };
+
+  /**
+   * -----------------------------------------------
+   * Public Method (App.prototype.shareResults)
+   * -----------------------------------------------
+   * @desc .
+   * @type {function()}
+   */
+  App.prototype.shareResults = function() {
+    /** @type {number} */
+      var len;
+      /** @type {number} */
+      var i;
+    /** @type {string} */
+    var results;
+    /** @type {?string} */
+    var errors;
+
+    results = '<ol>';
+    len = this.results.length;
+
+    i = -1;
+    while (++i < len) {
+      results += this.results[i].reportResult();
+    }
+
+    results += '</ol>';
+    results += '<ol>';
+
+    i = -1;
+    while (++i < len) {
+      errors = this.results[i].reportErrors();
+      if (errors) {
+        results += errors;
+      }
+    }
+
+    results += '</ol>';
+
+    app.elems.ui.innerHTML = results;
   };
