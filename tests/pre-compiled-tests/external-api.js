@@ -38,8 +38,6 @@
       Object.freeze(app);
 
       // Run the tests
-      document.addEventListener('DOMContentLoaded', function() {
-        app.runTests();
-      });
+      app.runTests();
     }
   };
