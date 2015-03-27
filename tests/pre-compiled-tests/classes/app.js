@@ -1,22 +1,32 @@
   /**
    * -----------------------------------------------------
-   * Public Class (DummyApp)
+   * Public Class (App)
    * -----------------------------------------------------
    * @desc The base class for the dummy app.
    * @constructor
    */
-  var DummyApp = function() {
+  var App = function() {
 
-    console.log('DummyApp is being setup.');
+    console.log('App is being setup.');
 
     /**
      * ---------------------------------------------------
-     * Private Property (DummyApp.debug)
+     * Private Property (App.debug)
      * ---------------------------------------------------
      * @desc The Debug instance for this class.
      * @type {Object}
      */
-    this.debug = aIV.debug('DummyApp');
+    this.debug = aIV.debug('App');
+
+    /**
+     * ---------------------------------------------------
+     * Private Property (App.elems)
+     * ---------------------------------------------------
+     * @desc The elements for this app.
+     * @type {Object}
+     */
+    this.elems = new Elems();
+    Object.freeze(this.elems);
 
     /**
      * ----------------------------------------------- 
@@ -29,34 +39,40 @@
   };
 
   // Ensure constructor is set to this class.
-  DummyApp.prototype.constructor = DummyApp;
+  App.prototype.constructor = App;
 
   /**
    * -----------------------------------------------
-   * Public Method (DummyApp.prototype.runTests)
+   * Public Method (App.prototype.runTests)
    * -----------------------------------------------
    * @desc Sets up the display for the app.
    * @type {function()}
    */
-  DummyApp.prototype.runTests = function() {
+  App.prototype.runTests = function() {
 
     /** @type {Object} */
     var that;
+    /** @type {Object} */
+    var elems;
 
     that = this;
+    elems = this.elems;
 
+    // Clear the console
     console.clear();
 
-    alert('Please ensure your console is open before continuing.');
+    // Clear the start message
+    elems.clearUI();
 
     // Check init's params
     checkClassTitle();
     checkTurnOffTypes();
-    checkTurnOffDebuggers();
+    checkTurnOnDebuggers();
 
     // Check instance 
     checkInstances();
 
+    /*
     // Check the type methods
     checkStart();
     checkArgs();
@@ -74,8 +90,7 @@
     // Record the results
     console.group('The Results');
     reportResults();
-    console.groupEnd();
-
+    console.groupEnd();*/
 
     /* ------------------  |  *
      * TEST METHODS BELOW  |  *
@@ -113,23 +128,23 @@
       });
 
       // Run the tests
-      if (that.debug.classTitle !== 'DummyApp') {
+      if (that.debug.classTitle !== 'App.') {
         result = false;
-        msg = 'The classTitle for DummyApp was incorrect. ';
+        msg = 'The classTitle for App was incorrect. ';
         msg += 'classTitle = %s';
         console.error(msg, that.debug.classTitle);
       }
 
-      if (debugUnknown.classTitle !== 'unknown') {
+      if (unknown.classTitle !== 'unknown.') {
         result = false;
-        msg = 'The classTitle for debugUnknown was incorrect. ';
+        msg = 'The classTitle for unknown was incorrect. ';
         msg += 'classTitle = %s';
-        console.error(msg, debugUnknown.classTitle);
+        console.error(msg, unknown.classTitle);
       }
 
-      if (debug.classTitle !== 'module') {
+      if (debug.classTitle !== 'module.') {
         result = false;
-        msg = 'The classTitle for debug was incorrect. ';
+        msg = 'The classTitle for module was incorrect. ';
         msg += 'classTitle = %s';
         console.error(msg, debug.classTitle);
       }
@@ -329,7 +344,7 @@
       /** @type {Object} */
       var tests;
 
-      console.groupCollapsed('checkInstances');
+      console.group('checkInstances');
 
       results = new TestResults('checkInstances');
       Object.freeze(results);
@@ -363,5 +378,4 @@
 
       console.groupEnd();
     }
-
   };
