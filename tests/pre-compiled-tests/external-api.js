@@ -34,10 +34,12 @@
       _initialized = true;
 
       // Setup the dummy app
-      app = new DummyApp();
+      app = new App();
       Object.freeze(app);
 
       // Run the tests
-      document.addEventListener('DOMContentLoaded', app.runTests);
+      document.addEventListener('DOMContentLoaded', function() {
+        app.runTests();
+      });
     }
   };
