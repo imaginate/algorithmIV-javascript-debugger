@@ -18,6 +18,12 @@
    *   turnOffTypes   : (string|strings|undefined),
    *   turnOnDebuggers: (string|strings|undefined)
    * })=} settings - The Debug instance's settings.
+   * return {Debug}
    * @global
    */
-  aIV.debug = debug.newDebug(settings);
+  aIV.debug = function (settings) {
+    if (typeof settings !== 'string' && typeof settings !== 'object') {
+      settings = null;
+    }
+    return debug.newDebug(settings);
+  };
