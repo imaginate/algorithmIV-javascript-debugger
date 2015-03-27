@@ -63,9 +63,15 @@
    *   turnOffTypes   : (string|strings|undefined),
    *   turnOnDebuggers: (string|strings|undefined)
    * })=} settings - The Debug instance's settings.
+   * return {Debug}
    * @global
    */
-  aIV.debug = debug.newDebug(settings);
+  aIV.debug = function (settings) {
+    if (typeof settings !== 'string' && typeof settings !== 'object') {
+      settings = null;
+    }
+    return debug.newDebug(settings);
+  };
 
 })(window, (function() {
   "use strict"; 
@@ -100,7 +106,7 @@
    * Public Method (_return.newDebug)
    * -----------------------------------------------------
    * @desc Returns an instance of Debug.
-   * @param {(string|Object)=} settings - The Debug instance's settings.
+   * @param {?(string|Object)} settings - The Debug instance's settings.
    */
   _return.newDebug = function(settings) {
 
@@ -120,8 +126,7 @@
      */
     var turnOnBuggers;
 
-    settings = settings || null;
-
+    // Setup classTitle
     if (typeof settings === 'string') {
       classTitle = settings;
       settings = null;
@@ -135,12 +140,18 @@
     // Create a new Debug instance
     if ( !_instances.hasOwnProperty(classTitle) ) {
 
-      turnOffTypes = ( ( checkType(settings.turnOffTypes, 'string|strings') ) ?
-        settings.turnOffTypes : null
+      turnOffTypes = ( (settings) ?
+        settings.turnOffTypes || null : null
       );
-      turnOnBuggers = ( ( checkType(settings.turnOnDebuggers, 'string|strings') ) ?
-        settings.turnOnDebuggers : null
+      if ( !checkType(turnOffTypes, 'string|strings') ) {
+        turnOffTypes = null;
+      }
+      turnOnBuggers = ( (settings) ?
+        settings.turnOnDebuggers || null : null
       );
+      if ( !checkType(turnOnBuggers, 'string|strings') ) {
+        turnOnBuggers = null;
+      }
 
       // Setup, save, and freeze the new Debug instance
       _instances[classTitle] = new Debug(classTitle, turnOffTypes, turnOnBuggers);

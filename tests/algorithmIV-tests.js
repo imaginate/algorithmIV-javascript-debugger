@@ -59,7 +59,7 @@
    * @type {function()}
    * @global
    */
-  aIV.tests = tests.init();
+  aIV.tests = tests.init;
 
 })(window, (function() {
   "use strict"; 
@@ -105,11 +105,13 @@
       _initialized = true;
 
       // Setup the dummy app
-      app = new DummyApp();
+      app = new App();
       Object.freeze(app);
 
       // Run the tests
-      document.addEventListener('DOMContentLoaded', app.runTests);
+      document.addEventListener('DOMContentLoaded', function() {
+        app.runTests();
+      });
     }
   };
 
@@ -130,36 +132,141 @@
     turnOnDebuggers: 'fail args'
   });
 
+  /**
+   * ----------------------------------------------- 
+   * Public Variable (app)
+   * -----------------------------------------------
+   * @desc The instance of DummyApp for the tests.
+   * @type {DummyApp}
+   */
+  var app;
+
+  /**
+   * ----------------------------------------------- 
+   * Public Variable (choice)
+   * -----------------------------------------------
+   * @desc The result of a UI interaction with #choose.
+   * @type {boolean}
+   */
+  var choice;
+
 
 /* -----------------------------------------------------------------------------
  * | The Public Methods for the Module                                         |
  * v ------------------------------------------------------------------------- v
                                                           module-methods.js */
+  /**
+   * ---------------------------------------------
+   * Public Method (getID)
+   * ---------------------------------------------
+   * @desc A shortcut for getElementById.
+   * @param {string} title - The name of the id of the element to select.
+   * @return {HTMLElement} A reference to element with the given id.
+   */
+  function getID(title) {
+    return document.getElementById(title);
+  }
+
+  /**
+   * ---------------------------------------------
+   * Public Method (generateNumbers)
+   * ---------------------------------------------
+   * @desc Generates a random number or array of numbers.
+   * @param {?number=} amount - The amount of numbers to return.
+   * @return {(number|numbers)} The random number(s).
+   */
+  function generateNumbers(amount) {
+
+    debug.start('generateNumbers', amount);
+    debug.args('generateNumbers', amount, 'number=');
+
+    /**
+     * @type {number}
+     * @private
+     */
+    var limit;
+    /**
+     * @type {number}
+     * @private
+     */
+    var min;
+    /**
+     * @type {number}
+     * @private
+     */
+    var max;
+    /**
+     * @type {number}
+     * @private
+     */
+    var i;
+    /**
+     * @type {numbers}
+     */
+    var arr;
+
+    amount = ( (typeof amount === 'number' && amount > 1) ?
+      Math.floor(amount) : null
+    );
+
+    limit = 1000;
+
+    if (amount && amount > limit) {
+      debug.fail('generateNumbers', false, 'Error: Amount arg was over limit.');
+      amount = null;
+    }
+
+    min = 1;
+    max = 50;
+
+    if (!amount) {
+      return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    arr = new Array(amount);
+    i = 0;
+
+    while (++i < amount) {
+      arr[i] = Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    return arr;
+  }
 
 
 /* -----------------------------------------------------------------------------
- * | The Dummy App Class                                                       |
+ * | The App Class                                                             |
  * v ------------------------------------------------------------------------- v
-                                                               dummy-app.js */
+                                                             classes/app.js */
   /**
    * -----------------------------------------------------
-   * Public Class (DummyApp)
+   * Public Class (App)
    * -----------------------------------------------------
    * @desc The base class for the dummy app.
    * @constructor
    */
-  var DummyApp = function() {
+  var App = function() {
 
-    console.log('DummyApp is being setup.');
+    console.log('App is being setup.');
 
     /**
      * ---------------------------------------------------
-     * Private Property (DummyApp.debug)
+     * Private Property (App.debug)
      * ---------------------------------------------------
      * @desc The Debug instance for this class.
      * @type {Object}
      */
-    this.debug = aIV.debug('DummyApp');
+    this.debug = aIV.debug('App');
+
+    /**
+     * ---------------------------------------------------
+     * Private Property (App.elems)
+     * ---------------------------------------------------
+     * @desc The elements for this app.
+     * @type {Object}
+     */
+    this.elems = new Elems();
+    Object.freeze(this.elems);
 
     /**
      * ----------------------------------------------- 
@@ -172,34 +279,40 @@
   };
 
   // Ensure constructor is set to this class.
-  DummyApp.prototype.constructor = DummyApp;
+  App.prototype.constructor = App;
 
   /**
    * -----------------------------------------------
-   * Public Method (DummyApp.prototype.runTests)
+   * Public Method (App.prototype.runTests)
    * -----------------------------------------------
    * @desc Sets up the display for the app.
    * @type {function()}
    */
-  DummyApp.prototype.runTests = function() {
+  App.prototype.runTests = function() {
 
     /** @type {Object} */
     var that;
+    /** @type {Object} */
+    var elems;
 
     that = this;
+    elems = this.elems;
 
+    // Clear the console
     console.clear();
 
-    alert('Please ensure your console is open before continuing.');
+    // Clear the start message
+    elems.clearUI();
 
     // Check init's params
     checkClassTitle();
     checkTurnOffTypes();
-    checkTurnOffDebuggers();
+    checkTurnOnDebuggers();
 
     // Check instance 
     checkInstances();
 
+    /*
     // Check the type methods
     checkStart();
     checkArgs();
@@ -217,8 +330,7 @@
     // Record the results
     console.group('The Results');
     reportResults();
-    console.groupEnd();
-
+    console.groupEnd();*/
 
     /* ------------------  |  *
      * TEST METHODS BELOW  |  *
@@ -256,23 +368,23 @@
       });
 
       // Run the tests
-      if (that.debug.classTitle !== 'DummyApp') {
+      if (that.debug.classTitle !== 'App.') {
         result = false;
-        msg = 'The classTitle for DummyApp was incorrect. ';
+        msg = 'The classTitle for App was incorrect. ';
         msg += 'classTitle = %s';
         console.error(msg, that.debug.classTitle);
       }
 
-      if (debugUnknown.classTitle !== 'unknown') {
+      if (unknown.classTitle !== 'unknown.') {
         result = false;
-        msg = 'The classTitle for debugUnknown was incorrect. ';
+        msg = 'The classTitle for unknown was incorrect. ';
         msg += 'classTitle = %s';
-        console.error(msg, debugUnknown.classTitle);
+        console.error(msg, unknown.classTitle);
       }
 
-      if (debug.classTitle !== 'module') {
+      if (debug.classTitle !== 'module.') {
         result = false;
-        msg = 'The classTitle for debug was incorrect. ';
+        msg = 'The classTitle for module was incorrect. ';
         msg += 'classTitle = %s';
         console.error(msg, debug.classTitle);
       }
@@ -311,9 +423,18 @@
 
       // Setup for the tests
       tests = {
-        all: aIV.debug({ turnOffTypes: 'all' }),
-        str: aIV.debug({ turnOffTypes: 'fail state' }),
-        arr: aIV.debug({ turnOffTypes: [ 'fail', 'state' ] })
+        all: aIV.debug({
+          classTitle  : 'checkTurnOffTypes.tests.all',
+          turnOffTypes: 'all'
+        }),
+        str: aIV.debug({
+          classTitle  : 'checkTurnOffTypes.tests.str',
+          turnOffTypes: 'fail state'
+        }),
+        arr: aIV.debug({
+          classTitle  : 'checkTurnOffTypes.tests.arr',
+          turnOffTypes: [ 'fail', 'state' ]
+        })
       };
 
       // Run the tests
@@ -362,16 +483,85 @@
 
     /**
      * -------------------------------------------------
-     * Private Method (check)
+     * Private Method (checkTurnOnDebuggers)
      * -------------------------------------------------
-     * @desc Checks .
+     * @desc Checks the setting of the turnOnDebuggers param.
      * @type {function()}
      */
-    function check() {
+    function checkTurnOnDebuggers() {
 
-      console.groupCollapsed('check');
+      /** @type {TestResults} */
+      var results;
+      /** @type {boolean} */
+      var result;
+      /** @type {string} */
+      var msg;
+      /** @type {Object} */
+      var tests;
 
-      // ACTION
+      console.groupCollapsed('checkTurnOnDebuggers');
+
+      results = new TestResults('checkTurnOnDebuggers');
+      Object.freeze(results);
+
+      result = true;
+
+      // Setup for the tests
+      tests = {
+        all: aIV.debug({
+          classTitle     : 'checkTurnOnDebuggers.tests.all',
+          turnOnDebuggers: 'all'
+        }),
+        str: aIV.debug({
+          classTitle     : 'checkTurnOnDebuggers.tests.str',
+          turnOnDebuggers: 'fail state'
+        }),
+        arr: aIV.debug({
+          classTitle     : 'checkTurnOnDebuggers.tests.arr',
+          turnOnDebuggers: [ 'fail', 'state' ]
+        })
+      };
+
+      // Run the tests
+      if (tests.all.getBugger('start') ||
+          tests.all.getBugger('args')  ||
+          tests.all.getBugger('fail')  ||
+          tests.all.getBugger('group') ||
+          tests.all.getBugger('state') ||
+          tests.all.getBugger('misc')) {
+        result = false;
+        msg = 'The turnOnDebuggers \'all\' value failed to turn ';
+        msg += 'on all the debuggers.';
+        console.error(msg);
+      }
+
+      if (!tests.str.getBugger('start') ||
+          !tests.str.getBugger('args')  ||
+          tests.str.getBugger('fail')   ||
+          !tests.str.getBugger('group') ||
+          tests.str.getBugger('state')  ||
+          !tests.str.getBugger('misc')) {
+        result = false;
+        msg = 'The turnOnDebuggers \'fail state\' value failed to turn ';
+        msg += 'on the correct debuggers.';
+        console.error(msg);
+      }
+
+      if (!tests.arr.getBugger('start') ||
+          !tests.arr.getBugger('args')  ||
+          tests.arr.getBugger('fail')   ||
+          !tests.arr.getBugger('group') ||
+          tests.arr.getBugger('state')  ||
+          !tests.arr.getBugger('misc')) {
+        result = false;
+        msg = 'The turnOnDebuggers [ \'fail\', \'state\' ] value failed to ';
+        msg += 'turn on the correct debuggers.';
+        console.error(msg);
+      }
+
+      // Save the results
+      results.set(result);
+      that.results.push(results);
 
       console.groupEnd();
     }
@@ -385,22 +575,206 @@
      */
     function checkInstances() {
 
-      console.groupCollapsed('checkInstances');
+      /** @type {TestResults} */
+      var results;
+      /** @type {boolean} */
+      var result;
+      /** @type {string} */
+      var msg;
+      /** @type {Object} */
+      var tests;
 
-      results.debugInst.misc('checkInst', 'This debugger should be turned on.');
-      results.debug.turnOffDebugger('misc');
-      results.debugInst.misc('checkInst', 'This debugger should be turned off.');
+      console.group('checkInstances');
+
+      results = new TestResults('checkInstances');
+      Object.freeze(results);
+
+      result = true;
+
+      // Setup for the tests
+      tests = {
+        first : aIV.debug('checkInstances.tests'),
+        second: aIV.debug({
+          classTitle  : 'checkInstances.tests',
+          turnOffTypes: 'misc'
+        })
+      };
+
+      // Run the tests
+      tests.first.misc('test1', 'Test 1 - This log should be shown.');
+      tests.second.misc('test2', 'Test 2 - This log should be shown.');
+      result = confirm('Did test1 and test2 get logged?');
+
+      tests.first.setType('misc', false);
+      tests.first.misc('test3', 'Test 3 - This log should NOT be shown.');
+      tests.second.misc('test4', 'Test 4 - This log should NOT be shown.');
+      if (result) {
+        result = confirm('Did test3 and test4 get logged?');
+      }
+
+      // Save the results
+      results.set(result);
+      that.results.push(results);
 
       console.groupEnd();
     }
+  };
 
+
+/* -----------------------------------------------------------------------------
+ * | The Elems Class                                                           |
+ * v ------------------------------------------------------------------------- v
+                                                           classes/elems.js */
+  /**
+   * -----------------------------------------------------
+   * Public Class (Elems)
+   * -----------------------------------------------------
+   * @desc Important app elements.
+   * @constructor
+   */
+  var Elems = function() {
+
+    console.log('Elems is being setup.');
+
+    /**
+     * ---------------------------------------------------
+     * Private Property (Elems.msg)
+     * ---------------------------------------------------
+     * @desc Element: #msg
+     * @type {HTMLElement}
+     */
+    this.msg = getID('msg');
+
+    /**
+     * ---------------------------------------------------
+     * Private Property (Elems.ui)
+     * ---------------------------------------------------
+     * @desc Element: #ui
+     * @type {HTMLElement}
+     */
+    this.ui = getID('ui');
+
+    /**
+     * ---------------------------------------------------
+     * Private Property (Elems.start)
+     * ---------------------------------------------------
+     * @desc Element: #start
+     * @type {HTMLElement}
+     */
+    this.start = getID('start');
+
+    /**
+     * ---------------------------------------------------
+     * Private Property (Elems.choose)
+     * ---------------------------------------------------
+     * @desc Element: #choose
+     * @type {HTMLElement}
+     */
+    this.choose = getID('choose');
+
+    /**
+     * ---------------------------------------------------
+     * Private Property (Elems.yes)
+     * ---------------------------------------------------
+     * @desc Element: #yes
+     * @type {HTMLElement}
+     */
+    this.yes = getID('yes');
+    this.yes.onclick = function () {
+      choice = true;
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Property (Elems.no)
+     * ---------------------------------------------------
+     * @desc Element: #no
+     * @type {HTMLElement}
+     */
+    this.no = getID('no');
+    this.no.onclick = function () {
+      choice = false;
+    };
+  };
+
+  // Ensure constructor is set to this class.
+  Elems.prototype.constructor = Elems;
+
+  /**
+   * -----------------------------------------------
+   * Public Method (Elems.prototype.clearUI)
+   * -----------------------------------------------
+   * @desc Clears the current interactions.
+   * @type {function()}
+   */
+  Elems.prototype.clearUI = function() {
+
+    /** @type {Object} */
+    var that;
+
+    that = this;
+
+    this.ui.style.opacity = '0';
+
+    setTimeout(function() {
+      that.msg.textContent = 'Tests are running.';
+      that.start.style.display = 'none';
+      that.choose.style.display = 'none';
+      that.ui.style.opacity = '1';
+    }, 500);
+  };
+
+  /**
+   * -----------------------------------------------
+   * Public Method (Elems.prototype.showMsg)
+   * -----------------------------------------------
+   * @desc Shows a message to the user.
+   * @param {string} msg - The message to show.
+   */
+  Elems.prototype.showMsg = function(msg) {
+
+    /** @type {Object} */
+    var that;
+
+    that = this;
+
+    this.ui.style.opacity = '0';
+
+    setTimeout(function() {
+      that.msg.textContent = msg;
+      that.choose.style.display = 'none';
+      that.ui.style.opacity = '1';
+    }, 500);
+  };
+
+  /**
+   * -----------------------------------------------
+   * Public Method (Elems.prototype.showChoice)
+   * -----------------------------------------------
+   * @desc Shows a message with 'yes' or 'no' options to the user.
+   * @param {string} msg - The message to show.
+   */
+  Elems.prototype.showChoice = function(msg) {
+
+    /** @type {Object} */
+    var that;
+
+    that = this;
+
+    this.ui.style.opacity = '0';
+
+    setTimeout(function() {
+      that.msg.textContent = msg;
+      that.choose.style.display = 'block';
+      that.ui.style.opacity = '1';
+    }, 500);
   };
 
 
 /* -----------------------------------------------------------------------------
  * | The Test Results Class                                                    |
  * v ------------------------------------------------------------------------- v
-                                                            test-results.js */
+                                                    classes/test-results.js */
   /**
    * -----------------------------------------------------
    * Public Class (TestResults)
@@ -421,14 +795,6 @@
       classTitle     : 'TestResults',
       turnOnDebuggers: 'misc'
     });
-
-    /**
-     * ---------------------------------------------------
-     * Private Property (TestResults.debugInst)
-     * ---------------------------------------------------
-     * @type {Object}
-     */
-    this.debugInst = aIV.debug('TestResults');
 
     /**
      * ----------------------------------------------- 
