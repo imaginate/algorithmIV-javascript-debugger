@@ -132,7 +132,8 @@
       settings = null;
     }
     else {
-      classTitle = ( (typeof settings.classTitle === 'string') ?
+      classTitle = ( (settings && !!settings.classTitle &&
+                      typeof settings.classTitle === 'string') ?
         settings.classTitle : 'unknown'
       );
     }
@@ -140,14 +141,15 @@
     // Create a new Debug instance
     if ( !_instances.hasOwnProperty(classTitle) ) {
 
-      turnOffTypes = ( (settings) ?
-        settings.turnOffTypes || null : null
+      turnOffTypes = ( (settings && !!settings.turnOffTypes) ?
+        settings.turnOffTypes : null
       );
       if ( !checkType(turnOffTypes, 'string|strings') ) {
         turnOffTypes = null;
       }
-      turnOnBuggers = ( (settings) ?
-        settings.turnOnDebuggers || null : null
+
+      turnOnBuggers = ( (settings && !!settings.turnOnDebuggers) ?
+        settings.turnOnDebuggers : null
       );
       if ( !checkType(turnOnBuggers, 'string|strings') ) {
         turnOnBuggers = null;
