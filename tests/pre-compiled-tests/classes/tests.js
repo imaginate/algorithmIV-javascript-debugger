@@ -279,21 +279,21 @@
 
     // Run the tests
     choiceMsg = 'The following message should have been logged to the console:';
-    choiceMsg += '<br />"START: Tests.checkStart.testMethod()"';
+    choiceMsg += ' "START: Tests.checkStart.testMethod()"';
     errorMsg = 'debug.start did not log properly';
     app.addChoice(choiceMsg, results, errorMsg, function() {
       tests.start('testMethod');
     });
 
     choiceMsg = 'The following message should have been logged to the console:';
-    choiceMsg += '<br />"START: Tests.checkStart.testMethod(5, jsObjRef)"';
+    choiceMsg += ' "START: Tests.checkStart.testMethod(5, jsObjRef)"';
     errorMsg = 'debug.start did not log properly with arguments';
     app.addChoice(choiceMsg, results, errorMsg, function() {
       tests.start('testMethod', 5, [ 5 ]);
     });
 
     choiceMsg = 'The following message should have been logged to the console:';
-    choiceMsg += '<br />"START: Tests.checkStart.testMethod(5, jsObjRef)"';
+    choiceMsg += ' "START: Tests.checkStart.testMethod(5, jsObjRef)"';
     errorMsg = 'debug.start did not log properly with arguments given as array';
     app.addChoice(choiceMsg, results, errorMsg, function() {
       tests.start([ 'testMethod', 5, [ 5 ] ]);
