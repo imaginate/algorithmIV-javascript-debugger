@@ -3,13 +3,13 @@
 ####Algorithm IV's debugger is a JavaScript object constructor that has six different methods that log messages, errors, and more to your console. It makes managing a JavaScript project with multiple classes much simpler by implementing a clear and organized structure to every log made!
 
 ##Getting Started
-**To use the debugger simply download [algorithmIV-debug.min.js](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/src/algorithmIV-debug.min.js), add ```<script src="algorithmIV-debug.js"></script>``` to the ```<head>``` of your HTML, and use ```aIV.debug()``` to create as many objects as you desire.** 
+To use the debugger simply download [algorithmIV-debug.min.js](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/src/algorithmIV-debug.min.js), add ```<script src="algorithmIV-debug.min.js"></script>``` to the ```<head>``` of your HTML, and use ```aIV.debug()``` to create as many objects as you desire. 
 
 ##Contributing
-**See [CONTRIBUTING.md](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/CONTRIBUTING.md).**
+See [CONTRIBUTING.md](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/CONTRIBUTING.md).
 
 ##Example
-**To see the debugger in action visit [Algorithm IV's Question Manager](https://github.com/imaginate/algorithmIV/tree/version1.1.0/test/app-core) or view the [unit tests](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/tests/pre-compiled-tests/classes/Tests.js).**
+To see the debugger in action visit [Algorithm IV's Question Manager](https://github.com/imaginate/algorithmIV/tree/version1.1.0/test/app-core) or view the [unit tests](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/tests/pre-compiled-tests/classes/Tests.js).
 ```javascript
 /**
  * -----------------------------------------------------
