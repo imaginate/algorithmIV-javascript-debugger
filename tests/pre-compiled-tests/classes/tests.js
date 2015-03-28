@@ -488,4 +488,69 @@
     app.results.push(results);
   };
 
+  /**
+   * -------------------------------------------------
+   * Public Method (Tests.checkFail)
+   * -------------------------------------------------
+   * @desc Checks Debug.fail method.
+   * @type {function()}
+   */
+  Tests.checkFail = function() {
+
+    /** @type {TestResults} */
+    var results;
+    /** @type {string} */
+    var choiceMsg;
+    /** @type {string} */
+    var errorMsg;
+    /** @type {Object} */
+    var tests;
+
+    results = new TestResults('Tests.checkFail');
+    Object.freeze(results);
+
+    // Setup for the tests
+    tests = aIV.debug('Tests.checkFail');
+
+    // Run the tests
+    choiceMsg = 'Two error messages should have been logged.';
+    errorMsg = 'debug.fail boolean evaluation failed';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.fail('testMethod', true, 'This log should NOT be shown.');
+      tests.fail('testMethod', false, 'This log should be shown.');
+      tests.fail([ 'testMethod', true, 'This log should NOT be shown.' ]);
+      tests.fail([ 'testMethod', false, 'This log should be shown.' ]);
+    });
+
+    choiceMsg = 'Two error messages should have been logged.';
+    errorMsg = 'debug.fail number|object evaluation failed';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.fail('testMethod', 1, 'This log should NOT be shown.');
+      tests.fail('testMethod', 0, 'This log should be shown.');
+      tests.fail([ 'testMethod', {}, 'This log should NOT be shown.' ]);
+      tests.fail([ 'testMethod', null, 'This log should be shown.' ]);
+    });
+
+    choiceMsg = 'Two error messages should have been logged.';
+    errorMsg = 'debug.fail function evaluation failed';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      /** @return {boolean} */
+      var pass = function() {
+        return true;
+      };
+      /** @return {boolean} */
+      var fail = function() {
+        return false;
+      };
+
+      tests.fail('testMethod', pass(), 'This log should NOT be shown.');
+      tests.fail('testMethod', fail(), 'This log should be shown.');
+      tests.fail([ 'testMethod', pass, 'This log should NOT be shown.' ]);
+      tests.fail([ 'testMethod', fail, 'This log should be shown.' ]);
+    });
+
+    // Save the results
+    app.results.push(results);
+  };
+
   Object.freeze(Tests);
