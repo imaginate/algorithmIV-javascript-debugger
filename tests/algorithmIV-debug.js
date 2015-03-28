@@ -453,12 +453,12 @@
      * @private
      */
     var buggers = {
-      start: (turnOnBuggers && /start|all/.test(turnOnBuggers)),
-      args : (turnOnBuggers &&  /args|all/.test(turnOnBuggers)),
-      fail : (turnOnBuggers &&  /fail|all/.test(turnOnBuggers)),
-      group: (turnOnBuggers && /group|all/.test(turnOnBuggers)),
-      state: (turnOnBuggers && /state|all/.test(turnOnBuggers)),
-      misc : (turnOnBuggers &&  /misc|all/.test(turnOnBuggers))
+      start: (!!turnOnBuggers && /start|all/.test(turnOnBuggers)),
+      args : (!!turnOnBuggers &&  /args|all/.test(turnOnBuggers)),
+      fail : (!!turnOnBuggers &&  /fail|all/.test(turnOnBuggers)),
+      group: (!!turnOnBuggers && /group|all/.test(turnOnBuggers)),
+      state: (!!turnOnBuggers && /state|all/.test(turnOnBuggers)),
+      misc : (!!turnOnBuggers &&  /misc|all/.test(turnOnBuggers))
     };
 
     /**
