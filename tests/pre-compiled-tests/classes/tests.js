@@ -204,7 +204,8 @@
    * -------------------------------------------------
    * Public Method (Tests.checkInstances)
    * -------------------------------------------------
-   * @desc Checks .
+   * @desc Checks that instances are not created twice for the
+   *   same class.
    * @type {function()}
    */
   Tests.checkInstances = function() {
@@ -233,7 +234,7 @@
     // Run the tests
     choiceMsg = 'Instance Test 1 and 2 should have been logged';
     choiceMsg += ' to the console.';
-    errorMsg = 'checkInstances.tests.first failed.';
+    errorMsg = 'checkInstances.tests.first failed';
     app.addChoice(choiceMsg, results, errorMsg, function() {
       tests.first.misc('test1', 'Instance Test 1');
       tests.second.misc('test2', 'Instance Test 2');
@@ -241,7 +242,7 @@
 
     choiceMsg = 'Instance Test 3 and 4 should NOT have been logged';
     choiceMsg += ' to the console.';
-    errorMsg = 'checkInstances.tests.second failed.';
+    errorMsg = 'checkInstances.tests.second failed';
     app.addChoice(choiceMsg, results, errorMsg, function() {
       tests.first.setType('misc', false);
       tests.first.misc('test3', 'Instance Test 3');
@@ -251,5 +252,57 @@
     // Save the results
     app.results.push(results);
   };
+
+  /**
+   * -------------------------------------------------
+   * Public Method (Tests.checkStart)
+   * -------------------------------------------------
+   * @desc Checks Debug.start method.
+   * @type {function()}
+   */
+  Tests.checkStart = function() {
+
+    /** @type {TestResults} */
+    var results;
+    /** @type {string} */
+    var choiceMsg;
+    /** @type {string} */
+    var errorMsg;
+    /** @type {Object} */
+    var tests;
+
+    results = new TestResults('Tests.checkStart');
+    Object.freeze(results);
+
+    // Setup for the tests
+    tests = aIV.debug('Tests.checkStart');
+
+    // Run the tests
+    choiceMsg = 'The following message should have been logged to the console:';
+    choiceMsg += '<br />"START: Tests.checkStart.testMethod()"';
+    errorMsg = 'debug.start did not log properly';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.start('testMethod');
+    });
+
+    choiceMsg = 'The following message should have been logged to the console:';
+    choiceMsg += '<br />"START: Tests.checkStart.testMethod(5, jsObjRef)"';
+    errorMsg = 'debug.start did not log properly with arguments';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.start('testMethod', 5, [ 5 ]);
+    });
+
+    choiceMsg = 'The following message should have been logged to the console:';
+    choiceMsg += '<br />"START: Tests.checkStart.testMethod(5, jsObjRef)"';
+    errorMsg = 'debug.start did not log properly with arguments given as array';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.start([ 'testMethod', 5, [ 5 ] ]);
+    });
+
+    // Save the results
+    app.results.push(results);
+  };
+
+
 
   Object.freeze(Tests);
