@@ -18,8 +18,6 @@
 
     /** @type {TestResults} */
     var results;
-    /** @type {boolean} */
-    var result;
     /** @type {string} */
     var msg;
     /** @type {Object} */
@@ -27,8 +25,6 @@
 
     results = new TestResults('Tests.checkClassTitle');
     Object.freeze(results);
-
-    result = true;
 
     // Setup for the tests
     tests = {
@@ -39,28 +35,24 @@
 
     // Run the tests
     if (tests.prop.classTitle !== 'Tests.checkClassTitle.prop.') {
-      result = false;
       msg = 'Tests.checkClassTitle evaluation failed: ';
       msg += tests.prop.classTitle + ' !== Tests.checkClassTitle.prop.';
       results.addError(msg);
     }
 
     if (tests.str.classTitle !== 'Tests.checkClassTitle.str.') {
-      result = false;
       msg = 'Tests.checkClassTitle evaluation failed: ';
       msg += tests.str.classTitle + ' !== Tests.checkClassTitle.str.';
       results.addError(msg);
     }
 
     if (tests.none.classTitle !== 'unknown.') {
-      result = false;
       msg = 'Tests.checkClassTitle evaluation failed: ';
       msg += tests.none.classTitle + ' !== unknown.';
       results.addError(msg);
     }
 
     // Save the results
-    results.setResult(result);
     app.results.push(results);
   };
 
@@ -75,8 +67,6 @@
 
     /** @type {TestResults} */
     var results;
-    /** @type {boolean} */
-    var result;
     /** @type {string} */
     var msg;
     /** @type {Object} */
@@ -84,8 +74,6 @@
 
     results = new TestResults('Tests.checkTurnOffTypes');
     Object.freeze(results);
-
-    result = true;
 
     // Setup for the tests
     tests = {
@@ -110,7 +98,6 @@
         tests.all.getType('group') ||
         tests.all.getType('state') ||
         tests.all.getType('misc')) {
-      result = false;
       msg = 'Tests.turnOffTypes.all failed: no types should be on';
       results.addError(msg);
     }
@@ -121,7 +108,6 @@
         !tests.str.getType('group') ||
         tests.str.getType('state')  ||
         !tests.str.getType('misc')) {
-      result = false;
       msg = "Tests.turnOffTypes.str failed: only 'fail' and 'state'";
       msg += ' should be off';
       results.addError(msg);
@@ -133,14 +119,12 @@
         !tests.arr.getType('group') ||
         tests.arr.getType('state')  ||
         !tests.arr.getType('misc')) {
-      result = false;
       msg = "Tests.turnOffTypes.arr failed: only 'fail' and 'state'";
       msg += ' should be off';
       results.addError(msg);
     }
 
     // Save the results
-    results.setResult(result);
     app.results.push(results);
   };
 
@@ -155,8 +139,6 @@
 
     /** @type {TestResults} */
     var results;
-    /** @type {boolean} */
-    var result;
     /** @type {string} */
     var msg;
     /** @type {Object} */
@@ -164,8 +146,6 @@
 
     results = new TestResults('Tests.checkTurnOnDebuggers');
     Object.freeze(results);
-
-    result = true;
 
     // Setup for the tests
     tests = {
@@ -190,7 +170,6 @@
         !tests.all.getBugger('group') ||
         !tests.all.getBugger('state') ||
         !tests.all.getBugger('misc')) {
-      result = false;
       msg = 'Tests.turnOnDebuggers.all failed: no debuggers should be off';
       results.addError(msg);
     }
@@ -201,7 +180,6 @@
         tests.str.getBugger('group')  ||
         !tests.str.getBugger('state') ||
         tests.str.getBugger('misc')) {
-      result = false;
       msg = "Tests.turnOnDebuggers.str failed: only 'fail' and 'state'";
       msg += ' should be on';
       results.addError(msg);
@@ -213,14 +191,12 @@
         tests.str.getBugger('group')  ||
         !tests.str.getBugger('state') ||
         tests.arr.getBugger('misc')) {
-      result = false;
       msg = "Tests.turnOnDebuggers.arr failed: only 'fail' and 'state'";
       msg += ' should be on';
       results.addError(msg);
     }
 
     // Save the results
-    results.setResult(result);
     app.results.push(results);
   };
 
@@ -236,9 +212,9 @@
     /** @type {TestResults} */
     var results;
     /** @type {string} */
-    var choice;
+    var choiceMsg;
     /** @type {string} */
-    var msg;
+    var errorMsg;
     /** @type {Object} */
     var tests;
 
@@ -255,16 +231,18 @@
     };
 
     // Run the tests
-    choice = 'Instance Test 1 and 2 should have been logged to the console.';
-    msg = 'checkInstances.tests.first failed.';
-    app.addChoice(choice, results, msg, function() {
+    choiceMsg = 'Instance Test 1 and 2 should have been logged';
+    choiceMsg += ' to the console.';
+    errorMsg = 'checkInstances.tests.first failed.';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
       tests.first.misc('test1', 'Instance Test 1');
       tests.second.misc('test2', 'Instance Test 2');
     });
 
-    choice = 'Instance Test 3 and 4 should NOT have been logged to the console.';
-    msg = 'checkInstances.tests.second failed.';
-    app.addChoice(choice, results, msg, function() {
+    choiceMsg = 'Instance Test 3 and 4 should NOT have been logged';
+    choiceMsg += ' to the console.';
+    errorMsg = 'checkInstances.tests.second failed.';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
       tests.first.setType('misc', false);
       tests.first.misc('test3', 'Instance Test 3');
       tests.second.misc('test4', 'Instance Test 4');

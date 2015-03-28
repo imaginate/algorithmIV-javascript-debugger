@@ -119,6 +119,7 @@
      * @param {string} msg - The error message.
      */
     this.addError = function(msg) {
+      result = false;
       if (errors) {
         errors.push(msg);
       }
