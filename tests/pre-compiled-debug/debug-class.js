@@ -323,8 +323,8 @@
 
     // Test the given arguments before executing
     argTest = ( (typeof methodName === 'string') ?
-      (arguments.length > 3) : ( Array.isArray(methodName) ) ?
-        (typeof methodName[0] === 'string' && methodName.length > 3) : false
+      (arguments.length > 2) : ( Array.isArray(methodName) ) ?
+        (typeof methodName[0] === 'string' && methodName.length > 2) : false
     );
     if(!argTest) {
       console.error('A debug.args method\'s arg(s) was wrong.');
