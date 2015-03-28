@@ -714,8 +714,10 @@
 
     /** @type {TestResults} */
     var results;
-    /** @type {string} */
-    var choiceMsg;
+    /** @type {boolean} */
+    var before;
+    /** @type {boolean} */
+    var after;
     /** @type {string} */
     var errorMsg;
     /** @type {Object} */
@@ -731,55 +733,40 @@
     });
 
     // Run the tests
-    choiceMsg = 'The following message should have been logged to the console ';
-    choiceMsg += 'ONCE: "PASS TEST - This log should be shown."';
-    errorMsg = 'debug.turnOn failed to turn on one type';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.start('testMethod', 'FAIL TEST - This log should NOT be shown.');
-      tests.misc('testMethod', 'FAIL TEST - This log should NOT be shown.');
-      tests.turnOn('misc');
-      tests.start('testMethod', 'FAIL TEST - This log should NOT be shown.');
-      tests.misc('testMethod', 'PASS TEST - This log should be shown.');
-    }, function() {
-      tests.setType('misc', false);
-    });
+    before = tests.getType('misc');
+    tests.turnOn('misc');
+    after = tests.getType('misc');
+    if (before || !after) {
+      errorMsg = 'debug.turnOn failed to turn on one type';
+      results.addError(errorMsg);
+    }
+    tests.setType('misc', false);
 
-    choiceMsg = 'The following message should have been logged to the console ';
-    choiceMsg += 'TWICE: "PASS TEST - This log should be shown.';
-    errorMsg = 'debug.turnOn failed to turn on two types with a string';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.start('testMethod', 'FAIL TEST - This log should NOT be shown.');
-      tests.misc('testMethod', 'FAIL TEST - This log should NOT be shown.');
-      tests.turnOn('start misc');
-      tests.start('testMethod', 'PASS TEST - This log should be shown.');
-      tests.misc('testMethod', 'PASS TEST - This log should be shown.');
-    }, function() {
-      tests.setType('all', false);
-    });
+    before = tests.getType('start') && tests.getType('misc');
+    tests.turnOn('start misc');
+    after = tests.getType('start') && tests.getType('misc');
+    if (before || !after) {
+      errorMsg = 'debug.turnOn failed to turn on two types with a string';
+      results.addError(errorMsg);
+    }
+    tests.setType('all', false);
 
-    choiceMsg = 'The following message should have been logged to the console ';
-    choiceMsg += 'TWICE: "PASS TEST - This log should be shown.';
-    errorMsg = 'debug.turnOn failed to turn on two types with an array';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.start('testMethod', 'FAIL TEST - This log should NOT be shown.');
-      tests.misc('testMethod', 'FAIL TEST - This log should NOT be shown.');
-      tests.turnOn([ 'start', 'misc' ]);
-      tests.start('testMethod', 'PASS TEST - This log should be shown.');
-      tests.misc('testMethod', 'PASS TEST - This log should be shown.');
-    }, function() {
-      tests.setType('all', false);
-    });
+    before = tests.getType('start') && tests.getType('misc');
+    tests.turnOn([ 'start', 'misc' ]);
+    after = tests.getType('start') && tests.getType('misc');
+    if (before || !after) {
+      errorMsg = 'debug.turnOn failed to turn on two types with an array';
+      results.addError(errorMsg);
+    }
+    tests.setType('all', false);
 
-    choiceMsg = 'The following message should have been logged to the console ';
-    choiceMsg += 'TWICE: "PASS TEST - This log should be shown.';
-    errorMsg = 'debug.turnOn failed to turn on all types';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.start('testMethod', 'FAIL TEST - This log should NOT be shown.');
-      tests.misc('testMethod', 'FAIL TEST - This log should NOT be shown.');
-      tests.turnOn('all');
-      tests.start('testMethod', 'PASS TEST - This log should be shown.');
-      tests.misc('testMethod', 'PASS TEST - This log should be shown.');
-    });
+    before = tests.getType('start') && tests.getType('misc');
+    tests.turnOn('all');
+    after = tests.getType('start') && tests.getType('misc');
+    if (before || !after) {
+      errorMsg = 'debug.turnOn failed to turn on all types';
+      results.addError(errorMsg);
+    }
 
     // Save the results
     app.results.push(results);
