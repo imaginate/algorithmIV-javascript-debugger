@@ -677,11 +677,13 @@
       tests.args([ 'testMethod',  [ elem ], 'elems' ]);
     });
 
-    choiceMsg = 'Four error messages should have been logged.';
+    choiceMsg = 'Two error messages should have been logged.';
     errorMsg = "debug.args null check failed";
     app.addChoice(choiceMsg, results, errorMsg, function() {
       tests.args('testMethod', 's', 'string');
       tests.args('testMethod', null, 'string');
+      tests.args('testMethod', 1, 'string');
+      tests.args('testMethod', undefined, 'string');
       tests.args([ 'testMethod', 's', 'string' ]);
       tests.args([ 'testMethod', null, 'string' ]);
     });
@@ -782,6 +784,154 @@
     app.results.push(results);
   };
 
+  /**
+   * -------------------------------------------------
+   * Public Method (Tests.checkGroup)
+   * -------------------------------------------------
+   * @desc Checks Debug.group method.
+   * @type {function()}
+   */
+  Tests.checkGroup = function() {
+
+    /** @type {TestResults} */
+    var results;
+    /** @type {string} */
+    var choiceMsg;
+    /** @type {string} */
+    var errorMsg;
+    /** @type {Object} */
+    var tests;
+
+    results = new TestResults('Tests.checkGroup');
+    Object.freeze(results);
+
+    // Setup for the tests
+    tests = aIV.debug('Tests.checkGroup');
+
+    // Run the tests
+    choiceMsg = '"GROUP: Tests.checkGroup.testMethod()" ';
+    choiceMsg += 'should be an open console group.';
+    errorMsg = 'debug.group failed to start an open group';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.group('testMethod', 'open', 'This group should be open.');
+      console.log('A child log of testMethod\'s group.');
+      tests.group('testMethod', 'end');
+    });
+
+    choiceMsg = '"GROUP: Tests.checkGroup.testMethod()" ';
+    choiceMsg += 'should be a collapsed console group.';
+    errorMsg = 'debug.group failed to start a collapsed group';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.group('testMethod', 'coll', 'This group should be collapsed.');
+      console.log('A child log of testMethod\'s group.');
+      tests.group('testMethod', 'end');
+    });
+
+    choiceMsg = 'The following message should have been logged to the console:';
+    choiceMsg += '"GROUP: Tests.checkGroup.testMethod() |';
+    choiceMsg += ' Args: number= 5, object= jsObjRef"';
+    errorMsg = 'debug.group failed to add the vars correctly to the message';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      /** @type {string} */
+      var msg;
+
+      msg = 'Args: number= $$, object= $$';
+      tests.group('testMethod', 'coll', msg, 5, [ 5 ]);
+      tests.group('testMethod', 'end');
+    });
+
+    // Save the results
+    app.results.push(results);
+  };
+
+  /**
+   * -------------------------------------------------
+   * Public Method (Tests.checkState)
+   * -------------------------------------------------
+   * @desc Checks Debug.state method.
+   * @type {function()}
+   */
+  Tests.checkState = function() {
+
+    /** @type {TestResults} */
+    var results;
+    /** @type {string} */
+    var choiceMsg;
+    /** @type {string} */
+    var errorMsg;
+    /** @type {Object} */
+    var tests;
+
+    results = new TestResults('Tests.checkState');
+    Object.freeze(results);
+
+    // Setup for the tests
+    tests = aIV.debug('Tests.checkState');
+
+    // Run the tests
+    choiceMsg = 'A debugger instance and a console log, "A debug.state ';
+    choiceMsg += 'method\'s arg(s) was wrong.", should have appeared.';
+    errorMsg = 'debug.state failed to check the given args correctly';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.state('testMethod');
+    });
+
+    choiceMsg = 'The following message should have been logged to the console:';
+    choiceMsg += '"STATE: Tests.checkState.testMethod() |';
+    choiceMsg += ' number= 5, object= jsObjRef"';
+    errorMsg = 'debug.state failed to add the vars correctly to the message';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.state('testMethod', 'number= $$, object= $$', 5, [ 5 ]);
+    });
+
+    // Save the results
+    app.results.push(results);
+  };
+
+  /**
+   * -------------------------------------------------
+   * Public Method (Tests.checkMisc)
+   * -------------------------------------------------
+   * @desc Checks Debug.misc method.
+   * @type {function()}
+   */
+  Tests.checkMisc = function() {
+
+    /** @type {TestResults} */
+    var results;
+    /** @type {string} */
+    var choiceMsg;
+    /** @type {string} */
+    var errorMsg;
+    /** @type {Object} */
+    var tests;
+
+    results = new TestResults('Tests.checkMisc');
+    Object.freeze(results);
+
+    // Setup for the tests
+    tests = aIV.debug('Tests.checkMisc');
+
+    // Run the tests
+    choiceMsg = 'The following message should have been logged to the console:';
+    choiceMsg += '"MISC: Tests.checkMisc.testMethod() | Lorem ipsum!"';
+    errorMsg = 'debug.misc failed to log a basic message';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.misc('testMethod', 'Lorem ipsum!');
+    });
+
+    choiceMsg = 'The following message should have been logged to the console:';
+    choiceMsg += '"MISC: Tests.checkMisc.testMethod() |';
+    choiceMsg += ' Args: number= 5, object= jsObjRef"';
+    errorMsg = 'debug.state failed to add the vars correctly to the message';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.misc('testMethod', 'Args: number= $$, object= $$', 5, [ 5 ]);
+    });
+
+    // Save the results
+    app.results.push(results);
+  };
+
   Object.freeze(Tests);
 
 
@@ -859,9 +1009,9 @@
     Tests.checkStart();
     Tests.checkArgs();
     Tests.checkFail();
-    //Tests.checkGroup();
-    //Tests.checkState();
-    //Tests.checkMisc();
+    Tests.checkGroup();
+    Tests.checkState();
+    Tests.checkMisc();
 
     // Check the setting methods
     //Tests.checkTurnOn();
@@ -910,6 +1060,8 @@
     /** @type {Choice} */
     var choice;
 
+    console.clear();
+
     if (!this.choices.length) {
       this.shareResults();
       return;
@@ -919,8 +1071,6 @@
 
     // Hide the UI while setup is occurring
     this.elems.ui.style.opacity = '0';
-
-    console.clear();
 
     choice.before();
 
