@@ -119,6 +119,8 @@
     /** @type {Choice} */
     var choice;
 
+    console.clear();
+
     if (!this.choices.length) {
       this.shareResults();
       return;
@@ -128,8 +130,6 @@
 
     // Hide the UI while setup is occurring
     this.elems.ui.style.opacity = '0';
-
-    console.clear();
 
     choice.before();
 
