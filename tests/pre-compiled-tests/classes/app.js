@@ -74,7 +74,7 @@
 
     // Check the setting methods
     Tests.checkTurnOn();
-    //Tests.checkTurnOff();
+    Tests.checkTurnOff();
     //Tests.checkTurnOnDebugger();
     //Tests.checkTurnOffDebugger();
 

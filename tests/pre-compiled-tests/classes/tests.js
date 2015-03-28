@@ -785,4 +785,83 @@
     app.results.push(results);
   };
 
+  /**
+   * -------------------------------------------------
+   * Public Method (Tests.checkTurnOff)
+   * -------------------------------------------------
+   * @desc Checks Debug.turnOff method.
+   * @type {function()}
+   */
+  Tests.checkTurnOff = function() {
+
+    /** @type {TestResults} */
+    var results;
+    /** @type {string} */
+    var choiceMsg;
+    /** @type {string} */
+    var errorMsg;
+    /** @type {Object} */
+    var tests;
+
+    results = new TestResults('Tests.checkTurnOff');
+    Object.freeze(results);
+
+    // Setup for the tests
+    tests = aIV.debug('Tests.checkTurnOff');
+
+    // Run the tests
+    choiceMsg = 'The following message should have been logged to the console ';
+    choiceMsg += 'THRICE: "PASS TEST - This log should be shown."';
+    errorMsg = 'debug.turnOff failed to turn off one type';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.start('testMethod', 'PASS TEST - This log should be shown.');
+      tests.misc('testMethod', 'PASS TEST - This log should be shown.');
+      tests.turnOff('misc');
+      tests.start('testMethod', 'PASS TEST - This log should be shown.');
+      tests.misc('testMethod', 'FAIL TEST - This log should NOT be shown.');
+    }, function() {
+      tests.setType('misc', true);
+    });
+
+    choiceMsg = 'The following message should have been logged to the console ';
+    choiceMsg += 'TWICE: "PASS TEST - This log should be shown.';
+    errorMsg = 'debug.turnOff failed to turn off two types with a string';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.start('testMethod', 'PASS TEST - This log should be shown.');
+      tests.misc('testMethod', 'PASS TEST - This log should be shown.');
+      tests.turnOff('start misc');
+      tests.start('testMethod', 'FAIL TEST - This log should NOT be shown.');
+      tests.misc('testMethod', 'FAIL TEST - This log should NOT be shown.');
+    }, function() {
+      tests.setType('all', true);
+    });
+
+    choiceMsg = 'The following message should have been logged to the console ';
+    choiceMsg += 'TWICE: "PASS TEST - This log should be shown.';
+    errorMsg = 'debug.turnOff failed to turn off two types with an array';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.start('testMethod', 'PASS TEST - This log should be shown.');
+      tests.misc('testMethod', 'PASS TEST - This log should be shown.');
+      tests.turnOff([ 'start', 'misc' ]);
+      tests.start('testMethod', 'FAIL TEST - This log should NOT be shown.');
+      tests.misc('testMethod', 'FAIL TEST - This log should NOT be shown.');
+    }, function() {
+      tests.setType('all', true);
+    });
+
+    choiceMsg = 'The following message should have been logged to the console ';
+    choiceMsg += 'TWICE: "PASS TEST - This log should be shown.';
+    errorMsg = 'debug.turnOff failed to turn off all types';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.start('testMethod', 'PASS TEST - This log should be shown.');
+      tests.misc('testMethod', 'PASS TEST - This log should be shown.');
+      tests.turnOn('all');
+      tests.start('testMethod', 'FAIL TEST - This log should NOT be shown.');
+      tests.misc('testMethod', 'FAIL TEST - This log should NOT be shown.');
+    });
+
+    // Save the results
+    app.results.push(results);
+  };
+
   Object.freeze(Tests);
