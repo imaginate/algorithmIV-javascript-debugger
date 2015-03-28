@@ -783,8 +783,10 @@
 
     /** @type {TestResults} */
     var results;
-    /** @type {string} */
-    var choiceMsg;
+    /** @type {boolean} */
+    var before;
+    /** @type {boolean} */
+    var after;
     /** @type {string} */
     var errorMsg;
     /** @type {Object} */
@@ -797,55 +799,40 @@
     tests = aIV.debug('Tests.checkTurnOff');
 
     // Run the tests
-    choiceMsg = 'The following message should have been logged to the console ';
-    choiceMsg += 'THRICE: "PASS TEST - This log should be shown."';
-    errorMsg = 'debug.turnOff failed to turn off one type';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.start('testMethod', 'PASS TEST - This log should be shown.');
-      tests.misc('testMethod', 'PASS TEST - This log should be shown.');
-      tests.turnOff('misc');
-      tests.start('testMethod', 'PASS TEST - This log should be shown.');
-      tests.misc('testMethod', 'FAIL TEST - This log should NOT be shown.');
-    }, function() {
-      tests.setType('misc', true);
-    });
+    before = tests.getType('misc');
+    tests.turnOff('misc');
+    after = tests.getType('misc');
+    if (!before || after) {
+      errorMsg = 'debug.turnOff failed to turn off one type';
+      results.addError(errorMsg);
+    }
+    tests.setType('misc', true);
 
-    choiceMsg = 'The following message should have been logged to the console ';
-    choiceMsg += 'TWICE: "PASS TEST - This log should be shown.';
-    errorMsg = 'debug.turnOff failed to turn off two types with a string';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.start('testMethod', 'PASS TEST - This log should be shown.');
-      tests.misc('testMethod', 'PASS TEST - This log should be shown.');
-      tests.turnOff('start misc');
-      tests.start('testMethod', 'FAIL TEST - This log should NOT be shown.');
-      tests.misc('testMethod', 'FAIL TEST - This log should NOT be shown.');
-    }, function() {
-      tests.setType('all', true);
-    });
+    before = tests.getType('start') && tests.getType('misc');
+    tests.turnOff('start misc');
+    after = tests.getType('start') && tests.getType('misc');
+    if (!before || after) {
+      errorMsg = 'debug.turnOff failed to turn off two types with a string';
+      results.addError(errorMsg);
+    }
+    tests.setType('all', true);
 
-    choiceMsg = 'The following message should have been logged to the console ';
-    choiceMsg += 'TWICE: "PASS TEST - This log should be shown.';
-    errorMsg = 'debug.turnOff failed to turn off two types with an array';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.start('testMethod', 'PASS TEST - This log should be shown.');
-      tests.misc('testMethod', 'PASS TEST - This log should be shown.');
-      tests.turnOff([ 'start', 'misc' ]);
-      tests.start('testMethod', 'FAIL TEST - This log should NOT be shown.');
-      tests.misc('testMethod', 'FAIL TEST - This log should NOT be shown.');
-    }, function() {
-      tests.setType('all', true);
-    });
+    before = tests.getType('start') && tests.getType('misc');
+    tests.turnOff([ 'start', 'misc' ]);
+    after = tests.getType('start') && tests.getType('misc');
+    if (!before || after) {
+      errorMsg = 'debug.turnOff failed to turn off two types with an array';
+      results.addError(errorMsg);
+    }
+    tests.setType('all', true);
 
-    choiceMsg = 'The following message should have been logged to the console ';
-    choiceMsg += 'TWICE: "PASS TEST - This log should be shown.';
-    errorMsg = 'debug.turnOff failed to turn off all types';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.start('testMethod', 'PASS TEST - This log should be shown.');
-      tests.misc('testMethod', 'PASS TEST - This log should be shown.');
-      tests.turnOn('all');
-      tests.start('testMethod', 'FAIL TEST - This log should NOT be shown.');
-      tests.misc('testMethod', 'FAIL TEST - This log should NOT be shown.');
-    });
+    before = tests.getType('start') && tests.getType('misc');
+    tests.turnOff('all');
+    after = tests.getType('start') && tests.getType('misc');
+    if (!before || after) {
+      errorMsg = 'debug.turnOff failed to turn off all types';
+      results.addError(errorMsg);
+    }
 
     // Save the results
     app.results.push(results);
