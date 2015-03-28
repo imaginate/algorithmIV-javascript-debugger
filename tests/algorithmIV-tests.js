@@ -414,37 +414,36 @@
     };
 
     // Run the tests
-    if (tests.all.getBugger('start') ||
-        tests.all.getBugger('args')  ||
-        tests.all.getBugger('fail')  ||
-        tests.all.getBugger('group') ||
-        tests.all.getBugger('state') ||
-        tests.all.getBugger('misc')) {
+    if (!tests.all.getBugger('start') ||
+        !tests.all.getBugger('args')  ||
+        !tests.all.getBugger('fail')  ||
+        !tests.all.getBugger('group') ||
+        !tests.all.getBugger('state') ||
+        !tests.all.getBugger('misc')) {
       result = false;
       msg = 'The turnOnDebuggers \'all\' value failed to turn ';
       msg += 'on all the debuggers.';
       results.addError(msg);
     }
 
-    if (!tests.str.getBugger('start') ||
-
-        !tests.str.getBugger('args')  ||
-        tests.str.getBugger('fail')   ||
-        !tests.str.getBugger('group') ||
-        tests.str.getBugger('state')  ||
-        !tests.str.getBugger('misc')) {
+    if (tests.str.getBugger('start')  ||
+        tests.str.getBugger('args')   ||
+        !tests.str.getBugger('fail')  ||
+        tests.str.getBugger('group')  ||
+        !tests.str.getBugger('state') ||
+        tests.str.getBugger('misc')) {
       result = false;
       msg = 'The turnOnDebuggers \'fail state\' value failed to turn ';
       msg += 'on the correct debuggers.';
       results.addError(msg);
     }
 
-    if (!tests.arr.getBugger('start') ||
-        !tests.arr.getBugger('args')  ||
-        tests.arr.getBugger('fail')   ||
-        !tests.arr.getBugger('group') ||
-        tests.arr.getBugger('state')  ||
-        !tests.arr.getBugger('misc')) {
+    if (tests.str.getBugger('start')  ||
+        tests.str.getBugger('args')   ||
+        !tests.str.getBugger('fail')  ||
+        tests.str.getBugger('group')  ||
+        !tests.str.getBugger('state') ||
+        tests.arr.getBugger('misc')) {
       result = false;
       msg = 'The turnOnDebuggers [ \'fail\', \'state\' ] value failed to ';
       msg += 'turn on the correct debuggers.';
