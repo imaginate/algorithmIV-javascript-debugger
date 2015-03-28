@@ -932,6 +932,280 @@
     app.results.push(results);
   };
 
+  /**
+   * -------------------------------------------------
+   * Public Method (Tests.checkTurnOn)
+   * -------------------------------------------------
+   * @desc Checks Debug.turnOn method.
+   * @type {function()}
+   */
+  Tests.checkTurnOn = function() {
+
+    /** @type {TestResults} */
+    var results;
+    /** @type {boolean} */
+    var before;
+    /** @type {boolean} */
+    var after;
+    /** @type {string} */
+    var errorMsg;
+    /** @type {Object} */
+    var tests;
+
+    results = new TestResults('Tests.checkTurnOn');
+    Object.freeze(results);
+
+    // Setup for the tests
+    tests = aIV.debug({
+      classTitle  : 'Tests.checkTurnOn',
+      turnOffTypes: 'all'
+    });
+
+    // Run the tests
+    before = tests.getType('misc');
+    tests.turnOn('misc');
+    after = tests.getType('misc');
+    if (before || !after) {
+      errorMsg = 'debug.turnOn failed to turn on one type';
+      results.addError(errorMsg);
+    }
+    tests.setType('misc', false);
+
+    before = tests.getType('start') && tests.getType('misc');
+    tests.turnOn('start misc');
+    after = tests.getType('start') && tests.getType('misc');
+    if (before || !after) {
+      errorMsg = 'debug.turnOn failed to turn on two types with a string';
+      results.addError(errorMsg);
+    }
+    tests.setType('all', false);
+
+    before = tests.getType('start') && tests.getType('misc');
+    tests.turnOn([ 'start', 'misc' ]);
+    after = tests.getType('start') && tests.getType('misc');
+    if (before || !after) {
+      errorMsg = 'debug.turnOn failed to turn on two types with an array';
+      results.addError(errorMsg);
+    }
+    tests.setType('all', false);
+
+    before = tests.getType('start') && tests.getType('misc');
+    tests.turnOn('all');
+    after = tests.getType('start') && tests.getType('misc');
+    if (before || !after) {
+      errorMsg = 'debug.turnOn failed to turn on all types';
+      results.addError(errorMsg);
+    }
+
+    // Save the results
+    app.results.push(results);
+  };
+
+  /**
+   * -------------------------------------------------
+   * Public Method (Tests.checkTurnOff)
+   * -------------------------------------------------
+   * @desc Checks Debug.turnOff method.
+   * @type {function()}
+   */
+  Tests.checkTurnOff = function() {
+
+    /** @type {TestResults} */
+    var results;
+    /** @type {boolean} */
+    var before;
+    /** @type {boolean} */
+    var after;
+    /** @type {string} */
+    var errorMsg;
+    /** @type {Object} */
+    var tests;
+
+    results = new TestResults('Tests.checkTurnOff');
+    Object.freeze(results);
+
+    // Setup for the tests
+    tests = aIV.debug('Tests.checkTurnOff');
+
+    // Run the tests
+    before = tests.getType('misc');
+    tests.turnOff('misc');
+    after = tests.getType('misc');
+    if (!before || after) {
+      errorMsg = 'debug.turnOff failed to turn off one type';
+      results.addError(errorMsg);
+    }
+    tests.setType('misc', true);
+
+    before = tests.getType('start') && tests.getType('misc');
+    tests.turnOff('start misc');
+    after = tests.getType('start') && tests.getType('misc');
+    if (!before || after) {
+      errorMsg = 'debug.turnOff failed to turn off two types with a string';
+      results.addError(errorMsg);
+    }
+    tests.setType('all', true);
+
+    before = tests.getType('start') && tests.getType('misc');
+    tests.turnOff([ 'start', 'misc' ]);
+    after = tests.getType('start') && tests.getType('misc');
+    if (!before || after) {
+      errorMsg = 'debug.turnOff failed to turn off two types with an array';
+      results.addError(errorMsg);
+    }
+    tests.setType('all', true);
+
+    before = tests.getType('start') && tests.getType('misc');
+    tests.turnOff('all');
+    after = tests.getType('start') && tests.getType('misc');
+    if (!before || after) {
+      errorMsg = 'debug.turnOff failed to turn off all types';
+      results.addError(errorMsg);
+    }
+
+    // Save the results
+    app.results.push(results);
+  };
+
+  /**
+   * -------------------------------------------------
+   * Public Method (Tests.checkTurnOnDebugger)
+   * -------------------------------------------------
+   * @desc Checks Debug.turnOnDebugger method.
+   * @type {function()}
+   */
+  Tests.checkTurnOnDebugger = function() {
+
+    /** @type {TestResults} */
+    var results;
+    /** @type {boolean} */
+    var before;
+    /** @type {boolean} */
+    var after;
+    /** @type {string} */
+    var errorMsg;
+    /** @type {Object} */
+    var tests;
+
+    results = new TestResults('Tests.checkTurnOnDebugger');
+    Object.freeze(results);
+
+    // Setup for the tests
+    tests = aIV.debug('Tests.checkTurnOnDebugger');
+
+    // Run the tests
+    before = tests.getBugger('misc');
+    tests.turnOnDebugger('misc');
+    after = tests.getBugger('misc');
+    if (before || !after) {
+      errorMsg = 'debug.turnOnDebugger failed to turn on one type';
+      results.addError(errorMsg);
+    }
+    tests.setBugger('misc', false);
+
+    before = tests.getBugger('start') && tests.getBugger('misc');
+    tests.turnOnDebugger('start misc');
+    after = tests.getBugger('start') && tests.getBugger('misc');
+    if (before || !after) {
+      errorMsg = 'debug.turnOnDebugger failed to turn on two ';
+      errorMsg += 'types with a string';
+      results.addError(errorMsg);
+    }
+    tests.setBugger('all', false);
+
+    before = tests.getBugger('start') && tests.getBugger('misc');
+    tests.turnOnDebugger([ 'start', 'misc' ]);
+    after = tests.getBugger('start') && tests.getBugger('misc');
+    if (before || !after) {
+      errorMsg = 'debug.turnOnDebugger failed to turn on two ';
+      errorMsg += 'types with an array';
+      results.addError(errorMsg);
+    }
+    tests.setBugger('all', false);
+
+    before = tests.getBugger('start') && tests.getBugger('misc');
+    tests.turnOnDebugger('all');
+    after = tests.getBugger('start') && tests.getBugger('misc');
+    if (before || !after) {
+      errorMsg = 'debug.turnOnDebugger failed to turn on all types';
+      results.addError(errorMsg);
+    }
+
+    // Save the results
+    app.results.push(results);
+  };
+
+  /**
+   * -------------------------------------------------
+   * Public Method (Tests.checkTurnOffDebugger)
+   * -------------------------------------------------
+   * @desc Checks Debug.turnOffDebugger method.
+   * @type {function()}
+   */
+  Tests.checkTurnOffDebugger = function() {
+
+    /** @type {TestResults} */
+    var results;
+    /** @type {boolean} */
+    var before;
+    /** @type {boolean} */
+    var after;
+    /** @type {string} */
+    var errorMsg;
+    /** @type {Object} */
+    var tests;
+
+    results = new TestResults('Tests.checkTurnOffDebugger');
+    Object.freeze(results);
+
+    // Setup for the tests
+    tests = aIV.debug({
+      classTitle      : 'Tests.checkTurnOffDebugger',
+      turnOffDebuggers: 'all'
+    });
+
+    // Run the tests
+    before = tests.getBugger('misc');
+    tests.turnOffDebugger('misc');
+    after = tests.getBugger('misc');
+    if (!before || after) {
+      errorMsg = 'debug.turnOffDebugger failed to turn off one type';
+      results.addError(errorMsg);
+    }
+    tests.setBugger('misc', true);
+
+    before = tests.getBugger('start') && tests.getBugger('misc');
+    tests.turnOffDebugger('start misc');
+    after = tests.getBugger('start') && tests.getBugger('misc');
+    if (!before || after) {
+      errorMsg = 'debug.turnOffDebugger failed to turn off two ';
+      errorMsg += 'types with a string';
+      results.addError(errorMsg);
+    }
+    tests.setBugger('all', true);
+
+    before = tests.getBugger('start') && tests.getBugger('misc');
+    tests.turnOffDebugger([ 'start', 'misc' ]);
+    after = tests.getBugger('start') && tests.getBugger('misc');
+    if (!before || after) {
+      errorMsg = 'debug.turnOffDebugger failed to turn off two ';
+      errorMsg += 'types with an array';
+      results.addError(errorMsg);
+    }
+    tests.setBugger('all', true);
+
+    before = tests.getBugger('start') && tests.getBugger('misc');
+    tests.turnOffDebugger('all');
+    after = tests.getBugger('start') && tests.getBugger('misc');
+    if (!before || after) {
+      errorMsg = 'debug.turnOffDebugger failed to turn off all types';
+      results.addError(errorMsg);
+    }
+
+    // Save the results
+    app.results.push(results);
+  };
+
   Object.freeze(Tests);
 
 
@@ -1014,10 +1288,10 @@
     Tests.checkMisc();
 
     // Check the setting methods
-    //Tests.checkTurnOn();
-    //Tests.checkTurnOff();
-    //Tests.checkTurnOnDebugger();
-    //Tests.checkTurnOffDebugger();
+    Tests.checkTurnOn();
+    Tests.checkTurnOff();
+    Tests.checkTurnOnDebugger();
+    Tests.checkTurnOffDebugger();
 
     // Run the choices and record the results
     this.runChoices();
