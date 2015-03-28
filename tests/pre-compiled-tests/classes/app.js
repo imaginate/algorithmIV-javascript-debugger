@@ -73,7 +73,7 @@
     Tests.checkMisc();
 
     // Check the setting methods
-    //Tests.checkTurnOn();
+    Tests.checkTurnOn();
     //Tests.checkTurnOff();
     //Tests.checkTurnOnDebugger();
     //Tests.checkTurnOffDebugger();

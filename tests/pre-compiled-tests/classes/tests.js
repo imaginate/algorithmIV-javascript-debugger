@@ -703,4 +703,86 @@
     app.results.push(results);
   };
 
+  /**
+   * -------------------------------------------------
+   * Public Method (Tests.checkTurnOn)
+   * -------------------------------------------------
+   * @desc Checks Debug.turnOn method.
+   * @type {function()}
+   */
+  Tests.checkTurnOn = function() {
+
+    /** @type {TestResults} */
+    var results;
+    /** @type {string} */
+    var choiceMsg;
+    /** @type {string} */
+    var errorMsg;
+    /** @type {Object} */
+    var tests;
+
+    results = new TestResults('Tests.checkTurnOn');
+    Object.freeze(results);
+
+    // Setup for the tests
+    tests = aIV.debug({
+      classTitle  : 'Tests.checkTurnOn',
+      turnOffTypes: 'all'
+    });
+
+    // Run the tests
+    choiceMsg = 'The following message should have been logged to the console ';
+    choiceMsg += 'only ONCE: "PASS TEST - This log should be shown."';
+    errorMsg = 'debug.turnOn failed to turn on one type';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.start('testMethod', 'FAIL TEST - This log should NOT be shown.');
+      tests.misc('testMethod', 'FAIL TEST - This log should NOT be shown.');
+      tests.turnOn('misc');
+      tests.start('testMethod', 'FAIL TEST - This log should NOT be shown.');
+      tests.misc('testMethod', 'PASS TEST - This log should be shown.');
+    }, function() {
+      tests.setType('misc', false);
+    });
+
+    choiceMsg = 'The following message should have been logged to the console ';
+    choiceMsg += 'only TWICE: "PASS TEST - This log should be shown.';
+    errorMsg = 'debug.turnOn failed to turn on two types with a string';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.start('testMethod', 'FAIL TEST - This log should NOT be shown.');
+      tests.misc('testMethod', 'FAIL TEST - This log should NOT be shown.');
+      tests.turnOn('start misc');
+      tests.start('testMethod', 'PASS TEST - This log should be shown.');
+      tests.misc('testMethod', 'PASS TEST - This log should be shown.');
+    }, function() {
+      tests.setType('all', false);
+    });
+
+    choiceMsg = 'The following message should have been logged to the console ';
+    choiceMsg += 'only TWICE: "PASS TEST - This log should be shown.';
+    errorMsg = 'debug.turnOn failed to turn on two types with an array';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.start('testMethod', 'FAIL TEST - This log should NOT be shown.');
+      tests.misc('testMethod', 'FAIL TEST - This log should NOT be shown.');
+      tests.turnOn([ 'start', 'misc' ]);
+      tests.start('testMethod', 'PASS TEST - This log should be shown.');
+      tests.misc('testMethod', 'PASS TEST - This log should be shown.');
+    }, function() {
+      tests.setType('all', false);
+    });
+
+    choiceMsg = 'The following message should have been logged to the console ';
+    choiceMsg += 'only TWICE: "PASS TEST - This log should be shown.';
+    errorMsg = 'debug.turnOn failed to turn on all types';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.start('testMethod', 'FAIL TEST - This log should NOT be shown.');
+      tests.misc('testMethod', 'FAIL TEST - This log should NOT be shown.');
+      tests.turnOn('all');
+      tests.start('testMethod', 'PASS TEST - This log should be shown.');
+      tests.misc('testMethod', 'PASS TEST - This log should be shown.');
+    });
+
+    // Save the results
+    app.results.push(results);
+  };
+
   Object.freeze(Tests);
