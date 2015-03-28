@@ -70,7 +70,7 @@
     Tests.checkFail();
     Tests.checkGroup();
     Tests.checkState();
-    //Tests.checkMisc();
+    Tests.checkMisc();
 
     // Check the setting methods
     //Tests.checkTurnOn();

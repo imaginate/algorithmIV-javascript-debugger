@@ -652,7 +652,51 @@
     choiceMsg += ' number= 5, object= jsObjRef"';
     errorMsg = 'debug.state failed to add the vars correctly to the message';
     app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.state('testMethod', 'number= $$, object= $$', msg, 5, [ 5 ]);
+      tests.state('testMethod', 'number= $$, object= $$', 5, [ 5 ]);
+    });
+
+    // Save the results
+    app.results.push(results);
+  };
+
+  /**
+   * -------------------------------------------------
+   * Public Method (Tests.checkMisc)
+   * -------------------------------------------------
+   * @desc Checks Debug.misc method.
+   * @type {function()}
+   */
+  Tests.checkMisc = function() {
+
+    /** @type {TestResults} */
+    var results;
+    /** @type {string} */
+    var choiceMsg;
+    /** @type {string} */
+    var errorMsg;
+    /** @type {Object} */
+    var tests;
+
+    results = new TestResults('Tests.checkMisc');
+    Object.freeze(results);
+
+    // Setup for the tests
+    tests = aIV.debug('Tests.checkMisc');
+
+    // Run the tests
+    choiceMsg = 'The following message should have been logged to the console:';
+    choiceMsg += '"MISC: Tests.checkMisc.testMethod() | Lorem ipsum!"';
+    errorMsg = 'debug.misc failed to log a basic message';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.misc('testMethod', 'Lorem ipsum!');
+    });
+
+    choiceMsg = 'The following message should have been logged to the console:';
+    choiceMsg += '"MISC: Tests.checkMisc.testMethod() |';
+    choiceMsg += ' Args: number= 5, object= jsObjRef"';
+    errorMsg = 'debug.state failed to add the vars correctly to the message';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.misc('testMethod', 'Args: number= $$, object= $$', 5, [ 5 ]);
     });
 
     // Save the results
