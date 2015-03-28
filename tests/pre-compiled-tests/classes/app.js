@@ -75,7 +75,7 @@
     // Check the setting methods
     Tests.checkTurnOn();
     Tests.checkTurnOff();
-    //Tests.checkTurnOnDebugger();
+    Tests.checkTurnOnDebugger();
     //Tests.checkTurnOffDebugger();
 
     // Run the choices and record the results

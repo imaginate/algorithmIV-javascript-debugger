@@ -864,4 +864,72 @@
     app.results.push(results);
   };
 
+  /**
+   * -------------------------------------------------
+   * Public Method (Tests.checkTurnOnDebugger)
+   * -------------------------------------------------
+   * @desc Checks Debug.turnOnDebugger method.
+   * @type {function()}
+   */
+  Tests.checkTurnOnDebugger = function() {
+
+    /** @type {TestResults} */
+    var results;
+    /** @type {boolean} */
+    var before;
+    /** @type {boolean} */
+    var after;
+    /** @type {string} */
+    var errorMsg;
+    /** @type {Object} */
+    var tests;
+
+    results = new TestResults('Tests.checkTurnOnDebugger');
+    Object.freeze(results);
+
+    // Setup for the tests
+    tests = aIV.debug('Tests.checkTurnOnDebugger');
+
+    // Run the tests
+    before = tests.getBugger('misc');
+    tests.turnOnDebugger('misc');
+    after = tests.getBugger('misc');
+    if (before || !after) {
+      errorMsg = 'debug.turnOnDebugger failed to turn on one type';
+      results.addError(errorMsg);
+    }
+    tests.setBugger('misc', false);
+
+    before = tests.getBugger('start') && tests.getBugger('misc');
+    tests.turnOnDebugger('start misc');
+    after = tests.getBugger('start') && tests.getBugger('misc');
+    if (before || !after) {
+      errorMsg = 'debug.turnOnDebugger failed to turn on two ';
+      errorMsg += 'types with a string';
+      results.addError(errorMsg);
+    }
+    tests.setBugger('all', false);
+
+    before = tests.getBugger('start') && tests.getBugger('misc');
+    tests.turnOnDebugger([ 'start', 'misc' ]);
+    after = tests.getBugger('start') && tests.getBugger('misc');
+    if (before || !after) {
+      errorMsg = 'debug.turnOnDebugger failed to turn on two ';
+      errorMsg += 'types with an array';
+      results.addError(errorMsg);
+    }
+    tests.setBugger('all', false);
+
+    before = tests.getBugger('start') && tests.getBugger('misc');
+    tests.turnOnDebugger('all');
+    after = tests.getBugger('start') && tests.getBugger('misc');
+    if (before || !after) {
+      errorMsg = 'debug.turnOnDebugger failed to turn on all types';
+      results.addError(errorMsg);
+    }
+
+    // Save the results
+    app.results.push(results);
+  };
+
   Object.freeze(Tests);
