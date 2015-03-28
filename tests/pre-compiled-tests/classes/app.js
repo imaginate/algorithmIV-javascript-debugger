@@ -66,7 +66,7 @@
 
     // Check the type methods
     Tests.checkStart();
-    //Tests.checkArgs();
+    Tests.checkArgs();
     //Tests.checkFail();
     //Tests.checkGroup();
     //Tests.checkState();

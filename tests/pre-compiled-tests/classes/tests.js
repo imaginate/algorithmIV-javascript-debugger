@@ -303,6 +303,189 @@
     app.results.push(results);
   };
 
+  /**
+   * -------------------------------------------------
+   * Public Method (Tests.checkArgs)
+   * -------------------------------------------------
+   * @desc Checks Debug.args method.
+   * @type {function()}
+   */
+  Tests.checkArgs = function() {
 
+    /** @type {TestResults} */
+    var results;
+    /** @type {string} */
+    var choiceMsg;
+    /** @type {string} */
+    var errorMsg;
+    /** @type {Object} */
+    var tests;
+
+    results = new TestResults('Tests.checkArgs');
+    Object.freeze(results);
+
+    // Setup for the tests
+    tests = aIV.debug('Tests.checkArgs');
+
+    // Run the tests on 'string', 'number', 'boolean', 'object',
+    // 'elem', 'undefined', 'array', 'strings', 'numbers',
+    // 'booleans', 'objects', 'elems', null, '!', '|', and '='
+    choiceMsg = 'Two error messages should have been logged.';
+    errorMsg = "debug.args 'string' check failed";
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.args('testMethod', 's', 'string');
+      tests.args('testMethod', 1, 'string');
+      tests.args([ 'testMethod', 's', 'string' ]);
+      tests.args([ 'testMethod', 1, 'string' ]);
+    });
+
+    choiceMsg = 'Two error messages should have been logged.';
+    errorMsg = "debug.args 'number' check failed";
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.args('testMethod', '1', 'number');
+      tests.args('testMethod', 1, 'number');
+      tests.args([ 'testMethod', '1', 'number' ]);
+      tests.args([ 'testMethod', 1, 'number' ]);
+    });
+
+    choiceMsg = 'Two error messages should have been logged.';
+    errorMsg = "debug.args 'boolean' check failed";
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.args('testMethod', 's', 'boolean');
+      tests.args('testMethod', true, 'boolean');
+      tests.args([ 'testMethod', 's', 'boolean' ]);
+      tests.args([ 'testMethod', false, 'boolean' ]);
+    });
+
+    choiceMsg = 'Two error messages should have been logged.';
+    errorMsg = "debug.args 'object' check failed";
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.args('testMethod', 's', 'object');
+      tests.args('testMethod', {}, 'object');
+      tests.args([ 'testMethod', {}, 'object' ]);
+      tests.args([ 'testMethod', 1, 'object' ]);
+    });
+
+    choiceMsg = 'Two error messages should have been logged.';
+    errorMsg = "debug.args 'elem' check failed";
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      /** @type {HTMLElement} */
+      var elem;
+
+      elem = document.createElement('div');
+
+      tests.args('testMethod', {}, 'elem');
+      tests.args('testMethod', elem, 'elem');
+      tests.args([ 'testMethod', 5, 'elem' ]);
+      tests.args([ 'testMethod',  elem, 'elem' ]);
+    });
+
+    choiceMsg = 'Two error messages should have been logged.';
+    errorMsg = "debug.args 'undefined' check failed";
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.args('testMethod', {}, 'undefined');
+      tests.args('testMethod', undefined, 'undefined');
+      tests.args([ 'testMethod', 's', 'undefined' ]);
+      tests.args([ 'testMethod', undefined, 'undefined' ]);
+    });
+
+    choiceMsg = 'Two error messages should have been logged.';
+    errorMsg = "debug.args 'array' check failed";
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.args('testMethod', [], 'array');
+      tests.args('testMethod', {}, 'array');
+      tests.args([ 'testMethod', [], 'array' ]);
+      tests.args([ 'testMethod', 1, 'array' ]);
+    });
+
+    choiceMsg = 'Two error messages should have been logged.';
+    errorMsg = "debug.args 'strings' check failed";
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.args('testMethod', [ 's' ], 'strings');
+      tests.args('testMethod', [ 1 ], 'strings');
+      tests.args([ 'testMethod', [ 's' ], 'strings' ]);
+      tests.args([ 'testMethod', {}, 'strings' ]);
+    });
+
+    choiceMsg = 'Two error messages should have been logged.';
+    errorMsg = "debug.args 'numbers' check failed";
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.args('testMethod', [ 1, 's' ], 'numbers');
+      tests.args('testMethod', [ 1, 5 ], 'numbers');
+      tests.args([ 'testMethod', [ 5 ], 'numbers' ]);
+      tests.args([ 'testMethod', {}, 'numbers' ]);
+    });
+
+    choiceMsg = 'Two error messages should have been logged.';
+    errorMsg = "debug.args 'booleans' check failed";
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.args('testMethod', [ 's' ], 'booleans');
+      tests.args('testMethod', [ false ], 'booleans');
+      tests.args([ 'testMethod', [ true ], 'booleans' ]);
+      tests.args([ 'testMethod', {}, 'booleans' ]);
+    });
+
+    choiceMsg = 'Two error messages should have been logged.';
+    errorMsg = "debug.args 'objects' check failed";
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.args('testMethod', [ {} ], 'objects');
+      tests.args('testMethod', [ 1 ], 'objects');
+      tests.args([ 'testMethod', [ {} ], 'objects' ]);
+      tests.args([ 'testMethod', {}, 'objects' ]);
+    });
+
+    choiceMsg = 'Two error messages should have been logged.';
+    errorMsg = "debug.args 'elems' check failed";
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      /** @type {HTMLElement} */
+      var elem;
+
+      elem = document.createElement('div');
+
+      tests.args('testMethod', [ {} ], 'elems');
+      tests.args('testMethod', [ elem ], 'elems');
+      tests.args([ 'testMethod', 5, 'elems' ]);
+      tests.args([ 'testMethod',  [ elem ], 'elems' ]);
+    });
+
+    choiceMsg = 'Four error messages should have been logged.';
+    errorMsg = "debug.args null check failed";
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.args('testMethod', 's', 'string');
+      tests.args('testMethod', null, 'string');
+      tests.args([ 'testMethod', 's', 'string' ]);
+      tests.args([ 'testMethod', null, 'string' ]);
+    });
+
+    choiceMsg = 'Two error messages should have been logged.';
+    errorMsg = "debug.args '!' check failed";
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.args('testMethod', 's', '!string');
+      tests.args('testMethod', null, '!string');
+      tests.args([ 'testMethod', 's', '!string' ]);
+      tests.args([ 'testMethod', null, '!string' ]);
+    });
+
+    choiceMsg = 'Two error messages should have been logged.';
+    errorMsg = "debug.args '|' check failed";
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.args('testMethod', 's', 'string|number');
+      tests.args('testMethod', true, 'string|number');
+      tests.args([ 'testMethod', {}, 'string|number' ]);
+      tests.args([ 'testMethod', 1, 'string|number' ]);
+    });
+
+    choiceMsg = 'Two error messages should have been logged.';
+    errorMsg = "debug.args '=' check failed";
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.args('testMethod', {}, 'number=');
+      tests.args('testMethod', undefined, 'number=');
+      tests.args([ 'testMethod', 's', 'number=' ]);
+      tests.args([ 'testMethod', undefined, 'number=' ]);
+    });
+
+    // Save the results
+    app.results.push(results);
+  };
 
   Object.freeze(Tests);
