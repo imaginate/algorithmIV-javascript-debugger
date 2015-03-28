@@ -732,7 +732,7 @@
 
     // Run the tests
     choiceMsg = 'The following message should have been logged to the console ';
-    choiceMsg += 'only ONCE: "PASS TEST - This log should be shown."';
+    choiceMsg += 'ONCE: "PASS TEST - This log should be shown."';
     errorMsg = 'debug.turnOn failed to turn on one type';
     app.addChoice(choiceMsg, results, errorMsg, function() {
       tests.start('testMethod', 'FAIL TEST - This log should NOT be shown.');
@@ -745,7 +745,7 @@
     });
 
     choiceMsg = 'The following message should have been logged to the console ';
-    choiceMsg += 'only TWICE: "PASS TEST - This log should be shown.';
+    choiceMsg += 'TWICE: "PASS TEST - This log should be shown.';
     errorMsg = 'debug.turnOn failed to turn on two types with a string';
     app.addChoice(choiceMsg, results, errorMsg, function() {
       tests.start('testMethod', 'FAIL TEST - This log should NOT be shown.');
@@ -758,7 +758,7 @@
     });
 
     choiceMsg = 'The following message should have been logged to the console ';
-    choiceMsg += 'only TWICE: "PASS TEST - This log should be shown.';
+    choiceMsg += 'TWICE: "PASS TEST - This log should be shown.';
     errorMsg = 'debug.turnOn failed to turn on two types with an array';
     app.addChoice(choiceMsg, results, errorMsg, function() {
       tests.start('testMethod', 'FAIL TEST - This log should NOT be shown.');
@@ -771,7 +771,7 @@
     });
 
     choiceMsg = 'The following message should have been logged to the console ';
-    choiceMsg += 'only TWICE: "PASS TEST - This log should be shown.';
+    choiceMsg += 'TWICE: "PASS TEST - This log should be shown.';
     errorMsg = 'debug.turnOn failed to turn on all types';
     app.addChoice(choiceMsg, results, errorMsg, function() {
       tests.start('testMethod', 'FAIL TEST - This log should NOT be shown.');
