@@ -448,11 +448,13 @@
       tests.args([ 'testMethod',  [ elem ], 'elems' ]);
     });
 
-    choiceMsg = 'Four error messages should have been logged.';
+    choiceMsg = 'Two error messages should have been logged.';
     errorMsg = "debug.args null check failed";
     app.addChoice(choiceMsg, results, errorMsg, function() {
       tests.args('testMethod', 's', 'string');
       tests.args('testMethod', null, 'string');
+      tests.args('testMethod', 1, 'string');
+      tests.args('testMethod', undefined, 'string');
       tests.args([ 'testMethod', 's', 'string' ]);
       tests.args([ 'testMethod', null, 'string' ]);
     });
