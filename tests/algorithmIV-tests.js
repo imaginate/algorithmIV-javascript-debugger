@@ -1160,8 +1160,8 @@
 
     // Setup for the tests
     tests = aIV.debug({
-      classTitle      : 'Tests.checkTurnOffDebugger',
-      turnOffDebuggers: 'all'
+      classTitle     : 'Tests.checkTurnOffDebugger',
+      turnOnDebuggers: 'all'
     });
 
     // Run the tests
