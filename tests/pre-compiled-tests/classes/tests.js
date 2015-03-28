@@ -25,7 +25,7 @@
     /** @type {Object} */
     var tests;
 
-    results = new TestResults('checkClassTitle');
+    results = new TestResults('Tests.checkClassTitle');
     Object.freeze(results);
 
     result = true;
@@ -40,21 +40,21 @@
     // Run the tests
     if (tests.prop.classTitle !== 'Tests.checkClassTitle.prop.') {
       result = false;
-      msg = 'Tests.checkClassTitle evaluation failed, ';
+      msg = 'Tests.checkClassTitle evaluation failed: ';
       msg += tests.prop.classTitle + ' !== Tests.checkClassTitle.prop.';
       results.addError(msg);
     }
 
     if (tests.str.classTitle !== 'Tests.checkClassTitle.str.') {
       result = false;
-      msg = 'Tests.checkClassTitle evaluation failed, ';
+      msg = 'Tests.checkClassTitle evaluation failed: ';
       msg += tests.str.classTitle + ' !== Tests.checkClassTitle.str.';
       results.addError(msg);
     }
 
     if (tests.none.classTitle !== 'unknown.') {
       result = false;
-      msg = 'Tests.checkClassTitle evaluation failed, ';
+      msg = 'Tests.checkClassTitle evaluation failed: ';
       msg += tests.none.classTitle + ' !== unknown.';
       results.addError(msg);
     }
@@ -82,7 +82,7 @@
     /** @type {Object} */
     var tests;
 
-    results = new TestResults('checkTurnOffTypes');
+    results = new TestResults('Tests.checkTurnOffTypes');
     Object.freeze(results);
 
     result = true;
@@ -90,15 +90,15 @@
     // Setup for the tests
     tests = {
       all: aIV.debug({
-        classTitle  : 'checkTurnOffTypes.tests.all',
+        classTitle  : 'Tests.checkTurnOffTypes.all',
         turnOffTypes: 'all'
       }),
       str: aIV.debug({
-        classTitle  : 'checkTurnOffTypes.tests.str',
+        classTitle  : 'Tests.checkTurnOffTypes.str',
         turnOffTypes: 'fail state'
       }),
       arr: aIV.debug({
-        classTitle  : 'checkTurnOffTypes.tests.arr',
+        classTitle  : 'Tests.checkTurnOffTypes.arr',
         turnOffTypes: [ 'fail', 'state' ]
       })
     };
@@ -111,8 +111,7 @@
         tests.all.getType('state') ||
         tests.all.getType('misc')) {
       result = false;
-      msg = 'The turnOffTypes \'all\' value failed to turn ';
-      msg += 'off all the types.';
+      msg = 'Tests.turnOffTypes.all failed: no types should be on';
       results.addError(msg);
     }
 
@@ -123,8 +122,8 @@
         tests.str.getType('state')  ||
         !tests.str.getType('misc')) {
       result = false;
-      msg = 'The turnOffTypes \'fail state\' value failed to turn ';
-      msg += 'off the correct types.';
+      msg = "Tests.turnOffTypes.str failed: only 'fail' and 'state'";
+      msg += ' should be off';
       results.addError(msg);
     }
 
@@ -135,8 +134,8 @@
         tests.arr.getType('state')  ||
         !tests.arr.getType('misc')) {
       result = false;
-      msg = 'The turnOffTypes [ \'fail\', \'state\' ] value failed to ';
-      msg += 'turn off the correct types.';
+      msg = "Tests.turnOffTypes.arr failed: only 'fail' and 'state'";
+      msg += ' should be off';
       results.addError(msg);
     }
 
@@ -163,7 +162,7 @@
     /** @type {Object} */
     var tests;
 
-    results = new TestResults('checkTurnOnDebuggers');
+    results = new TestResults('Tests.checkTurnOnDebuggers');
     Object.freeze(results);
 
     result = true;
@@ -171,15 +170,15 @@
     // Setup for the tests
     tests = {
       all: aIV.debug({
-        classTitle     : 'checkTurnOnDebuggers.tests.all',
+        classTitle     : 'Tests.checkTurnOnDebuggers.all',
         turnOnDebuggers: 'all'
       }),
       str: aIV.debug({
-        classTitle     : 'checkTurnOnDebuggers.tests.str',
+        classTitle     : 'Tests.checkTurnOnDebuggers.str',
         turnOnDebuggers: 'fail state'
       }),
       arr: aIV.debug({
-        classTitle     : 'checkTurnOnDebuggers.tests.arr',
+        classTitle     : 'Tests.checkTurnOnDebuggers.arr',
         turnOnDebuggers: [ 'fail', 'state' ]
       })
     };
@@ -192,8 +191,7 @@
         !tests.all.getBugger('state') ||
         !tests.all.getBugger('misc')) {
       result = false;
-      msg = 'The turnOnDebuggers \'all\' value failed to turn ';
-      msg += 'on all the debuggers.';
+      msg = 'Tests.turnOnDebuggers.all failed: no debuggers should be off';
       results.addError(msg);
     }
 
@@ -204,8 +202,8 @@
         !tests.str.getBugger('state') ||
         tests.str.getBugger('misc')) {
       result = false;
-      msg = 'The turnOnDebuggers \'fail state\' value failed to turn ';
-      msg += 'on the correct debuggers.';
+      msg = "Tests.turnOnDebuggers.str failed: only 'fail' and 'state'";
+      msg += ' should be on';
       results.addError(msg);
     }
 
@@ -216,8 +214,8 @@
         !tests.str.getBugger('state') ||
         tests.arr.getBugger('misc')) {
       result = false;
-      msg = 'The turnOnDebuggers [ \'fail\', \'state\' ] value failed to ';
-      msg += 'turn on the correct debuggers.';
+      msg = "Tests.turnOnDebuggers.arr failed: only 'fail' and 'state'";
+      msg += ' should be on';
       results.addError(msg);
     }
 
@@ -244,32 +242,32 @@
     /** @type {Object} */
     var tests;
 
-    results = new TestResults('checkInstances');
+    results = new TestResults('Tests.checkInstances');
     Object.freeze(results);
 
     // Setup for the tests
     tests = {
-      first : aIV.debug('checkInstances.tests'),
+      first : aIV.debug('Tests.checkInstances'),
       second: aIV.debug({
-        classTitle  : 'checkInstances.tests',
+        classTitle  : 'Tests.checkInstances',
         turnOffTypes: 'misc'
       })
     };
 
     // Run the tests
-    choice = 'Did test1 and test2 get logged?';
+    choice = 'Instance Test 1 and 2 should have been logged to the console.';
     msg = 'checkInstances.tests.first failed.';
     app.addChoice(choice, results, msg, function() {
-      tests.first.misc('test1', 'Test 1 - This log should be shown.');
-      tests.second.misc('test2', 'Test 2 - This log should be shown.');
+      tests.first.misc('test1', 'Instance Test 1');
+      tests.second.misc('test2', 'Instance Test 2');
     });
 
-    choice = 'Did test3 and test4 NOT get logged?';
+    choice = 'Instance Test 3 and 4 should NOT have been logged to the console.';
     msg = 'checkInstances.tests.second failed.';
     app.addChoice(choice, results, msg, function() {
       tests.first.setType('misc', false);
-      tests.first.misc('test3', 'Test 3 - This log should NOT be shown.');
-      tests.second.misc('test4', 'Test 4 - This log should NOT be shown.');
+      tests.first.misc('test3', 'Instance Test 3');
+      tests.second.misc('test4', 'Instance Test 4');
     });
 
     // Save the results
