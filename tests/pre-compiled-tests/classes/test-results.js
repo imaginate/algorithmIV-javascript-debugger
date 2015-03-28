@@ -42,7 +42,7 @@
       var report;
 
       name = (result) ? 'green' : 'red';
-      msg = (result) ? 'Success' : 'Failure';
+      msg = (result) ? 'Pass' : 'Fail';
       report = '' +
         '<li class="' + name + '">' +
           type + ' =&gt; ' + msg +

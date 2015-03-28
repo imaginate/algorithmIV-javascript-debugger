@@ -662,29 +662,42 @@
     var results;
     /** @type {?string} */
     var errors;
+    /** @type {boolean} */
+    var fail;
 
+    len = this.results.length;
+    fail = false;
+
+    // Show the results
     results = '<h2>Results</h2>';
     results += '<ol id="results">';
-    len = this.results.length;
 
     i = -1;
     while (++i < len) {
       results += this.results[i].reportResult();
-    }
-
-    results += '</ol>';
-    results += '<h2>Errors</h2>';
-    results += '<ol id="errors">';
-
-    i = -1;
-    while (++i < len) {
-      errors = this.results[i].reportErrors();
-      if (errors) {
-        results += errors;
+      if ( !this.results[i].getResult() ) {
+        fail = true;
       }
     }
 
     results += '</ol>';
+
+    // Show the errors
+    if (fail) {
+
+      results += '<h2>Errors</h2>';
+      results += '<ol id="errors">';
+
+      i = -1;
+      while (++i < len) {
+        errors = this.results[i].reportErrors();
+        if (errors) {
+          results += errors;
+        }
+      }
+
+      results += '</ol>';
+    }
 
     // Hide the UI while setup is occurring
     this.elems.ui.style.opacity = '0';
@@ -888,7 +901,7 @@
       var report;
 
       name = (result) ? 'green' : 'red';
-      msg = (result) ? 'Success' : 'Failure';
+      msg = (result) ? 'Pass' : 'Fail';
       report = '' +
         '<li class="' + name + '">' +
           type + ' =&gt; ' + msg +
