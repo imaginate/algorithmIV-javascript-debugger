@@ -69,7 +69,7 @@
     Tests.checkArgs();
     Tests.checkFail();
     Tests.checkGroup();
-    //Tests.checkState();
+    Tests.checkState();
     //Tests.checkMisc();
 
     // Check the setting methods

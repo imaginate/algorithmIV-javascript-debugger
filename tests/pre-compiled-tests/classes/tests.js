@@ -615,4 +615,48 @@
     app.results.push(results);
   };
 
+  /**
+   * -------------------------------------------------
+   * Public Method (Tests.checkState)
+   * -------------------------------------------------
+   * @desc Checks Debug.state method.
+   * @type {function()}
+   */
+  Tests.checkState = function() {
+
+    /** @type {TestResults} */
+    var results;
+    /** @type {string} */
+    var choiceMsg;
+    /** @type {string} */
+    var errorMsg;
+    /** @type {Object} */
+    var tests;
+
+    results = new TestResults('Tests.checkState');
+    Object.freeze(results);
+
+    // Setup for the tests
+    tests = aIV.debug('Tests.checkState');
+
+    // Run the tests
+    choiceMsg = 'A debugger instance and a console log, "A debug.state ';
+    choiceMsg += 'method\'s arg(s) was wrong.", should have appeared.';
+    errorMsg = 'debug.state failed to check the given args correctly';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.state('testMethod');
+    });
+
+    choiceMsg = 'The following message should have been logged to the console:';
+    choiceMsg += '"STATE: Tests.checkState.testMethod() |';
+    choiceMsg += ' number= 5, object= jsObjRef"';
+    errorMsg = 'debug.state failed to add the vars correctly to the message';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.state('testMethod', 'number= $$, object= $$', msg, 5, [ 5 ]);
+    });
+
+    // Save the results
+    app.results.push(results);
+  };
+
   Object.freeze(Tests);
