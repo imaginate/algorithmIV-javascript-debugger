@@ -906,4 +906,75 @@
     app.results.push(results);
   };
 
+  /**
+   * -------------------------------------------------
+   * Public Method (Tests.checkTurnOffDebugger)
+   * -------------------------------------------------
+   * @desc Checks Debug.turnOffDebugger method.
+   * @type {function()}
+   */
+  Tests.checkTurnOffDebugger = function() {
+
+    /** @type {TestResults} */
+    var results;
+    /** @type {boolean} */
+    var before;
+    /** @type {boolean} */
+    var after;
+    /** @type {string} */
+    var errorMsg;
+    /** @type {Object} */
+    var tests;
+
+    results = new TestResults('Tests.checkTurnOffDebugger');
+    Object.freeze(results);
+
+    // Setup for the tests
+    tests = aIV.debug({
+      classTitle      : 'Tests.checkTurnOffDebugger',
+      turnOffDebuggers: 'all'
+    });
+
+    // Run the tests
+    before = tests.getBugger('misc');
+    tests.turnOffDebugger('misc');
+    after = tests.getBugger('misc');
+    if (!before || after) {
+      errorMsg = 'debug.turnOffDebugger failed to turn off one type';
+      results.addError(errorMsg);
+    }
+    tests.setBugger('misc', true);
+
+    before = tests.getBugger('start') && tests.getBugger('misc');
+    tests.turnOffDebugger('start misc');
+    after = tests.getBugger('start') && tests.getBugger('misc');
+    if (!before || after) {
+      errorMsg = 'debug.turnOffDebugger failed to turn off two ';
+      errorMsg += 'types with a string';
+      results.addError(errorMsg);
+    }
+    tests.setBugger('all', true);
+
+    before = tests.getBugger('start') && tests.getBugger('misc');
+    tests.turnOffDebugger([ 'start', 'misc' ]);
+    after = tests.getBugger('start') && tests.getBugger('misc');
+    if (!before || after) {
+      errorMsg = 'debug.turnOffDebugger failed to turn off two ';
+      errorMsg += 'types with an array';
+      results.addError(errorMsg);
+    }
+    tests.setBugger('all', true);
+
+    before = tests.getBugger('start') && tests.getBugger('misc');
+    tests.turnOffDebugger('all');
+    after = tests.getBugger('start') && tests.getBugger('misc');
+    if (!before || after) {
+      errorMsg = 'debug.turnOffDebugger failed to turn off all types';
+      results.addError(errorMsg);
+    }
+
+    // Save the results
+    app.results.push(results);
+  };
+
   Object.freeze(Tests);

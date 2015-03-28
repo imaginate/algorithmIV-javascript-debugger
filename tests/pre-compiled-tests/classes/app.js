@@ -76,7 +76,7 @@
     Tests.checkTurnOn();
     Tests.checkTurnOff();
     Tests.checkTurnOnDebugger();
-    //Tests.checkTurnOffDebugger();
+    Tests.checkTurnOffDebugger();
 
     // Run the choices and record the results
     this.runChoices();
