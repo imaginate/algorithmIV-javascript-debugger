@@ -630,7 +630,7 @@
     }
 
     // Prepare the console message
-    message = 'START: ' + this._classTitle + methodName + '(';
+    message = 'START: ' + this.classTitle + methodName + '(';
     if (args) {
       args.forEach(function(/** val */ val, /** number */ i) {
         message += ( (i) ? ', ' : '' ) + getSubstituteString(val);
@@ -695,8 +695,8 @@
 
     // Test the given arguments before executing
     argTest = ( (typeof methodName === 'string') ?
-      (arguments.length > 3) : ( Array.isArray(methodName) ) ?
-        (typeof methodName[0] === 'string' && methodName.length > 3) : false
+      (arguments.length > 2) : ( Array.isArray(methodName) ) ?
+        (typeof methodName[0] === 'string' && methodName.length > 2) : false
     );
     if(!argTest) {
       console.error('A debug.args method\'s arg(s) was wrong.');
@@ -732,7 +732,7 @@
     }
 
     // Prepare and log the error message
-    message = 'ARGS: ' + this._classTitle + methodName + '() | ';
+    message = 'ARGS: ' + this.classTitle + methodName + '() | ';
     message += 'Error: Incorrect argument operand.';
     console.error(message);
 
@@ -827,7 +827,7 @@
     if (args) {
       message = insertSubstituteStrings(message, args);
     }
-    message = 'FAIL: ' + this._classTitle + methodName + '() | ' + message;
+    message = 'FAIL: ' + this.classTitle + methodName + '() | ' + message;
 
     // Log the error
     if (args) {
@@ -939,7 +939,7 @@
       }
       message = ' | ' + message;
     }
-    message = 'GROUP: ' + this._classTitle + methodName + '()' + message;
+    message = 'GROUP: ' + this.classTitle + methodName + '()' + message;
 
     // Setup the console open group args
     if (args) {
@@ -1029,7 +1029,7 @@
 
     // Prepare the message
     message = insertSubstituteStrings(message, args);
-    message = 'STATE: ' + this._classTitle + methodName + '() | ' + message;
+    message = 'STATE: ' + this.classTitle + methodName + '() | ' + message;
 
     // Prepare the console args
     args.unshift(message);
@@ -1109,7 +1109,7 @@
     if (args) {
       message = insertSubstituteStrings(message, args);
     }
-    message = 'MISC: ' + this._classTitle + methodName + '() | ' + message;
+    message = 'MISC: ' + this.classTitle + methodName + '() | ' + message;
 
     // Log the misc message
     if (args) {
