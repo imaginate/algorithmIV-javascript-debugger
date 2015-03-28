@@ -769,15 +769,25 @@
   Debug.prototype.turnOn = function(logCat) {
 
     /**
-     * @type {boolean}
-     * @private
-     */
-    var testSet;
-    /**
      * @type {?strings}
      * @private
      */
     var args;
+    /**
+     * @type {number}
+     * @private
+     */
+    var len;
+    /**
+     * @type {number}
+     * @private
+     */
+    var i;
+    /**
+     * @type {(string|strings)}
+     * @private
+     */
+    var errors;
 
     // Ensure arguments are supplied
     if (!logCat) {
@@ -787,30 +797,57 @@
     }
 
     // Setup the variables
-    args = ( (Array.isArray(logCat) && logCat.length > 1) ?
+    args = ( (checkType(logCat, 'strings') && logCat.length > 1) ?
       logCat.slice(0) : (arguments.length > 1) ?
         Array.prototype.slice.call(arguments, 0) : null
     );
     logCat = ( (args) ?
       null : (typeof logCat === 'string') ?
-        logCat : ( Array.isArray(logCat) ) ?
+        logCat : ( checkType(logCat, 'strings') ) ?
           logCat[0] : null
     );
 
-    // Turn on the debug method category(ies) & save the result(s)
-    testSet = ( (args) ?
-      args.every(function(/** string */ val) {
-        return (!!val && typeof val === 'string' && this.setType(val, true));
-      }, this)
-      : (!!logCat && this.setType(logCat, true))
-    );
+    // Make sure a value still exists to test
+    if (!logCat && (!args || !checkType(args, 'strings'))) {
+      console.error('A debug.turnOn method\'s arg(s) was the wrong operand.');
+      debugger;
+      return;
+    }
 
-    // Test the result(s)
-    if (!testSet) {
-      logCat = 'A debug.turnOn method\'s arg(s) was wrong. ';
-      logCat += 'Ensure that the correct operands are given, ';
-      logCat += 'and each string is a valid debug category or \'all\'.';
-      console.error(logCat);
+    // Check for string with multiple categories
+    if (logCat && /\s/.test(logCat)) {
+      args = logCat.split(' ');
+      logCat = null;
+    }
+
+    // Turn on the debug method category(ies) & save any errors
+    if (args) {
+      len = args.length;
+      i = -1;
+      while (++i < len) {
+        if ( !this.setType(args[i], true) ) {
+          if (!errors) {
+            errors = [];
+          }
+          errors.push("'" + args[i] + "'");
+        }
+      }
+      if (errors) {
+        errors = errors.join(', ');
+      }
+    }
+    else {
+      if ( !this.setType(logCat, true) ) {
+        errors = "'" + logCat + "'";
+      }
+    }
+
+    // Report any errors
+    if (errors) {
+      errors = '' +
+        'A debug.turnOn method was given an invalid debug category ' +
+        'to turn on. The incorrect value(s) follow:' + errors;
+      console.error(errors);
       debugger;
     }
   };
@@ -830,15 +867,25 @@
   Debug.prototype.turnOff = function(logCat) {
 
     /**
-     * @type {boolean}
-     * @private
-     */
-    var testSet;
-    /**
      * @type {?strings}
      * @private
      */
     var args;
+    /**
+     * @type {number}
+     * @private
+     */
+    var len;
+    /**
+     * @type {number}
+     * @private
+     */
+    var i;
+    /**
+     * @type {(string|strings)}
+     * @private
+     */
+    var errors;
 
     // Ensure arguments are supplied
     if (!logCat) {
@@ -848,30 +895,57 @@
     }
 
     // Setup the variables
-    args = ( (Array.isArray(logCat) && logCat.length > 1) ?
+    args = ( (checkType(logCat, 'strings') && logCat.length > 1) ?
       logCat.slice(0) : (arguments.length > 1) ?
         Array.prototype.slice.call(arguments, 0) : null
     );
     logCat = ( (args) ?
       null : (typeof logCat === 'string') ?
-        logCat : ( Array.isArray(logCat) ) ?
+        logCat : ( checkType(logCat, 'strings') ) ?
           logCat[0] : null
     );
 
-    // Turn off the debug method category(ies) & save the result(s)
-    testSet = ( (args) ?
-      args.every(function(/** string */ val) {
-        return (!!val && typeof val === 'string' && this.setType(val, false));
-      }, this)
-      : (!!logCat && this.setType(logCat, false))
-    );
+    // Make sure a value still exists to test
+    if (!logCat && (!args || !checkType(args, 'strings'))) {
+      console.error('A debug.turnOff method\'s arg(s) was the wrong operand.');
+      debugger;
+      return;
+    }
 
-    // Test the result(s)
-    if (!testSet) {
-      logCat = 'A debug.turnOff method\'s arg(s) was wrong. ';
-      logCat += 'Ensure that the correct operands are given, ';
-      logCat += 'and each string is a valid debug category or \'all\'.';
-      console.error(logCat);
+    // Check for string with multiple categories
+    if (logCat && /\s/.test(logCat)) {
+      args = logCat.split(' ');
+      logCat = null;
+    }
+
+    // Turn off the debug method category(ies) & save any errors
+    if (args) {
+      len = args.length;
+      i = -1;
+      while (++i < len) {
+        if ( !this.setType(args[i], false) ) {
+          if (!errors) {
+            errors = [];
+          }
+          errors.push("'" + args[i] + "'");
+        }
+      }
+      if (errors) {
+        errors = errors.join(', ');
+      }
+    }
+    else {
+      if ( !this.setType(logCat, false) ) {
+        errors = "'" + logCat + "'";
+      }
+    }
+
+    // Report any errors
+    if (errors) {
+      errors = '' +
+        'A debug.turnOff method was given an invalid debug category ' +
+        'to turn off. The incorrect value(s) follow:' + errors;
+      console.error(errors);
       debugger;
     }
   };
@@ -891,15 +965,25 @@
   Debug.prototype.turnOnDebugger = function(logCat) {
 
     /**
-     * @type {boolean}
-     * @private
-     */
-    var testSet;
-    /**
      * @type {?strings}
      * @private
      */
     var args;
+    /**
+     * @type {number}
+     * @private
+     */
+    var len;
+    /**
+     * @type {number}
+     * @private
+     */
+    var i;
+    /**
+     * @type {(string|strings)}
+     * @private
+     */
+    var errors;
 
     // Ensure arguments are supplied
     if (!logCat) {
@@ -909,30 +993,58 @@
     }
 
     // Setup the variables
-    args = ( (Array.isArray(logCat) && logCat.length > 1) ?
+    args = ( (checkType(logCat, 'strings') && logCat.length > 1) ?
       logCat.slice(0) : (arguments.length > 1) ?
         Array.prototype.slice.call(arguments, 0) : null
     );
     logCat = ( (args) ?
       null : (typeof logCat === 'string') ?
-        logCat : ( Array.isArray(logCat) ) ?
+        logCat : ( checkType(logCat, 'strings') ) ?
           logCat[0] : null
     );
 
-    // Turn off the debug method category(ies) & save the result(s)
-    testSet = ( (args) ?
-      args.every(function(/** string */ val) {
-        return (!!val && typeof val === 'string' && this.setBugger(val, true));
-      }, this)
-      : (!!logCat && this.setBugger(logCat, true))
-    );
+    // Make sure a value still exists to test
+    if (!logCat && (!args || !checkType(args, 'strings'))) {
+      errors = 'A debug.turnOnDebugger method\'s arg(s) was the wrong operand.';
+      console.error(errors);
+      debugger;
+      return;
+    }
 
-    // Test the result(s)
-    if (!testSet) {
-      logCat = 'A debug.turnOnDebugger method\'s arg(s) was wrong. ';
-      logCat += 'Ensure that the correct operands are given, ';
-      logCat += 'and each string is a valid debug category or \'all\'.';
-      console.error(logCat);
+    // Check for string with multiple categories
+    if (logCat && /\s/.test(logCat)) {
+      args = logCat.split(' ');
+      logCat = null;
+    }
+
+    // Turn on the debuggers & save any errors
+    if (args) {
+      len = args.length;
+      i = -1;
+      while (++i < len) {
+        if ( !this.setBugger(args[i], true) ) {
+          if (!errors) {
+            errors = [];
+          }
+          errors.push("'" + args[i] + "'");
+        }
+      }
+      if (errors) {
+        errors = errors.join(', ');
+      }
+    }
+    else {
+      if ( !this.setBugger(logCat, true) ) {
+        errors = "'" + logCat + "'";
+      }
+    }
+
+    // Report any errors
+    if (errors) {
+      errors = '' +
+        'A debug.turnOnDebugger method was given an invalid debug ' +
+        'category to turn on. The incorrect value(s) follow:' + errors;
+      console.error(errors);
       debugger;
     }
   };
@@ -952,15 +1064,25 @@
   Debug.prototype.turnOffDebugger = function(logCat) {
 
     /**
-     * @type {boolean}
-     * @private
-     */
-    var testSet;
-    /**
      * @type {?strings}
      * @private
      */
     var args;
+    /**
+     * @type {number}
+     * @private
+     */
+    var len;
+    /**
+     * @type {number}
+     * @private
+     */
+    var i;
+    /**
+     * @type {(string|strings)}
+     * @private
+     */
+    var errors;
 
     // Ensure arguments are supplied
     if (!logCat) {
@@ -970,30 +1092,59 @@
     }
 
     // Setup the variables
-    args = ( (Array.isArray(logCat) && logCat.length > 1) ?
+    args = ( (checkType(logCat, 'strings') && logCat.length > 1) ?
       logCat.slice(0) : (arguments.length > 1) ?
         Array.prototype.slice.call(arguments, 0) : null
     );
     logCat = ( (args) ?
       null : (typeof logCat === 'string') ?
-        logCat : ( Array.isArray(logCat) ) ?
+        logCat : ( checkType(logCat, 'strings') ) ?
           logCat[0] : null
     );
 
-    // Turn off the debug method category(ies) & save the result(s)
-    testSet = ( (args) ?
-      args.every(function(/** string */ val) {
-        return (!!val && typeof val === 'string' && this.setBugger(val, false));
-      }, this)
-      : (!!logCat && this.setBugger(logCat, false))
-    );
+    // Make sure a value still exists to test
+    if (!logCat && (!args || !checkType(args, 'strings'))) {
+      errors = 'A debug.turnOffDebugger method\'s arg(s) was ';
+      errors += 'the wrong operand.';
+      console.error(errors);
+      debugger;
+      return;
+    }
 
-    // Test the result(s)
-    if (!testSet) {
-      logCat = 'A debug.turnOffDebugger method\'s arg(s) was wrong. ';
-      logCat += 'Ensure that the correct operands are given, ';
-      logCat += 'and each string is a valid debug category or \'all\'.';
-      console.error(logCat);
+    // Check for string with multiple categories
+    if (logCat && /\s/.test(logCat)) {
+      args = logCat.split(' ');
+      logCat = null;
+    }
+
+    // Turn off the debuggers & save any errors
+    if (args) {
+      len = args.length;
+      i = -1;
+      while (++i < len) {
+        if ( !this.setBugger(args[i], false) ) {
+          if (!errors) {
+            errors = [];
+          }
+          errors.push("'" + args[i] + "'");
+        }
+      }
+      if (errors) {
+        errors = errors.join(', ');
+      }
+    }
+    else {
+      if ( !this.setBugger(logCat, false) ) {
+        errors = "'" + logCat + "'";
+      }
+    }
+
+    // Report any errors
+    if (errors) {
+      errors = '' +
+        'A debug.turnOffDebugger method was given an invalid debug ' +
+        'category to turn off. The incorrect value(s) follow:' + errors;
+      console.error(errors);
       debugger;
     }
   };
