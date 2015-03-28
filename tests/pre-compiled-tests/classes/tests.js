@@ -555,4 +555,64 @@
     app.results.push(results);
   };
 
+  /**
+   * -------------------------------------------------
+   * Public Method (Tests.checkGroup)
+   * -------------------------------------------------
+   * @desc Checks Debug.group method.
+   * @type {function()}
+   */
+  Tests.checkGroup = function() {
+
+    /** @type {TestResults} */
+    var results;
+    /** @type {string} */
+    var choiceMsg;
+    /** @type {string} */
+    var errorMsg;
+    /** @type {Object} */
+    var tests;
+
+    results = new TestResults('Tests.checkGroup');
+    Object.freeze(results);
+
+    // Setup for the tests
+    tests = aIV.debug('Tests.checkGroup');
+
+    // Run the tests
+    choiceMsg = '"GROUP: Tests.checkGroup.testMethod()" ';
+    choiceMsg += 'should be an open console group.';
+    errorMsg = 'debug.group failed to start an open group';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.group('testMethod', 'open', 'This group should be open.');
+      console.log('A child log of testMethod\'s group.');
+      tests.group('testMethod', 'end');
+    });
+
+    choiceMsg = '"GROUP: Tests.checkGroup.testMethod()" ';
+    choiceMsg += 'should be a collapsed console group.';
+    errorMsg = 'debug.group failed to start a collapsed group';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.group('testMethod', 'coll', 'This group should be collapsed.');
+      console.log('A child log of testMethod\'s group.');
+      tests.group('testMethod', 'end');
+    });
+
+    choiceMsg = 'The following message should have been logged to the console:';
+    choiceMsg += '"GROUP: Tests.checkGroup.testMethod() |';
+    choiceMsg += ' Args: number= 5, object= jsObjRef"';
+    errorMsg = 'debug.group failed to add the vars correctly to the message';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      /** @type {string} */
+      var msg;
+
+      msg = 'Args: number= $$, object= $$';
+      tests.group('testMethod', 'coll', msg, 5, [ 5 ]);
+      tests.group('testMethod', 'end');
+    });
+
+    // Save the results
+    app.results.push(results);
+  };
+
   Object.freeze(Tests);

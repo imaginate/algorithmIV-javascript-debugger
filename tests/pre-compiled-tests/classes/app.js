@@ -68,7 +68,7 @@
     Tests.checkStart();
     Tests.checkArgs();
     Tests.checkFail();
-    //Tests.checkGroup();
+    Tests.checkGroup();
     //Tests.checkState();
     //Tests.checkMisc();
 
