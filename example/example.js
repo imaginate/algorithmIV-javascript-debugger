@@ -1,32 +1,9 @@
-#Make Debugging Your JavaScript Easy
+window.aIV.example = function () {
 
-####Algorithm IV's debugger is a JavaScript object constructor that has six different methods that log messages, errors, and more to your console. It makes managing a JavaScript project with multiple classes much simpler by implementing a clear and organized structure to every log made!
+////////////////////////////////////////////////////////////////////////////////
+// THE EXAMPLE CLASS
+////////////////////////////////////////////////////////////////////////////////
 
-##Getting Started
-To use the debugger simply download [algorithmIV-debug.min.js](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/src/algorithmIV-debug.min.js), add ```<script src="algorithmIV-debug.min.js"></script>``` to the ```<head>``` of your HTML, and use ```aIV.debug(className)``` to create as many objects as you desire. 
-
-##The Methods
-aIV.debug objects come with the following methods for logging to the console
-- **start** (methodName, methodArg1, methodArg2, ...)
-- **args** (methodName, methodArg1, typeForMethodArg1, ...)
-- **fail** (methodName, truthyValue, errorMessage, optionalVar1, ...)
-- **group** (methodName, groupType, optionalMessage, optionalVar1, ...)
-- **state** (methodName, logMessage, var1, var2, ...)
-- **misc** (methodName, logMessage, optionalVar1, ...)
-
-##Contributing
-See [CONTRIBUTING.md](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/CONTRIBUTING.md).
-
-##Example
-To see the debugger in live projects visit [Algorithm IV's Question Manager](https://github.com/imaginate/algorithmIV/tree/version1.1.0/tests/pre-compiled-app) or view the [unit tests](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/tests/pre-compiled-tests/classes/Tests.js).
-
-The following example is broken into three parts:
-- [The Example Class](#class)
-- [The Example Logic](#logic)
-- [The Example's Console Outputs](#output)
-
-####<a name="class"></a>The Example Class
-```javascript
 /**
  * -----------------------------------------------------
  * Public Class (Example)
@@ -118,9 +95,11 @@ Example.prototype.report = function() {
 
   return name + ' => ' + ( (check) ? 'Pass' : 'Fail' );
 };
-```
-####<a name="logic"></a>The Example Logic
-```javascript
+
+////////////////////////////////////////////////////////////////////////////////
+// THE EXAMPLE LOGIC
+////////////////////////////////////////////////////////////////////////////////
+
 /** @type {{ test1: Example, test2: Example, test3: Example }} */
 var example = {};
 /** @type {string} */
@@ -177,9 +156,7 @@ example.test1.debug.misc('logic', 'This log recorded $$\'s name.', name);
 // error log for the 'Test 2' report)
 example.test1.report();
 example.test2.report();
-```
-####<a name="output"></a>The Example's Console Outputs
-![Example Console Logs](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/example/console-logs-screenshot.jpg)
 
---
-![Algorithm IV Logo](http://www.algorithmiv.com/images/aIV-icon.png)
+////////////////////////////////////////////////////////////////////////////////
+
+};
