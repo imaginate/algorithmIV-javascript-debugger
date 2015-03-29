@@ -6,13 +6,19 @@
 To use the debugger simply download [algorithmIV-debug.min.js](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/src/algorithmIV-debug.min.js), add ```<script src="algorithmIV-debug.min.js"></script>``` to the ```<head>``` of your HTML, and use ```aIV.debug(className)``` to create as many objects as you desire. 
 
 ##The Methods
-aIV.debug objects come with the following methods for logging to the console
+Each debug object has the following methods for logging to the console:
 - **start** (methodName, methodArg1, methodArg2, ...)
 - **args** (methodName, methodArg1, typeForMethodArg1, ...)
 - **fail** (methodName, truthyValue, errorMessage, optionalVar1, ...)
 - **group** (methodName, groupType, optionalMessage, optionalVar1, ...)
 - **state** (methodName, logMessage, var1, var2, ...)
 - **misc** (methodName, logMessage, optionalVar1, ...)
+
+and the following methods for disabling logs and adding debugger instances:
+- **turnOn** (categoryName)
+- **turnOff** (categoryName)
+- **turnOnDebugger** (categoryName)
+- **turnOffDebugger** (categoryName)
 
 ##Contributing
 See [CONTRIBUTING.md](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/CONTRIBUTING.md).
