@@ -25,10 +25,10 @@ var Example = function(name, check) {
   this.debug = aIV.debug('Example');
 
   // Start a collapsed console group
-  this.debug.group('init', 'open', 'name= $$', name);
+  this.debug.group('init', 'open', 'name= $$, check= $$', name, check);
 
   // Log the start of a new instance of Example
-  this.debug.start('init', name);
+  this.debug.start('init', name, check);
 
   // Verify the new instances arguments 
   this.debug.args('init', name, 'string', check, 'boolean');
