@@ -24,7 +24,7 @@ and the following methods for disabling logs and adding debugger instances:
 See [CONTRIBUTING.md](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/CONTRIBUTING.md).
 
 ##Example
-To see the debugger in live projects visit [Algorithm IV's Question Manager](https://github.com/imaginate/algorithmIV/tree/version1.1.0/tests/pre-compiled-app) or view the [unit tests](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/tests/pre-compiled-tests/classes/Tests.js).
+To see the debugger in live projects visit [Algorithm IV's Question Manager](https://github.com/imaginate/algorithmIV-question-manager/tree/version1.1.0/tests/pre-compiled-app) or view the [unit tests](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/tests/pre-compiled-tests/classes/Tests.js).
 
 The following example is broken into three parts:
 - [The Example Class](#class)
@@ -188,4 +188,4 @@ example.test2.report();
 ![Example Console Logs](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/example/console-logs-screenshot.jpg)
 
 --
-![Algorithm IV Logo](http://www.algorithmiv.com/images/aIV-icon.png)
+![Algorithm IV Logo](http://www.algorithmiv.com/images/aIV-logo.png)

@@ -7,4 +7,4 @@
 **Thanks for being a part of the aIV team!**
 
 --
-![Algorithm IV Logo](http://www.algorithmiv.com/images/aIV-icon.png)
+![Algorithm IV Logo](http://www.algorithmiv.com/images/aIV-logo.png)
