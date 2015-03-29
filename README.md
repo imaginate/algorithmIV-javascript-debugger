@@ -9,7 +9,7 @@ To use the debugger simply download [algorithmIV-debug.min.js](https://github.co
 See [CONTRIBUTING.md](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/CONTRIBUTING.md).
 
 ##Example
-To see the debugger in action visit [Algorithm IV's Question Manager](https://github.com/imaginate/algorithmIV/tree/version1.1.0/test/app-core) or view the [unit tests](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/tests/pre-compiled-tests/classes/Tests.js).
+To see the debugger in action visit [Algorithm IV's Question Manager](https://github.com/imaginate/algorithmIV/tree/version1.1.0/tests/pre-compiled-app) or view the [unit tests](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/tests/pre-compiled-tests/classes/Tests.js).
 ```javascript
 /**
  * -----------------------------------------------------
