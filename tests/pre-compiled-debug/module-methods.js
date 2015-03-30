@@ -78,7 +78,7 @@
     // Test the given arguments before executing
     var msg;
     if (typeof type !== 'string') {
-      msg = 'A checkType method\'s type was the wrong operand. ';
+      msg = 'A checkType method\'s type was the wrong data type. ';
       msg += 'It should be a string. The given type was a(n) %s.';
       console.error(msg, (typeof type));
       debugger;
@@ -168,7 +168,7 @@
           return (val instanceof HTMLElement);
         }
 
-        // Evaluate string, number, boolean, and object types
+        // Evaluate string, number, boolean, object, and function types
         if ( regexps.types.basic.test(cleanType) ) {
           return (typeof val === cleanType);
         }
@@ -188,7 +188,7 @@
           }
 
           // Evaluate a hash map of elements
-          if (cleanType === 'elems') {
+          if (cleanType === 'elemMap') {
             return Object.keys(val).every(function(subVal) {
               return (val[ subVal ] instanceof HTMLElement);
             });

@@ -361,7 +361,7 @@
 
     // Prepare and log the error message
     message = 'ARGS: ' + this.classTitle + methodName + '() | ';
-    message += 'Error: Incorrect argument operand.';
+    message += 'Error: Incorrect argument data type.';
     console.error(message);
 
     // Pause the script
@@ -809,7 +809,7 @@
 
     // Make sure a value still exists to test
     if (!logCat && (!args || !checkType(args, 'strings'))) {
-      console.error('A debug.turnOn method\'s arg(s) was the wrong operand.');
+      console.error('A debug.turnOn method\'s arg(s) was the wrong data type.');
       debugger;
       return;
     }
@@ -907,7 +907,7 @@
 
     // Make sure a value still exists to test
     if (!logCat && (!args || !checkType(args, 'strings'))) {
-      console.error('A debug.turnOff method\'s arg(s) was the wrong operand.');
+      console.error('A debug.turnOff method\'s arg(s) was the wrong data type.');
       debugger;
       return;
     }
@@ -1005,7 +1005,8 @@
 
     // Make sure a value still exists to test
     if (!logCat && (!args || !checkType(args, 'strings'))) {
-      errors = 'A debug.turnOnDebugger method\'s arg(s) was the wrong operand.';
+      errors = 'A debug.turnOnDebugger method\'s arg(s) was ';
+      errors += 'the wrong data type.';
       console.error(errors);
       debugger;
       return;
@@ -1105,7 +1106,7 @@
     // Make sure a value still exists to test
     if (!logCat && (!args || !checkType(args, 'strings'))) {
       errors = 'A debug.turnOffDebugger method\'s arg(s) was ';
-      errors += 'the wrong operand.';
+      errors += 'the wrong data type.';
       console.error(errors);
       debugger;
       return;
