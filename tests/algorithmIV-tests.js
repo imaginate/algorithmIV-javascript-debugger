@@ -1364,6 +1364,90 @@
     app.results.push(results);
   };
 
+  /**
+   * -------------------------------------------------
+   * Public Method (Tests.checkSetConfig)
+   * -------------------------------------------------
+   * @desc Checks the setting of the debug module configuration.
+   * @type {function}
+   */
+  Tests.checkSetConfig = function() {
+
+    /** @type {TestResults} */
+    var results;
+    /** @type {string} */
+    var msg;
+    /** @type {Object} */
+    var tests;
+
+    results = new TestResults('Tests.checkSetConfig');
+    Object.freeze(results);
+
+    // Setup for the tests
+    aIV.debug.setConfig({
+      turnOffTypes   : 'all',
+      turnOnDebuggers: 'all'
+    });
+    tests = {
+      all : aIV.debug('Tests.checkSetConfig.all'),
+      none: aIV.debug({
+        classTitle     : 'Tests.checkSetConfig.none',
+        turnOffTypes   : 'none',
+        turnOnDebuggers: 'none'
+      })
+    };
+
+    // Run the tests
+    if (tests.all.getType('start') ||
+        tests.all.getType('args')  ||
+        tests.all.getType('fail')  ||
+        tests.all.getType('group') ||
+        tests.all.getType('state') ||
+        tests.all.getType('misc')) {
+      msg = 'Tests.checkSetConfig.all failed: no types should be on';
+      results.addError(msg);
+    }
+
+    if (!tests.all.getBugger('start') ||
+        !tests.all.getBugger('args')  ||
+        !tests.all.getBugger('fail')  ||
+        !tests.all.getBugger('group') ||
+        !tests.all.getBugger('state') ||
+        !tests.all.getBugger('misc')) {
+      msg = 'Tests.checkSetConfig.all failed: all debuggers should be on';
+      results.addError(msg);
+    }
+
+    if (!tests.none.getType('start') ||
+        !tests.none.getType('args')  ||
+        !tests.none.getType('fail')  ||
+        !tests.none.getType('group') ||
+        !tests.none.getType('state') ||
+        !tests.none.getType('misc')) {
+      msg = 'Tests.checkSetConfig.none failed: all types should be on';
+      results.addError(msg);
+    }
+
+    if (tests.none.getBugger('start') ||
+        tests.none.getBugger('args')  ||
+        tests.none.getBugger('fail')  ||
+        tests.none.getBugger('group') ||
+        tests.none.getBugger('state') ||
+        tests.none.getBugger('misc')) {
+      msg = 'Tests.checkSetConfig.none failed: no debuggers should be on';
+      results.addError(msg);
+    }
+
+    // Reset the config before continuing
+    aIV.debug.setConfig({
+      turnOffTypes   : '',
+      turnOnDebuggers: ''
+    });
+
+    // Save the results
+    app.results.push(results);
+  };
+
   Object.freeze(Tests);
 
 
@@ -1423,6 +1507,9 @@
    */
   App.prototype.runTests = function() {
 
+    // Turn off the debugger instances for errors
+    aIV.debug.setConfig({ errorDebuggers: false });
+
     // Clear the console
     console.clear();
 
@@ -1450,6 +1537,9 @@
     Tests.checkTurnOff();
     Tests.checkTurnOnDebugger();
     Tests.checkTurnOffDebugger();
+
+    // Check the config setter
+    Tests.checkSetConfig();
 
     // Run the choices and record the results
     this.runChoices();
