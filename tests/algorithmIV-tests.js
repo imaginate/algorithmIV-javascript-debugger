@@ -1,10 +1,10 @@
 /**
  * -----------------------------------------------------------------------------
- * Algorithm IV Debug Tests - Module (v1.0.0)
+ * Algorithm IV Debug Tests - Module (v1.0.1)
  * -----------------------------------------------------------------------------
  * @file The module for testing the aIV debug module.
  * @module aIVDebugTests
- * @version 1.0.0
+ * @version 1.0.1
  * @author Adam Smith ({@link adamsmith@youlum.com})
  * @copyright 2015 Adam A Smith ([github.com/imaginate]{@link https://github.com/imaginate})
  * @license The MIT License ([algorithmiv.com/docs/license]{@link http://algorithmiv.com/docs/license})
@@ -447,6 +447,8 @@
     var errorMsg;
     /** @type {Object} */
     var tests;
+    /** @type {boolean} */
+    var pass;
 
     results = new TestResults('Tests.checkInstances');
     Object.freeze(results);
@@ -461,22 +463,20 @@
     };
 
     // Run the tests
-    choiceMsg = 'Instance Test 1 and 2 should have been logged';
-    choiceMsg += ' to the console.';
-    errorMsg = 'checkInstances.tests.first failed';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.first.misc('test1', 'Instance Test 1');
-      tests.second.misc('test2', 'Instance Test 2');
-    });
+    pass = tests.first.misc('test1', 'Instance Test 1');
+    pass = pass && tests.second.misc('test2', 'Instance Test 2');
+    if (!pass) {
+      errorMsg = 'Tests.checkInstances failed: A misc log failed when turned on';
+      results.addError(errorMsg);
+    }
 
-    choiceMsg = 'Instance Test 3 and 4 should NOT have been logged';
-    choiceMsg += ' to the console.';
-    errorMsg = 'checkInstances.tests.second failed';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.first.setType('misc', false);
-      tests.first.misc('test3', 'Instance Test 3');
-      tests.second.misc('test4', 'Instance Test 4');
-    });
+    tests.first.setType('misc', false);
+    pass = tests.first.misc('test3', 'Instance Test 3');
+    pass = pass || tests.second.misc('test4', 'Instance Test 4');
+    if (pass) {
+      errorMsg = 'Tests.checkInstances failed: A misc log failed when turned off';
+      results.addError(errorMsg);
+    }
 
     // Save the results
     app.results.push(results);
@@ -499,6 +499,8 @@
     var errorMsg;
     /** @type {Object} */
     var tests;
+    /** @type {boolean} */
+    var pass;
 
     results = new TestResults('Tests.checkStart');
     Object.freeze(results);
@@ -507,25 +509,30 @@
     tests = aIV.debug('Tests.checkStart');
 
     // Run the tests
-    choiceMsg = 'The following message should have been logged to the console:';
+    pass = tests.start('testMethod');
+    if (!pass) {
+      errorMsg = 'Tests.checkStart failed: Did not log';
+      results.addError(errorMsg);
+    }
+
+    pass = tests.start('testMethod', 5, [ 5 ]);
+    if (!pass) {
+      errorMsg = 'Tests.checkStart failed: Did not log with arguments';
+      results.addError(errorMsg);
+    }
+
+    pass = tests.start([ 'testMethod', 5, [ 5 ] ]);
+    if (!pass) {
+      errorMsg = 'Tests.checkStart failed: Did not log with array argument';
+      results.addError(errorMsg);
+    }
+
+    choiceMsg = 'Verify that the start log message is correct. The following ';
+    choiceMsg += 'message should have been logged to the console:';
     choiceMsg += ' "START: Tests.checkStart.testMethod()"';
-    errorMsg = 'debug.start did not log properly';
+    errorMsg = 'Tests.checkStart failed: Log message incorrect';
     app.addChoice(choiceMsg, results, errorMsg, function() {
       tests.start('testMethod');
-    });
-
-    choiceMsg = 'The following message should have been logged to the console:';
-    choiceMsg += ' "START: Tests.checkStart.testMethod(5, jsObjRef)"';
-    errorMsg = 'debug.start did not log properly with arguments';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.start('testMethod', 5, [ 5 ]);
-    });
-
-    choiceMsg = 'The following message should have been logged to the console:';
-    choiceMsg += ' "START: Tests.checkStart.testMethod(5, jsObjRef)"';
-    errorMsg = 'debug.start did not log properly with arguments given as array';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.start([ 'testMethod', 5, [ 5 ] ]);
     });
 
     // Save the results
@@ -549,6 +556,16 @@
     var errorMsg;
     /** @type {Object} */
     var tests;
+    /** @type {boolean} */
+    var pass;
+    /** @type {boolean} */
+    var fail;
+    /** @type {HTMLElement} */
+    var elem;
+    /** @type {Object} */
+    var testMap;
+
+    elem = document.createElement('div');
 
     results = new TestResults('Tests.checkArgs');
     Object.freeze(results);
@@ -557,162 +574,295 @@
     tests = aIV.debug('Tests.checkArgs');
 
     // Run the tests on 'string', 'number', 'boolean', 'object',
-    // 'elem', 'undefined', 'array', 'strings', 'numbers',
-    // 'booleans', 'objects', 'elems', null, '!', '|', and '='
-    choiceMsg = 'Two error messages should have been logged.';
-    errorMsg = "debug.args 'string' check failed";
+    // 'function', 'elem', 'undefined', 'array', 'strings', 
+    // 'numbers', 'booleans', 'objects', 'functions', 'arrays',
+    // 'elems', 'stringMap', 'numberMap', 'booleanMap', 'objectMap',
+    // 'functionMap', 'arrayMap', 'elemMap', null, '!', '|', and '='
+
+    // String check
+    pass = tests.args('testMethod', 's', 'string');
+    pass = pass && tests.args([ 'testMethod', 's', 'string' ]);
+    fail = tests.args('testMethod', 1, 'string');
+    fail = fail || tests.args([ 'testMethod', 1, 'string' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: string check failed';
+      results.addError(errorMsg);
+    }
+
+    // Number check
+    pass = tests.args('testMethod', 1, 'number');
+    pass = pass && tests.args([ 'testMethod', 1, 'number' ]);
+    fail = tests.args('testMethod', '1', 'number');
+    fail = fail || tests.args([ 'testMethod', '1', 'number' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: number check failed';
+      results.addError(errorMsg);
+    }
+
+    // Boolean check
+    pass = tests.args('testMethod', true, 'boolean');
+    pass = pass && tests.args([ 'testMethod', false, 'boolean' ]);
+    fail = tests.args('testMethod', 's', 'boolean');
+    fail = fail || tests.args([ 'testMethod', 's', 'boolean' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: boolean check failed';
+      results.addError(errorMsg);
+    }
+
+    // Object check
+    pass = tests.args('testMethod', {}, 'object');
+    pass = pass && tests.args([ 'testMethod', {}, 'object' ]);
+    fail = tests.args('testMethod', 's', 'object');
+    fail = fail || tests.args([ 'testMethod', 1, 'object' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: object check failed';
+      results.addError(errorMsg);
+    }
+
+    // Function check
+    pass = tests.args('testMethod', function(){}, 'function');
+    pass = pass && tests.args([ 'testMethod', function(){}, 'function' ]);
+    fail = tests.args('testMethod', 's', 'function');
+    fail = fail || tests.args([ 'testMethod', {}, 'function' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: function check failed';
+      results.addError(errorMsg);
+    }
+
+    // Element check
+    pass = tests.args('testMethod', elem, 'elem');
+    pass = pass && tests.args([ 'testMethod',  elem, 'elem' ]);
+    fail = tests.args('testMethod', {}, 'elem');
+    fail = fail || tests.args([ 'testMethod', 5, 'elem' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: elem check failed';
+      results.addError(errorMsg);
+    }
+
+    // Undefined check
+    pass = tests.args('testMethod', undefined, 'undefined');
+    pass = pass && tests.args([ 'testMethod', undefined, 'undefined' ]);
+    fail = tests.args('testMethod', {}, 'undefined');
+    fail = fail || tests.args([ 'testMethod', 's', 'undefined' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: undefined check failed';
+      results.addError(errorMsg);
+    }
+
+    // Array check
+    pass = tests.args('testMethod', [], 'array');
+    pass = pass && tests.args([ 'testMethod', [], 'array' ]);
+    fail = tests.args('testMethod', {}, 'array');
+    fail = fail || tests.args([ 'testMethod', 1, 'array' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: array check failed';
+      results.addError(errorMsg);
+    }
+
+    // Strings check
+    pass = tests.args('testMethod', [ 's' ], 'strings');
+    pass = pass && tests.args([ 'testMethod', [ 's' ], 'strings' ]);
+    fail = tests.args('testMethod', [ 1 ], 'strings');
+    fail = fail || tests.args([ 'testMethod', {}, 'strings' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: strings check failed';
+      results.addError(errorMsg);
+    }
+
+    // Numbers check
+    pass = tests.args('testMethod', [ 1, 5 ], 'numbers');
+    pass = pass && tests.args([ 'testMethod', [], 'numbers' ]);
+    fail = tests.args('testMethod', [ 1, 's' ], 'numbers');
+    fail = fail || tests.args([ 'testMethod', {}, 'numbers' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: numbers check failed';
+      results.addError(errorMsg);
+    }
+
+    // Booleans check
+    pass = tests.args('testMethod', [ false ], 'booleans');
+    pass = pass && tests.args([ 'testMethod', [ true ], 'booleans' ]);
+    fail = tests.args('testMethod', [ 's' ], 'booleans');
+    fail = fail || tests.args([ 'testMethod', {}, 'booleans' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: booleans check failed';
+      results.addError(errorMsg);
+    }
+
+    // Functions check
+    pass = tests.args('testMethod', [ function(){} ], 'functions');
+    pass = pass && tests.args([ 'testMethod', [ function(){} ], 'functions' ]);
+    fail = tests.args('testMethod', [ function(){}, 1 ], 'functions');
+    fail = fail || tests.args([ 'testMethod', [ {} ], 'functions' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: functions check failed';
+      results.addError(errorMsg);
+    }
+
+    // Objects check
+    pass = tests.args('testMethod', [ {} ], 'objects');
+    pass = pass && tests.args([ 'testMethod', [ {} ], 'objects' ]);
+    fail = tests.args('testMethod', [ 1 ], 'objects');
+    fail = fail || tests.args([ 'testMethod', {}, 'objects' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: objects check failed';
+      results.addError(errorMsg);
+    }
+
+    // Arrays check
+    pass = tests.args('testMethod', [ [ 1 ] ], 'arrays');
+    pass = pass && tests.args([ 'testMethod', [ [] ], 'arrays' ]);
+    fail = tests.args('testMethod', [ [], 1 ], 'arrays');
+    fail = fail || tests.args([ 'testMethod', [ {} ], 'arrays' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: arrays check failed';
+      results.addError(errorMsg);
+    }
+
+    // Elements check
+    pass = tests.args('testMethod', [ elem ], 'elems');
+    pass = pass && tests.args([ 'testMethod',  [ elem ], 'elems' ]);
+    fail = tests.args('testMethod', [ {} ], 'elems');
+    fail = fail || tests.args([ 'testMethod', 5, 'elems' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: elems check failed';
+      results.addError(errorMsg);
+    }
+
+    // String Map check
+    testMap = { slot1: 'str', slot2: 'str' };
+    pass = tests.args('testMethod', testMap, 'stringMap');
+    pass = pass && tests.args([ 'testMethod',  {}, 'stringMap' ]);
+    testMap = { slot1: 'str', slot2: 1 };
+    fail = tests.args('testMethod', testMap, 'stringMap');
+    fail = fail || tests.args([ 'testMethod', 5, 'stringMap' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: stringMap check failed';
+      results.addError(errorMsg);
+    }
+
+    // Number Map check
+    testMap = { slot1: 1, slot2: 5 };
+    pass = tests.args('testMethod', testMap, 'numberMap');
+    pass = pass && tests.args([ 'testMethod',  {}, 'numberMap' ]);
+    testMap = { slot1: 5, slot2: 'str' };
+    fail = tests.args('testMethod', testMap, 'numberMap');
+    fail = fail || tests.args([ 'testMethod', 5, 'numberMap' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: numberMap check failed';
+      results.addError(errorMsg);
+    }
+
+    // Boolean Map check
+    testMap = { slot1: false, slot2: true };
+    pass = tests.args('testMethod', testMap, 'booleanMap');
+    pass = pass && tests.args([ 'testMethod',  {}, 'booleanMap' ]);
+    testMap = { slot1: true, slot2: 'str' };
+    fail = tests.args('testMethod', testMap, 'booleanMap');
+    fail = fail || tests.args([ 'testMethod', 5, 'booleanMap' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: booleanMap check failed';
+      results.addError(errorMsg);
+    }
+
+    // Object Map check
+    testMap = { slot1: {}, slot2: {} };
+    pass = tests.args('testMethod', testMap, 'objectMap');
+    pass = pass && tests.args([ 'testMethod',  {}, 'objectMap' ]);
+    testMap = { slot1: {}, slot2: 'str' };
+    fail = tests.args('testMethod', testMap, 'objectMap');
+    fail = fail || tests.args([ 'testMethod', 5, 'objectMap' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: objectMap check failed';
+      results.addError(errorMsg);
+    }
+
+    // Function Map check
+    testMap = { slot1: function(){}, slot2: function(){} };
+    pass = tests.args('testMethod', testMap, 'functionMap');
+    pass = pass && tests.args([ 'testMethod',  {}, 'functionMap' ]);
+    testMap = { slot1: {}, slot2: function(){} };
+    fail = tests.args('testMethod', testMap, 'functionMap');
+    fail = fail || tests.args([ 'testMethod', 5, 'functionMap' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: functionMap check failed';
+      results.addError(errorMsg);
+    }
+
+    // Array Map check
+    testMap = { slot1: [ 1 ], slot2: [] };
+    pass = tests.args('testMethod', testMap, 'arrayMap');
+    pass = pass && tests.args([ 'testMethod',  {}, 'arrayMap' ]);
+    testMap = { slot1: {}, slot2: [] };
+    fail = tests.args('testMethod', testMap, 'arrayMap');
+    fail = fail || tests.args([ 'testMethod', 5, 'arrayMap' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: arrayMap check failed';
+      results.addError(errorMsg);
+    }
+
+    // Element Map check
+    testMap = { slot1: elem, slot2: elem };
+    pass = tests.args('testMethod', testMap, 'elemMap');
+    pass = pass && tests.args([ 'testMethod',  {}, 'elemMap' ]);
+    testMap = { slot1: {}, slot2: elem };
+    fail = tests.args('testMethod', testMap, 'elemMap');
+    fail = fail || tests.args([ 'testMethod', 5, 'elemMap' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: elemMap check failed';
+      results.addError(errorMsg);
+    }
+
+    // Null check
+    pass = tests.args('testMethod', 's', 'string');
+    pass = pass && tests.args('testMethod', null, 'string');
+    pass = pass && tests.args([ 'testMethod', 's', 'string' ]);
+    pass = pass && tests.args([ 'testMethod', null, 'string' ]);
+    fail = tests.args('testMethod', 1, 'string');
+    fail = fail || tests.args('testMethod', undefined, 'string');
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: null check failed';
+      results.addError(errorMsg);
+    }
+
+    // ! check
+    pass = tests.args('testMethod', 's', '!string');
+    pass = pass && tests.args([ 'testMethod', 's', '!string' ]);
+    fail = tests.args('testMethod', null, '!string');
+    fail = fail || tests.args([ 'testMethod', null, '!string' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: ! check failed';
+      results.addError(errorMsg);
+    }
+
+    // | check
+    pass = tests.args('testMethod', 's', 'string|number');
+    pass = pass && tests.args([ 'testMethod', 1, 'string|number' ]);
+    fail = tests.args('testMethod', true, 'string|number');
+    fail = fail || tests.args([ 'testMethod', {}, 'string|number' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: | check failed';
+      results.addError(errorMsg);
+    }
+
+    // = check
+    pass = tests.args('testMethod', undefined, 'number=');
+    pass = pass && tests.args([ 'testMethod', undefined, 'number=' ]);
+    fail = tests.args('testMethod', {}, 'number=');
+    fail = fail || tests.args([ 'testMethod', 's', 'number=' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: = check failed';
+      results.addError(errorMsg);
+    }
+
+    // Check the log message
+    choiceMsg = 'Verify that the args log message is correct. The following ';
+    choiceMsg += 'message should have been logged to the console:';
+    choiceMsg += ' "ARGS: Tests.checkArgs.testMethod() | Error: Incorrect';
+    choiceMsg += ' argument data type."';
+    errorMsg = 'Tests.checkArgs failed: Log message incorrect';
     app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.args('testMethod', 's', 'string');
       tests.args('testMethod', 1, 'string');
-      tests.args([ 'testMethod', 's', 'string' ]);
-      tests.args([ 'testMethod', 1, 'string' ]);
-    });
-
-    choiceMsg = 'Two error messages should have been logged.';
-    errorMsg = "debug.args 'number' check failed";
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.args('testMethod', '1', 'number');
-      tests.args('testMethod', 1, 'number');
-      tests.args([ 'testMethod', '1', 'number' ]);
-      tests.args([ 'testMethod', 1, 'number' ]);
-    });
-
-    choiceMsg = 'Two error messages should have been logged.';
-    errorMsg = "debug.args 'boolean' check failed";
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.args('testMethod', 's', 'boolean');
-      tests.args('testMethod', true, 'boolean');
-      tests.args([ 'testMethod', 's', 'boolean' ]);
-      tests.args([ 'testMethod', false, 'boolean' ]);
-    });
-
-    choiceMsg = 'Two error messages should have been logged.';
-    errorMsg = "debug.args 'object' check failed";
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.args('testMethod', 's', 'object');
-      tests.args('testMethod', {}, 'object');
-      tests.args([ 'testMethod', {}, 'object' ]);
-      tests.args([ 'testMethod', 1, 'object' ]);
-    });
-
-    choiceMsg = 'Two error messages should have been logged.';
-    errorMsg = "debug.args 'elem' check failed";
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      /** @type {HTMLElement} */
-      var elem;
-
-      elem = document.createElement('div');
-
-      tests.args('testMethod', {}, 'elem');
-      tests.args('testMethod', elem, 'elem');
-      tests.args([ 'testMethod', 5, 'elem' ]);
-      tests.args([ 'testMethod',  elem, 'elem' ]);
-    });
-
-    choiceMsg = 'Two error messages should have been logged.';
-    errorMsg = "debug.args 'undefined' check failed";
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.args('testMethod', {}, 'undefined');
-      tests.args('testMethod', undefined, 'undefined');
-      tests.args([ 'testMethod', 's', 'undefined' ]);
-      tests.args([ 'testMethod', undefined, 'undefined' ]);
-    });
-
-    choiceMsg = 'Two error messages should have been logged.';
-    errorMsg = "debug.args 'array' check failed";
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.args('testMethod', [], 'array');
-      tests.args('testMethod', {}, 'array');
-      tests.args([ 'testMethod', [], 'array' ]);
-      tests.args([ 'testMethod', 1, 'array' ]);
-    });
-
-    choiceMsg = 'Two error messages should have been logged.';
-    errorMsg = "debug.args 'strings' check failed";
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.args('testMethod', [ 's' ], 'strings');
-      tests.args('testMethod', [ 1 ], 'strings');
-      tests.args([ 'testMethod', [ 's' ], 'strings' ]);
-      tests.args([ 'testMethod', {}, 'strings' ]);
-    });
-
-    choiceMsg = 'Two error messages should have been logged.';
-    errorMsg = "debug.args 'numbers' check failed";
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.args('testMethod', [ 1, 's' ], 'numbers');
-      tests.args('testMethod', [ 1, 5 ], 'numbers');
-      tests.args([ 'testMethod', [ 5 ], 'numbers' ]);
-      tests.args([ 'testMethod', {}, 'numbers' ]);
-    });
-
-    choiceMsg = 'Two error messages should have been logged.';
-    errorMsg = "debug.args 'booleans' check failed";
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.args('testMethod', [ 's' ], 'booleans');
-      tests.args('testMethod', [ false ], 'booleans');
-      tests.args([ 'testMethod', [ true ], 'booleans' ]);
-      tests.args([ 'testMethod', {}, 'booleans' ]);
-    });
-
-    choiceMsg = 'Two error messages should have been logged.';
-    errorMsg = "debug.args 'objects' check failed";
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.args('testMethod', [ {} ], 'objects');
-      tests.args('testMethod', [ 1 ], 'objects');
-      tests.args([ 'testMethod', [ {} ], 'objects' ]);
-      tests.args([ 'testMethod', {}, 'objects' ]);
-    });
-
-    choiceMsg = 'Two error messages should have been logged.';
-    errorMsg = "debug.args 'elems' check failed";
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      /** @type {HTMLElement} */
-      var elem;
-
-      elem = document.createElement('div');
-
-      tests.args('testMethod', [ {} ], 'elems');
-      tests.args('testMethod', [ elem ], 'elems');
-      tests.args([ 'testMethod', 5, 'elems' ]);
-      tests.args([ 'testMethod',  [ elem ], 'elems' ]);
-    });
-
-    choiceMsg = 'Two error messages should have been logged.';
-    errorMsg = "debug.args null check failed";
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.args('testMethod', 's', 'string');
-      tests.args('testMethod', null, 'string');
-      tests.args('testMethod', 1, 'string');
-      tests.args('testMethod', undefined, 'string');
-      tests.args([ 'testMethod', 's', 'string' ]);
-      tests.args([ 'testMethod', null, 'string' ]);
-    });
-
-    choiceMsg = 'Two error messages should have been logged.';
-    errorMsg = "debug.args '!' check failed";
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.args('testMethod', 's', '!string');
-      tests.args('testMethod', null, '!string');
-      tests.args([ 'testMethod', 's', '!string' ]);
-      tests.args([ 'testMethod', null, '!string' ]);
-    });
-
-    choiceMsg = 'Two error messages should have been logged.';
-    errorMsg = "debug.args '|' check failed";
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.args('testMethod', 's', 'string|number');
-      tests.args('testMethod', true, 'string|number');
-      tests.args([ 'testMethod', {}, 'string|number' ]);
-      tests.args([ 'testMethod', 1, 'string|number' ]);
-    });
-
-    choiceMsg = 'Two error messages should have been logged.';
-    errorMsg = "debug.args '=' check failed";
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.args('testMethod', {}, 'number=');
-      tests.args('testMethod', undefined, 'number=');
-      tests.args([ 'testMethod', 's', 'number=' ]);
-      tests.args([ 'testMethod', undefined, 'number=' ]);
     });
 
     // Save the results
@@ -736,6 +886,12 @@
     var errorMsg;
     /** @type {Object} */
     var tests;
+    /** @type {boolean} */
+    var pass;
+    /** @type {boolean} */
+    var fail;
+    /** @type {function(): boolean} */
+    var testFunction;
 
     results = new TestResults('Tests.checkFail');
     Object.freeze(results);
@@ -744,40 +900,42 @@
     tests = aIV.debug('Tests.checkFail');
 
     // Run the tests
-    choiceMsg = 'Two error messages should have been logged.';
-    errorMsg = 'debug.fail boolean evaluation failed';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.fail('testMethod', true, 'This log should NOT be shown.');
-      tests.fail('testMethod', false, 'This log should be shown.');
-      tests.fail([ 'testMethod', true, 'This log should NOT be shown.' ]);
-      tests.fail([ 'testMethod', false, 'This log should be shown.' ]);
-    });
+    pass = tests.fail('testMethod', true, 'Pass');
+    pass = pass && tests.fail([ 'testMethod', true, 'Pass' ]);
+    fail = tests.fail('testMethod', false, 'Fail');
+    fail = fail || tests.fail([ 'testMethod', false, 'Fail' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkFail failed: boolean check failed';
+      results.addError(errorMsg);
+    }
 
-    choiceMsg = 'Two error messages should have been logged.';
-    errorMsg = 'debug.fail number|object evaluation failed';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.fail('testMethod', 1, 'This log should NOT be shown.');
-      tests.fail('testMethod', 0, 'This log should be shown.');
-      tests.fail([ 'testMethod', {}, 'This log should NOT be shown.' ]);
-      tests.fail([ 'testMethod', null, 'This log should be shown.' ]);
-    });
+    pass = tests.fail('testMethod', 1, 'Pass');
+    pass = pass && tests.fail([ 'testMethod', {}, 'Pass' ]);
+    fail = tests.fail('testMethod', 0, 'Fail');
+    fail = fail || tests.fail([ 'testMethod', null, 'Fail' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkFail failed: conversion check failed';
+      results.addError(errorMsg);
+    }
 
-    choiceMsg = 'Two error messages should have been logged.';
-    errorMsg = 'debug.fail function evaluation failed';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      /** @return {boolean} */
-      var pass = function() {
-        return true;
-      };
-      /** @return {boolean} */
-      var fail = function() {
-        return false;
-      };
+    testFunction = function() { return true; };
+    pass = tests.fail('testMethod', testFunction(), 'Pass');
+    pass = pass && tests.fail([ 'testMethod', testFunction, 'Pass' ]);
+    testFunction = function() { return false; };
+    fail = tests.fail('testMethod', testFunction(), 'Fail');
+    fail = fail || tests.fail([ 'testMethod', testFunction, 'Fail' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkFail failed: function check failed';
+      results.addError(errorMsg);
+    }
 
-      tests.fail('testMethod', pass(), 'This log should NOT be shown.');
-      tests.fail('testMethod', fail(), 'This log should be shown.');
-      tests.fail([ 'testMethod', pass, 'This log should NOT be shown.' ]);
-      tests.fail([ 'testMethod', fail, 'This log should be shown.' ]);
+    // Check the log message
+    choiceMsg = 'Verify that the fail log message is correct. The following ';
+    choiceMsg += 'message should have been logged to the console:';
+    choiceMsg += ' "FAIL: Tests.checkFail.testMethod() | Test error."';
+    errorMsg = 'Tests.checkFail failed: Log message incorrect';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.fail('testMethod', false, 'Test error.');
     });
 
     // Save the results

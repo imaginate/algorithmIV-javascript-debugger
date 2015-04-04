@@ -2,11 +2,11 @@
 
 /**
  * -----------------------------------------------------------------------------
- * Algorithm IV Debug - Module (v1.0.0)
+ * Algorithm IV Debug - Module (v1.0.1)
  * -----------------------------------------------------------------------------
  * @file The module for creating an aIV Debug object instance.
  * @module aIVDebug
- * @version 1.0.0
+ * @version 1.0.1
  * @author Adam Smith ({@link adamsmith@youlum.com})
  * @copyright 2015 Adam A Smith ([github.com/imaginate]{@link https://github.com/imaginate})
  * @license The MIT License ([algorithmiv.com/docs/license]{@link http://algorithmiv.com/docs/license})
@@ -168,6 +168,95 @@
  * | The Public Variables for the Module                                       |
  * v ------------------------------------------------------------------------- v
                                                              module-vars.js */
+  /**
+   * ----------------------------------------------- 
+   * Public Variable (regexps)
+   * -----------------------------------------------
+   * @desc Regular expressions that are used multiple times
+   *   by the debugger (avoid re-creating multiple times).
+   * @type {Object<string, Object>}
+   */
+  var regexps = {};
+
+  /**
+   * ----------------------------------------------- 
+   * Public Variable (regexps.types)
+   * -----------------------------------------------
+   * @desc Regular expressions that contain types.
+   * @type {Object<string, RegExp>}
+   */
+  regexps.types = {};
+
+  /**
+   * ----------------------------------------------- 
+   * Public Variable (regexps.types.all)
+   * -----------------------------------------------
+   * @desc All the types available.
+   * @type {RegExp}
+   */
+  regexps.types.all = (function() {
+    /** @type {string} */
+    var types;
+
+    types = '' +
+    '^string$|^number$|^boolean$|^object$|^array$|^function$|^elem$|'          +
+    '^undefined$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems$|'   +
+    '^functions$|^stringMap$|^numberMap$|^booleanMap$|^objectMap$|^arrayMap$|' +
+    '^functionMap$|^elemMap$';
+
+    return new RegExp(types);
+  })();
+
+  /**
+   * ----------------------------------------------- 
+   * Public Variable (regexps.types.basic)
+   * -----------------------------------------------
+   * @desc The basic types available.
+   * @type {RegExp}
+   */
+  regexps.types.basic = (function() {
+    /** @type {string} */
+    var types;
+
+    types = '^string$|^number$|^boolean$|^object$|' +
+            '^function$|^elem$|^undefined$';
+
+    return new RegExp(types);
+  })();
+
+  /**
+   * ----------------------------------------------- 
+   * Public Variable (regexps.types.arrays)
+   * -----------------------------------------------
+   * @desc The array types available.
+   * @type {RegExp}
+   */
+  regexps.types.arrays = (function() {
+    /** @type {string} */
+    var types;
+
+    types = '^strings$|^numbers$|^booleans$|^objects$|' +
+            '^arrays$|^elems$|^functions$';
+
+    return new RegExp(types);
+  })();
+
+  /**
+   * ----------------------------------------------- 
+   * Public Variable (regexps.types.maps)
+   * -----------------------------------------------
+   * @desc The hash map types available.
+   * @type {RegExp}
+   */
+  regexps.types.maps = (function() {
+    /** @type {string} */
+    var types;
+
+    types = '^stringMap$|^numberMap$|^booleanMap$|^objectMap$|' +
+            '^arrayMap$|^functionMap$|^elemMap$';
+
+    return new RegExp(types);
+  })();
 
 
 /* -----------------------------------------------------------------------------
@@ -184,7 +273,7 @@
    */
   function getSubstituteString(val) {
 
-    if (typeof val === 'object') {
+    if ( checkType(val, 'object|function') ) {
       return '%O';
     }
 
@@ -239,12 +328,13 @@
    * Public Method (checkType)
    * ---------------------------------------------------
    * @param {val} val - The value to be evaluated.
-   * @param {string} type - The type to evaluate the value against.
-   *   The optional types are 'string', 'number', 'boolean', 'object',
-   *   'elem', 'undefined', 'array', 'strings', 'numbers', 'booleans',
-   *   'objects', and 'elems'. Use '|' as the separator for multiple
-   *    types (e.g.'strings|numbers'). Use '=' to indicate the value
-   *   is optional (e.g. 'array=' or 'string|number='). Use '!' to
+   * @param {string} type - The type to evaluate the value against. The optional
+   *   types are 'string', 'number', 'boolean', 'object', 'function', 'elem',
+   *   'undefined', 'array', 'strings', 'numbers', 'booleans', 'objects',
+   *   'functions', 'arrays', 'elems', 'stringMap', 'numberMap', 'booleanMap',
+   *   'objectMap', 'functionMap', 'arrayMap', and 'elemMap'. Use '|' as the
+   *   separator for multiple types (e.g.'strings|numbers'). Use '=' to indicate
+   *   the value is optional (e.g. 'array=' or 'string|number='). Use '!' to
    *   indicate that null is not a possibility (e.g. '!string').
    * @return {boolean} The evaluation result.
    */
@@ -253,7 +343,7 @@
     // Test the given arguments before executing
     var msg;
     if (typeof type !== 'string') {
-      msg = 'A checkType method\'s type was the wrong operand. ';
+      msg = 'A checkType method\'s type was the wrong data type. ';
       msg += 'It should be a string. The given type was a(n) %s.';
       console.error(msg, (typeof type));
       debugger;
@@ -261,30 +351,10 @@
     }
 
     /**
-     * @type {RegExp}
-     * @private
-     */
-    var arrays;
-    /**
-     * @type {RegExp}
-     * @private
-     */
-    var simple;
-    /**
-     * @type {RegExp}
-     * @private
-     */
-    var allTypes;
-    /**
      * @type {strings}
      * @private
      */
     var types;
-
-    arrays = /^array$|^strings$|^numbers$|^booleans$|^objects$|^elems$/;
-    simple = /^string$|^number$|^boolean$|^object$/;
-    allTypes = '^elem$|^undefined$|' + simple.source + '|' + arrays.source;
-    allTypes = new RegExp(allTypes);
 
     type = type.toLowerCase().replace(/[^a-z\|\=\!]/g, '');
 
@@ -300,7 +370,7 @@
       cleanType = type.replace(/\!|\=/g, '');
 
       // Ensure a correct type was given
-      if ( !allTypes.test(cleanType) ) {
+      if ( !regexps.types.all.test(cleanType) ) {
         msg = 'A checkType method\'s type was the wrong value. ';
         msg += 'See the docs for acceptable values. ';
         msg += 'The incorrect value was \'%s\'.';
@@ -326,14 +396,22 @@
         }
 
         // Evaluate array types
-        if ( arrays.test(cleanType) ) {
+        if ( regexps.types.arrays.test(cleanType) ) {
 
           if ( !Array.isArray(val) ) {
             return false;
           }
 
+          // Evaluate a basic array
           if (cleanType === 'array') {
             return true;
+          }
+
+          // Evaluate an array of arrays
+          if (cleanType === 'arrays') {
+            return val.every(function(subVal) {
+              return ( Array.isArray(subVal) );
+            });
           }
 
           // Evaluate an array of elements
@@ -355,9 +433,37 @@
           return (val instanceof HTMLElement);
         }
 
-        // Evaluate string, number, boolean, and object types
-        if ( simple.test(cleanType) ) {
+        // Evaluate string, number, boolean, object, and function types
+        if ( regexps.types.basic.test(cleanType) ) {
           return (typeof val === cleanType);
+        }
+
+        // Evaluate hash map types
+        if ( regexps.types.maps.test(cleanType) ) {
+
+          if (typeof val !== 'object') {
+            return false;
+          }
+
+          // Evaluate a hash map of arrays
+          if (cleanType === 'arrayMap') {
+            return Object.keys(val).every(function(subVal) {
+              return ( Array.isArray(val[ subVal ]) );
+            });
+          }
+
+          // Evaluate a hash map of elements
+          if (cleanType === 'elemMap') {
+            return Object.keys(val).every(function(subVal) {
+              return (val[ subVal ] instanceof HTMLElement);
+            });
+          }
+
+          // Evaluate each value of the hash map
+          cleanType = cleanType.replace(/Map$/, '');
+          return Object.keys(val).every(function(subVal) {
+            return (typeof val[ subVal ] === cleanType);
+          });
         }
       }
 
@@ -608,12 +714,12 @@
     if (!argTest) {
       console.error('A debug.start method\'s arg(s) was wrong.');
       debugger;
-      return;
+      return false;
     }
 
     // Check whether this method has been turned off for the current instance
     if ( !this.getType('start') ) {
-      return;
+      return false;
     }
 
     // Setup the varaibles
@@ -651,6 +757,8 @@
     if ( this.getBugger('start') ) {
       debugger;
     }
+
+    return true;
   };
 
   /**
@@ -701,12 +809,12 @@
     if(!argTest) {
       console.error('A debug.args method\'s arg(s) was wrong.');
       debugger;
-      return;
+      return false;
     }
 
     // Check whether this method has been turned off for the current instance
     if ( !this.getType('args') ) {
-      return;
+      return false;
     }
 
     // Setup the varaibles
@@ -728,18 +836,20 @@
 
     // If test passes end this method
     if (pass) {
-      return;
+      return false;
     }
 
     // Prepare and log the error message
     message = 'ARGS: ' + this.classTitle + methodName + '() | ';
-    message += 'Error: Incorrect argument operand.';
+    message += 'Error: Incorrect argument data type.';
     console.error(message);
 
     // Pause the script
     if ( this.getBugger('args') ) {
       debugger;
     }
+
+    return true;
   };
 
   /**
@@ -794,12 +904,12 @@
     if(!argTest) {
       console.error('A debug.fail method\'s arg(s) was wrong.');
       debugger;
-      return;
+      return false;
     }
 
     // Check whether this method has been turned off for the current instance
     if ( !this.getType('fail') ) {
-      return;
+      return false;
     }
 
     // Setup the varaibles
@@ -820,7 +930,7 @@
 
     // If test passes end this method
     if (pass) {
-      return;
+      return false;
     }
 
     // Prepare the message
@@ -842,6 +952,8 @@
     if ( this.getBugger('fail') ) {
       debugger;
     }
+
+    return true;
   };
 
   /**
@@ -894,12 +1006,12 @@
     if(!argTest) {
       console.error('A debug.group method\'s arg(s) was wrong.');
       debugger;
-      return;
+      return false;
     }
 
     // Check whether this method has been turned off for the current instance
     if ( !this.getType('group') ) {
-      return;
+      return false;
     }
 
     // Setup the varaibles
@@ -920,7 +1032,7 @@
     // Check for end group type
     if (openGroup === 'end') {
       console.groupEnd();
-      return;
+      return true;
     }
 
     // Ensure group type is correct
@@ -929,7 +1041,7 @@
       message += 'The supplied openGroup argument was \'%s\'.';
       console.error(message, openGroup);
       debugger;
-      return;
+      return false;
     }
 
     // Prepare the message
@@ -949,19 +1061,20 @@
       args = [ message ];
     }
 
-    // Check for collapsed group type
+    // Open a console group
     if (openGroup === 'coll') {
       console.groupCollapsed.apply(console, args);
-      return;
     }
-
-    // Open a console group
-    console.group.apply(console, args);
+    else {
+      console.group.apply(console, args);
+    }
 
     // Pause the script
     if ( this.getBugger('group') ) {
       debugger;
     }
+
+    return true;
   };
 
   /**
@@ -1009,12 +1122,12 @@
     if(!argTest) {
       console.error('A debug.state method\'s arg(s) was wrong.');
       debugger;
-      return;
+      return false;
     }
 
     // Check whether this method has been turned off for the current instance
     if ( !this.getType('state') ) {
-      return;
+      return false;
     }
 
     // Setup the varaibles
@@ -1041,6 +1154,8 @@
     if ( this.getBugger('state') ) {
       debugger;
     }
+
+    return true;
   };
 
   /**
@@ -1085,12 +1200,12 @@
     if(!argTest) {
       console.error('A debug.misc method\'s arg(s) was wrong.');
       debugger;
-      return;
+      return false;
     }
 
     // Check whether this method has been turned off for the current instance
     if ( !this.getType('misc') ) {
-      return;
+      return false;
     }
 
     // Setup the varaibles
@@ -1124,6 +1239,8 @@
     if ( this.getBugger('misc') ) {
       debugger;
     }
+
+    return true;
   };
 
   /**
@@ -1165,7 +1282,7 @@
     if (!logCat) {
       console.error('A debug.turnOn method received no args.');
       debugger;
-      return;
+      return false;
     }
 
     // Setup the variables
@@ -1181,9 +1298,9 @@
 
     // Make sure a value still exists to test
     if (!logCat && (!args || !checkType(args, 'strings'))) {
-      console.error('A debug.turnOn method\'s arg(s) was the wrong operand.');
+      console.error('A debug.turnOn method\'s arg(s) was the wrong data type.');
       debugger;
-      return;
+      return false;
     }
 
     // Check for string with multiple categories
@@ -1221,7 +1338,10 @@
         'to turn on. The incorrect value(s) follow:' + errors;
       console.error(errors);
       debugger;
+      return false;
     }
+
+    return true;
   };
 
   /**
@@ -1263,7 +1383,7 @@
     if (!logCat) {
       console.error('A debug.turnOff method received no args.');
       debugger;
-      return;
+      return false;
     }
 
     // Setup the variables
@@ -1279,9 +1399,9 @@
 
     // Make sure a value still exists to test
     if (!logCat && (!args || !checkType(args, 'strings'))) {
-      console.error('A debug.turnOff method\'s arg(s) was the wrong operand.');
+      console.error('A debug.turnOff method\'s arg(s) was the wrong data type.');
       debugger;
-      return;
+      return false;
     }
 
     // Check for string with multiple categories
@@ -1319,7 +1439,10 @@
         'to turn off. The incorrect value(s) follow:' + errors;
       console.error(errors);
       debugger;
+      return false;
     }
+
+    return true;
   };
 
   /**
@@ -1361,7 +1484,7 @@
     if (!logCat) {
       console.error('A debug.turnOnDebugger method received no args.');
       debugger;
-      return;
+      return false;
     }
 
     // Setup the variables
@@ -1377,10 +1500,11 @@
 
     // Make sure a value still exists to test
     if (!logCat && (!args || !checkType(args, 'strings'))) {
-      errors = 'A debug.turnOnDebugger method\'s arg(s) was the wrong operand.';
+      errors = 'A debug.turnOnDebugger method\'s arg(s) was ';
+      errors += 'the wrong data type.';
       console.error(errors);
       debugger;
-      return;
+      return false;
     }
 
     // Check for string with multiple categories
@@ -1418,7 +1542,10 @@
         'category to turn on. The incorrect value(s) follow:' + errors;
       console.error(errors);
       debugger;
+      return false;
     }
+
+    return true;
   };
 
   /**
@@ -1460,7 +1587,7 @@
     if (!logCat) {
       console.error('A debug.turnOffDebugger method received no args.');
       debugger;
-      return;
+      return false;
     }
 
     // Setup the variables
@@ -1477,10 +1604,10 @@
     // Make sure a value still exists to test
     if (!logCat && (!args || !checkType(args, 'strings'))) {
       errors = 'A debug.turnOffDebugger method\'s arg(s) was ';
-      errors += 'the wrong operand.';
+      errors += 'the wrong data type.';
       console.error(errors);
       debugger;
-      return;
+      return false;
     }
 
     // Check for string with multiple categories
@@ -1518,8 +1645,132 @@
         'category to turn off. The incorrect value(s) follow:' + errors;
       console.error(errors);
       debugger;
+      return false;
     }
+
+    return false;
   };
+
+
+/* -----------------------------------------------------------------------------
+ * | The Polyfill Methods                                                      |
+ * v ------------------------------------------------------------------------- v
+                                                        polyfill-methods.js */
+  if (!Object.keys) {
+    /**
+     * ---------------------------------------------
+     * Public Method (Object.keys)
+     * ---------------------------------------------
+     * @desc A polyfill for the native method. For method details
+     *   [see MDN]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys}
+     * @param {!Object} obj
+     * @return {vals}
+     */
+    Object.keys = (function(obj) {
+
+      /** @type {Object} */
+      var testObj;
+      /** @type {boolean} */
+      var enumBug;
+      /** @type {strings} */
+      var notEnum;
+
+      testObj = { toString: null };
+      enumBug = !( testObj.propertyIsEnumerable('toString') );
+      notEnum = [
+        'toString',
+        'toLocaleString',
+        'valueOf',
+        'hasOwnProperty',
+        'isPrototypeOf',
+        'propertyIsEnumerable',
+        'constructor'
+      ];
+
+      return function(obj) {
+
+        polyfill.debug.start('Object.keys', obj);
+        polyfill.debug.args('Object.keys', obj, '!object|function');
+
+        if (typeof obj !== 'object' && typeof obj !== 'function') {
+          throw new TypeError('Object.keys only accepts objects.');
+          return;
+        }
+
+        if (obj === null) {
+          throw new TypeError('Object.keys does not accept null types.');
+          return;
+        }
+
+        /** @type {string} */
+        var prop;
+        /** @type {number} */
+        var i;
+        /** @type {vals} */
+        var result;
+
+        result = [];
+
+        for (prop in obj) {
+          if ( obj.hasOwnProperty(prop) ) {
+            result.push(prop);
+          }
+        }
+
+        if (enumBug) {
+          i = notEnum.length;
+          while (i--) {
+            if ( obj.hasOwnProperty(notEnum[i]) ) {
+              result.push(notEnum[i]);
+            }
+          }
+        }
+
+        return result;
+      };
+    })();
+  }
+
+  if (!Object.freeze) {
+    /**
+     * ---------------------------------------------
+     * Public Method (Object.freeze)
+     * ---------------------------------------------
+     * @desc A polyfill for the native method. For method details
+     *   [see MDN]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze}
+     * @param {Object} obj
+     * @return {Object}
+     */
+    Object.freeze = function(obj) {
+
+      polyfill.debug.start('Object.freeze', obj);
+      polyfill.debug.args('Object.freeze', obj, 'object|function');
+
+      if (typeof obj !== 'object' && typeof obj !== 'function') {
+        throw new TypeError('Object.freeze only accepts objects.');
+        return;
+      }
+
+      return obj;
+    };
+  }
+
+  // Fix Object.freeze function param bug
+  try {
+    Object.freeze(function() {});
+  }
+  catch (e) {
+    Object.freeze = (function(originalFreeze) {
+      return function(obj) {
+        if (typeof obj === 'function') {
+          return obj;
+        }
+        else {
+          return originalFreeze(obj);
+        }
+      };
+    }(Object.freeze));
+  }
 
 
 /* -----------------------------------------------------------------------------
