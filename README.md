@@ -185,7 +185,7 @@ example.test1.report();
 example.test2.report();
 ```
 ####<a name="output"></a>The Example's Console Outputs
-![Example Console Logs](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/example/console-logs-screenshot.jpg)
+<img src="https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/example/console-logs-screenshot.jpg" alt="Screenshot of the Example's Console Logs" />
 
 --
 ![Algorithm IV Logo](http://www.algorithmiv.com/images/aIV-logo.png)
