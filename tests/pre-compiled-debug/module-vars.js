@@ -40,8 +40,8 @@
     types = '' +
     '^string$|^number$|^boolean$|^object$|^array$|^function$|^elem$|'          +
     '^undefined$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems$|'   +
-    '^functions$|^stringMap$|^numberMap$|^booleanMap$|^objectMap$|^arrayMap$|' +
-    '^functionMap$|^elemMap$';
+    '^functions$|^stringmap$|^numbermap$|^booleanmap$|^objectmap$|^arraymap$|' +
+    '^functionmap$|^elemmap$';
 
     return new RegExp(types);
   })();
@@ -91,8 +91,8 @@
     /** @type {string} */
     var types;
 
-    types = '^stringMap$|^numberMap$|^booleanMap$|^objectMap$|' +
-            '^arrayMap$|^functionMap$|^elemMap$';
+    types = '^stringmap$|^numbermap$|^booleanmap$|^objectmap$|' +
+            '^arraymap$|^functionmap$|^elemmap$';
 
     return new RegExp(types);
   })();

@@ -239,8 +239,8 @@
     types = '' +
     '^string$|^number$|^boolean$|^object$|^array$|^function$|^elem$|'          +
     '^undefined$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems$|'   +
-    '^functions$|^stringMap$|^numberMap$|^booleanMap$|^objectMap$|^arrayMap$|' +
-    '^functionMap$|^elemMap$';
+    '^functions$|^stringmap$|^numbermap$|^booleanmap$|^objectmap$|^arraymap$|' +
+    '^functionmap$|^elemmap$';
 
     return new RegExp(types);
   })();
@@ -290,8 +290,8 @@
     /** @type {string} */
     var types;
 
-    types = '^stringMap$|^numberMap$|^booleanMap$|^objectMap$|' +
-            '^arrayMap$|^functionMap$|^elemMap$';
+    types = '^stringmap$|^numbermap$|^booleanmap$|^objectmap$|' +
+            '^arraymap$|^functionmap$|^elemmap$';
 
     return new RegExp(types);
   })();
@@ -490,21 +490,21 @@
           }
 
           // Evaluate a hash map of arrays
-          if (cleanType === 'arrayMap') {
+          if (cleanType === 'arraymap') {
             return Object.keys(val).every(function(subVal) {
               return ( Array.isArray(val[ subVal ]) );
             });
           }
 
           // Evaluate a hash map of elements
-          if (cleanType === 'elemMap') {
+          if (cleanType === 'elemmap') {
             return Object.keys(val).every(function(subVal) {
               return (val[ subVal ] instanceof HTMLElement);
             });
           }
 
           // Evaluate each value of the hash map
-          cleanType = cleanType.replace(/Map$/, '');
+          cleanType = cleanType.replace(/map$/, '');
           return Object.keys(val).every(function(subVal) {
             return (typeof val[ subVal ] === cleanType);
           });
