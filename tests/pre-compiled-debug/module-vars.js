@@ -21,7 +21,7 @@
    */
   var defaultArgs = {
     turnOffTypes : '',
-    turnOnBuggers: ''
+    turnOnBuggers: 'args fail'
   };
 
   /**
