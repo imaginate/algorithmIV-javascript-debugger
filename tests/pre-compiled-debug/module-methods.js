@@ -34,7 +34,9 @@
     // Test the given arguments before executing
     if (typeof msg !== 'string' || !Array.isArray(vals)) {
       console.error('An insertSubstituteStrings method\'s arg(s) was wrong.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return '';
     }
 
@@ -81,7 +83,9 @@
       msg = 'A checkType method\'s type was the wrong data type. ';
       msg += 'It should be a string. The given type was a(n) %s.';
       console.error(msg, (typeof type));
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -110,7 +114,9 @@
         msg += 'See the docs for acceptable values. ';
         msg += 'The incorrect value was \'%s\'.';
         console.error(msg, type);
-        debugger;
+        if (debuggers) {
+          debugger;
+        }
         return false;
       }
 

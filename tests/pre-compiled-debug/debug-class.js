@@ -235,7 +235,9 @@
     );
     if (!argTest) {
       console.error('A debug.start method\'s arg(s) was wrong.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -330,7 +332,9 @@
     );
     if(!argTest) {
       console.error('A debug.args method\'s arg(s) was wrong.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -425,7 +429,9 @@
     );
     if(!argTest) {
       console.error('A debug.fail method\'s arg(s) was wrong.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -527,7 +533,9 @@
     );
     if(!argTest) {
       console.error('A debug.group method\'s arg(s) was wrong.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -562,7 +570,9 @@
       message = 'A debug.group method\'s openGroup arg was wrong. ';
       message += 'The supplied openGroup argument was \'%s\'.';
       console.error(message, openGroup);
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -643,7 +653,9 @@
     );
     if(!argTest) {
       console.error('A debug.state method\'s arg(s) was wrong.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -721,7 +733,9 @@
     );
     if(!argTest) {
       console.error('A debug.misc method\'s arg(s) was wrong.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -803,7 +817,9 @@
     // Ensure arguments are supplied
     if (!logCat) {
       console.error('A debug.turnOn method received no args.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -821,7 +837,9 @@
     // Make sure a value still exists to test
     if (!logCat && (!args || !checkType(args, 'strings'))) {
       console.error('A debug.turnOn method\'s arg(s) was the wrong data type.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -859,7 +877,9 @@
         'A debug.turnOn method was given an invalid debug category ' +
         'to turn on. The incorrect value(s) follow:' + errors;
       console.error(errors);
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -904,7 +924,9 @@
     // Ensure arguments are supplied
     if (!logCat) {
       console.error('A debug.turnOff method received no args.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -922,7 +944,9 @@
     // Make sure a value still exists to test
     if (!logCat && (!args || !checkType(args, 'strings'))) {
       console.error('A debug.turnOff method\'s arg(s) was the wrong data type.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -960,7 +984,9 @@
         'A debug.turnOff method was given an invalid debug category ' +
         'to turn off. The incorrect value(s) follow:' + errors;
       console.error(errors);
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -1005,7 +1031,9 @@
     // Ensure arguments are supplied
     if (!logCat) {
       console.error('A debug.turnOnDebugger method received no args.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -1025,7 +1053,9 @@
       errors = 'A debug.turnOnDebugger method\'s arg(s) was ';
       errors += 'the wrong data type.';
       console.error(errors);
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -1063,7 +1093,9 @@
         'A debug.turnOnDebugger method was given an invalid debug ' +
         'category to turn on. The incorrect value(s) follow:' + errors;
       console.error(errors);
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -1108,7 +1140,9 @@
     // Ensure arguments are supplied
     if (!logCat) {
       console.error('A debug.turnOffDebugger method received no args.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -1128,7 +1162,9 @@
       errors = 'A debug.turnOffDebugger method\'s arg(s) was ';
       errors += 'the wrong data type.';
       console.error(errors);
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -1166,7 +1202,9 @@
         'A debug.turnOffDebugger method was given an invalid debug ' +
         'category to turn off. The incorrect value(s) follow:' + errors;
       console.error(errors);
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 

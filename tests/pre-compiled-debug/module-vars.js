@@ -1,5 +1,14 @@
   /**
    * ----------------------------------------------- 
+   * Public Variable (debuggers)
+   * -----------------------------------------------
+   * @desc Controls whether debuggers are included with error logs.
+   * @type {boolean}
+   */
+  var debuggers = true;
+
+  /**
+   * ----------------------------------------------- 
    * Public Variable (regexps)
    * -----------------------------------------------
    * @desc Regular expressions that are used multiple times
