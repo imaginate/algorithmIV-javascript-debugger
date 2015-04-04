@@ -1228,7 +1228,7 @@
     // Reset the config before continuing
     aIV.debug.setConfig({
       turnOffTypes   : '',
-      turnOnDebuggers: ''
+      turnOnDebuggers: 'none'
     });
 
     // Save the results
