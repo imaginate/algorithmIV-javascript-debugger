@@ -333,6 +333,8 @@
     var fail;
     /** @type {HTMLElement} */
     var elem;
+    /** @type {Object} */
+    var testMap;
 
     elem = document.createElement('div');
 
@@ -498,21 +500,89 @@
       results.addError(errorMsg);
     }
 
-    //// MAPS HERE ///////////////////////////////////////////////
-
-    //  Map check
+    // String Map check
     testMap = { slot1: 'str', slot2: 'str' };
-    pass = tests.args('testMethod', testMap, 'Map');
-    pass = pass && tests.args([ 'testMethod',  {}, 'Map' ]);
-    testMap = { slot1: 'str', slot2: 'str' };
-    fail = tests.args('testMethod', testMap, 'Map');
-    fail = fail || tests.args([ 'testMethod', 5, 'Map' ]);
+    pass = tests.args('testMethod', testMap, 'stringMap');
+    pass = pass && tests.args([ 'testMethod',  {}, 'stringMap' ]);
+    testMap = { slot1: 'str', slot2: 1 };
+    fail = tests.args('testMethod', testMap, 'stringMap');
+    fail = fail || tests.args([ 'testMethod', 5, 'stringMap' ]);
     if (pass || !fail) {
-      errorMsg = 'Tests.checkArgs failed: Map check failed';
+      errorMsg = 'Tests.checkArgs failed: stringMap check failed';
       results.addError(errorMsg);
     }
 
-    //////////////////////////////////////////////////////////////
+    // Number Map check
+    testMap = { slot1: 1, slot2: 5 };
+    pass = tests.args('testMethod', testMap, 'numberMap');
+    pass = pass && tests.args([ 'testMethod',  {}, 'numberMap' ]);
+    testMap = { slot1: 5, slot2: 'str' };
+    fail = tests.args('testMethod', testMap, 'numberMap');
+    fail = fail || tests.args([ 'testMethod', 5, 'numberMap' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: numberMap check failed';
+      results.addError(errorMsg);
+    }
+
+    // Boolean Map check
+    testMap = { slot1: false, slot2: true };
+    pass = tests.args('testMethod', testMap, 'booleanMap');
+    pass = pass && tests.args([ 'testMethod',  {}, 'booleanMap' ]);
+    testMap = { slot1: true, slot2: 'str' };
+    fail = tests.args('testMethod', testMap, 'booleanMap');
+    fail = fail || tests.args([ 'testMethod', 5, 'booleanMap' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: booleanMap check failed';
+      results.addError(errorMsg);
+    }
+
+    // Object Map check
+    testMap = { slot1: {}, slot2: {} };
+    pass = tests.args('testMethod', testMap, 'objectMap');
+    pass = pass && tests.args([ 'testMethod',  {}, 'objectMap' ]);
+    testMap = { slot1: {}, slot2: 'str' };
+    fail = tests.args('testMethod', testMap, 'objectMap');
+    fail = fail || tests.args([ 'testMethod', 5, 'objectMap' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: objectMap check failed';
+      results.addError(errorMsg);
+    }
+
+    // Function Map check
+    testMap = { slot1: function(){}, slot2: function(){} };
+    pass = tests.args('testMethod', testMap, 'functionMap');
+    pass = pass && tests.args([ 'testMethod',  {}, 'functionMap' ]);
+    testMap = { slot1: {}, slot2: function(){} };
+    fail = tests.args('testMethod', testMap, 'functionMap');
+    fail = fail || tests.args([ 'testMethod', 5, 'functionMap' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: functionMap check failed';
+      results.addError(errorMsg);
+    }
+
+    // Array Map check
+    testMap = { slot1: [ 1 ], slot2: [] };
+    pass = tests.args('testMethod', testMap, 'arrayMap');
+    pass = pass && tests.args([ 'testMethod',  {}, 'arrayMap' ]);
+    testMap = { slot1: {}, slot2: [] };
+    fail = tests.args('testMethod', testMap, 'arrayMap');
+    fail = fail || tests.args([ 'testMethod', 5, 'arrayMap' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: arrayMap check failed';
+      results.addError(errorMsg);
+    }
+
+    // Element Map check
+    testMap = { slot1: elem, slot2: elem };
+    pass = tests.args('testMethod', testMap, 'elemMap');
+    pass = pass && tests.args([ 'testMethod',  {}, 'elemMap' ]);
+    testMap = { slot1: {}, slot2: elem };
+    fail = tests.args('testMethod', testMap, 'elemMap');
+    fail = fail || tests.args([ 'testMethod', 5, 'elemMap' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: elemMap check failed';
+      results.addError(errorMsg);
+    }
 
     // Null check
     pass = tests.args('testMethod', 's', 'string');
