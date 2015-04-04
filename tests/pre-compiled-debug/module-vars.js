@@ -74,8 +74,8 @@
     /** @type {string} */
     var types;
 
-    types = '^strings$|^numbers$|^booleans$|^objects$|' +
-            '^arrays$|^elems$|^functions$';
+    types = '^array$|^strings$|^numbers$|^booleans$|' +
+            '^objects$|^arrays$|^elems$|^functions$';
 
     return new RegExp(types);
   })();
