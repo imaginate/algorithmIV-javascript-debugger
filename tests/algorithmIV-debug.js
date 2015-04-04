@@ -66,12 +66,7 @@
    * return {Debug}
    * @global
    */
-  aIV.debug = function (settings) {
-    if (typeof settings !== 'string' && typeof settings !== 'object') {
-      settings = null;
-    }
-    return debug.newDebug(settings);
-  };
+  aIV.debug = debug.newDebug;
 
 })(window, (function() {
   "use strict"; 
@@ -106,7 +101,7 @@
    * Public Method (_return.newDebug)
    * -----------------------------------------------------
    * @desc Returns an instance of Debug.
-   * @param {?(string|Object)} settings - The Debug instance's settings.
+   * @param {(string|Object)} settings - The Debug instance's settings.
    */
   _return.newDebug = function(settings) {
 
@@ -125,6 +120,10 @@
      * @private
      */
     var turnOnBuggers;
+
+    if (typeof settings !== 'string' && typeof settings !== 'object') {
+      settings = null;
+    }
 
     // Setup classTitle
     if (typeof settings === 'string') {
@@ -163,11 +162,50 @@
     return _instances[classTitle];
   };
 
+  /**
+   * -----------------------------------------------------
+   * Public Method (_return.newDebug.config)
+   * -----------------------------------------------------
+   * @desc Allows you to configure settings for all of the debug instances
+   *   called in the app.
+   * @param {(string|Object)} settings - The Debug module's settings.
+   */
+  _return.newDebug.config = function(settings) {
+
+    /** @type {string} */
+    var msg;
+
+    if (typeof settings !== 'object') {
+      msg = 'The settings given to aIV.debug.config were incorrrect. They ';
+      msg += 'should be an object. They were a(n) %s.';
+      console.error(msg, (typeof settings));
+      if (debuggers) {
+        debugger;
+      }
+      return;
+    }
+
+    // Configure debuggers
+    if (settings.hasOwnProperrorDebuggers &&
+        typeof settings.errorDebuggers === 'boolean') {
+      debuggers = settings.errorDebuggers;
+    }
+  };
+
 
 /* -----------------------------------------------------------------------------
  * | The Public Variables for the Module                                       |
  * v ------------------------------------------------------------------------- v
                                                              module-vars.js */
+  /**
+   * ----------------------------------------------- 
+   * Public Variable (debuggers)
+   * -----------------------------------------------
+   * @desc Controls whether debuggers are included with error logs.
+   * @type {boolean}
+   */
+  var debuggers = true;
+
   /**
    * ----------------------------------------------- 
    * Public Variable (regexps)
@@ -299,7 +337,9 @@
     // Test the given arguments before executing
     if (typeof msg !== 'string' || !Array.isArray(vals)) {
       console.error('An insertSubstituteStrings method\'s arg(s) was wrong.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return '';
     }
 
@@ -346,7 +386,9 @@
       msg = 'A checkType method\'s type was the wrong data type. ';
       msg += 'It should be a string. The given type was a(n) %s.';
       console.error(msg, (typeof type));
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -375,7 +417,9 @@
         msg += 'See the docs for acceptable values. ';
         msg += 'The incorrect value was \'%s\'.';
         console.error(msg, type);
-        debugger;
+        if (debuggers) {
+          debugger;
+        }
         return false;
       }
 
@@ -713,7 +757,9 @@
     );
     if (!argTest) {
       console.error('A debug.start method\'s arg(s) was wrong.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -808,7 +854,9 @@
     );
     if(!argTest) {
       console.error('A debug.args method\'s arg(s) was wrong.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -903,7 +951,9 @@
     );
     if(!argTest) {
       console.error('A debug.fail method\'s arg(s) was wrong.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -1005,7 +1055,9 @@
     );
     if(!argTest) {
       console.error('A debug.group method\'s arg(s) was wrong.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -1040,7 +1092,9 @@
       message = 'A debug.group method\'s openGroup arg was wrong. ';
       message += 'The supplied openGroup argument was \'%s\'.';
       console.error(message, openGroup);
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -1121,7 +1175,9 @@
     );
     if(!argTest) {
       console.error('A debug.state method\'s arg(s) was wrong.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -1199,7 +1255,9 @@
     );
     if(!argTest) {
       console.error('A debug.misc method\'s arg(s) was wrong.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -1281,7 +1339,9 @@
     // Ensure arguments are supplied
     if (!logCat) {
       console.error('A debug.turnOn method received no args.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -1299,7 +1359,9 @@
     // Make sure a value still exists to test
     if (!logCat && (!args || !checkType(args, 'strings'))) {
       console.error('A debug.turnOn method\'s arg(s) was the wrong data type.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -1337,7 +1399,9 @@
         'A debug.turnOn method was given an invalid debug category ' +
         'to turn on. The incorrect value(s) follow:' + errors;
       console.error(errors);
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -1382,7 +1446,9 @@
     // Ensure arguments are supplied
     if (!logCat) {
       console.error('A debug.turnOff method received no args.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -1400,7 +1466,9 @@
     // Make sure a value still exists to test
     if (!logCat && (!args || !checkType(args, 'strings'))) {
       console.error('A debug.turnOff method\'s arg(s) was the wrong data type.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -1438,7 +1506,9 @@
         'A debug.turnOff method was given an invalid debug category ' +
         'to turn off. The incorrect value(s) follow:' + errors;
       console.error(errors);
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -1483,7 +1553,9 @@
     // Ensure arguments are supplied
     if (!logCat) {
       console.error('A debug.turnOnDebugger method received no args.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -1503,7 +1575,9 @@
       errors = 'A debug.turnOnDebugger method\'s arg(s) was ';
       errors += 'the wrong data type.';
       console.error(errors);
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -1541,7 +1615,9 @@
         'A debug.turnOnDebugger method was given an invalid debug ' +
         'category to turn on. The incorrect value(s) follow:' + errors;
       console.error(errors);
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -1586,7 +1662,9 @@
     // Ensure arguments are supplied
     if (!logCat) {
       console.error('A debug.turnOffDebugger method received no args.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -1606,7 +1684,9 @@
       errors = 'A debug.turnOffDebugger method\'s arg(s) was ';
       errors += 'the wrong data type.';
       console.error(errors);
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
@@ -1644,7 +1724,9 @@
         'A debug.turnOffDebugger method was given an invalid debug ' +
         'category to turn off. The incorrect value(s) follow:' + errors;
       console.error(errors);
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
