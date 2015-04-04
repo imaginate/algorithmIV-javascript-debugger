@@ -51,7 +51,10 @@
   App.prototype.runTests = function() {
 
     // Turn off the debugger instances for errors
-    aIV.debug.setConfig({ errorDebuggers: false });
+    aIV.debug.setConfig({
+      errorDebuggers : false,
+      turnOnDebuggers: 'none'
+    });
 
     // Clear the console
     console.clear();
