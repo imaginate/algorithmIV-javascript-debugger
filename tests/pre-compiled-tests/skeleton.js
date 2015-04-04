@@ -1,10 +1,10 @@
 /**
  * -----------------------------------------------------------------------------
- * Algorithm IV Debug Tests - Module (v1.0.0)
+ * Algorithm IV Debug Tests - Module (v1.0.1)
  * -----------------------------------------------------------------------------
  * @file The module for testing the aIV debug module.
  * @module aIVDebugTests
- * @version 1.0.0
+ * @version 1.0.1
  * @author Adam Smith ({@link adamsmith@youlum.com})
  * @copyright 2015 Adam A Smith ([github.com/imaginate]{@link https://github.com/imaginate})
  * @license The MIT License ([algorithmiv.com/docs/license]{@link http://algorithmiv.com/docs/license})
