@@ -81,6 +81,9 @@
     Tests.checkTurnOnDebugger();
     Tests.checkTurnOffDebugger();
 
+    // Check the config setter
+    Tests.checkSetConfig();
+
     // Run the choices and record the results
     this.runChoices();
   };
