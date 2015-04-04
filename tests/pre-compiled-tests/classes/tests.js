@@ -626,7 +626,7 @@
       results.addError(errorMsg);
     }
 
-    // Log message looks correct check
+    // Check the log message
     choiceMsg = 'Verify that the args log message is correct. The following ';
     choiceMsg += 'message should have been logged to the console:';
     choiceMsg += ' "ARGS: Tests.checkArgs.testMethod() | Error: Incorrect';
@@ -657,6 +657,12 @@
     var errorMsg;
     /** @type {Object} */
     var tests;
+    /** @type {boolean} */
+    var pass;
+    /** @type {boolean} */
+    var fail;
+    /** @type {function(): boolean} */
+    var testFunction;
 
     results = new TestResults('Tests.checkFail');
     Object.freeze(results);
@@ -665,40 +671,42 @@
     tests = aIV.debug('Tests.checkFail');
 
     // Run the tests
-    choiceMsg = 'Two error messages should have been logged.';
-    errorMsg = 'debug.fail boolean evaluation failed';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.fail('testMethod', true, 'This log should NOT be shown.');
-      tests.fail('testMethod', false, 'This log should be shown.');
-      tests.fail([ 'testMethod', true, 'This log should NOT be shown.' ]);
-      tests.fail([ 'testMethod', false, 'This log should be shown.' ]);
-    });
+    pass = tests.fail('testMethod', true, 'Pass');
+    pass = pass && tests.fail([ 'testMethod', true, 'Pass' ]);
+    fail = tests.fail('testMethod', false, 'Fail');
+    fail = fail || tests.fail([ 'testMethod', false, 'Fail' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkFail failed: boolean check failed';
+      results.addError(errorMsg);
+    }
 
-    choiceMsg = 'Two error messages should have been logged.';
-    errorMsg = 'debug.fail number|object evaluation failed';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.fail('testMethod', 1, 'This log should NOT be shown.');
-      tests.fail('testMethod', 0, 'This log should be shown.');
-      tests.fail([ 'testMethod', {}, 'This log should NOT be shown.' ]);
-      tests.fail([ 'testMethod', null, 'This log should be shown.' ]);
-    });
+    pass = tests.fail('testMethod', 1, 'Pass');
+    pass = pass && tests.fail([ 'testMethod', {}, 'Pass' ]);
+    fail = tests.fail('testMethod', 0, 'Fail');
+    fail = fail || tests.fail([ 'testMethod', null, 'Fail' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkFail failed: conversion check failed';
+      results.addError(errorMsg);
+    }
 
-    choiceMsg = 'Two error messages should have been logged.';
-    errorMsg = 'debug.fail function evaluation failed';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      /** @return {boolean} */
-      var pass = function() {
-        return true;
-      };
-      /** @return {boolean} */
-      var fail = function() {
-        return false;
-      };
+    testFunction = function() { return true; };
+    pass = tests.fail('testMethod', testFunction(), 'Pass');
+    pass = pass && tests.fail([ 'testMethod', testFunction, 'Pass' ]);
+    testFunction = function() { return false; };
+    fail = tests.fail('testMethod', testFunction(), 'Fail');
+    fail = fail || tests.fail([ 'testMethod', testFunction, 'Fail' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkFail failed: function check failed';
+      results.addError(errorMsg);
+    }
 
-      tests.fail('testMethod', pass(), 'This log should NOT be shown.');
-      tests.fail('testMethod', fail(), 'This log should be shown.');
-      tests.fail([ 'testMethod', pass, 'This log should NOT be shown.' ]);
-      tests.fail([ 'testMethod', fail, 'This log should be shown.' ]);
+    // Check the log message
+    choiceMsg = 'Verify that the fail log message is correct. The following ';
+    choiceMsg += 'message should have been logged to the console:';
+    choiceMsg += ' "FAIL: Tests.checkFail.testMethod() | Test error."';
+    errorMsg = 'Tests.checkFail failed: Log message incorrect';
+    app.addChoice(choiceMsg, results, errorMsg, function() {
+      tests.fail('testMethod', false, 'Test error.');
     });
 
     // Save the results
