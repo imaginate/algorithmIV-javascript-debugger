@@ -790,6 +790,8 @@
     var errorMsg;
     /** @type {Object} */
     var tests;
+    /** @type {boolean} */
+    var pass;
 
     results = new TestResults('Tests.checkState');
     Object.freeze(results);
@@ -798,16 +800,22 @@
     tests = aIV.debug('Tests.checkState');
 
     // Run the tests
-    choiceMsg = 'The following error should have been logged: ';
-    choiceMsg += '"A debug.state method\'s arg(s) was wrong.".';
-    errorMsg = 'Tests.checkState failed: Argument checks failed to catch error';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.state('testMethod');
-    });
+    pass = tests.state('testMethod');
+    if (pass) {
+      errorMsg = 'Tests.checkState failed: Argument checks failed to catch error';
+      results.addError(errorMsg);
+    }
 
-    choiceMsg = 'The following message should have been logged to the console:';
-    choiceMsg += '"STATE: Tests.checkState.testMethod() |';
-    choiceMsg += ' number= 5, object= jsObjRef"';
+    pass = tests.state('testMethod', 'number= $$, object= $$', 5, [ 5 ]);
+    if (!pass) {
+      errorMsg = 'Tests.checkState failed: Did not log when it should have';
+      results.addError(errorMsg);
+    }
+
+    // Check the log message
+    choiceMsg = 'Verify that the state log message is correct. The following';
+    choiceMsg += ' message should have been logged to the console: "STATE:';
+    choiceMsg += ' Tests.checkState.testMethod() | number= 5, object= jsObjRef"';
     errorMsg = 'Tests.checkState failed: Message was logged incorrectly';
     app.addChoice(choiceMsg, results, errorMsg, function() {
       tests.state('testMethod', 'number= $$, object= $$', 5, [ 5 ]);
@@ -834,6 +842,8 @@
     var errorMsg;
     /** @type {Object} */
     var tests;
+    /** @type {boolean} */
+    var pass;
 
     results = new TestResults('Tests.checkMisc');
     Object.freeze(results);
@@ -842,17 +852,23 @@
     tests = aIV.debug('Tests.checkMisc');
 
     // Run the tests
-    choiceMsg = 'The following message should have been logged to the console:';
-    choiceMsg += '"MISC: Tests.checkMisc.testMethod() | Lorem ipsum!"';
-    errorMsg = 'debug.misc failed to log a basic message';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.misc('testMethod', 'Lorem ipsum!');
-    });
+    pass = tests.misc('testMethod');
+    if (pass) {
+      errorMsg = 'Tests.checkMisc failed: Argument checks failed to catch error';
+      results.addError(errorMsg);
+    }
 
-    choiceMsg = 'The following message should have been logged to the console:';
-    choiceMsg += '"MISC: Tests.checkMisc.testMethod() |';
-    choiceMsg += ' Args: number= 5, object= jsObjRef"';
-    errorMsg = 'debug.state failed to add the vars correctly to the message';
+    pass = tests.misc('testMethod', 'The log message.');
+    if (!pass) {
+      errorMsg = 'Tests.checkMisc failed: Did not log when it should have';
+      results.addError(errorMsg);
+    }
+
+    // Check the log message
+    choiceMsg = 'Verify that the misc log message is correct. The following';
+    choiceMsg += ' message should have been logged to the console: "MISC:';
+    choiceMsg += ' Tests.checkMisc.testMethod() | Args: number= 5, object= jsObjRef"';
+    errorMsg = 'Tests.checkMisc failed: Message was logged incorrectly';
     app.addChoice(choiceMsg, results, errorMsg, function() {
       tests.misc('testMethod', 'Args: number= $$, object= $$', 5, [ 5 ]);
     });
