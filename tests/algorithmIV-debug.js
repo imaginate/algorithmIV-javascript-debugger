@@ -2,11 +2,11 @@
 
 /**
  * -----------------------------------------------------------------------------
- * Algorithm IV Debug - Module (v1.0.1)
+ * Algorithm IV Debug - Module (v1.0.2)
  * -----------------------------------------------------------------------------
  * @file The module for creating an aIV Debug object instance.
  * @module aIVDebug
- * @version 1.0.1
+ * @version 1.0.2
  * @author Adam Smith ({@link adamsmith@youlum.com})
  * @copyright 2015 Adam A Smith ([github.com/imaginate]{@link https://github.com/imaginate})
  * @license The MIT License ([algorithmiv.com/docs/license]{@link http://algorithmiv.com/docs/license})
