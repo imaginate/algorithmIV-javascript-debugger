@@ -108,7 +108,7 @@
     }
 
     // Configure debuggers
-    if (settings.hasOwnProperrorDebuggers &&
+    if (settings.hasOwnProperty('errorDebuggers') &&
         typeof settings.errorDebuggers === 'boolean') {
       debuggers = settings.errorDebuggers;
     }
