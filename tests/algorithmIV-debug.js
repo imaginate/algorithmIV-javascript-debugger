@@ -273,8 +273,8 @@
     /** @type {string} */
     var types;
 
-    types = '^strings$|^numbers$|^booleans$|^objects$|' +
-            '^arrays$|^elems$|^functions$';
+    types = '^array$|^strings$|^numbers$|^booleans$|' +
+            '^objects$|^arrays$|^elems$|^functions$';
 
     return new RegExp(types);
   })();
@@ -1771,9 +1771,6 @@
 
       return function(obj) {
 
-        polyfill.debug.start('Object.keys', obj);
-        polyfill.debug.args('Object.keys', obj, '!object|function');
-
         if (typeof obj !== 'object' && typeof obj !== 'function') {
           throw new TypeError('Object.keys only accepts objects.');
           return;
@@ -1824,9 +1821,6 @@
      * @return {Object}
      */
     Object.freeze = function(obj) {
-
-      polyfill.debug.start('Object.freeze', obj);
-      polyfill.debug.args('Object.freeze', obj, 'object|function');
 
       if (typeof obj !== 'object' && typeof obj !== 'function') {
         throw new TypeError('Object.freeze only accepts objects.');
