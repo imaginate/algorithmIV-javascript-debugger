@@ -218,6 +218,8 @@
     var errorMsg;
     /** @type {Object} */
     var tests;
+    /** @type {boolean} */
+    var pass;
 
     results = new TestResults('Tests.checkInstances');
     Object.freeze(results);
@@ -232,22 +234,20 @@
     };
 
     // Run the tests
-    choiceMsg = 'Instance Test 1 and 2 should have been logged';
-    choiceMsg += ' to the console.';
-    errorMsg = 'checkInstances.tests.first failed';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.first.misc('test1', 'Instance Test 1');
-      tests.second.misc('test2', 'Instance Test 2');
-    });
+    pass = tests.first.misc('test1', 'Instance Test 1');
+    pass = pass && tests.second.misc('test2', 'Instance Test 2');
+    if (!pass) {
+      errorMsg = 'Tests.checkInstances failed: A misc log failed when turned on';
+      results.addError(errorMsg);
+    }
 
-    choiceMsg = 'Instance Test 3 and 4 should NOT have been logged';
-    choiceMsg += ' to the console.';
-    errorMsg = 'checkInstances.tests.second failed';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.first.setType('misc', false);
-      tests.first.misc('test3', 'Instance Test 3');
-      tests.second.misc('test4', 'Instance Test 4');
-    });
+    tests.first.setType('misc', false);
+    pass = tests.first.misc('test3', 'Instance Test 3');
+    pass = pass || tests.second.misc('test4', 'Instance Test 4');
+    if (pass) {
+      errorMsg = 'Tests.checkInstances failed: A misc log failed when turned off';
+      results.addError(errorMsg);
+    }
 
     // Save the results
     app.results.push(results);
@@ -270,6 +270,8 @@
     var errorMsg;
     /** @type {Object} */
     var tests;
+    /** @type {boolean} */
+    var pass;
 
     results = new TestResults('Tests.checkStart');
     Object.freeze(results);
@@ -278,25 +280,30 @@
     tests = aIV.debug('Tests.checkStart');
 
     // Run the tests
-    choiceMsg = 'The following message should have been logged to the console:';
+    pass = tests.start('testMethod');
+    if (!pass) {
+      errorMsg = 'Tests.checkStart failed: Did not log';
+      results.addError(errorMsg);
+    }
+
+    pass = tests.start('testMethod', 5, [ 5 ]);
+    if (!pass) {
+      errorMsg = 'Tests.checkStart failed: Did not log with arguments';
+      results.addError(errorMsg);
+    }
+
+    pass = tests.start([ 'testMethod', 5, [ 5 ] ]);
+    if (!pass) {
+      errorMsg = 'Tests.checkStart failed: Did not log with array argument';
+      results.addError(errorMsg);
+    }
+
+    choiceMsg = 'Verify that the start log message is correct. The following ';
+    choiceMsg += 'message should have been logged to the console:';
     choiceMsg += ' "START: Tests.checkStart.testMethod()"';
-    errorMsg = 'debug.start did not log properly';
+    errorMsg = 'Tests.checkStart failed: Log message incorrect';
     app.addChoice(choiceMsg, results, errorMsg, function() {
       tests.start('testMethod');
-    });
-
-    choiceMsg = 'The following message should have been logged to the console:';
-    choiceMsg += ' "START: Tests.checkStart.testMethod(5, jsObjRef)"';
-    errorMsg = 'debug.start did not log properly with arguments';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.start('testMethod', 5, [ 5 ]);
-    });
-
-    choiceMsg = 'The following message should have been logged to the console:';
-    choiceMsg += ' "START: Tests.checkStart.testMethod(5, jsObjRef)"';
-    errorMsg = 'debug.start did not log properly with arguments given as array';
-    app.addChoice(choiceMsg, results, errorMsg, function() {
-      tests.start([ 'testMethod', 5, [ 5 ] ]);
     });
 
     // Save the results
