@@ -1142,7 +1142,7 @@
    * @desc Checks the setting of the debug module configuration.
    * @type {function}
    */
-  Tests.checkClassTitle = function() {
+  Tests.checkSetConfig = function() {
 
     /** @type {TestResults} */
     var results;
