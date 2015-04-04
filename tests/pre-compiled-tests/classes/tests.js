@@ -798,9 +798,9 @@
     tests = aIV.debug('Tests.checkState');
 
     // Run the tests
-    choiceMsg = 'A debugger instance and a console log, "A debug.state ';
-    choiceMsg += 'method\'s arg(s) was wrong.", should have appeared.';
-    errorMsg = 'debug.state failed to check the given args correctly';
+    choiceMsg = 'The following error should have been logged: ';
+    choiceMsg += '"A debug.state method\'s arg(s) was wrong.".';
+    errorMsg = 'Tests.checkState failed: Argument checks failed to catch error';
     app.addChoice(choiceMsg, results, errorMsg, function() {
       tests.state('testMethod');
     });
@@ -808,7 +808,7 @@
     choiceMsg = 'The following message should have been logged to the console:';
     choiceMsg += '"STATE: Tests.checkState.testMethod() |';
     choiceMsg += ' number= 5, object= jsObjRef"';
-    errorMsg = 'debug.state failed to add the vars correctly to the message';
+    errorMsg = 'Tests.checkState failed: Message was logged incorrectly';
     app.addChoice(choiceMsg, results, errorMsg, function() {
       tests.state('testMethod', 'number= $$, object= $$', 5, [ 5 ]);
     });
