@@ -21,9 +21,4 @@
    * return {Debug}
    * @global
    */
-  aIV.debug = function (settings) {
-    if (typeof settings !== 'string' && typeof settings !== 'object') {
-      settings = null;
-    }
-    return debug.newDebug(settings);
-  };
+  aIV.debug = debug.newDebug;
