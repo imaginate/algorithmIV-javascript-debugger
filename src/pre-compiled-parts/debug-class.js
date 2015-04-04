@@ -235,13 +235,15 @@
     );
     if (!argTest) {
       console.error('A debug.start method\'s arg(s) was wrong.');
-      debugger;
-      return;
+      if (debuggers) {
+        debugger;
+      }
+      return false;
     }
 
     // Check whether this method has been turned off for the current instance
     if ( !this.getType('start') ) {
-      return;
+      return false;
     }
 
     // Setup the varaibles
@@ -279,6 +281,8 @@
     if ( this.getBugger('start') ) {
       debugger;
     }
+
+    return true;
   };
 
   /**
@@ -328,13 +332,15 @@
     );
     if(!argTest) {
       console.error('A debug.args method\'s arg(s) was wrong.');
-      debugger;
-      return;
+      if (debuggers) {
+        debugger;
+      }
+      return false;
     }
 
     // Check whether this method has been turned off for the current instance
     if ( !this.getType('args') ) {
-      return;
+      return false;
     }
 
     // Setup the varaibles
@@ -356,18 +362,20 @@
 
     // If test passes end this method
     if (pass) {
-      return;
+      return false;
     }
 
     // Prepare and log the error message
     message = 'ARGS: ' + this.classTitle + methodName + '() | ';
-    message += 'Error: Incorrect argument operand.';
+    message += 'Error: Incorrect argument data type.';
     console.error(message);
 
     // Pause the script
     if ( this.getBugger('args') ) {
       debugger;
     }
+
+    return true;
   };
 
   /**
@@ -421,13 +429,15 @@
     );
     if(!argTest) {
       console.error('A debug.fail method\'s arg(s) was wrong.');
-      debugger;
-      return;
+      if (debuggers) {
+        debugger;
+      }
+      return false;
     }
 
     // Check whether this method has been turned off for the current instance
     if ( !this.getType('fail') ) {
-      return;
+      return false;
     }
 
     // Setup the varaibles
@@ -448,7 +458,7 @@
 
     // If test passes end this method
     if (pass) {
-      return;
+      return false;
     }
 
     // Prepare the message
@@ -470,6 +480,8 @@
     if ( this.getBugger('fail') ) {
       debugger;
     }
+
+    return true;
   };
 
   /**
@@ -521,13 +533,15 @@
     );
     if(!argTest) {
       console.error('A debug.group method\'s arg(s) was wrong.');
-      debugger;
-      return;
+      if (debuggers) {
+        debugger;
+      }
+      return false;
     }
 
     // Check whether this method has been turned off for the current instance
     if ( !this.getType('group') ) {
-      return;
+      return false;
     }
 
     // Setup the varaibles
@@ -548,7 +562,7 @@
     // Check for end group type
     if (openGroup === 'end') {
       console.groupEnd();
-      return;
+      return true;
     }
 
     // Ensure group type is correct
@@ -556,8 +570,10 @@
       message = 'A debug.group method\'s openGroup arg was wrong. ';
       message += 'The supplied openGroup argument was \'%s\'.';
       console.error(message, openGroup);
-      debugger;
-      return;
+      if (debuggers) {
+        debugger;
+      }
+      return false;
     }
 
     // Prepare the message
@@ -577,19 +593,20 @@
       args = [ message ];
     }
 
-    // Check for collapsed group type
+    // Open a console group
     if (openGroup === 'coll') {
       console.groupCollapsed.apply(console, args);
-      return;
     }
-
-    // Open a console group
-    console.group.apply(console, args);
+    else {
+      console.group.apply(console, args);
+    }
 
     // Pause the script
     if ( this.getBugger('group') ) {
       debugger;
     }
+
+    return true;
   };
 
   /**
@@ -636,13 +653,15 @@
     );
     if(!argTest) {
       console.error('A debug.state method\'s arg(s) was wrong.');
-      debugger;
-      return;
+      if (debuggers) {
+        debugger;
+      }
+      return false;
     }
 
     // Check whether this method has been turned off for the current instance
     if ( !this.getType('state') ) {
-      return;
+      return false;
     }
 
     // Setup the varaibles
@@ -669,6 +688,8 @@
     if ( this.getBugger('state') ) {
       debugger;
     }
+
+    return true;
   };
 
   /**
@@ -712,13 +733,15 @@
     );
     if(!argTest) {
       console.error('A debug.misc method\'s arg(s) was wrong.');
-      debugger;
-      return;
+      if (debuggers) {
+        debugger;
+      }
+      return false;
     }
 
     // Check whether this method has been turned off for the current instance
     if ( !this.getType('misc') ) {
-      return;
+      return false;
     }
 
     // Setup the varaibles
@@ -752,6 +775,8 @@
     if ( this.getBugger('misc') ) {
       debugger;
     }
+
+    return true;
   };
 
   /**
@@ -792,8 +817,10 @@
     // Ensure arguments are supplied
     if (!logCat) {
       console.error('A debug.turnOn method received no args.');
-      debugger;
-      return;
+      if (debuggers) {
+        debugger;
+      }
+      return false;
     }
 
     // Setup the variables
@@ -809,9 +836,11 @@
 
     // Make sure a value still exists to test
     if (!logCat && (!args || !checkType(args, 'strings'))) {
-      console.error('A debug.turnOn method\'s arg(s) was the wrong operand.');
-      debugger;
-      return;
+      console.error('A debug.turnOn method\'s arg(s) was the wrong data type.');
+      if (debuggers) {
+        debugger;
+      }
+      return false;
     }
 
     // Check for string with multiple categories
@@ -848,8 +877,13 @@
         'A debug.turnOn method was given an invalid debug category ' +
         'to turn on. The incorrect value(s) follow:' + errors;
       console.error(errors);
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
+      return false;
     }
+
+    return true;
   };
 
   /**
@@ -890,8 +924,10 @@
     // Ensure arguments are supplied
     if (!logCat) {
       console.error('A debug.turnOff method received no args.');
-      debugger;
-      return;
+      if (debuggers) {
+        debugger;
+      }
+      return false;
     }
 
     // Setup the variables
@@ -907,9 +943,11 @@
 
     // Make sure a value still exists to test
     if (!logCat && (!args || !checkType(args, 'strings'))) {
-      console.error('A debug.turnOff method\'s arg(s) was the wrong operand.');
-      debugger;
-      return;
+      console.error('A debug.turnOff method\'s arg(s) was the wrong data type.');
+      if (debuggers) {
+        debugger;
+      }
+      return false;
     }
 
     // Check for string with multiple categories
@@ -946,8 +984,13 @@
         'A debug.turnOff method was given an invalid debug category ' +
         'to turn off. The incorrect value(s) follow:' + errors;
       console.error(errors);
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
+      return false;
     }
+
+    return true;
   };
 
   /**
@@ -988,8 +1031,10 @@
     // Ensure arguments are supplied
     if (!logCat) {
       console.error('A debug.turnOnDebugger method received no args.');
-      debugger;
-      return;
+      if (debuggers) {
+        debugger;
+      }
+      return false;
     }
 
     // Setup the variables
@@ -1005,10 +1050,13 @@
 
     // Make sure a value still exists to test
     if (!logCat && (!args || !checkType(args, 'strings'))) {
-      errors = 'A debug.turnOnDebugger method\'s arg(s) was the wrong operand.';
+      errors = 'A debug.turnOnDebugger method\'s arg(s) was ';
+      errors += 'the wrong data type.';
       console.error(errors);
-      debugger;
-      return;
+      if (debuggers) {
+        debugger;
+      }
+      return false;
     }
 
     // Check for string with multiple categories
@@ -1045,8 +1093,13 @@
         'A debug.turnOnDebugger method was given an invalid debug ' +
         'category to turn on. The incorrect value(s) follow:' + errors;
       console.error(errors);
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
+      return false;
     }
+
+    return true;
   };
 
   /**
@@ -1087,8 +1140,10 @@
     // Ensure arguments are supplied
     if (!logCat) {
       console.error('A debug.turnOffDebugger method received no args.');
-      debugger;
-      return;
+      if (debuggers) {
+        debugger;
+      }
+      return false;
     }
 
     // Setup the variables
@@ -1105,10 +1160,12 @@
     // Make sure a value still exists to test
     if (!logCat && (!args || !checkType(args, 'strings'))) {
       errors = 'A debug.turnOffDebugger method\'s arg(s) was ';
-      errors += 'the wrong operand.';
+      errors += 'the wrong data type.';
       console.error(errors);
-      debugger;
-      return;
+      if (debuggers) {
+        debugger;
+      }
+      return false;
     }
 
     // Check for string with multiple categories
@@ -1145,6 +1202,11 @@
         'A debug.turnOffDebugger method was given an invalid debug ' +
         'category to turn off. The incorrect value(s) follow:' + errors;
       console.error(errors);
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
+      return false;
     }
+
+    return false;
   };

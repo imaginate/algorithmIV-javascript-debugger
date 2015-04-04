@@ -8,7 +8,7 @@
    */
   function getSubstituteString(val) {
 
-    if (typeof val === 'object') {
+    if ( checkType(val, 'object|function') ) {
       return '%O';
     }
 
@@ -34,7 +34,9 @@
     // Test the given arguments before executing
     if (typeof msg !== 'string' || !Array.isArray(vals)) {
       console.error('An insertSubstituteStrings method\'s arg(s) was wrong.');
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return '';
     }
 
@@ -63,12 +65,13 @@
    * Public Method (checkType)
    * ---------------------------------------------------
    * @param {val} val - The value to be evaluated.
-   * @param {string} type - The type to evaluate the value against.
-   *   The optional types are 'string', 'number', 'boolean', 'object',
-   *   'elem', 'undefined', 'array', 'strings', 'numbers', 'booleans',
-   *   'objects', and 'elems'. Use '|' as the separator for multiple
-   *    types (e.g.'strings|numbers'). Use '=' to indicate the value
-   *   is optional (e.g. 'array=' or 'string|number='). Use '!' to
+   * @param {string} type - The type to evaluate the value against. The optional
+   *   types are 'string', 'number', 'boolean', 'object', 'function', 'elem',
+   *   'undefined', 'array', 'strings', 'numbers', 'booleans', 'objects',
+   *   'functions', 'arrays', 'elems', 'stringMap', 'numberMap', 'booleanMap',
+   *   'objectMap', 'functionMap', 'arrayMap', and 'elemMap'. Use '|' as the
+   *   separator for multiple types (e.g.'strings|numbers'). Use '=' to indicate
+   *   the value is optional (e.g. 'array=' or 'string|number='). Use '!' to
    *   indicate that null is not a possibility (e.g. '!string').
    * @return {boolean} The evaluation result.
    */
@@ -77,38 +80,20 @@
     // Test the given arguments before executing
     var msg;
     if (typeof type !== 'string') {
-      msg = 'A checkType method\'s type was the wrong operand. ';
+      msg = 'A checkType method\'s type was the wrong data type. ';
       msg += 'It should be a string. The given type was a(n) %s.';
       console.error(msg, (typeof type));
-      debugger;
+      if (debuggers) {
+        debugger;
+      }
       return false;
     }
 
-    /**
-     * @type {RegExp}
-     * @private
-     */
-    var arrays;
-    /**
-     * @type {RegExp}
-     * @private
-     */
-    var simple;
-    /**
-     * @type {RegExp}
-     * @private
-     */
-    var allTypes;
     /**
      * @type {strings}
      * @private
      */
     var types;
-
-    arrays = /^array$|^strings$|^numbers$|^booleans$|^objects$|^elems$/;
-    simple = /^string$|^number$|^boolean$|^object$/;
-    allTypes = '^elem$|^undefined$|' + simple.source + '|' + arrays.source;
-    allTypes = new RegExp(allTypes);
 
     type = type.toLowerCase().replace(/[^a-z\|\=\!]/g, '');
 
@@ -124,12 +109,14 @@
       cleanType = type.replace(/\!|\=/g, '');
 
       // Ensure a correct type was given
-      if ( !allTypes.test(cleanType) ) {
+      if ( !regexps.types.all.test(cleanType) ) {
         msg = 'A checkType method\'s type was the wrong value. ';
         msg += 'See the docs for acceptable values. ';
         msg += 'The incorrect value was \'%s\'.';
         console.error(msg, type);
-        debugger;
+        if (debuggers) {
+          debugger;
+        }
         return false;
       }
 
@@ -150,14 +137,22 @@
         }
 
         // Evaluate array types
-        if ( arrays.test(cleanType) ) {
+        if ( regexps.types.arrays.test(cleanType) ) {
 
           if ( !Array.isArray(val) ) {
             return false;
           }
 
+          // Evaluate a basic array
           if (cleanType === 'array') {
             return true;
+          }
+
+          // Evaluate an array of arrays
+          if (cleanType === 'arrays') {
+            return val.every(function(subVal) {
+              return ( Array.isArray(subVal) );
+            });
           }
 
           // Evaluate an array of elements
@@ -179,9 +174,37 @@
           return (val instanceof HTMLElement);
         }
 
-        // Evaluate string, number, boolean, and object types
-        if ( simple.test(cleanType) ) {
+        // Evaluate string, number, boolean, object, and function types
+        if ( regexps.types.basic.test(cleanType) ) {
           return (typeof val === cleanType);
+        }
+
+        // Evaluate hash map types
+        if ( regexps.types.maps.test(cleanType) ) {
+
+          if (typeof val !== 'object') {
+            return false;
+          }
+
+          // Evaluate a hash map of arrays
+          if (cleanType === 'arraymap') {
+            return Object.keys(val).every(function(subVal) {
+              return ( Array.isArray(val[ subVal ]) );
+            });
+          }
+
+          // Evaluate a hash map of elements
+          if (cleanType === 'elemmap') {
+            return Object.keys(val).every(function(subVal) {
+              return (val[ subVal ] instanceof HTMLElement);
+            });
+          }
+
+          // Evaluate each value of the hash map
+          cleanType = cleanType.replace(/map$/, '');
+          return Object.keys(val).every(function(subVal) {
+            return (typeof val[ subVal ] === cleanType);
+          });
         }
       }
 

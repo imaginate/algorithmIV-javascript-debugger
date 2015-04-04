@@ -23,7 +23,7 @@
    * Public Method (_return.newDebug)
    * -----------------------------------------------------
    * @desc Returns an instance of Debug.
-   * @param {?(string|Object)} settings - The Debug instance's settings.
+   * @param {(string|Object)} settings - The Debug instance's settings.
    */
   _return.newDebug = function(settings) {
 
@@ -42,6 +42,10 @@
      * @private
      */
     var turnOnBuggers;
+
+    if (typeof settings !== 'string' && typeof settings !== 'object') {
+      settings = null;
+    }
 
     // Setup classTitle
     if (typeof settings === 'string') {
@@ -78,4 +82,34 @@
     }
 
     return _instances[classTitle];
+  };
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (_return.newDebug.config)
+   * -----------------------------------------------------
+   * @desc Allows you to configure settings for all of the debug instances
+   *   called in the app.
+   * @param {(string|Object)} settings - The Debug module's settings.
+   */
+  _return.newDebug.config = function(settings) {
+
+    /** @type {string} */
+    var msg;
+
+    if (typeof settings !== 'object') {
+      msg = 'The settings given to aIV.debug.config were incorrrect. They ';
+      msg += 'should be an object. They were a(n) %s.';
+      console.error(msg, (typeof settings));
+      if (debuggers) {
+        debugger;
+      }
+      return;
+    }
+
+    // Configure debuggers
+    if (settings.hasOwnProperty('errorDebuggers') &&
+        typeof settings.errorDebuggers === 'boolean') {
+      debuggers = settings.errorDebuggers;
+    }
   };
