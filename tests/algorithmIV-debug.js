@@ -146,12 +146,18 @@
       if ( !checkType(turnOffTypes, 'string|strings') ) {
         turnOffTypes = null;
       }
+      if (!turnOffTypes && defaultArgs.turnOffTypes) {
+        turnOffTypes = defaultArgs.turnOffTypes;
+      }
 
       turnOnBuggers = ( (settings && !!settings.turnOnDebuggers) ?
         settings.turnOnDebuggers : null
       );
       if ( !checkType(turnOnBuggers, 'string|strings') ) {
         turnOnBuggers = null;
+      }
+      if (!turnOnBuggers && defaultArgs.turnOnBuggers) {
+        turnOnBuggers = defaultArgs.turnOnBuggers;
       }
 
       // Setup, save, and freeze the new Debug instance
@@ -164,13 +170,13 @@
 
   /**
    * -----------------------------------------------------
-   * Public Method (_return.newDebug.config)
+   * Public Method (_return.newDebug.setConfig)
    * -----------------------------------------------------
    * @desc Allows you to configure settings for all of the debug instances
    *   called in the app.
-   * @param {(string|Object)} settings - The Debug module's settings.
+   * @param {Object} settings - The Debug module's settings.
    */
-  _return.newDebug.config = function(settings) {
+  _return.newDebug.setConfig = function(settings) {
 
     /** @type {string} */
     var msg;
@@ -185,10 +191,22 @@
       return;
     }
 
-    // Configure debuggers
+    // Configure debuggers upon errors
     if (settings.hasOwnProperty('errorDebuggers') &&
         typeof settings.errorDebuggers === 'boolean') {
       debuggers = settings.errorDebuggers;
+    }
+
+    // Configure default settings for turnOffTypes
+    if (settings.hasOwnProperty('turnOffTypes') &&
+        checkType(settings.turnOffTypes, '!string|strings')) {
+      defaultArgs.turnOffTypes = settings.turnOffTypes;
+    }
+
+    // Configure default settings for turnOnDebuggers
+    if (settings.hasOwnProperty('turnOnDebuggers') &&
+        checkType(settings.turnOnDebuggers, '!string|strings')) {
+      defaultArgs.turnOnBuggers = settings.turnOnDebuggers;
     }
   };
 
@@ -205,6 +223,23 @@
    * @type {boolean}
    */
   var debuggers = true;
+
+  /**
+   * ----------------------------------------------- 
+   * Public Variable (defaultArgs)
+   * -----------------------------------------------
+   * @desc Sets default arguments for all instances of the debugger.
+   *   Note that if local arguments are provided with an instance call
+   *   they will be used instead of the global.
+   * @type {{
+   *   turnOffTypes   : (string|strings),
+   *   turnOnDebuggers: (string|strings)
+   * }}
+   */
+  var defaultArgs = {
+    turnOffTypes : '',
+    turnOnBuggers: ''
+  };
 
   /**
    * ----------------------------------------------- 
