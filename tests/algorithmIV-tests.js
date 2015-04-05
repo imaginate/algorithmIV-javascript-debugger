@@ -1518,8 +1518,8 @@
    * -----------------------------------------------
    * Public Method (App.prototype.runTests)
    * -----------------------------------------------
-   * @desc Sets up the display for the app.
-   * @type {function()}
+   * @desc Sets up the display for the app & runs the tests.
+   * @type {function}
    */
   App.prototype.runTests = function() {
 
@@ -1559,6 +1559,12 @@
 
     // Check the config setter
     Tests.checkSetConfig();
+
+////////////////////////////////////////////////////////////////////////////////
+
+// ADD NEW TEST CALLS HERE
+
+////////////////////////////////////////////////////////////////////////////////
 
     // Run the choices and record the results
     this.runChoices();
