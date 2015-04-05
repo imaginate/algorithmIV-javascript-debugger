@@ -9,6 +9,23 @@
 
   /**
    * ----------------------------------------------- 
+   * Public Variable (defaultArgs)
+   * -----------------------------------------------
+   * @desc Sets default arguments for all instances of the debugger.
+   *   Note that if local arguments are provided with an instance call
+   *   they will be used instead of the global.
+   * @type {{
+   *   turnOffTypes   : (string|strings),
+   *   turnOnDebuggers: (string|strings)
+   * }}
+   */
+  var defaultArgs = {
+    turnOffTypes : '',
+    turnOnBuggers: 'args fail'
+  };
+
+  /**
+   * ----------------------------------------------- 
    * Public Variable (regexps)
    * -----------------------------------------------
    * @desc Regular expressions that are used multiple times
