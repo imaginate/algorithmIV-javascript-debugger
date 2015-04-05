@@ -46,7 +46,7 @@ See [CONTRIBUTING.md](https://github.com/imaginate/algorithmIV-javascript-debugg
 
 
 ##Example
-To see the debugger in live projects visit [Algorithm IV's Question Manager](https://github.com/imaginate/algorithmIV-question-manager/blob/tests/algorithmIV-app.js) or view this debugger's [unit tests](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/tests/pre-compiled-tests/classes/Tests.js).
+To see the debugger in live projects visit [Algorithm IV's Question Manager](https://github.com/imaginate/algorithmIV-question-manager/blob/master/tests/algorithmIV-app.js) or view this debugger's [unit tests](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/tests/pre-compiled-tests/classes/tests.js).
 
 The following example is broken into three parts:
 - [The Example Class](#class)
@@ -147,6 +147,7 @@ Example.prototype.report = function() {
   return name + ' => ' + ( (check) ? 'Pass' : 'Fail' );
 };
 ```
+
 ###<a name="logic"></a>The Example Logic
 ```javascript
 /** @type {{ test1: Example, test2: Example, test3: Example }} */
@@ -206,13 +207,15 @@ example.test1.debug.misc('logic', 'This log recorded $$\'s name.', name);
 example.test1.report();
 example.test2.report();
 ```
+
 ###<a name="output"></a>The Example's Console Outputs
 <a href="https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/example/console-logs-screenshot.jpg"><img src="http://www.algorithmiv.com/images/console-logs-screenshot.jpg" alt="Screenshot of the Example's Console Logs" /></a>
 
 
 ##Contact Us
-- **[Open an issue](https://github.com/imaginate/algorithmIV-javascript-debugger/issues)** on GitHub.
-- Send an email to **[learn@algorithmiv.com](mailto:learn@algorithmiv.com)**.
+- [Open an issue](https://github.com/imaginate/algorithmIV-javascript-debugger/issues) on GitHub.
+- Send an email to [learn@algorithmiv.com](mailto:learn@algorithmiv.com).
+
 
 --
 **Happy Developing,**
