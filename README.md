@@ -51,7 +51,7 @@ To see the debugger in live projects visit [Algorithm IV's Question Manager](htt
 The following example is broken into three parts:
 - [The Example Class](#class)
 - [The Example Logic](#logic)
-- [The Example's Console Outputs](#output)
+- [A Screenshot of the Example's Console Logs](#logs)
 
 ###<a name="class"></a>The Example Class
 ```javascript
@@ -208,8 +208,8 @@ example.test1.report();
 example.test2.report();
 ```
 
-###<a name="output"></a>The Example's Console Outputs
-<a href="https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/example/console-logs-screenshot.jpg"><img src="http://www.algorithmiv.com/images/console-logs-screenshot.jpg" alt="Screenshot of the Example's Console Logs" /></a>
+###<a name="logs"></a>A Screenshot of the Example's Console Logs
+<a href="https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/example/console-logs-screenshot.jpg"><img src="http://www.algorithmiv.com/images/debugger-console-logs-screenshot.jpg" alt="Screenshot of the Example's Console Logs" /></a>
 
 
 ##Contact Us
