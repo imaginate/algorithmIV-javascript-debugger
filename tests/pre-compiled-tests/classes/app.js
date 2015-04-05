@@ -45,8 +45,8 @@
    * -----------------------------------------------
    * Public Method (App.prototype.runTests)
    * -----------------------------------------------
-   * @desc Sets up the display for the app.
-   * @type {function()}
+   * @desc Sets up the display for the app & runs the tests.
+   * @type {function}
    */
   App.prototype.runTests = function() {
 
