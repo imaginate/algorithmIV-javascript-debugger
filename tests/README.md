@@ -17,7 +17,8 @@
 - Add or edit unit tests in **[tests/pre-compiled-tests/classes/tests.js](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/tests/pre-compiled-testsclasses/tests.js)**.
 - Ensure any new tests are included in the init routine located in **[App.prototype.runTests](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/e05c3806325013af5b03c2c7f68726d34138bdc2/tests/pre-compiled-tests/classes/app.js#L90-94)**.
 - Compile the tests module using the commands found in **[compile/compile-commands.txt](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/e05c3806325013af5b03c2c7f68726d34138bdc2/compile/compile-commands.txt#L41-78)**.
-- **[Run the tests](#run)** and debug your additions until all tests are passing.
+- **[Run the tests](#run)**.
+- Fix all bugs found (all unit tests must be passing).
 - Submit a pull request.
 
 
