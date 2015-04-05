@@ -100,7 +100,7 @@ Example.prototype.report = function() {
 // THE EXAMPLE LOGIC
 ////////////////////////////////////////////////////////////////////////////////
 
-/** @type {{ test1: Example, test2: Example, test3: Example }} */
+/** @type {{ test1: Example, test2: Example }} */
 var example = {};
 /** @type {string} */
 var name;
