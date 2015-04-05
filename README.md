@@ -215,6 +215,6 @@ example.test2.report();
 - Send an email to **[learn@algorithmiv.com](mailto:learn@algorithmiv.com)**.
 
 --
-Happy Developing,
+**Happy Developing,**
 
-<img src="http://www.algorithmiv.com/images/aIV-logo.png" alt="Algorithm IV Logo" />
+<a href="http://www.algorithmiv.com"><img src="http://www.algorithmiv.com/images/aIV-logo.png" alt="Algorithm IV Logo" /></a>
