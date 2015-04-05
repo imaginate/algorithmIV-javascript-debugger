@@ -3,35 +3,57 @@
 ####Algorithm IV's debugger is a JavaScript object constructor that has six different methods that log messages, errors, and more to your console. It makes managing a JavaScript project with multiple classes much simpler by implementing a clear and organized structure to every log made!
 
 ##Getting Started
-To use the debugger simply download [algorithmIV-debug.min.js](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/src/algorithmIV-debug.min.js), add ```<script src="algorithmIV-debug.min.js"></script>``` to the ```<head>``` of your HTML, and use ```aIV.debug(className)``` to create as many objects as you desire. 
+- Download [algorithmIV-debug.min.js](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/src/algorithmIV-debug.min.js)
+- Add algorithmIV-debug.min.js to your HTML head like so:
+```html
+<html>
+  <head>
+    ...
+    <script src="algorithmIV-debug.min.js"></script>
+    ...
+  </head>
+  <body>...</body>
+</html>
+```
+- Use ``` aIV.debug.setConfig(settings) ``` to change the default settings
+- Use ``` aIV.debug(className) ``` to create as many debugger objects as you need
+
 
 ##The Methods
 Each debug object has the following methods for logging to the console:
-- **start** (methodName, methodArg1, methodArg2, ...)
-- **args** (methodName, methodArg1, typeForMethodArg1, ...)
-- **fail** (methodName, truthyValue, errorMessage, optionalVar1, ...)
-- **group** (methodName, groupType, optionalMessage, optionalVar1, ...)
-- **state** (methodName, logMessage, var1, var2, ...)
-- **misc** (methodName, logMessage, optionalVar1, ...)
 
-and the following methods for disabling logs and adding debugger instances:
-- **turnOn** (categoryName)
-- **turnOff** (categoryName)
-- **turnOnDebugger** (categoryName)
-- **turnOffDebugger** (categoryName)
+|           | example calls                                                                  |
+| :-------: | :----------------------------------------------------------------------------- |
+| **start** | debugInstance.start(methodName, methodArg1, methodArg2, ...)                   |
+| **args**  | debugInstance.args(methodName, methodArg1, typeForMethodArg1, ...)             |
+| **fail**  | debugInstance.fail(methodName, truthyValue, errorMessage, optionalVar1, ...)   |
+| **group** | debugInstance.group(methodName, groupType, optionalMessage, optionalVar1, ...) |
+| **state** | debugInstance.state(methodName, logMessage, var1, var2, ...)                   |
+| **misc**  | debugInstance.misc(methodName, logMessage, optionalVar1, ...)                  |
+
+Plus the following methods for disabling logs and adding debugger statements:
+
+|                     | example calls                               |
+| :-----------------: | :------------------------------------------ |
+| **turnOn**          | debugInstance.turnOn(categoryName)          |
+| **turnOff**         | debugInstance.turnOff(categoryName)         |
+| **turnOnDebugger**  | debugInstance.turnOnDebugger(categoryName)  |
+| **turnOffDebugger** | debugInstance.turnOffDebugger(categoryName) |
+
 
 ##Contributing
 See [CONTRIBUTING.md](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/CONTRIBUTING.md).
 
+
 ##Example
-To see the debugger in live projects visit [Algorithm IV's Question Manager](https://github.com/imaginate/algorithmIV-question-manager/tree/version1.1.0/tests/pre-compiled-app) or view the [unit tests](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/tests/pre-compiled-tests/classes/Tests.js).
+To see the debugger in live projects visit [Algorithm IV's Question Manager](https://github.com/imaginate/algorithmIV-question-manager/blob/tests/algorithmIV-app.js) or view this debugger's [unit tests](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/tests/pre-compiled-tests/classes/Tests.js).
 
 The following example is broken into three parts:
 - [The Example Class](#class)
 - [The Example Logic](#logic)
 - [The Example's Console Outputs](#output)
 
-####<a name="class"></a>The Example Class
+###<a name="class"></a>The Example Class
 ```javascript
 /**
  * -----------------------------------------------------
@@ -125,7 +147,7 @@ Example.prototype.report = function() {
   return name + ' => ' + ( (check) ? 'Pass' : 'Fail' );
 };
 ```
-####<a name="logic"></a>The Example Logic
+###<a name="logic"></a>The Example Logic
 ```javascript
 /** @type {{ test1: Example, test2: Example, test3: Example }} */
 var example = {};
@@ -184,8 +206,15 @@ example.test1.debug.misc('logic', 'This log recorded $$\'s name.', name);
 example.test1.report();
 example.test2.report();
 ```
-####<a name="output"></a>The Example's Console Outputs
+###<a name="output"></a>The Example's Console Outputs
 <a href="https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/example/console-logs-screenshot.jpg"><img src="http://www.algorithmiv.com/images/console-logs-screenshot.jpg" alt="Screenshot of the Example's Console Logs" /></a>
 
+
+##Contact Us
+- **[Open an issue](https://github.com/imaginate/algorithmIV-javascript-debugger/issues)** on GitHub.
+- Send an email to **[learn@algorithmiv.com](mailto:learn@algorithmiv.com)**.
+
 --
-![Algorithm IV Logo](http://www.algorithmiv.com/images/aIV-logo.png)
+Happy Developing,
+
+<img src="http://www.algorithmiv.com/images/aIV-logo.png" alt="Algorithm IV Logo" />
