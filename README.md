@@ -17,6 +17,7 @@
 ```
 - Use ``` aIV.debug.setConfig(settings) ``` to change the default settings
 - Use ``` aIV.debug(className) ``` to create as many debugger objects as you need
+- Note that this debugger works best in [Chrome](https://www.google.com/chrome/) especially with large volumes of call logs
 
 
 ##The Methods
