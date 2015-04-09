@@ -3,7 +3,7 @@
    * Public Class (Tests)
    * -----------------------------------------------------
    * @desc The tests to run.
-   * @struct
+   * @type {Object<string, function>}
    */
   var Tests = {};
 
@@ -12,7 +12,7 @@
    * Public Method (Tests.checkClassTitle)
    * -------------------------------------------------
    * @desc Checks the setting of the classTitle property.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkClassTitle = function() {
 
@@ -61,7 +61,7 @@
    * Public Method (Tests.checkTurnOffTypes)
    * -------------------------------------------------
    * @desc Checks the setting of the turnOffTypes param.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkTurnOffTypes = function() {
 
@@ -133,7 +133,7 @@
    * Public Method (Tests.checkTurnOnDebuggers)
    * -------------------------------------------------
    * @desc Checks the setting of the turnOnDebuggers param.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkTurnOnDebuggers = function() {
 
@@ -206,7 +206,7 @@
    * -------------------------------------------------
    * @desc Checks that instances are not created twice for the
    *   same class.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkInstances = function() {
 
@@ -258,7 +258,7 @@
    * Public Method (Tests.checkStart)
    * -------------------------------------------------
    * @desc Checks Debug.start method.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkStart = function() {
 
@@ -315,7 +315,7 @@
    * Public Method (Tests.checkArgs)
    * -------------------------------------------------
    * @desc Checks Debug.args method.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkArgs = function() {
 
@@ -645,7 +645,7 @@
    * Public Method (Tests.checkFail)
    * -------------------------------------------------
    * @desc Checks Debug.fail method.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkFail = function() {
 
@@ -718,7 +718,7 @@
    * Public Method (Tests.checkGroup)
    * -------------------------------------------------
    * @desc Checks Debug.group method.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkGroup = function() {
 
@@ -778,7 +778,7 @@
    * Public Method (Tests.checkState)
    * -------------------------------------------------
    * @desc Checks Debug.state method.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkState = function() {
 
@@ -830,7 +830,7 @@
    * Public Method (Tests.checkMisc)
    * -------------------------------------------------
    * @desc Checks Debug.misc method.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkMisc = function() {
 
@@ -882,7 +882,7 @@
    * Public Method (Tests.checkTurnOn)
    * -------------------------------------------------
    * @desc Checks Debug.turnOn method.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkTurnOn = function() {
 
@@ -951,7 +951,7 @@
    * Public Method (Tests.checkTurnOff)
    * -------------------------------------------------
    * @desc Checks Debug.turnOff method.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkTurnOff = function() {
 
@@ -1017,7 +1017,7 @@
    * Public Method (Tests.checkTurnOnDebugger)
    * -------------------------------------------------
    * @desc Checks Debug.turnOnDebugger method.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkTurnOnDebugger = function() {
 
@@ -1085,7 +1085,7 @@
    * Public Method (Tests.checkTurnOffDebugger)
    * -------------------------------------------------
    * @desc Checks Debug.turnOffDebugger method.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkTurnOffDebugger = function() {
 
@@ -1236,3 +1236,6 @@
   };
 
   Object.freeze(Tests);
+  Object.keys(Tests).forEach(function(/** string */ name) {
+    Object.freeze(Tests[name]);
+  });

@@ -7,7 +7,7 @@
    */
   var App = function() {
 
-    console.log('App is being setup.');
+    console.log('The tests App is being setup.');
 
     /**
      * ---------------------------------------------------
@@ -16,8 +16,7 @@
      * @desc The elements for this app.
      * @type {Object}
      */
-    this.elems = new Elems();
-    Object.freeze(this.elems);
+    this.elems;
 
     /**
      * ----------------------------------------------- 
@@ -26,7 +25,7 @@
      * @desc Saves the results of the tests.
      * @type {Array<TestResults>}
      */
-    this.results = [];
+    this.results;
 
     /**
      * ----------------------------------------------- 
@@ -35,7 +34,15 @@
      * @desc Saves the choices to be executed.
      * @type {Array<Choices>}
      */
+    this.choices;
+
+
+    // Setup the properties
+    this.elems = new Elems();
+    this.results = [];
     this.choices = [];
+
+    Object.freeze(this.elems);
   };
 
   // Ensure constructor is set to this class.
@@ -111,11 +118,24 @@
    *   a choice is completed.
    */
   App.prototype.addChoice = function(choiceMsg, results, errorMsg, before, after) {
+
     /** @type {Choice} */
     var choice;
+    /** @type {string} */
+    var argsMsg;
 
-    before = before || null;
-    after  = after  || null;
+    if (typeof choiceMsg !== 'string' || !(results instanceof TestResults) ||
+        typeof errorMsg !== 'string') {
+      argsMsg = 'An addChoice call was given an argument of the wrong data type.';
+      console.error(argsMsg);
+      debugger;
+    }
+    if (!before || typeof before !== 'function') {
+      before = null;
+    }
+    if (!after || typeof after !== 'function') {
+      after = null;
+    }
 
     choice = new Choice(choiceMsg, results, errorMsg, before, after);
     Object.freeze(choice);
@@ -127,10 +147,12 @@
    * -----------------------------------------------
    * Public Method (App.prototype.runChoices)
    * -----------------------------------------------
-   * @desc .
-   * @type {function()}
+   * @desc Show each choice until all results have been recorded.
+   *   Then show the results.
+   * @type {function}
    */
   App.prototype.runChoices = function() {
+
     /** @type {Choice} */
     var choice;
 
@@ -146,7 +168,9 @@
     // Hide the UI while setup is occurring
     this.elems.ui.style.opacity = '0';
 
-    choice.before();
+    if (choice.before) {
+      choice.before();
+    }
 
     setTimeout(function() {
 
@@ -155,14 +179,18 @@
 
       // Set the #yes onClick event
       app.elems.yes.onclick = function() {
-        choice.after();
+        if (choice.after) {
+          choice.after();
+        }
         app.runChoices();
       };
 
       // Set the #no onClick event
       app.elems.no.onclick = function() {
         choice.fail();
-        choice.after();
+        if (choice.after) {
+          choice.after();
+        }
         app.runChoices();
       };
 
@@ -175,10 +203,11 @@
    * -----------------------------------------------
    * Public Method (App.prototype.shareResults)
    * -----------------------------------------------
-   * @desc .
-   * @type {function()}
+   * @desc Clears the UI and shows all of the results for the tests.
+   * @type {function}
    */
   App.prototype.shareResults = function() {
+
     /** @type {number} */
     var len;
     /** @type {number} */

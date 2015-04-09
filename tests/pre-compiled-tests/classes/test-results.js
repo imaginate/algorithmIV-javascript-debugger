@@ -34,6 +34,7 @@
      * @return {string} The test's type followed by its results.
      */
     this.reportResult = function() {
+
       /** @type {string} */
       var name;
       /** @type {string} */
@@ -50,6 +51,7 @@
 
       return report;
     };
+    Object.freeze(this.reportResult);
 
     /**
      * ----------------------------------------------- 
@@ -59,6 +61,7 @@
      * @return {?string} The test's type followed by its errors.
      */
     this.reportErrors = function() {
+
       /** @type {number} */
       var len;
       /** @type {number} */
@@ -88,6 +91,7 @@
 
       return report;
     };
+    Object.freeze(this.reportErrors);
 
     /**
      * ----------------------------------------------- 
@@ -99,6 +103,7 @@
     this.getResult = function() {
       return result;
     };
+    Object.freeze(this.getResult);
 
     /**
      * ----------------------------------------------- 
@@ -108,8 +113,11 @@
      * @param {boolean} pass - The test results.
      */
     this.setResult = function(pass) {
-      result = pass;
+      if (typeof pass === 'boolean') {
+        result = pass;
+      }
     };
+    Object.freeze(this.setResult);
 
     /**
      * ----------------------------------------------- 
@@ -119,7 +127,13 @@
      * @param {string} msg - The error message.
      */
     this.addError = function(msg) {
+
       result = false;
+
+      if (typeof msg !== 'string') {
+        msg = 'No error message was provided';
+      }
+
       if (errors) {
         errors.push(msg);
       }
@@ -127,6 +141,7 @@
         errors = [ msg ];
       }
     };
+    Object.freeze(this.addError);
   };
 
   // Ensure constructor is set to this class.

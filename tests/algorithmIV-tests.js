@@ -8,7 +8,6 @@
  * @author Adam Smith ({@link adamsmith@youlum.com})
  * @copyright 2015 Adam A Smith ([github.com/imaginate]{@link https://github.com/imaginate})
  * @license The MIT License ([algorithmiv.com/docs/license]{@link http://algorithmiv.com/docs/license})
- **
  * @desc More details about the module for aIV.tests:
  * <ol>
  *   <li>annotations: 
@@ -30,10 +29,9 @@
  * @typedef {Array<string>} strings
  * @typedef {Array<number>} numbers
  * @typedef {Array<Object>} objects
- * @typedef {{ init: function() }} tests
  */
 
-(function(/** Window */ window, /** tests */ tests) {
+(function(/** Window */ window, /** function */ tests) {
   "use strict";
 
 
@@ -55,11 +53,11 @@
    * ---------------------------------------------------
    * Global Method (aIV.tests)
    * ---------------------------------------------------
-   * @desc Runs tests on aIV.debug.
-   * @type {function()}
+   * @desc Runs the tests for aIV.debug.
+   * @type {function}
    * @global
    */
-  aIV.tests = tests.init;
+  aIV.tests = tests;
 
 })(window, (function() {
   "use strict"; 
@@ -69,16 +67,6 @@
  * | The External API for the Module                                           |
  * v ------------------------------------------------------------------------- v
                                                             external-api.js */
-  /**
-   * -----------------------------------------------------
-   * Private Variable (_return)
-   * -----------------------------------------------------
-   * @desc Holds the public methods for the module.
-   * @typedef {tests}
-   * @struct
-   */
-  var _return = {};
-
   /**
    * -----------------------------------------------------
    * Private Variable (_initialized)
@@ -91,26 +79,27 @@
 
   /**
    * -----------------------------------------------------
-   * Public Method (_return.init)
+   * Public Method (_init)
    * -----------------------------------------------------
    * @desc Initializes the aIV.debug tests.
-   * @type {function()}
+   * @type {function}
    */
-  _return.init = function() {
+  var _init = function() {
 
     // Check if tests module has been initialized
-    if (!_initialized) {
-
-      // Save the init to prevent second init
-      _initialized = true;
-
-      // Setup the dummy app
-      app = new App();
-      Object.freeze(app);
-
-      // Run the tests
-      app.runTests();
+    if (_initialized) {
+      return;
     }
+
+    // Save the init to prevent second init
+    _initialized = true;
+
+    // Setup the tests app
+    app = new App();
+    Object.freeze(app);
+
+    // Run the tests
+    app.runTests();
   };
 
 
@@ -120,22 +109,10 @@
                                                              module-vars.js */
   /**
    * ----------------------------------------------- 
-   * Public Variable (debug)
-   * -----------------------------------------------
-   * @desc The Debug instance for the module's public methods.
-   * @type {Object}
-   */
-  var debug = aIV.debug({
-    classTitle     : 'module',
-    turnOnDebuggers: 'fail args'
-  });
-
-  /**
-   * ----------------------------------------------- 
    * Public Variable (app)
    * -----------------------------------------------
-   * @desc The instance of DummyApp for the tests.
-   * @type {DummyApp}
+   * @desc The instance of the tests App.
+   * @type {App}
    */
   var app;
 
@@ -156,72 +133,6 @@
     return document.getElementById(title);
   }
 
-  /**
-   * ---------------------------------------------
-   * Public Method (generateNumbers)
-   * ---------------------------------------------
-   * @desc Generates a random number or array of numbers.
-   * @param {?number=} amount - The amount of numbers to return.
-   * @return {(number|numbers)} The random number(s).
-   */
-  function generateNumbers(amount) {
-
-    debug.start('generateNumbers', amount);
-    debug.args('generateNumbers', amount, 'number=');
-
-    /**
-     * @type {number}
-     * @private
-     */
-    var limit;
-    /**
-     * @type {number}
-     * @private
-     */
-    var min;
-    /**
-     * @type {number}
-     * @private
-     */
-    var max;
-    /**
-     * @type {number}
-     * @private
-     */
-    var i;
-    /**
-     * @type {numbers}
-     */
-    var arr;
-
-    amount = ( (typeof amount === 'number' && amount > 1) ?
-      Math.floor(amount) : null
-    );
-
-    limit = 1000;
-
-    if (amount && amount > limit) {
-      debug.fail('generateNumbers', false, 'Error: Amount arg was over limit.');
-      amount = null;
-    }
-
-    min = 1;
-    max = 50;
-
-    if (!amount) {
-      return Math.floor(Math.random() * (max - min)) + min;
-    }
-
-    arr = new Array(amount);
-    i = 0;
-
-    while (++i < amount) {
-      arr[i] = Math.floor(Math.random() * (max - min)) + min;
-    }
-
-    return arr;
-  }
-
 
 /* -----------------------------------------------------------------------------
  * | The Tests Class                                                           |
@@ -232,7 +143,7 @@
    * Public Class (Tests)
    * -----------------------------------------------------
    * @desc The tests to run.
-   * @struct
+   * @type {Object<string, function>}
    */
   var Tests = {};
 
@@ -241,7 +152,7 @@
    * Public Method (Tests.checkClassTitle)
    * -------------------------------------------------
    * @desc Checks the setting of the classTitle property.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkClassTitle = function() {
 
@@ -290,7 +201,7 @@
    * Public Method (Tests.checkTurnOffTypes)
    * -------------------------------------------------
    * @desc Checks the setting of the turnOffTypes param.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkTurnOffTypes = function() {
 
@@ -362,7 +273,7 @@
    * Public Method (Tests.checkTurnOnDebuggers)
    * -------------------------------------------------
    * @desc Checks the setting of the turnOnDebuggers param.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkTurnOnDebuggers = function() {
 
@@ -435,7 +346,7 @@
    * -------------------------------------------------
    * @desc Checks that instances are not created twice for the
    *   same class.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkInstances = function() {
 
@@ -487,7 +398,7 @@
    * Public Method (Tests.checkStart)
    * -------------------------------------------------
    * @desc Checks Debug.start method.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkStart = function() {
 
@@ -544,7 +455,7 @@
    * Public Method (Tests.checkArgs)
    * -------------------------------------------------
    * @desc Checks Debug.args method.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkArgs = function() {
 
@@ -874,7 +785,7 @@
    * Public Method (Tests.checkFail)
    * -------------------------------------------------
    * @desc Checks Debug.fail method.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkFail = function() {
 
@@ -947,7 +858,7 @@
    * Public Method (Tests.checkGroup)
    * -------------------------------------------------
    * @desc Checks Debug.group method.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkGroup = function() {
 
@@ -1007,7 +918,7 @@
    * Public Method (Tests.checkState)
    * -------------------------------------------------
    * @desc Checks Debug.state method.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkState = function() {
 
@@ -1059,7 +970,7 @@
    * Public Method (Tests.checkMisc)
    * -------------------------------------------------
    * @desc Checks Debug.misc method.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkMisc = function() {
 
@@ -1111,7 +1022,7 @@
    * Public Method (Tests.checkTurnOn)
    * -------------------------------------------------
    * @desc Checks Debug.turnOn method.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkTurnOn = function() {
 
@@ -1180,7 +1091,7 @@
    * Public Method (Tests.checkTurnOff)
    * -------------------------------------------------
    * @desc Checks Debug.turnOff method.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkTurnOff = function() {
 
@@ -1246,7 +1157,7 @@
    * Public Method (Tests.checkTurnOnDebugger)
    * -------------------------------------------------
    * @desc Checks Debug.turnOnDebugger method.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkTurnOnDebugger = function() {
 
@@ -1314,7 +1225,7 @@
    * Public Method (Tests.checkTurnOffDebugger)
    * -------------------------------------------------
    * @desc Checks Debug.turnOffDebugger method.
-   * @type {function()}
+   * @type {function}
    */
   Tests.checkTurnOffDebugger = function() {
 
@@ -1465,6 +1376,9 @@
   };
 
   Object.freeze(Tests);
+  Object.keys(Tests).forEach(function(/** string */ name) {
+    Object.freeze(Tests[name]);
+  });
 
 
 /* -----------------------------------------------------------------------------
@@ -1480,7 +1394,7 @@
    */
   var App = function() {
 
-    console.log('App is being setup.');
+    console.log('The tests App is being setup.');
 
     /**
      * ---------------------------------------------------
@@ -1489,8 +1403,7 @@
      * @desc The elements for this app.
      * @type {Object}
      */
-    this.elems = new Elems();
-    Object.freeze(this.elems);
+    this.elems;
 
     /**
      * ----------------------------------------------- 
@@ -1499,7 +1412,7 @@
      * @desc Saves the results of the tests.
      * @type {Array<TestResults>}
      */
-    this.results = [];
+    this.results;
 
     /**
      * ----------------------------------------------- 
@@ -1508,7 +1421,15 @@
      * @desc Saves the choices to be executed.
      * @type {Array<Choices>}
      */
+    this.choices;
+
+
+    // Setup the properties
+    this.elems = new Elems();
+    this.results = [];
     this.choices = [];
+
+    Object.freeze(this.elems);
   };
 
   // Ensure constructor is set to this class.
@@ -1584,11 +1505,24 @@
    *   a choice is completed.
    */
   App.prototype.addChoice = function(choiceMsg, results, errorMsg, before, after) {
+
     /** @type {Choice} */
     var choice;
+    /** @type {string} */
+    var argsMsg;
 
-    before = before || null;
-    after  = after  || null;
+    if (typeof choiceMsg !== 'string' || !(results instanceof TestResults) ||
+        typeof errorMsg !== 'string') {
+      argsMsg = 'An addChoice call was given an argument of the wrong data type.';
+      console.error(argsMsg);
+      debugger;
+    }
+    if (!before || typeof before !== 'function') {
+      before = null;
+    }
+    if (!after || typeof after !== 'function') {
+      after = null;
+    }
 
     choice = new Choice(choiceMsg, results, errorMsg, before, after);
     Object.freeze(choice);
@@ -1600,10 +1534,12 @@
    * -----------------------------------------------
    * Public Method (App.prototype.runChoices)
    * -----------------------------------------------
-   * @desc .
-   * @type {function()}
+   * @desc Show each choice until all results have been recorded.
+   *   Then show the results.
+   * @type {function}
    */
   App.prototype.runChoices = function() {
+
     /** @type {Choice} */
     var choice;
 
@@ -1619,7 +1555,9 @@
     // Hide the UI while setup is occurring
     this.elems.ui.style.opacity = '0';
 
-    choice.before();
+    if (choice.before) {
+      choice.before();
+    }
 
     setTimeout(function() {
 
@@ -1628,14 +1566,18 @@
 
       // Set the #yes onClick event
       app.elems.yes.onclick = function() {
-        choice.after();
+        if (choice.after) {
+          choice.after();
+        }
         app.runChoices();
       };
 
       // Set the #no onClick event
       app.elems.no.onclick = function() {
         choice.fail();
-        choice.after();
+        if (choice.after) {
+          choice.after();
+        }
         app.runChoices();
       };
 
@@ -1648,10 +1590,11 @@
    * -----------------------------------------------
    * Public Method (App.prototype.shareResults)
    * -----------------------------------------------
-   * @desc .
-   * @type {function()}
+   * @desc Clears the UI and shows all of the results for the tests.
+   * @type {function}
    */
   App.prototype.shareResults = function() {
+
     /** @type {number} */
     var len;
     /** @type {number} */
@@ -1891,6 +1834,7 @@
      * @return {string} The test's type followed by its results.
      */
     this.reportResult = function() {
+
       /** @type {string} */
       var name;
       /** @type {string} */
@@ -1907,6 +1851,7 @@
 
       return report;
     };
+    Object.freeze(this.reportResult);
 
     /**
      * ----------------------------------------------- 
@@ -1916,6 +1861,7 @@
      * @return {?string} The test's type followed by its errors.
      */
     this.reportErrors = function() {
+
       /** @type {number} */
       var len;
       /** @type {number} */
@@ -1945,6 +1891,7 @@
 
       return report;
     };
+    Object.freeze(this.reportErrors);
 
     /**
      * ----------------------------------------------- 
@@ -1956,6 +1903,7 @@
     this.getResult = function() {
       return result;
     };
+    Object.freeze(this.getResult);
 
     /**
      * ----------------------------------------------- 
@@ -1965,8 +1913,11 @@
      * @param {boolean} pass - The test results.
      */
     this.setResult = function(pass) {
-      result = pass;
+      if (typeof pass === 'boolean') {
+        result = pass;
+      }
     };
+    Object.freeze(this.setResult);
 
     /**
      * ----------------------------------------------- 
@@ -1976,7 +1927,13 @@
      * @param {string} msg - The error message.
      */
     this.addError = function(msg) {
+
       result = false;
+
+      if (typeof msg !== 'string') {
+        msg = 'No error message was provided';
+      }
+
       if (errors) {
         errors.push(msg);
       }
@@ -1984,6 +1941,7 @@
         errors = [ msg ];
       }
     };
+    Object.freeze(this.addError);
   };
 
   // Ensure constructor is set to this class.
@@ -2002,9 +1960,9 @@
    * @param {string} choiceMsg - The choice message.
    * @param {TestResults} results - The results object.
    * @param {string} errorMsg - The error message.
-   * @param {?Object} before - A function that gets called before
+   * @param {?function} before - A function that gets called before
    *   the choice is shown.
-   * @param {?Object} after - A function that gets called after
+   * @param {?function} after - A function that gets called after
    *   a choice is completed.
    * @constructor
    */
@@ -2012,7 +1970,7 @@
 
     /**
      * ----------------------------------------------- 
-     * Protected Property (Choice.msg)
+     * Public Property (Choice.msg)
      * -----------------------------------------------
      * @desc The choice directions.
      * @type {string}
@@ -2023,40 +1981,39 @@
      * ----------------------------------------------- 
      * Public Method (Choice.fail)
      * -----------------------------------------------
-     * @desc A function that records an error and the failure
-     *   of a test.
-     * @type {function()}
+     * @desc A function that records an error and the
+     *   failure of a test.
+     * @type {function}
      */
     this.fail = function() {
       results.addError(errorMsg);
       results.setResult(false);
     };
+    Object.freeze(this.fail);
 
     /**
      * ----------------------------------------------- 
      * Public Method (Choice.before)
      * -----------------------------------------------
      * @desc Logic to call before showing the choice.
-     * @type {function()}
+     * @type {?function}
      */
-    this.before = function() {
-      if (typeof before === 'function') {
-        before();
-      }
-    };
+    this.before = before;
+    if (before) {
+      Object.freeze(before);
+    }
 
     /**
      * ----------------------------------------------- 
      * Public Method (Choice.after)
      * -----------------------------------------------
      * @desc Logic to call after completing the choice.
-     * @type {function()}
+     * @type {?function}
      */
-    this.after = function() {
-      if (typeof after === 'function') {
-        after();
-      }
-    };
+    this.after = after;
+    if (after) {
+      Object.freeze(after);
+    }
   };
 
   // Ensure constructor is set to this class.
@@ -2067,6 +2024,6 @@
  * | End of module                                                             |
  * v ------------------------------------------------------------------------- v
                                                                             */
-  return _return;
+  return _init;
 
 })());

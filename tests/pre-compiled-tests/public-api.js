@@ -12,8 +12,8 @@
    * ---------------------------------------------------
    * Global Method (aIV.tests)
    * ---------------------------------------------------
-   * @desc Runs tests on aIV.debug.
-   * @type {function()}
+   * @desc Runs the tests for aIV.debug.
+   * @type {function}
    * @global
    */
-  aIV.tests = tests.init;
+  aIV.tests = tests;

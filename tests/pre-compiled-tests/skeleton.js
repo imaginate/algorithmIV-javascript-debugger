@@ -8,7 +8,6 @@
  * @author Adam Smith ({@link adamsmith@youlum.com})
  * @copyright 2015 Adam A Smith ([github.com/imaginate]{@link https://github.com/imaginate})
  * @license The MIT License ([algorithmiv.com/docs/license]{@link http://algorithmiv.com/docs/license})
- **
  * @desc More details about the module for aIV.tests:
  * <ol>
  *   <li>annotations: 
@@ -30,10 +29,9 @@
  * @typedef {Array<string>} strings
  * @typedef {Array<number>} numbers
  * @typedef {Array<Object>} objects
- * @typedef {{ init: function() }} tests
  */
 
-(function(/** Window */ window, /** tests */ tests) {
+(function(/** Window */ window, /** function */ tests) {
   "use strict";
 
 
@@ -98,6 +96,6 @@
  * | End of module                                                             |
  * v ------------------------------------------------------------------------- v
                                                                             */
-  return _return;
+  return _init;
 
 })());
