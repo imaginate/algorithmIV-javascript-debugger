@@ -6,22 +6,26 @@
 I have found that having a detailed log of all the method calls and variable states is extremely helpful for quickly finding the exact location and cause of a front-end JavaScript bug. The reason I built aIV.debug is because of the problem that I encountered managing and organizing the large volume of logs that come with any project containing more than a couple classes. I wanted to remove repetitive code, add the flexibility of turning specific log types on or off, and insert breakpoints, timers, and profiles without hassle per each class for every method. With a bit of work aIV.debug is close to accomplishing it all! Below you will see some examples of my old console log structure and the magic of the aIV.debug way:
 
 ```javascript
+var debug = aIV.debug('TheClass');
+var theVar = 'The aIV way!';
+
 // START: Logs the start of every method
-console.log('START: TheClass.theMethod(%O)', theVar);
+// this example logs: "START: TheClass.theMethod('The aIV way!')"
 debug.start('theMethod', theVar);
+// vs
+console.log('START: TheClass.theMethod(%s)', theVar);
 
 // ARGS: Logs an error if a method's args are not the desired data type
-console.assert((typeof theVar === 'object'), 'ARGS: TheClass.theMethod() | Error: Incorrect argument data type.');
+// this example logs: "ARGS: TheClass.theMethod() | Error: Incorrect argument data type."
 debug.args('theMethod', theVar, 'object');
+// vs
+console.assert((typeof theVar === 'object'), 'ARGS: TheClass.theMethod() | Error: Incorrect argument data type.');
 
 // STATE: Logs the current state of a variable
-console.log('STATE: TheClass.theMethod() | theVar= %O', theVar);
+// this example logs: "STATE: TheClass.theMethod() | theVar= 'The aIV way!'"
 debug.state('theMethod', 'theVar= $$', theVar);
-
-// FAIL: Logs an error if an expression evaluates to false or a function returns false
-var check = theVar.hasOwnProperty('success');
-console.assert(check, 'FAIL: TheClass.theMethod() | theVar did not have a success property. theVar= %O', theVar);
-debug.fail('theMethod', check, 'theVar did not have a success property. theVar= $$', theVar);
+// vs
+console.log('STATE: TheClass.theMethod() | theVar= %s', theVar);
 ```
 
 
