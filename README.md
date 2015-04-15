@@ -1,10 +1,33 @@
-#Make Debugging Your JavaScript Easy
+#Make Debugging Your JavaScript Easy!
 
-####Algorithm IV's debugger is a JavaScript object constructor that has six different methods that log messages, errors, and more to your console. It makes managing a JavaScript project with multiple classes much simpler by implementing a clear and organized structure to every log made!
+####Algorithm IV's debugger is a console wrapper that provides a clear log structure for you to follow, reduces the amount of time and code it takes to find a bug, and gives you complete control over switching logs, breakpoints, tests, and more on or off. With proper use you will know and control the actions of every JavaScript module in your code base!
+
+##Why aIV.debug?
+I have found that having a detailed log of all the method calls and variable states is extremely helpful to quickly find the exact location and reason for front-end JavaScript bugs. The reason I built aIV.debug is because of the problem that I encountered managing and organizing the large log volume that comes with any project containing more than a couple classes. I wanted to remove repetitive code and add the flexibility of turning specific log types on and off and inserting breakpoints, timers, and profiles without hassle per each class for every method. With a bit of work aIV.debug is close to accomplishing it all! Below you will see some examples of my old console log structure and the magic of the aIV.debug way:
+
+```javascript
+// START: Logs the start of every method
+console.log('START: TheClass.theMethod(%O)', theVar);
+debug.start('theMethod', theVar);
+
+// ARGS: Logs an error if a method's args are not the desired data type
+console.assert((typeof theVar === 'object'), 'ARGS: TheClass.theMethod() | Error: Incorrect argument data type.');
+debug.args('theMethod', theVar, 'object');
+
+// STATE: Logs the current state of a variable
+console.log('STATE: TheClass.theMethod() | theVar= %O', theVar);
+debug.state('theMethod', 'theVar= $$', theVar);
+
+// FAIL: Logs an error if an expression evaluates to false or a function returns false
+var check = theVar.hasOwnProperty('success');
+console.assert(check, 'FAIL: TheClass.theMethod() | theVar did not have a success property. theVar= %O', theVar);
+debug.fail('theMethod', check, 'theVar did not have a success property. theVar= $$', theVar);
+```
+
 
 ##Getting Started
 - Download [algorithmIV-debug.min.js](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/src/algorithmIV-debug.min.js)
-- Add algorithmIV-debug.min.js to your HTML head like so:
+- Add algorithmIV-debug.min.js to your HTML head
 ```html
 <html>
   <head>
@@ -15,8 +38,21 @@
   <body>...</body>
 </html>
 ```
-- Use ``` aIV.debug.setConfig(settings) ``` to change the default settings
-- Use ``` aIV.debug(className) ``` to create as many debugger objects as you need
+- Use aIV.debug.setConfig(settings) to change the default settings
+```javascript
+aIV.debug.setConfig({
+  turnOffTypes   : 'start',
+  turnOnDebuggers: 'all'
+});
+```
+- Use aIV.debug(className) to create as many debug object instances as you need like so:
+```javascript
+var debug = aIV.debug({
+  classTitle     : 'Example',
+  turnOffTypes   : 'state',
+  turnOnDebuggers: 'fail'
+});
+```
 - Note that this debugger works best in [Chrome](https://www.google.com/chrome/) especially with large volumes of logs
 
 
@@ -32,7 +68,7 @@ Each debug object has the following methods for logging to the console:
 | **state** | debugInstance.state(methodName, logMessage, var1, var2, ...)                   |
 | **misc**  | debugInstance.misc(methodName, logMessage, optionalVar1, ...)                  |
 
-Plus the following methods for disabling logs and adding debugger statements:
+Plus the following methods for disabling logs and adding debugger breakpoints:
 
 |                     | example calls                               |
 | :-----------------: | :------------------------------------------ |
