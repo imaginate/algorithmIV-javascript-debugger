@@ -1,27 +1,35 @@
   /**
    * ----------------------------------------------- 
-   * Public Variable (debuggers)
+   * Public Variable (errorBreakpoints)
    * -----------------------------------------------
-   * @desc Controls whether debuggers are included with error logs.
+   * @desc Controls whether debugger breakpoints are included with error logs.
    * @type {boolean}
    */
-  var debuggers = true;
+  var errorBreakpoints = true;
 
   /**
    * ----------------------------------------------- 
-   * Public Variable (defaultArgs)
+   * Public Variable (defaultSettings)
    * -----------------------------------------------
-   * @desc Sets default arguments for all instances of the debugger.
-   *   Note that if local arguments are provided with an instance call
-   *   they will be used instead of the global.
+   * @desc Sets default settings for all instances of the debugger. Note that
+   *   if local settings are provided upon a new instance call they will be used
+   *   instead of the default settings.
    * @type {{
-   *   turnOffTypes   : (string|strings),
-   *   turnOnDebuggers: (string|strings)
+   *   classTitle    : string,
+   *   turnOffTypes  : string,
+   *   addBreakpoints: string,
+   *   turnOnGroups  : boolean,
+   *   turnOnProfiles: boolean,
+   *   turnOnTimers  : boolean
    * }}
    */
-  var defaultArgs = {
-    turnOffTypes : '',
-    turnOnBuggers: 'args fail'
+  var defaultSettings = {
+    classTitle    : 'unknown',
+    turnOffTypes  : 'none',
+    addBreakpoints: 'args fail',
+    turnOnGroups  : false,
+    turnOnProfiles: false,
+    turnOnTimers  : false
   };
 
   /**

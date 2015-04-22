@@ -13,7 +13,7 @@
    * Global Method (aIV.debug)
    * ---------------------------------------------------
    * @desc Creates or retrieves an instance of aIV's Debug class.
-   * @param {!(string|Object)=} settings - A string of the Debug instance's
+   * @param {?(string|Object)=} settings - A string of the Debug instance's
    *   class name or an object with the Debug instance's settings.
    * @param {string=} settings.classTitle - The Debug instance's class name.
    * @param {string=} settings.className - The same as settings.classTitle.
