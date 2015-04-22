@@ -16,7 +16,7 @@ tests/algorithmIV-debug.js |    |
 cd tests/pre-compiled-debug
 sed \
   -e "/public-api.js/ r public-api.js" \
-  -e "/external-api.js/ r external-api.js" \
+  -e "/module-api.js/ r module-api.js" \
   -e "/module-vars.js/ r module-vars.js" \
   -e "/module-methods.js/ r module-methods.js" \
   -e "/debug-class.js/ r debug-class.js" \
@@ -29,7 +29,7 @@ rm -f pre-compiled-debug/algorithmIV-debug-temp.js
 cd tests/pre-compiled-debug
 sed ^
   -e "/public-api.js/ r public-api.js" ^
-  -e "/external-api.js/ r external-api.js" ^
+  -e "/module-api.js/ r module-api.js" ^
   -e "/module-vars.js/ r module-vars.js" ^
   -e "/module-methods.js/ r module-methods.js" ^
   -e "/debug-class.js/ r debug-class.js" ^
