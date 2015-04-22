@@ -2,41 +2,52 @@
    * -----------------------------------------------------
    * Public Class (Debug)
    * -----------------------------------------------------
-   * @desc Contains the debugging methods.
-   * @param {string} classTitle - The name of the class.
-   * @param {?(string|strings)} turnOffTypes - The debug categories to disable
-   *   for this Debug class instance. If 'all' is provided then all categories
-   *   for this Debug instance are disabled.
-   * @param {?(string|strings)} turnOnBuggers - The debugger instances to
-   *   enable for this Debug class instance. If 'all' is provided then all
-   *   instances of debugger are enabled.
+   * @desc Contains the debugging properties and methods.
+   * @param {!Object<string, (string|boolean)>} settings - The class settings.
+   * @param {string} settings.classTitle - The name of the class.
+   * @param {string} settings.turnOffTypes - The class methods to disable. If
+   *   'all' is provided then all methods are disabled.
+   * @param {string} settings.addBreakpoints - The methods to add debugger
+   *   breakpoints to. If 'all' is provided then breakpoints are added to all
+   *   methods.
+   * @param {boolean} settings.turnOnGroups - Enables/disables automatic
+   *   grouping of all logs, timers, and profiles between every start and end
+   *   method.
+   * @param {boolean} settings.turnOnProfiles - Enables/disables automatic
+   *   profiling for all logic between every start and end method.
+   * @param {boolean} settings.turnOnTimers - Enables/disables automatic
+   *   timing for all logic between every start and end method.
    * @constructor
    */
-  var Debug = function(classTitle, turnOffTypes, turnOnBuggers) {
+  var Debug = function(settings) {
 
-    classTitle += '.';
 
-    if ( Array.isArray(turnOffTypes) ) {
-      turnOffTypes = turnOffTypes.join(' ');
-    }
-    if ( Array.isArray(turnOnBuggers) ) {
-      turnOnBuggers = turnOnBuggers.join(' ');
-    }
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Public Properties
+    ////////////////////////////////////////////////////////////////////////////
 
-    if (turnOffTypes) {
-      turnOffTypes = turnOffTypes.toLowerCase();
-    }
-    if (turnOnBuggers) {
-      turnOnBuggers = turnOnBuggers.toLowerCase();
-    }
+    /**
+     * ---------------------------------------------------
+     * Public Property (Debug.classTitle)
+     * ---------------------------------------------------
+     * @desc The class name for the instance.
+     * @type {string}
+     */
+    this.classTitle = settings.classTitle + '.';
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Define The Protected Properties
+    ////////////////////////////////////////////////////////////////////////////
 
     /**
      * -----------------------------------------------------
-     * Private Variable (types)
+     * Protected Property (types)
      * -----------------------------------------------------
-     * @desc Allows disabling of specific debug methods per class instance.
+     * @desc Allows disabling of specific methods per class instance.
      *   <ol>
      *     <li>start: Logs the start of every method.</li>
+     *     <li>end: Logs the end of every method.</li>
      *     <li>args: Evaluations that assert method's arguments and
      *         log error messages when they are incorrect.</li>
      *     <li>fail: Applies custom evaluations and logs errors when
@@ -48,6 +59,7 @@
      *   </ol>
      * @type {{
      *   start: boolean,
+     *   end  : boolean,
      *   args : boolean,
      *   fail : boolean,
      *   group: boolean,
@@ -56,22 +68,16 @@
      * }}
      * @private
      */
-    var types = {
-      start: (!turnOffTypes || !/start|all/.test(turnOffTypes)),
-      args : (!turnOffTypes ||  !/args|all/.test(turnOffTypes)),
-      fail : (!turnOffTypes ||  !/fail|all/.test(turnOffTypes)),
-      group: (!turnOffTypes || !/group|all/.test(turnOffTypes)),
-      state: (!turnOffTypes || !/state|all/.test(turnOffTypes)),
-      misc : (!turnOffTypes ||  !/misc|all/.test(turnOffTypes))
-    };
+    var types;
 
     /**
      * -----------------------------------------------------
-     * Private Variable (buggers)
+     * Protected Property (breakpoints)
      * -----------------------------------------------------
-     * @desc Allows disabling of debugger instances in debug methods.
+     * @desc Allows disabling of debugger breakpoints for specific methods.
      * @type {{
      *   start: boolean,
+     *   end  : boolean,
      *   args : boolean,
      *   fail : boolean,
      *   group: boolean,
@@ -80,120 +86,155 @@
      * }}
      * @private
      */
-    var buggers = {
-      start: (!!turnOnBuggers && /start|all/.test(turnOnBuggers)),
-      args : (!!turnOnBuggers &&  /args|all/.test(turnOnBuggers)),
-      fail : (!!turnOnBuggers &&  /fail|all/.test(turnOnBuggers)),
-      group: (!!turnOnBuggers && /group|all/.test(turnOnBuggers)),
-      state: (!!turnOnBuggers && /state|all/.test(turnOnBuggers)),
-      misc : (!!turnOnBuggers &&  /misc|all/.test(turnOnBuggers))
+    var breakpoints;
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Setup The Protected Properties
+    ////////////////////////////////////////////////////////////////////////////
+
+    settings.turnOffTypes = settings.turnOffTypes.toLowerCase();
+    settings.addBreakpoints = settings.addBreakpoints.toLowerCase();
+
+    types = {
+      start: !/start|all/.test(settings.turnOffTypes),
+      end  :   !/end|all/.test(settings.turnOffTypes),
+      args :  !/args|all/.test(settings.turnOffTypes),
+      fail :  !/fail|all/.test(settings.turnOffTypes),
+      group: !/group|all/.test(settings.turnOffTypes),
+      state: !/state|all/.test(settings.turnOffTypes),
+      misc :  !/misc|all/.test(settings.turnOffTypes)
     };
 
-    /**
-     * ---------------------------------------------------
-     * Public Property (Debug.classTitle)
-     * ---------------------------------------------------
-     * @desc The class name for the instance.
-     * @type {string}
-     */
-    this.classTitle = classTitle;
+    breakpoints = {
+      start: /start|all/.test(settings.addBreakpoints),
+      end  :   /end|all/.test(settings.addBreakpoints),
+      args :  /args|all/.test(settings.addBreakpoints),
+      fail :  /fail|all/.test(settings.addBreakpoints),
+      group: /group|all/.test(settings.addBreakpoints),
+      state: /state|all/.test(settings.addBreakpoints),
+      misc :  /misc|all/.test(settings.addBreakpoints)
+    };
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Public Methods
+    ////////////////////////////////////////////////////////////////////////////
 
     /**
      * ---------------------------------------------------
      * Public Method (Debug.getType)
      * ---------------------------------------------------
-     * @desc Retrieve this instance's value for the supplied type.
-     * @param {string} type - The type to get.
-     * @return {boolean}
+     * @desc Gets a method's current value for whether it is active.
+     * @param {string} type - The method value to get.
+     * @return {boolean} The method's current enabled/disabled state.
      */
     this.getType = function(type) {
-      return (!!types[type]);
+      return types[ type ];
     };
 
     /**
      * ---------------------------------------------------
-     * Public Method (Debug.getBugger)
+     * Public Method (Debug.getBreakpoint)
      * ---------------------------------------------------
-     * @desc Retrieve this instance's debuuger value for the supplied type.
-     * @param {string} type - The type's debugger setting to get.
-     * @return {boolean}
+     * @desc Gets a method's current value for whether it has added debugger
+     *   breakpoints.
+     * @param {string} type - The method value to get.
+     * @return {boolean} The method's current enabled/disabled state.
      */
-    this.getBugger = function(type) {
-      return (!!buggers[type]);
+    this.getBreakpoint = function(type) {
+      return breakpoints[ type ];
     };
 
     /**
      * ---------------------------------------------------
      * Public Method (Debug.setType)
      * ---------------------------------------------------
-     * @desc Set this instance's value for the supplied type.
-     * @param {string} type - The type to set.
-     * @param {boolean} val - The type's new value.
+     * @desc Sets a method's active state.
+     * @param {string} type - The method state to set.
+     * @param {boolean} val - The new state.
      * @return {boolean} Indicates whether correct arguments were given.
      */
     this.setType = function(type, val) {
 
-      if (typeof type === 'string' && typeof val  === 'boolean') {
-
-        type = type.toLowerCase();
-
-        if (types.hasOwnProperty(type) || type === 'all') {
-
-          if (type === 'all') {
-            for (type in types) {
-              if ( types.hasOwnProperty(type) ) {
-                types[type] = val;
-              }
-            }
-          }
-          else {
-            types[type] = val;
-          }
-
-          return true;
-        }
+      if (!checkType(type, 'string') || !checkType(val, 'boolean')) {
+        return false;
       }
 
-      return false;
+      type = type.toLowerCase();
+
+      if (!types.hasOwnProperty(type) && type !== 'all') {
+        return false;
+      }
+
+      if (type === 'all') {
+        for (type in types) {
+          if ( types.hasOwnProperty(type) ) {
+            types[ type ] = val;
+          }
+        }
+      }
+      else {
+        types[ type ] = val;
+      }
+
+      return true;
     };
 
     /**
      * ---------------------------------------------------
-     * Public Method (Debug.setBugger)
+     * Public Method (Debug.setBreakpoint)
      * ---------------------------------------------------
-     * @desc Set this instance's debugger value for the supplied type.
-     * @param {string} type - The type's debugger value to set.
-     * @param {boolean} val - The type's new debugger value.
+     * @desc Sets a method's added breakpoints state.
+     * @param {string} type - The method state to set.
+     * @param {boolean} val - The new state.
      * @return {boolean} Indicates whether correct arguments were given.
      */
-    this.setBugger = function(type, val) {
+    this.setBreakpoint = function(type, val) {
 
-      if (typeof type === 'string' && typeof val  === 'boolean') {
-
-        type = type.toLowerCase();
-
-        if (buggers.hasOwnProperty(type) || type === 'all') {
-
-          if (type === 'all') {
-            for (type in buggers) {
-              if ( buggers.hasOwnProperty(type) ) {
-                buggers[type] = val;
-              }
-            }
-          }
-          else {
-            buggers[type] = val;
-          }
-
-          return true;
-        }
+      if (!checkType(type, 'string') || !checkType(val, 'boolean')) {
+        return false;
       }
 
-      return false;
+      type = type.toLowerCase();
+
+      if (!breakpoints.hasOwnProperty(type) && type !== 'all') {
+        return false;
+      }
+
+      if (type === 'all') {
+        for (type in breakpoints) {
+          if ( breakpoints.hasOwnProperty(type) ) {
+            breakpoints[ type ] = val;
+          }
+        }
+      }
+      else {
+        breakpoints[ type ] = val;
+      }
+
+      return true;
     };
+
+    // Freeze all of the public methods
+    Object.freeze(this.getType);
+    Object.freeze(this.getBreakpoint);
+    Object.freeze(this.setType);
+    Object.freeze(this.setBreakpoint);
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    // End Of The Class Setup
+    ////////////////////////////////////////////////////////////////////////////
+
+    // Freeze this class instance
+    Object.freeze(this);
   };
 
-  // Ensure constructor is set to this class.
+////////////////////////////////////////////////////////////////////////////////
+// The Prototype Methods
+////////////////////////////////////////////////////////////////////////////////
+
   Debug.prototype.constructor = Debug;
 
   /**
