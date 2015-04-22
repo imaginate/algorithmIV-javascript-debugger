@@ -59,6 +59,7 @@
    * @type {RegExp}
    */
   regexps.types.all = (function() {
+
     /** @type {string} */
     var types;
 
@@ -79,6 +80,7 @@
    * @type {RegExp}
    */
   regexps.types.basic = (function() {
+
     /** @type {string} */
     var types;
 
@@ -96,6 +98,7 @@
    * @type {RegExp}
    */
   regexps.types.arrays = (function() {
+
     /** @type {string} */
     var types;
 
@@ -113,6 +116,7 @@
    * @type {RegExp}
    */
   regexps.types.maps = (function() {
+
     /** @type {string} */
     var types;
 
