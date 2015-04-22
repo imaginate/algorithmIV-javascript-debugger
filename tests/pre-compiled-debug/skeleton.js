@@ -2,15 +2,18 @@
 
 /**
  * -----------------------------------------------------------------------------
- * Algorithm IV Debug - Module (v1.0.2)
+ * Algorithm IV Debugger (v1.1.0)
  * -----------------------------------------------------------------------------
- * @file The module for creating an aIV Debug object instance.
+ * @file Algorithm IV's debugger is a console wrapper that provides a clear log
+ * structure for you to follow, reduces the amount of time and code it takes to
+ * find a bug, and gives you complete control over switching logs, breakpoints,
+ * tests, and more on or off. With proper use you will know and control the
+ * actions of every JavaScript module in your code base!
  * @module aIVDebug
- * @version 1.0.2
+ * @version 1.1.0
  * @author Adam Smith ({@link adamsmith@youlum.com})
  * @copyright 2015 Adam A Smith ([github.com/imaginate]{@link https://github.com/imaginate})
  * @license The MIT License ([algorithmiv.com/docs/license]{@link http://algorithmiv.com/docs/license})
- **
  * @desc More details about aIV.debug's module:
  * <ol>
  *   <li>annotations: 
@@ -18,7 +21,7 @@
  *       and [See JSDoc3]{@link http://usejsdoc.org/}
  *   </li>
  *   <li>contributing: 
- *       [See the guideline]{@link https://github.com/imaginate/algorithmIV--javascript-debugger/blob/master/CONTRIBUTING.md}
+ *       [See our guideline]{@link https://github.com/imaginate/algorithmIV--javascript-debugger/blob/master/CONTRIBUTING.md}
  *   </li>
  * </ol>
  */
@@ -32,10 +35,9 @@
  * @typedef {Array<string>} strings
  * @typedef {Array<number>} numbers
  * @typedef {Array<Object>} objects
- * @typedef {{ newDebug: function(?Object) }} newDebug
  */
 
-(function(/** Window */ window, /** newDebug */ debug) {
+(function(/** Window */ window, /** Object */ debugModuleAPI) {
   "use strict";
 
 
@@ -82,6 +84,6 @@
  * | End of module                                                             |
  * v ------------------------------------------------------------------------- v
                                                                             */
-  return _return;
+  return debugModuleAPI;
 
 })());
