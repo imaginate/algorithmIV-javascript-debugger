@@ -5,10 +5,11 @@
      * ---------------------------------------------
      * @desc A polyfill for the native method. For method details
      *   [see MDN]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys}
-     * @param {!Object} obj
-     * @return {vals}
+     * @param {!(Object|function)} obj
+     * @return {strings}
      */
-    Object.keys = (function(obj) {
+    Object.keys = (function() {
+      "use strict";
 
       /** @type {Object} */
       var testObj;
@@ -97,6 +98,8 @@
   }
   catch (e) {
     Object.freeze = (function(originalFreeze) {
+      "use strict";
+
       return function(obj) {
         if (typeof obj === 'function') {
           return obj;
@@ -105,5 +108,5 @@
           return originalFreeze(obj);
         }
       };
-    }(Object.freeze));
+    })(Object.freeze);
   }
