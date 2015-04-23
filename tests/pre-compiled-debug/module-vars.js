@@ -16,7 +16,7 @@
    *   instead of the default settings.
    * @type {{
    *   classTitle    : string,
-   *   turnOffTypes  : string,
+   *   turnOffMethods: string,
    *   addBreakpoints: string,
    *   turnOnGroups  : boolean,
    *   turnOnProfiles: boolean,
@@ -25,7 +25,7 @@
    */
   var defaultSettings = {
     classTitle    : 'unknown',
-    turnOffTypes  : 'none',
+    turnOffMethods: 'none',
     addBreakpoints: 'args fail',
     turnOnGroups  : false,
     turnOnProfiles: false,

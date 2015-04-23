@@ -27,12 +27,12 @@
    *   class name or an object with the Debug instance's settings.
    * @param {string=} settings.classTitle - The Debug instance's class name.
    * @param {string=} settings.className - The same as settings.classTitle.
-   * @param {!(string|strings)=} settings.turnOff - Contains the methods to
-   *   disable for this Debug instance. The options are 'all', 'none', 'start',
-   *   'end', 'args', 'fail', 'group', 'state', and 'misc'. This setting does
-   *   override the module defaults.
+   * @param {!(string|strings)=} settings.turnOffMethods - Contains the methods
+   *   to disable for this Debug instance. The options are 'all', 'none',
+   *   'start', 'end', 'args', 'fail', 'group', 'state', and 'misc'. This
+   *   setting does override the module defaults.
    * @param {!(string|strings)=} settings.turnOffTypes - The same as
-   *   settings.turnOff.
+   *   settings.turnOffMethods.
    * @param {!(string|strings)=} settings.addBreakpoints - Contains the methods
    *   to add debugger breakpoints to for this Debug instance. The options are
    *   'all', 'none', 'start', 'end', 'args', 'fail', 'group', 'state', and
@@ -55,7 +55,7 @@
     /** @type {string} */
     var classTitle;
     /** @type {string} */
-    var turnOffTypes;
+    var turnOffMethods;
     /** @type {string} */
     var addBreakpoints;
     /** @type {boolean} */
@@ -88,23 +88,23 @@
     // Create a new Debug instance
     if ( !debugInstances.hasOwnProperty(classTitle) ) {
 
-      // Setup turnOffTypes
-      turnOffTypes = defaultSettings.turnOffTypes;
+      // Setup turnOffMethods
+      turnOffMethods = defaultSettings.turnOffMethods;
       if (settings) {
-        if ( settings.hasOwnProperty('turnOff') ) {
-          if ( checkType(settings.turnOff, 'string') ) {
-            turnOffTypes = settings.turnOff;
+        if ( settings.hasOwnProperty('turnOffMethods') ) {
+          if ( checkType(settings.turnOffMethods, 'string') ) {
+            turnOffMethods = settings.turnOffMethods;
           }
-          else if ( checkType(settings.turnOff, '!strings') ) {
-            turnOffTypes = settings.turnOff.join(' ');
+          else if ( checkType(settings.turnOffMethods, '!strings') ) {
+            turnOffMethods = settings.turnOffMethods.join(' ');
           }
         }
         else if ( settings.hasOwnProperty('turnOffTypes') ) {
           if ( checkType(settings.turnOffTypes, 'string') ) {
-            turnOffTypes = settings.turnOffTypes;
+            turnOffMethods = settings.turnOffTypes;
           }
           else if ( checkType(settings.turnOffTypes, '!strings') ) {
-            turnOffTypes = settings.turnOffTypes.join(' ');
+            turnOffMethods = settings.turnOffTypes.join(' ');
           }
         }
       }
@@ -154,7 +154,7 @@
       // Create the new instance's settings object
       settings = {
         classTitle    : classTitle,
-        turnOffTypes  : turnOffTypes,
+        turnOffMethods: turnOffMethods,
         addBreakpoints: addBreakpoints,
         turnOnGroups  : turnOnGroups,
         turnOnProfiles: turnOnProfiles,
@@ -186,10 +186,10 @@
    *   settings.errorBreakpoints.
    * @param {string=} settings.classTitle - The default class title.
    * @param {string=} settings.className - The same as settings.classTitle.
-   * @param {!(string|strings)=} settings.turnOff - The default methods
+   * @param {!(string|strings)=} settings.turnOffMethods - The default methods
    *   to disable for all new Debug instances created after this call.
    * @param {!(string|strings)=} settings.turnOffTypes - The same as
-   *   settings.turnOff.
+   *   settings.turnOffMethods.
    * @param {!(string|strings)=} settings.addBreakpoints - The default
    *   methods to add debugger breakpoints to for all new Debug instances
    *   created after this call.
@@ -211,12 +211,12 @@
     var dataType;
 
     if ( !checkType(settings, '!object') ) {
+      dataType = (settings === null) ? 'null' : typeof settings;
       msg = 'The settings param given to aIV.debug.set was an incorrrect data ';
       msg += 'type. It should be an object using strings of the items to set ';
       msg += 'as its keys and the values to set each item to as the values. ';
-      msg += 'The given data type was \'%s\'.';
-      dataType = (settings === null) ? 'null' : typeof settings;
-      console.error(msg, dataType);
+      msg += 'The given data type was \'' + dataType + '\'.';
+      console.error(msg);
       if (errorBreakpoints) {
         debugger;
       }
@@ -243,21 +243,21 @@
       defaultSettings.classTitle = settings.className;
     }
 
-    // Set the default value for turnOffTypes
-    if ( settings.hasOwnProperty('turnOff') ) {
-      if ( checkType(settings.turnOff, 'string') ) {
-        defaultSettings.turnOffTypes = settings.turnOff;
+    // Set the default value for turnOffMethods
+    if ( settings.hasOwnProperty('turnOffMethods') ) {
+      if ( checkType(settings.turnOffMethods, 'string') ) {
+        defaultSettings.turnOffMethods = settings.turnOffMethods;
       }
-      else if ( checkType(settings.turnOff, '!strings') ) {
-        defaultSettings.turnOffTypes = settings.turnOff.join(' ');
+      else if ( checkType(settings.turnOffMethods, '!strings') ) {
+        defaultSettings.turnOffMethods = settings.turnOffMethods.join(' ');
       }
     }
     else if ( settings.hasOwnProperty('turnOffTypes') ) {
       if ( checkType(settings.turnOffTypes, 'string') ) {
-        defaultSettings.turnOffTypes = settings.turnOffTypes;
+        defaultSettings.turnOffMethods = settings.turnOffTypes;
       }
       else if ( checkType(settings.turnOffTypes, '!strings') ) {
-        defaultSettings.turnOffTypes = settings.turnOffTypes.join(' ');
+        defaultSettings.turnOffMethods = settings.turnOffTypes.join(' ');
       }
     }
 

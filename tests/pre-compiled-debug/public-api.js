@@ -17,12 +17,12 @@
    *   class name or an object with the Debug instance's settings.
    * @param {string=} settings.classTitle - The Debug instance's class name.
    * @param {string=} settings.className - The same as settings.classTitle.
-   * @param {!(string|strings)=} settings.turnOff - Contains the methods to
-   *   disable for this Debug instance. The options are 'all', 'none', 'start',
-   *   'end', 'args', 'fail', 'group', 'state', and 'misc'. This setting does
-   *   override the module defaults.
+   * @param {!(string|strings)=} settings.turnOffMethods - Contains the methods
+   *   to disable for this Debug instance. The options are 'all', 'none',
+   *   'start', 'end', 'args', 'fail', 'group', 'state', and 'misc'. This
+   *   setting does override the module defaults.
    * @param {!(string|strings)=} settings.turnOffTypes - The same as
-   *   settings.turnOff.
+   *   settings.turnOffMethods.
    * @param {!(string|strings)=} settings.addBreakpoints - Contains the methods
    *   to add debugger breakpoints to for this Debug instance. The options are
    *   'all', 'none', 'start', 'end', 'args', 'fail', 'group', 'state', and
@@ -61,10 +61,10 @@
    *   settings.errorBreakpoints.
    * @param {string=} settings.classTitle - The default class title.
    * @param {string=} settings.className - The same as settings.classTitle.
-   * @param {!(string|strings)=} settings.turnOff - The default methods
+   * @param {!(string|strings)=} settings.turnOffMethods - The default methods
    *   to disable for all new Debug instances created after this call.
    * @param {!(string|strings)=} settings.turnOffTypes - The same as
-   *   settings.turnOff.
+   *   settings.turnOffMethods.
    * @param {!(string|strings)=} settings.addBreakpoints - The default
    *   methods to add debugger breakpoints to for all new Debug instances
    *   created after this call.
