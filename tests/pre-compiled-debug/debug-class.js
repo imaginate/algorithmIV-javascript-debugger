@@ -170,8 +170,13 @@
      */
     this.getMethod = function(method) {
 
-      if ( !methods.hasOwnProperty(method) ) {
-        console.error('A getMethod call was given an incorrect method name.');
+      /** @type {string} */
+      var msg;
+
+      if (!checkType(method, 'string') ||  !methods.hasOwnProperty(method)) {
+        msg = 'An aIV.debug getMethod call was given an incorrect method ';
+        msg += 'name. The given incorrect method name was \'' + method + '\'.';
+        console.error(msg);
         if (errorBreakpoints) {
           debugger;
         }
@@ -196,8 +201,9 @@
       /** @type {string} */
       var msg;
 
-      if ( !breakpoints.hasOwnProperty(method) ) {
-        msg = 'A getBreakpoint call was given an incorrect method name.';
+      if (!checkType(method, 'string') || !breakpoints.hasOwnProperty(method)) {
+        msg = 'An aIV.debug getBreakpoint call was given an incorrect method ';
+        msg += 'name. The given incorrect method name was \'' + method + '\'.';
         console.error(msg);
         if (errorBreakpoints) {
           debugger;
@@ -220,12 +226,24 @@
 
       /** @type {Object<string, boolean>} */
       var props;
+      /** @type {string} */
+      var msg;
 
       props = {
         groups  : groups,
         profiles: profiles,
         timers  : timers
       };
+
+      if (!checkType(prop, 'string') || !props.hasOwnProperty(prop)) {
+        msg = 'An aIV.debug getAuto call was given an incorrect type name. ';
+        msg += 'The given incorrect type name was \'' + prop + '\'.';
+        console.error(msg);
+        if (errorBreakpoints) {
+          debugger;
+        }
+        return;
+      }
 
       return props[ prop ];
     };
