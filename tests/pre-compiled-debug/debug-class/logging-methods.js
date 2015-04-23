@@ -7,6 +7,7 @@
    *   of all the parameters for this method in correct order.
    * @param {...val=} val - Each argument passed to the method in order of
    *   appearance.
+   * @return {boolean} The log's success (i.e. whether a log was made).
    * @example
    *   debug.start('methodName', arg1, arg2);
    *   // OR
@@ -172,6 +173,7 @@
    * @param {...string=} type -  Each passed argument's data type.
    *   [See public module method, checkType,]{@link Debug#checkType} for
    *   the input options.
+   * @return {boolean} The log's success (i.e. whether a log was made).
    * @example
    *   debug.args('methodName', arg1, 'object', arg2, 'number');
    *   // OR
@@ -268,6 +270,7 @@
    *   be automatically converted to '... numberVar is %i, objectVar is %O').
    * @param {...val=} val - The value of the passed variables to include in
    *   error message.
+   * @return {boolean} The log's success (i.e. whether a log was made).
    * @example
    *   // A function that returns a boolean value
    *   var test = function() {
@@ -375,6 +378,7 @@
    *   (e.g. This string, '... numberVar is $$ and  objectVar is $$', will
    *   be automatically converted to '... numberVar is %i, objectVar is %O').
    * @param {...val=} val - The value of the passed variables to include in message.
+   * @return {boolean} The group's success (i.e. whether an action was made).
    * @example
    *   // The message to include
    *   var message = 'Lorem ipsem var1 is $$. | var2= $$';
@@ -497,6 +501,7 @@
    *   (e.g. This string, '... numberVar is $$ and  objectVar is $$', will
    *   be automatically converted to '... numberVar is %i, objectVar is %O').
    * @param {...val=} val - The current value of a variable to log.
+   * @return {boolean} The log's success (i.e. whether a log was made).
    * @example
    *   // The message to include
    *   var message = 'Lorem ipsem var1 is $$ and var2= $$';
@@ -579,6 +584,7 @@
    *   string, '... numberVar is $$ and  objectVar is $$', will be
    *   automatically converted to '... numberVar is %i, objectVar is %O').
    * @param {...val=} val - The value of any variables to add to the log.
+   * @return {boolean} The log's success (i.e. whether a log was made).
    * @example
    *   // The message to include
    *   var message = 'Lorem ipsem. | var1= $$, var2= $$';

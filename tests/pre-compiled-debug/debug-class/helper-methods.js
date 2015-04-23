@@ -7,7 +7,8 @@
    * @param {string} methodName - The name of the user's method to log.
    * @param {boolean=} end - Controls whether the automation should start
    *   or end. The default value is false.
-   * @return {boolean} The automation's success.
+   * @return {boolean} The automation's success (i.e. whether an action
+   *   was made).
    */
   Debug.prototype.handleAuto = function(type, methodName, end) {
 
