@@ -384,14 +384,14 @@
     );
     if (!argTest) {
       console.error('A debug.start method\'s arg(s) was wrong.');
-      if (debuggers) {
+      if (errorBreakpoints) {
         debugger;
       }
       return false;
     }
 
     // Check whether this method has been turned off for the current instance
-    if ( !this.getType('start') ) {
+    if ( !this.getMethod('start') ) {
       return false;
     }
 
@@ -481,14 +481,14 @@
     );
     if(!argTest) {
       console.error('A debug.args method\'s arg(s) was wrong.');
-      if (debuggers) {
+      if (errorBreakpoints) {
         debugger;
       }
       return false;
     }
 
     // Check whether this method has been turned off for the current instance
-    if ( !this.getType('args') ) {
+    if ( !this.getMethod('args') ) {
       return false;
     }
 
@@ -578,14 +578,14 @@
     );
     if(!argTest) {
       console.error('A debug.fail method\'s arg(s) was wrong.');
-      if (debuggers) {
+      if (errorBreakpoints) {
         debugger;
       }
       return false;
     }
 
     // Check whether this method has been turned off for the current instance
-    if ( !this.getType('fail') ) {
+    if ( !this.getMethod('fail') ) {
       return false;
     }
 
@@ -682,14 +682,14 @@
     );
     if(!argTest) {
       console.error('A debug.group method\'s arg(s) was wrong.');
-      if (debuggers) {
+      if (errorBreakpoints) {
         debugger;
       }
       return false;
     }
 
     // Check whether this method has been turned off for the current instance
-    if ( !this.getType('group') ) {
+    if ( !this.getMethod('group') ) {
       return false;
     }
 
@@ -719,7 +719,7 @@
       message = 'A debug.group method\'s openGroup arg was wrong. ';
       message += 'The supplied openGroup argument was \'%s\'.';
       console.error(message, openGroup);
-      if (debuggers) {
+      if (errorBreakpoints) {
         debugger;
       }
       return false;
@@ -802,14 +802,14 @@
     );
     if(!argTest) {
       console.error('A debug.state method\'s arg(s) was wrong.');
-      if (debuggers) {
+      if (errorBreakpoints) {
         debugger;
       }
       return false;
     }
 
     // Check whether this method has been turned off for the current instance
-    if ( !this.getType('state') ) {
+    if ( !this.getMethod('state') ) {
       return false;
     }
 
@@ -882,14 +882,14 @@
     );
     if(!argTest) {
       console.error('A debug.misc method\'s arg(s) was wrong.');
-      if (debuggers) {
+      if (errorBreakpoints) {
         debugger;
       }
       return false;
     }
 
     // Check whether this method has been turned off for the current instance
-    if ( !this.getType('misc') ) {
+    if ( !this.getMethod('misc') ) {
       return false;
     }
 
@@ -966,7 +966,7 @@
     // Ensure arguments are supplied
     if (!logCat) {
       console.error('A debug.turnOn method received no args.');
-      if (debuggers) {
+      if (errorBreakpoints) {
         debugger;
       }
       return false;
@@ -986,7 +986,7 @@
     // Make sure a value still exists to test
     if (!logCat && (!args || !checkType(args, 'strings'))) {
       console.error('A debug.turnOn method\'s arg(s) was the wrong data type.');
-      if (debuggers) {
+      if (errorBreakpoints) {
         debugger;
       }
       return false;
@@ -1003,7 +1003,7 @@
       len = args.length;
       i = -1;
       while (++i < len) {
-        if ( !this.setType(args[i], true) ) {
+        if ( !this.setMethod(args[i], true) ) {
           if (!errors) {
             errors = [];
           }
@@ -1015,7 +1015,7 @@
       }
     }
     else {
-      if ( !this.setType(logCat, true) ) {
+      if ( !this.setMethod(logCat, true) ) {
         errors = "'" + logCat + "'";
       }
     }
@@ -1026,7 +1026,7 @@
         'A debug.turnOn method was given an invalid debug category ' +
         'to turn on. The incorrect value(s) follow:' + errors;
       console.error(errors);
-      if (debuggers) {
+      if (errorBreakpoints) {
         debugger;
       }
       return false;
@@ -1073,7 +1073,7 @@
     // Ensure arguments are supplied
     if (!logCat) {
       console.error('A debug.turnOff method received no args.');
-      if (debuggers) {
+      if (errorBreakpoints) {
         debugger;
       }
       return false;
@@ -1093,7 +1093,7 @@
     // Make sure a value still exists to test
     if (!logCat && (!args || !checkType(args, 'strings'))) {
       console.error('A debug.turnOff method\'s arg(s) was the wrong data type.');
-      if (debuggers) {
+      if (errorBreakpoints) {
         debugger;
       }
       return false;
@@ -1110,7 +1110,7 @@
       len = args.length;
       i = -1;
       while (++i < len) {
-        if ( !this.setType(args[i], false) ) {
+        if ( !this.setMethod(args[i], false) ) {
           if (!errors) {
             errors = [];
           }
@@ -1122,7 +1122,7 @@
       }
     }
     else {
-      if ( !this.setType(logCat, false) ) {
+      if ( !this.setMethod(logCat, false) ) {
         errors = "'" + logCat + "'";
       }
     }
@@ -1133,7 +1133,7 @@
         'A debug.turnOff method was given an invalid debug category ' +
         'to turn off. The incorrect value(s) follow:' + errors;
       console.error(errors);
-      if (debuggers) {
+      if (errorBreakpoints) {
         debugger;
       }
       return false;
@@ -1180,7 +1180,7 @@
     // Ensure arguments are supplied
     if (!logCat) {
       console.error('A debug.turnOnDebugger method received no args.');
-      if (debuggers) {
+      if (errorBreakpoints) {
         debugger;
       }
       return false;
@@ -1202,7 +1202,7 @@
       errors = 'A debug.turnOnDebugger method\'s arg(s) was ';
       errors += 'the wrong data type.';
       console.error(errors);
-      if (debuggers) {
+      if (errorBreakpoints) {
         debugger;
       }
       return false;
@@ -1242,7 +1242,7 @@
         'A debug.turnOnDebugger method was given an invalid debug ' +
         'category to turn on. The incorrect value(s) follow:' + errors;
       console.error(errors);
-      if (debuggers) {
+      if (errorBreakpoints) {
         debugger;
       }
       return false;
@@ -1289,7 +1289,7 @@
     // Ensure arguments are supplied
     if (!logCat) {
       console.error('A debug.turnOffDebugger method received no args.');
-      if (debuggers) {
+      if (errorBreakpoints) {
         debugger;
       }
       return false;
@@ -1311,7 +1311,7 @@
       errors = 'A debug.turnOffDebugger method\'s arg(s) was ';
       errors += 'the wrong data type.';
       console.error(errors);
-      if (debuggers) {
+      if (errorBreakpoints) {
         debugger;
       }
       return false;
@@ -1351,7 +1351,7 @@
         'A debug.turnOffDebugger method was given an invalid debug ' +
         'category to turn off. The incorrect value(s) follow:' + errors;
       console.error(errors);
-      if (debuggers) {
+      if (errorBreakpoints) {
         debugger;
       }
       return false;
