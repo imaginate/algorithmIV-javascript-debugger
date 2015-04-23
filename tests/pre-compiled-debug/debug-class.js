@@ -319,7 +319,7 @@
     }
 
     // Pause the script
-    if ( this.getBugger('start') ) {
+    if ( this.getBreakpoint('start') ) {
       debugger;
     }
 
@@ -412,7 +412,7 @@
     console.error(message);
 
     // Pause the script
-    if ( this.getBugger('args') ) {
+    if ( this.getBreakpoint('args') ) {
       debugger;
     }
 
@@ -518,7 +518,7 @@
     }
 
     // Pause the script
-    if ( this.getBugger('fail') ) {
+    if ( this.getBreakpoint('fail') ) {
       debugger;
     }
 
@@ -643,7 +643,7 @@
     }
 
     // Pause the script
-    if ( this.getBugger('group') ) {
+    if ( this.getBreakpoint('group') ) {
       debugger;
     }
 
@@ -726,7 +726,7 @@
     console.log.apply(console, args);
 
     // Pause the script
-    if ( this.getBugger('state') ) {
+    if ( this.getBreakpoint('state') ) {
       debugger;
     }
 
@@ -813,7 +813,7 @@
     }
 
     // Pause the script
-    if ( this.getBugger('misc') ) {
+    if ( this.getBreakpoint('misc') ) {
       debugger;
     }
 
@@ -1111,7 +1111,7 @@
       len = args.length;
       i = -1;
       while (++i < len) {
-        if ( !this.setBugger(args[i], true) ) {
+        if ( !this.setBreakpoint(args[i], true) ) {
           if (!errors) {
             errors = [];
           }
@@ -1123,7 +1123,7 @@
       }
     }
     else {
-      if ( !this.setBugger(logCat, true) ) {
+      if ( !this.setBreakpoint(logCat, true) ) {
         errors = "'" + logCat + "'";
       }
     }
@@ -1220,7 +1220,7 @@
       len = args.length;
       i = -1;
       while (++i < len) {
-        if ( !this.setBugger(args[i], false) ) {
+        if ( !this.setBreakpoint(args[i], false) ) {
           if (!errors) {
             errors = [];
           }
@@ -1232,7 +1232,7 @@
       }
     }
     else {
-      if ( !this.setBugger(logCat, false) ) {
+      if ( !this.setBreakpoint(logCat, false) ) {
         errors = "'" + logCat + "'";
       }
     }
