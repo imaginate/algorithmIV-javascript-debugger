@@ -202,6 +202,10 @@
    *   automatic profiling for all logic between every start and end method.
    * @param {boolean=} settings.turnOnTimers - The default setting for automatic
    *   timing for all logic between every start and end method.
+   * @param {boolean=} settings.formatElementsAsObj - Controls whether elements
+   *   are logged as JavaScript objects or DOM elements. For more details on the
+   *   differences between the two logging styles (specifier '%o' vs '%O')
+   *   [see Google's Console API Reference]{@link https://developer.chrome.com/devtools/docs/console-api#consolelogobject-object}.
    */
   debugModuleAPI.set = function(settings) {
 
@@ -295,5 +299,11 @@
     if (settings.hasOwnProperty('turnOnTimers') &&
         checkType(settings.turnOnTimers, 'boolean')) {
       defaultSettings.turnOnTimers = settings.turnOnTimers;
+    }
+
+    // Set formatElementsAsObj
+    if (settings.hasOwnProperty('formatElementsAsObj') &&
+        checkType(settings.formatElementsAsObj, 'boolean')) {
+      formatElementsAsObj = settings.formatElementsAsObj;
     }
   };

@@ -8,15 +8,19 @@
    */
   function getSubstituteString(val) {
 
-    if ( checkType(val, 'object|function') ) {
-      return '%O';
+    /** @type {string} */
+    var str;
+
+    str = '%s';
+
+    if ( checkType(val, '!number|object|function') ) {
+      str = ( ( checkType(val, 'number') ) ?
+        '%i' : (!formatElementsAsObj && val instanceof HTMLElement) ?
+          '%o' : '%O'
+      );
     }
 
-    if (typeof val === 'number') {
-      return '%i';
-    }
-
-    return '%s';
+    return str;
   };
 
   /**

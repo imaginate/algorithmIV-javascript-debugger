@@ -9,6 +9,16 @@
 
   /**
    * ----------------------------------------------- 
+   * Public Variable (formatElementsAsObj)
+   * -----------------------------------------------
+   * @desc Controls whether logged DOM elements are shown as expandable
+   *   objects or elements.
+   * @type {boolean}
+   */
+  var formatElementsAsObj = true;
+
+  /**
+   * ----------------------------------------------- 
    * Public Variable (defaultSettings)
    * -----------------------------------------------
    * @desc Sets default settings for all instances of the debugger. Note that
