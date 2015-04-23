@@ -367,12 +367,11 @@
    * -----------------------------------------------------
    * Public Method (Debug.prototype.start)
    * -----------------------------------------------------
-   * @desc Use to start every method.
-   * @param {(string|vals)} methodName - The name of the method. An array
-   *   with all the parameters for this method (in correct order) can be
-   *   supplied here.
-   * @param {...val=} val - Each argument passed to the method in order
-   *   of appearance.
+   * @desc Used to log the start of a method and insert any automated actions.
+   * @param {!(string|vals)} methodName - The name of the method or an array
+   *   of all the parameters for this method in correct order.
+   * @param {...val=} val - Each argument passed to the method in order of
+   *   appearance.
    * @example
    *   debug.start('methodName', arg1, arg2);
    *   // OR
@@ -380,73 +379,85 @@
    */
   Debug.prototype.start = function(methodName) {
 
-    /**
-     * @type {boolean}
-     * @private
-     */
-    var argTest;
-    /**
-     * @type {vals}
-     * @private
-     */
+    /** @type {string} */
+    var testMethodName;
+    /** @type {number} */
+    var len;
+    /** @type {number} */
+    var i;
+    /** @type {!vals} */
     var args;
-    /**
-     * @type {string}
-     * @private
-     */
+    /** @type {string} */
     var message;
 
     // Test the given arguments before executing
-    argTest = ( ( Array.isArray(methodName) ) ?
-      (typeof methodName[0] === 'string') : (typeof methodName === 'string')
+    testMethodName = ( ( checkType(methodName, '!array') ) ?
+      methodName[0] : methodName
     );
-    if (!argTest) {
-      console.error('A debug.start method\'s arg(s) was wrong.');
+    if ( !checkType(testMethodName, 'string') ) {
+      message = 'An aIV.debug start call was missing its methodName.';
+      console.error(message);
       if (errorBreakpoints) {
         debugger;
       }
       return false;
     }
 
-    // Check whether this method has been turned off for the current instance
+    // Check whether this method has been turned off
     if ( !this.getMethod('start') ) {
       return false;
     }
 
     // Setup the varaibles
-    if (typeof methodName === 'string') {
+    if ( checkType(methodName, 'string') ) {
       args = ( (arguments.length > 1) ?
-        Array.prototype.slice.call(arguments, 1) : null
+        Array.prototype.slice.call(arguments, 1) : []
       );
     }
     else {
-      args = ( (methodName.length > 1) ?
-        methodName.slice(1) : null
-      );
+      args = (methodName.length > 1) ? methodName.slice(1) : [];
       methodName = methodName[0];
     }
 
     // Prepare the console message
     message = 'START: ' + this.classTitle + methodName + '(';
-    if (args) {
-      args.forEach(function(/** val */ val, /** number */ i) {
-        message += ( (i) ? ', ' : '' ) + getSubstituteString(val);
-      });
+    len = args.length;
+    i = -1;
+    while (++i < len) {
+      if (i) {
+        message += ', ';
+      }
+      message += getSubstituteString(args[i]);
     }
     message += ')';
 
-    // Log the message
-    if (args) {
-      args.unshift(message);
-      console.log.apply(console, args);
-    }
-    else {
-      console.log(message);
+    // Prepare the start log arguments
+    args = [ message ].concat(args);
+
+    // Insert auto grouping
+    if ( this.getAuto('groups') ) {
+      message = 'GROUPS: ' + this.classTitle + methodName + '()';
+      console.groupCollapsed(message);
     }
 
-    // Pause the script
+    // Log the start message
+    console.log.apply(console, args);
+
+    // Insert a debugger breakpoint
     if ( this.getBreakpoint('start') ) {
       debugger;
+    }
+
+    // Insert auto profiling
+    if ( this.getAuto('profiles') ) {
+      message = 'PROFILE: ' + this.classTitle + methodName + '()';
+      console.profile(message);
+    }
+
+    // Insert auto timing
+    if ( this.getAuto('timers') ) {
+      message = 'TIMER: ' + this.classTitle + methodName + '()';
+      console.time(message);
     }
 
     return true;
