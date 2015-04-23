@@ -92,6 +92,76 @@
 
   /**
    * -----------------------------------------------------
+   * Public Method (Debug.prototype.end)
+   * -----------------------------------------------------
+   * @desc Used to log the end of a method and insert any automated actions.
+   * @param {!(string|vals)} methodName - The name of the method or an array
+   *   of all the parameters for this method in correct order.
+   * @param {val=} returnVal - The return value for the method.
+   * @return {boolean} The log's success (i.e. whether a log was made).
+   * @example
+   *   debug.end('methodName', returnVal);
+   *   // OR
+   *   debug.end([ 'methodName', returnVal ]);
+   */
+  Debug.prototype.end = function(methodName, returnVal) {
+
+    /** @type {string} */
+    var message;
+
+    // Setup the varaibles
+    if ( checkType(methodName, '!array') ) {
+      if (methodName.length > 1) {
+        returnVal = methodName[1];
+      }
+      methodName = methodName[0];
+    }
+
+    // Test the method name before executing
+    if ( !checkType(methodName, 'string') ) {
+      message = 'An aIV.debug end method call was given an incorrect data ';
+      message += 'type for its method name param (should be a string). The ';
+      message += 'given incorrect data type for the method name follows: ';
+      message += (methodName === null) ? 'null' : typeof methodName;
+      console.error(message);
+      if (errorBreakpoints) {
+        debugger;
+      }
+      return false;
+    }
+
+    // Check whether this method has been turned off
+    if ( !this.getMethod('end') ) {
+      this.handleAuto('groups', methodName, true);
+      this.handleAuto('profiles', methodName, true);
+      this.handleAuto('timers', methodName, true);
+      return false;
+    }
+
+    // Prepare the console message
+    message = 'END: ' + this.classTitle + methodName + '() | ';
+    message += 'return= ' + getSubstituteString(returnVal);
+
+    // Insert auto grouping
+    this.handleAuto('groups', methodName, true);
+
+    // Log the end message
+    console.log(message, returnVal);
+
+    // Insert a debugger breakpoint
+    if ( this.getBreakpoint('end') ) {
+      debugger;
+    }
+
+    // Insert auto profiling and timing
+    this.handleAuto('profiles', methodName, true);
+    this.handleAuto('timers', methodName, true);
+
+    return true;
+  };
+
+  /**
+   * -----------------------------------------------------
    * Public Method (Debug.prototype.args)
    * -----------------------------------------------------
    * @desc Use to catch an improper method argument.
