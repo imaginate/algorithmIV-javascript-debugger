@@ -5,7 +5,7 @@
    * @desc Contains the debugging properties and methods.
    * @param {!Object<string, (string|boolean)>} settings - The class settings.
    * @param {string} settings.classTitle - The name of the class.
-   * @param {string} settings.turnOffTypes - The class methods to disable. If
+   * @param {string} settings.turnOffMethods - The class methods to disable. If
    *   'all' is provided then all methods are disabled.
    * @param {string} settings.addBreakpoints - The methods to add debugger
    *   breakpoints to. If 'all' is provided then breakpoints are added to all
@@ -42,7 +42,7 @@
 
     /**
      * -----------------------------------------------------
-     * Protected Property (types)
+     * Protected Property (methods)
      * -----------------------------------------------------
      * @desc Allows disabling of specific methods per class instance.
      *   <ol>
@@ -68,7 +68,7 @@
      * }}
      * @private
      */
-    var types;
+    var methods;
 
     /**
      * -----------------------------------------------------
@@ -126,17 +126,17 @@
     // Setup The Protected Properties
     ////////////////////////////////////////////////////////////////////////////
 
-    settings.turnOffTypes = settings.turnOffTypes.toLowerCase();
+    settings.turnOffMethods = settings.turnOffMethods.toLowerCase();
     settings.addBreakpoints = settings.addBreakpoints.toLowerCase();
 
-    types = {
-      start: !/start|all/.test(settings.turnOffTypes),
-      end  :   !/end|all/.test(settings.turnOffTypes),
-      args :  !/args|all/.test(settings.turnOffTypes),
-      fail :  !/fail|all/.test(settings.turnOffTypes),
-      group: !/group|all/.test(settings.turnOffTypes),
-      state: !/state|all/.test(settings.turnOffTypes),
-      misc :  !/misc|all/.test(settings.turnOffTypes)
+    methods = {
+      start: !/start|all/.test(settings.turnOffMethods),
+      end  :   !/end|all/.test(settings.turnOffMethods),
+      args :  !/args|all/.test(settings.turnOffMethods),
+      fail :  !/fail|all/.test(settings.turnOffMethods),
+      group: !/group|all/.test(settings.turnOffMethods),
+      state: !/state|all/.test(settings.turnOffMethods),
+      misc :  !/misc|all/.test(settings.turnOffMethods)
     };
 
     breakpoints = {
@@ -160,14 +160,25 @@
 
     /**
      * ---------------------------------------------------
-     * Public Method (Debug.getType)
+     * Public Method (Debug.getMethod)
      * ---------------------------------------------------
      * @desc Gets a method's current value for whether it is active.
-     * @param {string} type - The method value to get.
+     * @param {string} method - The method value to get.
      * @return {boolean} The method's current enabled/disabled state.
+     * @return {(boolean|undefined)} The method's current enabled/disabled
+     *   state or undefined for an error.
      */
-    this.getType = function(type) {
-      return types[ type ];
+    this.getMethod = function(method) {
+
+      if ( !methods.hasOwnProperty(method) ) {
+        console.error('A getMethod call was given an incorrect method name.');
+        if (errorBreakpoints) {
+          debugger;
+        }
+        return;
+      }
+
+      return methods[ method ];
     };
 
     /**
@@ -176,11 +187,25 @@
      * ---------------------------------------------------
      * @desc Gets a method's current value for whether it has added debugger
      *   breakpoints.
-     * @param {string} type - The method value to get.
-     * @return {boolean} The method's current enabled/disabled state.
+     * @param {string} method - The method value to get.
+     * @return {(boolean|undefined)} The method's current breakpoint addition
+     *   enabled/disabled state or undefined for an error.
      */
-    this.getBreakpoint = function(type) {
-      return breakpoints[ type ];
+    this.getBreakpoint = function(method) {
+
+      /** @type {string} */
+      var msg;
+
+      if ( !breakpoints.hasOwnProperty(method) ) {
+        msg = 'A getBreakpoint call was given an incorrect method name.';
+        console.error(msg);
+        if (errorBreakpoints) {
+          debugger;
+        }
+        return;
+      }
+
+      return breakpoints[ method ];
     };
 
     /**
@@ -207,34 +232,34 @@
 
     /**
      * ---------------------------------------------------
-     * Public Method (Debug.setType)
+     * Public Method (Debug.setMethod)
      * ---------------------------------------------------
      * @desc Sets a method's active state.
-     * @param {string} type - The method state to set.
+     * @param {string} method - The method state to set.
      * @param {boolean} val - The new state.
      * @return {boolean} Indicates whether correct arguments were given.
      */
-    this.setType = function(type, val) {
+    this.setMethod = function(method, val) {
 
-      if (!checkType(type, 'string') || !checkType(val, 'boolean')) {
+      if (!checkType(method, 'string') || !checkType(val, 'boolean')) {
         return false;
       }
 
-      type = type.toLowerCase();
+      method = method.toLowerCase();
 
-      if (!types.hasOwnProperty(type) && type !== 'all') {
+      if (!methods.hasOwnProperty(method) && method !== 'all') {
         return false;
       }
 
-      if (type === 'all') {
-        for (type in types) {
-          if ( types.hasOwnProperty(type) ) {
-            types[ type ] = val;
+      if (method === 'all') {
+        for (method in methods) {
+          if ( methods.hasOwnProperty(method) ) {
+            methods[ method ] = val;
           }
         }
       }
       else {
-        types[ type ] = val;
+        methods[ method ] = val;
       }
 
       return true;
@@ -245,31 +270,31 @@
      * Public Method (Debug.setBreakpoint)
      * ---------------------------------------------------
      * @desc Sets a method's added breakpoints state.
-     * @param {string} type - The method state to set.
+     * @param {string} method - The method state to set.
      * @param {boolean} val - The new state.
      * @return {boolean} Indicates whether correct arguments were given.
      */
-    this.setBreakpoint = function(type, val) {
+    this.setBreakpoint = function(method, val) {
 
-      if (!checkType(type, 'string') || !checkType(val, 'boolean')) {
+      if (!checkType(method, 'string') || !checkType(val, 'boolean')) {
         return false;
       }
 
-      type = type.toLowerCase();
+      method = method.toLowerCase();
 
-      if (!breakpoints.hasOwnProperty(type) && type !== 'all') {
+      if (!breakpoints.hasOwnProperty(method) && method !== 'all') {
         return false;
       }
 
-      if (type === 'all') {
-        for (type in breakpoints) {
-          if ( breakpoints.hasOwnProperty(type) ) {
-            breakpoints[ type ] = val;
+      if (method === 'all') {
+        for (method in breakpoints) {
+          if ( breakpoints.hasOwnProperty(method) ) {
+            breakpoints[ method ] = val;
           }
         }
       }
       else {
-        breakpoints[ type ] = val;
+        breakpoints[ method ] = val;
       }
 
       return true;
@@ -298,10 +323,10 @@
     };
 
     // Freeze all of the public methods
-    Object.freeze(this.getType);
+    Object.freeze(this.getMethod);
     Object.freeze(this.getBreakpoint);
     Object.freeze(this.getAuto);
-    Object.freeze(this.setType);
+    Object.freeze(this.setMethod);
     Object.freeze(this.setBreakpoint);
     Object.freeze(this.setAuto);
 
