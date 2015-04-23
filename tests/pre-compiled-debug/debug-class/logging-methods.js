@@ -165,14 +165,13 @@
    * -----------------------------------------------------
    * Public Method (Debug.prototype.args)
    * -----------------------------------------------------
-   * @desc Use to catch an improper method argument.
-   * @param {(string|vals)} methodName - The name of the method. An array
-   *   with all the parameters for this method (in correct order) can be
-   *   supplied here.
+   * @desc Used to catch undesired parameter/argument data types.
+   * @param {!(string|vals)} methodName - The name of the method or an array
+   *   with all the parameters for this method (in correct order).
    * @param {...val=} val - Each argument passed to the method.
-   * @param {...string=} type -  Each passed argument's data type.
-   *   [See public module method, checkType,]{@link Debug#checkType} for
-   *   the input options.
+   * @param {...string=} type -  Each passed parameter's data type. To review
+   *   the input options available
+   *   [see the checkType helper method]{@link checkType}.
    * @return {boolean} The log's success (i.e. whether a log was made).
    * @example
    *   debug.args('methodName', arg1, 'object', arg2, 'number');
@@ -181,61 +180,91 @@
    */
   Debug.prototype.args = function(methodName) {
 
-    /**
-     * @type {boolean}
-     * @private
-     */
-    var argTest;
-    /**
-     * @type {vals}
-     * @private
-     */
+    /** @type {vals} */
     var args;
-    /**
-     * @type {boolean}
-     * @private
-     */
+    /** @type {boolean} */
     var pass;
-    /**
-     * @type {string}
-     * @private
-     */
+    /** @type {number} */
+    var i;
+    /** @type {val} */
+    var arg;
+    /** @type {string} */
+    var dataTypeOpts;
+    /** @type {string} */
     var message;
 
+    // Setup the varaibles
+    if ( checkType(methodName, '!string|array') ) {
+      if ( checkType(methodName, 'string') ) {
+        args = ( (arguments.length > 1) ?
+          Array.prototype.slice.call(arguments, 1) : []
+        );
+      }
+      else {
+        args = (methodName.length > 1) ? methodName.slice(1) : [];
+        methodName = methodName[0];
+      }
+    }
+
     // Test the given arguments before executing
-    argTest = ( (typeof methodName === 'string') ?
-      (arguments.length > 2) : ( Array.isArray(methodName) ) ?
-        (typeof methodName[0] === 'string' && methodName.length > 2) : false
-    );
-    if(!argTest) {
-      console.error('A debug.args method\'s arg(s) was wrong.');
+    if ( !checkType(methodName, 'string') ) {
+      message = 'An aIV.debug args method call was given an incorrect data ';
+      message += 'type (should be a string) for its first parameter (the name ';
+      message += 'of the user\'s method arguments being tested). The ';
+      message += 'incorrect data type given for the method name follows: ';
+      message += (methodName === null) ? 'null' : typeof methodName;
+      console.error(message);
+      if (errorBreakpoints) {
+        debugger;
+      }
+      return false;
+    }
+    if (args.length < 2) {
+      message = 'An aIV.debug args method call was missing arguments to test. ';
+      message += 'The args method requires that at least one argument be ';
+      message += 'tested. After the first parameter (the method name), the ';
+      message += 'second parameter should be an argument to test, and the ';
+      message += 'third parameter should be a string of the argument\'s ';
+      message += 'optional data types. You can include as many pairs of ';
+      message += 'arguments and optional data types as you like.';
+      console.error(message);
+      if (errorBreakpoints) {
+        debugger;
+      }
+      return false;
+    }
+    if ( !(args.length % 2) ) {
+      message = 'An aIV.debug args method call was missing optional data ';
+      message += 'type strings to use for testing arguments. You should ';
+      message += 'include a string of the optional data types after each ';
+      message += 'argument parameter.';
+      console.error(message);
       if (errorBreakpoints) {
         debugger;
       }
       return false;
     }
 
-    // Check whether this method has been turned off for the current instance
+    // Check whether this method has been turned off
     if ( !this.getMethod('args') ) {
       return false;
     }
 
-    // Setup the varaibles
-    if (typeof methodName === 'string') {
-      args = Array.prototype.slice.call(arguments, 1);
-    }
-    else {
-      args = methodName.slice(1);
-      methodName = methodName[0];
-    }
+    // Test the arguments
+    pass = true;
+    i = args.length;
+    while (i--) {
 
-    // Test the args
-    pass = args.every(function(/** val */ val, /** number */ i) {
-      if (i % 2) {
-        return checkType(args[i - 1], val);
+      dataTypeOpts = args[i];
+
+      --i;
+      arg = args[i];
+
+      if ( !checkType(arg, dataTypeOpts) ) {
+        pass = false;
+        break;
       }
-      return true;
-    });
+    }
 
     // If test passes end this method
     if (pass) {
@@ -247,7 +276,7 @@
     message += 'Error: Incorrect argument data type.';
     console.error(message);
 
-    // Pause the script
+    // Insert a debugger breakpoint
     if ( this.getBreakpoint('args') ) {
       debugger;
     }
