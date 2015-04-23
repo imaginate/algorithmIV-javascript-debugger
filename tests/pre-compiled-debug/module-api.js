@@ -10,16 +10,6 @@
 
   /**
    * -----------------------------------------------------
-   * Private Variable (debugInstances)
-   * -----------------------------------------------------
-   * @desc Saves a reference to all of the created Debug instances.
-   * @type {!Object<string, Debug>}
-   * @private
-   */
-  var debugInstances = {};
-
-  /**
-   * -----------------------------------------------------
    * Public Method (debugModuleAPI.init)
    * -----------------------------------------------------
    * @desc Creates or retrieves an instance of the Debug class.
