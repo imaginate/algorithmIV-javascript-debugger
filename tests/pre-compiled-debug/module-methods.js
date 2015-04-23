@@ -35,31 +35,45 @@
    */
   function insertSubstituteStrings(msg, vals) {
 
+    /** @type {string} */
+    var errorMsg;
+    /** @type {number} */
+    var len;
+    /** @type {number} */
+    var i;
+    /** @type {string} */
+    var substituteString;
+
     // Test the given arguments before executing
-    if (typeof msg !== 'string' || !Array.isArray(vals)) {
-      console.error('An insertSubstituteStrings method\'s arg(s) was wrong.');
+    if (!checkType(msg, 'string') || !checkType(vals, '!array')) {
+      errorMsg = 'An aIV.debug insertSubstituteStrings method was given a ';
+      errorMsg += 'param that was an incorrect data type. The console message ';
+      errorMsg += 'should be a string and the values should be an array of any ';
+      errorMsg += 'data type. The given data types for the params follow: ';
+      errorMsg += 'msg= ' + ( (msg === null) ? 'null' : typeof msg ) + ', ';
+      errorMsg += 'vals= ' + ( (vals === null) ? 'null' : typeof vals );
+      console.error(errorMsg);
       if (errorBreakpoints) {
         debugger;
       }
-      return '';
+      return errorMsg;
     }
 
     // Insert the substitution strings
-    vals.forEach(function(/** val */ val, /** number */ i) {
-      /**
-       * @type {string}
-       * @private
-       */
-      var sub;
+    len = vals.length;
+    i = -1;
+    while (++i < len) {
 
-      sub = getSubstituteString(val);
-      if ( /(\$\$)/.test(msg) ) {
-        msg = msg.replace(/(\$\$)/, sub);
+      substituteString = getSubstituteString(vals[i]);
+
+      if ( regexps.dualDollarSigns.test(msg) ) {
+        substituteString = '$1' + substituteString;
+        msg = msg.replace(regexps.dualDollarSigns, substituteString);
       }
       else {
-        msg += ' var' + i + '= ' + sub + ';';
+        msg += ' unnamedVar' + i + '= ' + substituteString + ';';
       }
-    });
+    }
 
     return msg;
   };
