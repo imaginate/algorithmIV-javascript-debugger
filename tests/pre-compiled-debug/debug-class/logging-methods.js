@@ -14,8 +14,6 @@
    */
   Debug.prototype.start = function(methodName) {
 
-    /** @type {string} */
-    var testMethodName;
     /** @type {number} */
     var len;
     /** @type {number} */
@@ -25,12 +23,25 @@
     /** @type {string} */
     var message;
 
-    // Test the given arguments before executing
-    testMethodName = ( ( checkType(methodName, '!array') ) ?
-      methodName[0] : methodName
-    );
-    if ( !checkType(testMethodName, 'string') ) {
-      message = 'An aIV.debug start call was missing its methodName.';
+    // Setup the varaibles
+    if ( checkType(methodName, '!string|array') ) {
+      if ( checkType(methodName, 'string') ) {
+        args = ( (arguments.length > 1) ?
+          Array.prototype.slice.call(arguments, 1) : []
+        );
+      }
+      else {
+        args = (methodName.length > 1) ? methodName.slice(1) : [];
+        methodName = methodName[0];
+      }
+    }
+
+    // Test the method name before executing
+    if ( !checkType(methodName, 'string') ) {
+      message = 'An aIV.debug start method call was given an incorrect data ';
+      message += 'type for its method name param (should be a string). The ';
+      message += 'given incorrect data type for the method name follows: ';
+      message += (methodName === null) ? 'null' : typeof methodName;
       console.error(message);
       if (errorBreakpoints) {
         debugger;
@@ -40,18 +51,10 @@
 
     // Check whether this method has been turned off
     if ( !this.getMethod('start') ) {
+      this.handleAuto('groups', methodName);
+      this.handleAuto('profiles', methodName);
+      this.handleAuto('timers', methodName);
       return false;
-    }
-
-    // Setup the varaibles
-    if ( checkType(methodName, 'string') ) {
-      args = ( (arguments.length > 1) ?
-        Array.prototype.slice.call(arguments, 1) : []
-      );
-    }
-    else {
-      args = (methodName.length > 1) ? methodName.slice(1) : [];
-      methodName = methodName[0];
     }
 
     // Prepare the console message
@@ -70,10 +73,7 @@
     args = [ message ].concat(args);
 
     // Insert auto grouping
-    if ( this.getAuto('groups') ) {
-      message = 'GROUPS: ' + this.classTitle + methodName + '()';
-      console.groupCollapsed(message);
-    }
+    this.handleAuto('groups', methodName);
 
     // Log the start message
     console.log.apply(console, args);
@@ -83,17 +83,9 @@
       debugger;
     }
 
-    // Insert auto profiling
-    if ( this.getAuto('profiles') ) {
-      message = 'PROFILE: ' + this.classTitle + methodName + '()';
-      console.profile(message);
-    }
-
-    // Insert auto timing
-    if ( this.getAuto('timers') ) {
-      message = 'TIMER: ' + this.classTitle + methodName + '()';
-      console.time(message);
-    }
+    // Insert auto profiling and timing
+    this.handleAuto('profiles', methodName);
+    this.handleAuto('timers', methodName);
 
     return true;
   };
