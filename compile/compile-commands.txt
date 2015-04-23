@@ -20,7 +20,7 @@ sed \
   -e "/module-vars.js/ r module-vars.js" \
   -e "/module-methods.js/ r module-methods.js" \
   -e "/debug-class.js/ r debug-class.js" \
-  -e "/polyfill-methods.js/ r polyfill-methods.js" <skeleton.js>algorithmIV-debug-temp.js
+  -e "/polyfills\/object.js/ r polyfills/object.js" <skeleton.js>algorithmIV-debug-temp.js
 cd ..
 cp -u pre-compiled-debug/algorithmIV-debug-temp.js algorithmIV-debug.js
 rm -f pre-compiled-debug/algorithmIV-debug-temp.js
@@ -33,7 +33,7 @@ sed ^
   -e "/module-vars.js/ r module-vars.js" ^
   -e "/module-methods.js/ r module-methods.js" ^
   -e "/debug-class.js/ r debug-class.js" ^
-  -e "/polyfill-methods.js/ r polyfill-methods.js" <skeleton.js>algorithmIV-debug-temp.js
+  -e "/polyfills\/object.js/ r polyfills\object.js" <skeleton.js>algorithmIV-debug-temp.js
 cd ..
 copy /y pre-compiled-debug\algorithmIV-debug-temp.js algorithmIV-debug.js
 del /f pre-compiled-debug\algorithmIV-debug-temp.js
@@ -78,6 +78,21 @@ copy /y pre-compiled-tests\algorithmIV-tests-temp.js algorithmIV-tests.js
 del /f pre-compiled-tests\algorithmIV-tests-temp.js
 
 ----------------------------------------------------------------
+CREATE SRC              |
+----------------------- |    |
+Folder:                 |    |
+src/pre-compiled-parts/ |    |
+-------------------------    v
+
+## UNIX Commands
+cp -u tests/pre-compiled-debug/*.js src/pre-compiled-parts
+cp -u tests/pre-compiled-debug/polyfills/*.js src/pre-compiled-parts/polyfills
+
+## MS-DOS Commands
+copy /y tests\pre-compiled-debug\*.js src\pre-compiled-parts
+copy /y tests\pre-compiled-debug\polyfills\*.js src\pre-compiled-parts\polyfills
+
+----------------------------------------------------------------
 COMPILE SRC                |
 -------------------------- |    |
 File:                      |    |
@@ -88,11 +103,11 @@ src/algorithmIV-debug.js   |    |
 cd src/pre-compiled-parts
 sed \
   -e "/public-api.js/ r public-api.js" \
-  -e "/external-api.js/ r external-api.js" \
+  -e "/module-api.js/ r module-api.js" \
   -e "/module-vars.js/ r module-vars.js" \
   -e "/module-methods.js/ r module-methods.js" \
   -e "/debug-class.js/ r debug-class.js" \
-  -e "/polyfill-methods.js/ r polyfill-methods.js" <skeleton.js>algorithmIV-debug-temp.js
+  -e "/polyfills\/object.js/ r polyfills/object.js" <skeleton.js>algorithmIV-debug-temp.js
 cd ..
 cp -u pre-compiled-parts/algorithmIV-debug-temp.js algorithmIV-debug.js
 rm -f pre-compiled-parts/algorithmIV-debug-temp.js
@@ -101,11 +116,11 @@ rm -f pre-compiled-parts/algorithmIV-debug-temp.js
 cd src\pre-compiled-parts
 sed ^
   -e "/public-api.js/ r public-api.js" ^
-  -e "/external-api.js/ r external-api.js" ^
+  -e "/module-api.js/ r module-api.js" ^
   -e "/module-vars.js/ r module-vars.js" ^
   -e "/module-methods.js/ r module-methods.js" ^
   -e "/debug-class.js/ r debug-class.js" ^
-  -e "/polyfill-methods.js/ r polyfill-methods.js" <skeleton.js>algorithmIV-debug-temp.js
+  -e "/polyfills\/object.js/ r polyfills\object.js" <skeleton.js>algorithmIV-debug-temp.js
 cd ..
 copy /y pre-compiled-parts\algorithmIV-debug-temp.js algorithmIV-debug.js
 del /f pre-compiled-parts\algorithmIV-debug-temp.js
@@ -118,7 +133,7 @@ src/algorithmIV-debug.js   |    |
 ----------------------------    v
 
 ## UNIX Commands
-sed "3,24 d" <src/algorithmIV-debug.js>compile/algorithmIV-debug.js
+sed "3,27 d" <src/algorithmIV-debug.js>compile/algorithmIV-debug.js
 cd compile
 java \
   -jar minifier.jar \
@@ -132,7 +147,7 @@ sed \
 rm -f compile/algorithmIV-debug.min.js
 
 ## MS-DOS Commands
-sed "3,24 d" <src\algorithmIV-debug.js>compile\algorithmIV-debug.js
+sed "3,27 d" <src\algorithmIV-debug.js>compile\algorithmIV-debug.js
 cd compile
 java ^
   -jar minifier.jar ^
