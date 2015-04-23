@@ -22,6 +22,7 @@ sed \
   -e "/debug-class\/constructor.js/ r debug-class/constructor.js" \
   -e "/debug-class\/logging-methods.js/ r debug-class/logging-methods.js" \
   -e "/debug-class\/controlling-methods.js/ r debug-class/controlling-methods.js" \
+  -e "/debug-class\/helper-methods.js/ r debug-class/helper-methods.js" \
   -e "/polyfills\/object.js/ r polyfills/object.js" <skeleton.js>algorithmIV-debug-temp.js
 cd ..
 cp -u pre-compiled-debug/algorithmIV-debug-temp.js algorithmIV-debug.js
@@ -37,6 +38,7 @@ sed ^
   -e "/debug-class\/constructor.js/ r debug-class\constructor.js" ^
   -e "/debug-class\/logging-methods.js/ r debug-class\logging-methods.js" ^
   -e "/debug-class\/controlling-methods.js/ r debug-class\controlling-methods.js" ^
+  -e "/debug-class\/helper-methods.js/ r debug-class\helper-methods.js" ^
   -e "/polyfills\/object.js/ r polyfills\object.js" <skeleton.js>algorithmIV-debug-temp.js
 cd ..
 copy /y pre-compiled-debug\algorithmIV-debug-temp.js algorithmIV-debug.js
@@ -115,6 +117,7 @@ sed \
   -e "/debug-class\/constructor.js/ r debug-class/constructor.js" \
   -e "/debug-class\/logging-methods.js/ r debug-class/logging-methods.js" \
   -e "/debug-class\/controlling-methods.js/ r debug-class/controlling-methods.js" \
+  -e "/debug-class\/helper-methods.js/ r debug-class/helper-methods.js" \
   -e "/polyfills\/object.js/ r polyfills/object.js" <skeleton.js>algorithmIV-debug-temp.js
 cd ..
 cp -u pre-compiled-parts/algorithmIV-debug-temp.js algorithmIV-debug.js
@@ -130,6 +133,7 @@ sed ^
   -e "/debug-class\/constructor.js/ r debug-class\constructor.js" ^
   -e "/debug-class\/logging-methods.js/ r debug-class\logging-methods.js" ^
   -e "/debug-class\/controlling-methods.js/ r debug-class\controlling-methods.js" ^
+  -e "/debug-class\/helper-methods.js/ r debug-class\helper-methods.js" ^
   -e "/polyfills\/object.js/ r polyfills\object.js" <skeleton.js>algorithmIV-debug-temp.js
 cd ..
 copy /y pre-compiled-parts\algorithmIV-debug-temp.js algorithmIV-debug.js
