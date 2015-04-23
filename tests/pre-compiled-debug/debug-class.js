@@ -88,6 +88,39 @@
      */
     var breakpoints;
 
+    /**
+     * -----------------------------------------------------
+     * Protected Property (groups)
+     * -----------------------------------------------------
+     * @desc Allows automatic grouping of all logs, timers, and profiles between
+     *   every start and end method.
+     * @type {boolean}
+     * @private
+     */
+    var groups;
+
+    /**
+     * -----------------------------------------------------
+     * Protected Property (profiles)
+     * -----------------------------------------------------
+     * @desc Allows automatic profiling for all logic between every start and
+     *   end method.
+     * @type {boolean}
+     * @private
+     */
+    var profiles;
+
+    /**
+     * -----------------------------------------------------
+     * Protected Property (timers)
+     * -----------------------------------------------------
+     * @desc Allows automatic timing for all logic between every start and end
+     *   method.
+     * @type {boolean}
+     * @private
+     */
+    var timers;
+
 
     ////////////////////////////////////////////////////////////////////////////
     // Setup The Protected Properties
@@ -115,6 +148,10 @@
       state: /state|all/.test(settings.addBreakpoints),
       misc :  /misc|all/.test(settings.addBreakpoints)
     };
+
+    groups   = settings.turnOnGroups;
+    profiles = settings.turnOnProfiles;
+    timers   = settings.turnOnTimers;
 
 
     ////////////////////////////////////////////////////////////////////////////
@@ -144,6 +181,28 @@
      */
     this.getBreakpoint = function(type) {
       return breakpoints[ type ];
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Public Method (Debug.getAuto)
+     * ---------------------------------------------------
+     * @desc Gets the current automated value for groups, profiles, and timers.
+     * @param {string} prop - The automated type value to get.
+     * @return {boolean} The automated type's current enabled/disabled state.
+     */
+    this.getAuto = function(prop) {
+
+      /** @type {Object<string, boolean>} */
+      var props;
+
+      props = {
+        groups  : groups,
+        profiles: profiles,
+        timers  : timers
+      };
+
+      return props[ prop ];
     };
 
     /**
@@ -216,11 +275,35 @@
       return true;
     };
 
+    /**
+     * ---------------------------------------------------
+     * Public Method (Debug.setAuto)
+     * ---------------------------------------------------
+     * @desc Sets the current automated value for groups, profiles, and timers.
+     * @param {string} prop - The automated type value to set.
+     * @param {boolean} val - The new automated value.
+     */
+    this.setAuto = function(prop, val) {
+
+      /** @type {Object<string, function(boolean)>} */
+      var props;
+
+      props = {
+        groups  : function(val) { groups   = val; },
+        profiles: function(val) { profiles = val; },
+        timers  : function(val) { timers   = val; }
+      };
+
+      props[ prop ](!!val);
+    };
+
     // Freeze all of the public methods
     Object.freeze(this.getType);
     Object.freeze(this.getBreakpoint);
+    Object.freeze(this.getAuto);
     Object.freeze(this.setType);
     Object.freeze(this.setBreakpoint);
+    Object.freeze(this.setAuto);
 
 
     ////////////////////////////////////////////////////////////////////////////
