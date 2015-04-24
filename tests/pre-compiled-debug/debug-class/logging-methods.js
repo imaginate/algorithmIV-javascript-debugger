@@ -533,12 +533,11 @@
    * -----------------------------------------------------
    * Public Method (Debug.prototype.state)
    * -----------------------------------------------------
-   * @desc Use to view the state of a variable or property.
-   * @param {(string|vals)} methodName - The name of the method. An array
-   *   with all the parameters for this method (in correct order) can be
-   *   supplied here.
+   * @desc Used to log the state of a variable or property.
+   * @param {!(string|vals)} methodName - The name of the method or an array
+   *   of all the parameters for this method (in correct order).
    * @param {string=} message - A log message that shares a state. Use two
-   *   consecutive dollar signs to include varaible values in the message
+   *   consecutive dollar signs to include variable values in the message
    *   (e.g. This string, '... numberVar is $$ and  objectVar is $$', will
    *   be automatically converted to '... numberVar is %i, objectVar is %O').
    * @param {...val=} val - The current value of a variable to log.
@@ -553,59 +552,74 @@
    */
   Debug.prototype.state = function(methodName, message) {
 
-    /**
-     * @type {boolean}
-     * @private
-     */
-    var argTest;
-    /**
-     * @type {vals}
-     * @private
-     */
+    /** @type {!vals} */
     var args;
+    /** @type {string} */
+    var msg;
+
+    // Setup the variables
+    if ( checkType(methodName, '!string|array') ) {
+      if ( checkType(methodName, 'string') ) {
+        args = ( (arguments.length > 2) ?
+          Array.prototype.slice.call(arguments, 2) : []
+        );
+      }
+      else {
+        message = (methodName.length > 1) ? methodName[1] : '';
+        args = (methodName.length > 2) ? methodName.slice(2) : [];
+        methodName = methodName[0];
+      }
+
+      if ( !checkType(message, 'string') ) {
+        args.unshift(message);
+        message = '';
+      }
+    }
 
     // Test the given arguments before executing
-    argTest = ( (typeof methodName === 'string') ?
-      (typeof message === 'string' && arguments.length > 2)
-      : ( Array.isArray(methodName) ) ?
-        (typeof methodName[0] === 'string' && methodName.length > 2 &&
-         typeof methodName[1] === 'string')
-        : false
-    );
-    if(!argTest) {
-      console.error('A debug.state method\'s arg(s) was wrong.');
+    if ( !checkType(methodName, 'string') ) {
+      msg = 'An aIV.debug state method call was given an incorrect data ';
+      msg += 'type (should be a string) for its first parameter (the name ';
+      msg += 'of the user\'s method to log). The incorrect data type ';
+      msg += 'given for the method name follows: ';
+      msg += (methodName === null) ? 'null' : typeof methodName;
+      console.error(msg);
+      if (errorBreakpoints) {
+        debugger;
+      }
+      return false;
+    }
+    if (!args.length) {
+      msg = 'An aIV.debug state method call was missing a state to log. ';
+      msg += 'The state method requires that at least one variable state ';
+      msg += 'be recorded. After the first parameter (the method name), the ';
+      msg += 'second parameter should be the log message with $$ in the ';
+      msg += 'places where you would like the variable states to be placed. The ';
+      msg += 'third parameter should be a variable state you would like to ';
+      msg += 'record. You can record as many variables as you like.';
+      console.error(msg);
       if (errorBreakpoints) {
         debugger;
       }
       return false;
     }
 
-    // Check whether this method has been turned off for the current instance
+    // Check whether this method has been turned off
     if ( !this.getMethod('state') ) {
       return false;
-    }
-
-    // Setup the variables
-    if (typeof methodName === 'string') {
-      args = Array.prototype.slice.call(arguments, 2);
-    }
-    else {
-      message = methodName[1];
-      args = methodName.slice(2);
-      methodName = methodName[0];
     }
 
     // Prepare the message
     message = insertSubstituteStrings(message, args);
     message = 'STATE: ' + this.classTitle + methodName + '() | ' + message;
 
-    // Prepare the console args
+    // Prepare the log's arguments
     args.unshift(message);
 
     // Log the state
     console.log.apply(console, args);
 
-    // Pause the script
+    // Insert a debugger breakpoint
     if ( this.getBreakpoint('state') ) {
       debugger;
     }
