@@ -631,14 +631,14 @@
    * -----------------------------------------------------
    * Public Method (Debug.prototype.misc)
    * -----------------------------------------------------
-   * @desc Use to make a custom console log.
-   * @param {(string|vals)} methodName - The name of the method. An
-   *   array with all the parameters can be supplied here.
-   * @param {string} message - The misc log message. Use two consecutive
-   *   dollar signs to include varaible values in the message (e.g. This
+   * @desc Used to make a custom console log.
+   * @param {!(string|vals)} methodName - The name of the method or an
+   *   array of all the parameters (in correct order).
+   * @param {string=} message - The misc log message. Use two consecutive
+   *   dollar signs to include variable values in the message (e.g. This
    *   string, '... numberVar is $$ and  objectVar is $$', will be
    *   automatically converted to '... numberVar is %i, objectVar is %O').
-   * @param {...val=} val - The value of any variables to add to the log.
+   * @param {...val=} val - Any values to include in the log.
    * @return {boolean} The log's success (i.e. whether a log was made).
    * @example
    *   // The message to include
@@ -650,46 +650,60 @@
    */
   Debug.prototype.misc = function(methodName, message) {
 
-    /**
-     * @type {boolean}
-     * @private
-     */
-    var argTest;
-    /**
-     * @type {?vals}
-     * @private
-     */
+    /** @type {!vals} */
     var args;
+    /** @type {string} */
+    var msg;
+
+    // Setup the variables
+    if ( checkType(methodName, '!string|array') ) {
+      if ( checkType(methodName, 'string') ) {
+        args = ( (arguments.length > 2) ?
+          Array.prototype.slice.call(arguments, 2) : []
+        );
+      }
+      else {
+        message = (methodName.length > 1) ? methodName[1] : '';
+        args = (methodName.length > 2) ? methodName.slice(2) : [];
+        methodName = methodName[0];
+      }
+
+      if ( !checkType(message, 'string') ) {
+        args.unshift(message);
+        message = '';
+      }
+    }
 
     // Test the given arguments before executing
-    argTest = ( (typeof methodName === 'string') ?
-      (typeof message === 'string') : ( Array.isArray(methodName) ) ?
-        (typeof methodName[0] === 'string' && typeof methodName[1] === 'string')
-        : false
-    );
-    if(!argTest) {
-      console.error('A debug.misc method\'s arg(s) was wrong.');
+    if ( !checkType(methodName, 'string') ) {
+      msg = 'An aIV.debug misc method call was given an incorrect data ';
+      msg += 'type (should be a string) for its first parameter (the name ';
+      msg += 'of the user\'s method to log). The incorrect data type ';
+      msg += 'given for the method name follows: ';
+      msg += (methodName === null) ? 'null' : typeof methodName;
+      console.error(msg);
+      if (errorBreakpoints) {
+        debugger;
+      }
+      return false;
+    }
+    if (!message && !args.length) {
+      msg = 'An aIV.debug misc method call was missing a message to log. ';
+      msg += 'The misc method requires that a message be supplied. After ';
+      msg += 'the first parameter (the method name), the second parameter ';
+      msg += 'should be the log message with $$ in the places where you ';
+      msg += 'would like to add any variable states. The following ';
+      msg += 'parameters are optional variable states to include.';
+      console.error(msg);
       if (errorBreakpoints) {
         debugger;
       }
       return false;
     }
 
-    // Check whether this method has been turned off for the current instance
+    // Check whether this method has been turned off
     if ( !this.getMethod('misc') ) {
       return false;
-    }
-
-    // Setup the variables
-    if (typeof methodName === 'string') {
-      args = ( (arguments.length > 2) ?
-        Array.prototype.slice.call(arguments, 2) : null
-      );
-    }
-    else {
-      message = methodName[1];
-      args = (methodName.length > 2) ? methodName.slice(2) : null;
-      methodName = methodName[0];
     }
 
     // Prepare the message
@@ -699,15 +713,10 @@
     message = 'MISC: ' + this.classTitle + methodName + '() | ' + message;
 
     // Log the misc message
-    if (args) {
-      args.unshift(message);
-      console.log.apply(console, args);
-    }
-    else {
-      console.log(message);
-    }
+    args.unshift(message);
+    console.log.apply(console, args);
 
-    // Pause the script
+    // Insert a debugger breakpoint
     if ( this.getBreakpoint('misc') ) {
       debugger;
     }
