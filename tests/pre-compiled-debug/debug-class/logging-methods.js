@@ -180,7 +180,7 @@
    */
   Debug.prototype.args = function(methodName) {
 
-    /** @type {vals} */
+    /** @type {!vals} */
     var args;
     /** @type {boolean} */
     var pass;
@@ -288,79 +288,86 @@
    * -----------------------------------------------------
    * Public Method (Debug.prototype.fail)
    * -----------------------------------------------------
-   * @desc Use to catch failures within a method.
-   * @param {(string|vals)} methodName - The name of the method. An array
-   *   with all the parameters for this method (in correct order) can be
-   *   supplied here.
-   * @param {val=} pass - The test to run (fails if false).
+   * @desc Used to catch failures within a method. Comparable to console.assert.
+   * @param {!(string|vals)} methodName - The name of the method or an array
+   *   of all the parameters for this method (in correct order).
+   * @param {val=} pass - The test to run. If this value is a function it runs
+   *   it, converts its return to a boolean, and uses the result. Otherwise it
+   *   converts it to a boolean. If the resulting boolean value is false then it
+   *   logs an error.
    * @param {string=} message - The message to log if test fails. Use two
    *   consecutive dollar signs to include varaible values in the message
    *   (e.g. This string, '... numberVar is $$ and  objectVar is $$', will
    *   be automatically converted to '... numberVar is %i, objectVar is %O').
-   * @param {...val=} val - The value of the passed variables to include in
-   *   error message.
+   * @param {...val=} val - Any values to include in error message.
    * @return {boolean} The log's success (i.e. whether a log was made).
    * @example
-   *   // A function that returns a boolean value
-   *   var test = function() {
-   *     if (typeof testVar === 'number') {
-   *       ++testVar;
-   *     }
-   *     return (testVar === 1);
-   *   };
+   *   // A function that tests the value of testVar
+   *   var testFunc = (function(testVar) {
+   *     return function() {
+   *       return (testVar === 1);
+   *     };
+   *   })(testVar);
    *   // The message to include
-   *   var errorMsg = 'Lorem ipsem var1 is $$. | var2= $$';
+   *   var errorMsg = 'Your error message var1 is $$. | var2= $$';
    *
-   *   debug.fail('methodName', test, errorMsg, var1, var2);
+   *   debug.fail('methodName', testFunc, errorMsg, var1, var2);
    *   // OR
-   *   debug.fail([ 'methodName', test, errorMsg, var1, var2 ]);
+   *   debug.fail([ 'methodName', testFunc, errorMsg, var1, var2 ]);
    */
   Debug.prototype.fail = function(methodName, pass, message) {
 
-    /**
-     * @type {boolean}
-     * @private
-     */
-    var argTest;
-    /**
-     * @type {?vals}
-     * @private
-     */
+    /** @type {!vals} */
     var args;
+    /** @type {string} */
+    var msg;
+
+    // Setup the varaibles
+    if ( checkType(methodName, '!string|array') ) {
+      if ( checkType(methodName, 'string') ) {
+        pass = ( checkType(pass, 'function') ) ? !!pass() : !!pass;
+        args = ( (arguments.length > 3) ?
+          Array.prototype.slice.call(arguments, 3) : []
+        );
+      }
+      else {
+        pass = methodName[1];
+        pass = ( checkType(pass, 'function') ) ? !!pass() : !!pass;
+        message = methodName[2];
+        args = (methodName.length > 3) ? methodName.slice(3) : [];
+        methodName = methodName[0];
+      }
+    }
 
     // Test the given arguments before executing
-    argTest = ( (typeof methodName === 'string') ?
-      (typeof message === 'string') : ( Array.isArray(methodName) ) ?
-        (typeof methodName[0] === 'string' && typeof methodName[2] === 'string')
-        : false
-    );
-    if(!argTest) {
-      console.error('A debug.fail method\'s arg(s) was wrong.');
+    if ( !checkType(methodName, 'string') ) {
+      msg = 'An aIV.debug fail method call was given an incorrect data ';
+      msg += 'type (should be a string) for its first parameter (the name ';
+      msg += 'of the user\'s method to log). The incorrect data type ';
+      msg += 'given for the method name follows: ';
+      msg += (methodName === null) ? 'null' : typeof methodName;
+      console.error(msg);
+      if (errorBreakpoints) {
+        debugger;
+      }
+      return false;
+    }
+    if ( !checkType(message, 'string') ) {
+      msg = 'An aIV.debug fail method call was given an incorrect data ';
+      msg += 'type (should be a string) for its third parameter (the user\'s ';
+      msg += 'error message to log upon test failure). The incorrect data ';
+      msg += 'type given for the error message follows: ';
+      msg += (message === null) ? 'null' : typeof message;
+      console.error(msg);
       if (errorBreakpoints) {
         debugger;
       }
       return false;
     }
 
-    // Check whether this method has been turned off for the current instance
+    // Check whether this method has been turned off
     if ( !this.getMethod('fail') ) {
       return false;
-    }
-
-    // Setup the varaibles
-    if (typeof methodName === 'string') {
-      pass = (typeof pass === 'function') ? ( !!pass() ) : (!!pass);
-      args = ( (arguments.length > 3) ?
-        Array.prototype.slice.call(arguments, 3) : null
-      );
-    }
-    else {
-      pass = ( (typeof methodName[1] === 'function') ?
-        ( !!methodName[1]() ) : (!!methodName[1])
-      );
-      message = methodName[2];
-      args = (methodName.length > 3) ? methodName.slice(3) : null;
-      methodName = methodName[0];
     }
 
     // If test passes end this method
@@ -374,16 +381,13 @@
     }
     message = 'FAIL: ' + this.classTitle + methodName + '() | ' + message;
 
-    // Log the error
-    if (args) {
-      args.unshift(message);
-      console.error.apply(console, args);
-    }
-    else {
-      console.error(message);
-    }
+    // Prepare the error log's arguments
+    args = [ message ].concat(args);
 
-    // Pause the script
+    // Log the error
+    console.error.apply(console, args);
+
+    // Insert a debugger breakpoint
     if ( this.getBreakpoint('fail') ) {
       debugger;
     }
