@@ -84,102 +84,70 @@
 
   /**
    * -----------------------------------------------------
-   * Public Method (Debug.prototype.turnOff)
+   * Public Method (Debug.prototype.turnOffMethod)
    * -----------------------------------------------------
-   * @desc Use to hide a category of logs from the console.
-   * @param {...(string|strings)} logCat - The log category(ies) to hide.
-   *   If 'all' is provided then all categories will be hidden.
+   * @desc Used to disable any methods that are enabled.
+   * @param {...!(string|strings)} method - The method to disable.
+   *   If 'all' is provided then all methods are disabled.
+   * @return {boolean} The update's success (if error return false).
    * @example
-   *   debug.turnOff('args', 'fail', ...);
+   *   debug.turnOffMethod('args', 'fail', ...);
    *   // OR
-   *   debug.turnOff([ 'args', 'fail', ... ]);
+   *   debug.turnOffMethod([ 'args', 'fail', ... ]);
    */
-  Debug.prototype.turnOff = function(logCat) {
+  Debug.prototype.turnOffMethod = function(method) {
 
-    /**
-     * @type {?strings}
-     * @private
-     */
+    /** @type {string} */
+    var msg;
+    /** @type {strings} */
     var args;
-    /**
-     * @type {number}
-     * @private
-     */
+    /** @type {number} */
     var len;
-    /**
-     * @type {number}
-     * @private
-     */
+    /** @type {number} */
     var i;
-    /**
-     * @type {(string|strings)}
-     * @private
-     */
+    /** @type {!(string|strings)} */
     var errors;
 
-    // Ensure arguments are supplied
-    if (!logCat) {
-      console.error('A debug.turnOff method received no args.');
+    // Setup the arguments
+    args = ( ( checkType(method, '!strings') ) ?
+      method.slice(0) : (arguments.length > 1) ?
+        Array.prototype.slice.call(arguments, 0) : [ method ]
+    );
+
+    // Ensure valid arguments are supplied
+    if ( !checkType(args, '!strings') ) {
+      msg = 'An aIV.debug turnOffMethod call received invalid arguments.';
+      console.error(msg);
       if (errorBreakpoints) {
         debugger;
       }
       return false;
     }
 
-    // Setup the variables
-    args = ( (checkType(logCat, 'strings') && logCat.length > 1) ?
-      logCat.slice(0) : (arguments.length > 1) ?
-        Array.prototype.slice.call(arguments, 0) : null
-    );
-    logCat = ( (args) ?
-      null : (typeof logCat === 'string') ?
-        logCat : ( checkType(logCat, 'strings') ) ?
-          logCat[0] : null
-    );
+    // Split strings with multiple methods
+    method = args.join(' ');
+    args = method.split(' ');
 
-    // Make sure a value still exists to test
-    if (!logCat && (!args || !checkType(args, 'strings'))) {
-      console.error('A debug.turnOff method\'s arg(s) was the wrong data type.');
-      if (errorBreakpoints) {
-        debugger;
-      }
-      return false;
-    }
-
-    // Check for string with multiple categories
-    if (logCat && /\s/.test(logCat)) {
-      args = logCat.split(' ');
-      logCat = null;
-    }
-
-    // Turn off the debug method category(ies) & save any errors
-    if (args) {
-      len = args.length;
-      i = -1;
-      while (++i < len) {
-        if ( !this.setMethod(args[i], false) ) {
-          if (!errors) {
-            errors = [];
-          }
-          errors.push("'" + args[i] + "'");
+    // Turn off the methods & save any errors
+    len = args.length;
+    i = -1;
+    while (++i < len) {
+      if ( !this.setMethod(args[i], false) ) {
+        if (!errors) {
+          errors = [];
         }
-      }
-      if (errors) {
-        errors = errors.join(', ');
+        errors.push("'" + args[i] + "'");
       }
     }
-    else {
-      if ( !this.setMethod(logCat, false) ) {
-        errors = "'" + logCat + "'";
-      }
+    if (errors) {
+      errors = errors.join(', ');
     }
 
     // Report any errors
     if (errors) {
-      errors = '' +
-        'A debug.turnOff method was given an invalid debug category ' +
-        'to turn off. The incorrect value(s) follow:' + errors;
-      console.error(errors);
+      msg = 'An aIV.debug turnOffMethod call was given invalid method ';
+      msg += 'names to turn off. The incorrect name(s) follow:' + errors;
+      console.error(msg);
       if (errorBreakpoints) {
         debugger;
       }
@@ -188,6 +156,15 @@
 
     return true;
   };
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (Debug.prototype.turnOff)
+   * -----------------------------------------------------
+   * @desc The same as {@link Debug.prototype.turnOffMethod}.
+   * @type {function( ...!(string|strings) ): boolean}
+   */
+  Debug.prototype.turnOff = Debug.prototype.turnOffMethod;
 
   /**
    * -----------------------------------------------------
