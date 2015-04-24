@@ -24,7 +24,7 @@
     /** @type {string} */
     var message;
 
-    // Setup the varaibles
+    // Setup the variables
     if ( checkType(methodName, '!string|array') ) {
       if ( checkType(methodName, 'string') ) {
         args = ( (arguments.length > 1) ?
@@ -110,7 +110,7 @@
     /** @type {string} */
     var message;
 
-    // Setup the varaibles
+    // Setup the variables
     if ( checkType(methodName, '!array') ) {
       if (methodName.length > 1) {
         returnVal = methodName[1];
@@ -193,7 +193,7 @@
     /** @type {string} */
     var message;
 
-    // Setup the varaibles
+    // Setup the variables
     if ( checkType(methodName, '!string|array') ) {
       if ( checkType(methodName, 'string') ) {
         args = ( (arguments.length > 1) ?
@@ -296,10 +296,10 @@
    *   converts it to a boolean. If the resulting boolean value is false then it
    *   logs an error.
    * @param {string=} message - The message to log if test fails. Use two
-   *   consecutive dollar signs to include varaible values in the message
+   *   consecutive dollar signs to include variable values in the message
    *   (e.g. This string, '... numberVar is $$ and  objectVar is $$', will
    *   be automatically converted to '... numberVar is %i, objectVar is %O').
-   * @param {...val=} val - Any values to include in error message.
+   * @param {...val=} val - Any values to include in the error message.
    * @return {boolean} The log's success (i.e. whether a log was made).
    * @example
    *   // A function that tests the value of testVar
@@ -322,7 +322,7 @@
     /** @type {string} */
     var msg;
 
-    // Setup the varaibles
+    // Setup the variables
     if ( checkType(methodName, '!string|array') ) {
       if ( checkType(methodName, 'string') ) {
         pass = ( checkType(pass, 'function') ) ? !!pass() : !!pass;
@@ -399,18 +399,17 @@
    * -----------------------------------------------------
    * Public Method (Debug.prototype.group)
    * -----------------------------------------------------
-   * @desc Use to group console messages.
-   * @param {(string|vals)} methodName - The name of the method. An array
-   *   with all the parameters for this method (in correct order) can be
-   *   supplied here.
-   * @param {string=} openGroup - The type of console method to use. The
+   * @desc Used to group console messages.
+   * @param {(string|vals)} methodName - The name of the method or an array
+   *   of all the parameters for this method (in correct order).
+   * @param {string=} groupType - The type of console group method to use. The
    *   options are: 'open'= console.group() | 'coll'= console.groupCollapsed()
-   *   | 'end'= console.groupEnd()
+   *   | 'end'= console.groupEnd(). The default value is 'open'.
    * @param {string=} message - A message to add to an open group call. Use two
-   *   consecutive dollar signs to include varaible values in the message
+   *   consecutive dollar signs to include variable values in the message
    *   (e.g. This string, '... numberVar is $$ and  objectVar is $$', will
    *   be automatically converted to '... numberVar is %i, objectVar is %O').
-   * @param {...val=} val - The value of the passed variables to include in message.
+   * @param {...val=} val - Any values to include in the log message.
    * @return {boolean} The group's success (i.e. whether an action was made).
    * @example
    *   // The message to include
@@ -420,72 +419,86 @@
    *   // OR
    *   debug.group([ 'methodName', 'coll', message, var1, var2 ]);
    */
-  Debug.prototype.group = function(methodName, openGroup, message) {
+  Debug.prototype.group = function(methodName, groupType, message) {
 
-    /**
-     * @type {boolean}
-     * @private
-     */
-    var argTest;
-    /**
-     * @type {?vals}
-     * @private
-     */
+    /** @type {Object<string, string>} */
+    var groupTypes;
+    /** @type {!vals} */
     var args;
+    /** @type {string} */
+    var msg;
+
+    groupTypes = {
+      open: 'open',
+      coll: 'coll',
+      end : 'end'
+    };
+
+    // Setup the variables
+    if ( checkType(methodName, '!string|array') ) {
+
+      if ( checkType(methodName, 'string') ) {
+
+        if ( checkType(groupType, 'undefined') ) {
+          groupType = 'open';
+        }
+        if ( checkType(message, 'undefined') ) {
+          message = '';
+        }
+        args = ( (arguments.length > 3) ?
+          Array.prototype.slice.call(arguments, 3) : []
+        );
+      }
+      else {
+        groupType = (methodName.length > 1) ? methodName[1] : 'open';
+        message = (methodName.length > 2) ? methodName[2] : '';
+        args = (methodName.length > 3) ? methodName.slice(3) : [];
+        methodName = methodName[0];
+      }
+
+      if ( !checkType(message, 'string') ) {
+        args.unshift(message);
+        message = '';
+      }
+    }
 
     // Test the given arguments before executing
-    argTest = ( (typeof methodName === 'string') ?
-      (checkType(openGroup, 'string=') &&
-       checkType(message, 'string='))
-      : ( Array.isArray(methodName) ) ?
-        (typeof methodName[0] === 'string' &&
-         checkType(methodName[1], 'string=') &&
-         checkType(methodName[2], 'string='))
-        : false
-    );
-    if(!argTest) {
-      console.error('A debug.group method\'s arg(s) was wrong.');
+    if ( !checkType(methodName, 'string') ) {
+      msg = 'An aIV.debug group method call was given an incorrect data ';
+      msg += 'type (should be a string) for its first parameter (the name ';
+      msg += 'of the user\'s method to log). The incorrect data type ';
+      msg += 'given for the method name follows: ';
+      msg += (methodName === null) ? 'null' : typeof methodName;
+      console.error(msg);
+      if (errorBreakpoints) {
+        debugger;
+      }
+      return false;
+    }
+    if (!checkType(groupType, 'string') ||
+        !groupTypes.hasOwnProperty(groupType)) {
+      msg = 'An aIV.debug group method call was given an incorrect value ';
+      msg += "(should be 'open', 'coll', or 'end') for its second ";
+      msg += 'parameter (the console group type to use). The data type ';
+      msg += 'given for the group type was \'';
+      msg += ( (groupType === null) ? 'null' : typeof groupType ) + '\', ';
+      msg += 'and the value converted to a string was \'' + groupType + "'.";
+      console.error(msg);
       if (errorBreakpoints) {
         debugger;
       }
       return false;
     }
 
-    // Check whether this method has been turned off for the current instance
+    // Check whether this method has been turned off
     if ( !this.getMethod('group') ) {
       return false;
-    }
-
-    // Setup the varaibles
-    if (typeof methodName === 'string') {
-      openGroup = openGroup || 'coll';
-      message = message || '';
-      args = ( (arguments.length > 3) ?
-        Array.prototype.slice.call(arguments, 3) : null
-      );
-    }
-    else {
-      openGroup = methodName[1] || 'coll';
-      message = methodName[2] || '';
-      args = (methodName.length > 3) ? methodName.slice(3) : null;
-      methodName = methodName[0];
     }
 
     // Check for end group type
     if (openGroup === 'end') {
       console.groupEnd();
       return true;
-    }
-
-    // Ensure group type is correct
-    if (openGroup !== 'open' && openGroup !== 'coll') {
-      message = 'A debug.group method\'s openGroup arg was wrong. ';
-      message += 'The supplied openGroup argument was \'%s\'.';
-      console.error(message, openGroup);
-      if (errorBreakpoints) {
-        debugger;
-      }
-      return false;
     }
 
     // Prepare the message
@@ -497,13 +510,8 @@
     }
     message = 'GROUP: ' + this.classTitle + methodName + '()' + message;
 
-    // Setup the console open group args
-    if (args) {
-      args.unshift(message);
-    }
-    else {
-      args = [ message ];
-    }
+    // Prepare the group log's arguments
+    args = [ message ].concat(args);
 
     // Open a console group
     if (openGroup === 'coll') {
@@ -513,7 +521,7 @@
       console.group.apply(console, args);
     }
 
-    // Pause the script
+    // Insert a debugger breakpoint
     if ( this.getBreakpoint('group') ) {
       debugger;
     }
@@ -577,7 +585,7 @@
       return false;
     }
 
-    // Setup the varaibles
+    // Setup the variables
     if (typeof methodName === 'string') {
       args = Array.prototype.slice.call(arguments, 2);
     }
@@ -658,7 +666,7 @@
       return false;
     }
 
-    // Setup the varaibles
+    // Setup the variables
     if (typeof methodName === 'string') {
       args = ( (arguments.length > 2) ?
         Array.prototype.slice.call(arguments, 2) : null
