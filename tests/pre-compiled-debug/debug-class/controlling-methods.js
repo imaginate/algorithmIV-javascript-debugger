@@ -1,101 +1,69 @@
   /**
    * -----------------------------------------------------
-   * Public Method (Debug.prototype.turnOn)
+   * Public Method (Debug.prototype.turnOnMethod)
    * -----------------------------------------------------
-   * @desc Use to show a category of logs that was hidden.
-   * @param {...(string|strings)} logCat - The log category(ies) to show.
-   *   If 'all' is provided then all categories will be shown.
+   * @desc Used to enable any methods that are disabled.
+   * @param {...!(string|strings)} method - The method to enable.
+   *   If 'all' is provided then all methods are enabled.
+   * @return {boolean} The update's success (if error return false).
    * @example
-   *   debug.turnOn('start', 'state', ...);
+   *   debug.turnOnMethod('start', 'state', ...);
    *   // OR
-   *   debug.turnOn([ 'start', 'state', ... ]);
+   *   debug.turnOnMethod([ 'start', 'state', ... ]);
    */
-  Debug.prototype.turnOn = function(logCat) {
+  Debug.prototype.turnOnMethod = function(method) {
 
-    /**
-     * @type {?strings}
-     * @private
-     */
+    /** @type {string} */
+    var msg;
+    /** @type {strings} */
     var args;
-    /**
-     * @type {number}
-     * @private
-     */
+    /** @type {number} */
     var len;
-    /**
-     * @type {number}
-     * @private
-     */
+    /** @type {number} */
     var i;
-    /**
-     * @type {(string|strings)}
-     * @private
-     */
+    /** @type {!(string|strings)} */
     var errors;
 
-    // Ensure arguments are supplied
-    if (!logCat) {
-      console.error('A debug.turnOn method received no args.');
+    // Setup the arguments
+    args = ( ( checkType(method, '!strings') ) ?
+      method.slice(0) : (arguments.length > 1) ?
+        Array.prototype.slice.call(arguments, 0) : [ method ]
+    );
+
+    // Ensure valid arguments are supplied
+    if ( !checkType(args, '!strings') ) {
+      msg = 'An aIV.debug turnOnMethod call received invalid arguments.';
+      console.error(msg);
       if (errorBreakpoints) {
         debugger;
       }
       return false;
     }
 
-    // Setup the variables
-    args = ( (checkType(logCat, 'strings') && logCat.length > 1) ?
-      logCat.slice(0) : (arguments.length > 1) ?
-        Array.prototype.slice.call(arguments, 0) : null
-    );
-    logCat = ( (args) ?
-      null : (typeof logCat === 'string') ?
-        logCat : ( checkType(logCat, 'strings') ) ?
-          logCat[0] : null
-    );
+    // Split strings with multiple methods
+    method = args.join(' ');
+    args = method.split(' ');
 
-    // Make sure a value still exists to test
-    if (!logCat && (!args || !checkType(args, 'strings'))) {
-      console.error('A debug.turnOn method\'s arg(s) was the wrong data type.');
-      if (errorBreakpoints) {
-        debugger;
-      }
-      return false;
-    }
-
-    // Check for string with multiple categories
-    if (logCat && /\s/.test(logCat)) {
-      args = logCat.split(' ');
-      logCat = null;
-    }
-
-    // Turn on the debug method category(ies) & save any errors
-    if (args) {
-      len = args.length;
-      i = -1;
-      while (++i < len) {
-        if ( !this.setMethod(args[i], true) ) {
-          if (!errors) {
-            errors = [];
-          }
-          errors.push("'" + args[i] + "'");
+    // Turn on the methods & save any errors
+    len = args.length;
+    i = -1;
+    while (++i < len) {
+      if ( !this.setMethod(args[i], true) ) {
+        if (!errors) {
+          errors = [];
         }
-      }
-      if (errors) {
-        errors = errors.join(', ');
+        errors.push("'" + args[i] + "'");
       }
     }
-    else {
-      if ( !this.setMethod(logCat, true) ) {
-        errors = "'" + logCat + "'";
-      }
+    if (errors) {
+      errors = errors.join(', ');
     }
 
     // Report any errors
     if (errors) {
-      errors = '' +
-        'A debug.turnOn method was given an invalid debug category ' +
-        'to turn on. The incorrect value(s) follow:' + errors;
-      console.error(errors);
+      msg = 'An aIV.debug turnOnMethod call was given invalid method ';
+      msg += 'names to turn on. The incorrect name(s) follow:' + errors;
+      console.error(msg);
       if (errorBreakpoints) {
         debugger;
       }
@@ -104,6 +72,15 @@
 
     return true;
   };
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (Debug.prototype.turnOn)
+   * -----------------------------------------------------
+   * @desc The same as {@link Debug.prototype.turnOnMethod}.
+   * @type {function( ...!(string|strings) ): boolean}
+   */
+  Debug.prototype.turnOn = Debug.prototype.turnOnMethod;
 
   /**
    * -----------------------------------------------------
