@@ -168,104 +168,154 @@
 
   /**
    * -----------------------------------------------------
-   * Public Method (Debug.prototype.turnOnDebugger)
+   * Public Method (Debug.prototype.addBreakpoint)
    * -----------------------------------------------------
-   * @desc Use to enable debugger instances in a debug method.
-   * @param {...(string|strings)} logCat - The log category(ies)'s debuggers to show.
-   *   If 'all' is provided then all debugger instances will be enabled.
+   * @desc Used to add debugger breakpoints to methods.
+   * @param {...!(string|strings)} method - The method to add to.
+   *   If 'all' is provided then all methods will add breakpoints.
+   * @return {boolean} The update's success (if error return false).
    * @example
-   *   debug.turnOnDebugger('args', 'fail', ...);
+   *   debug.addBreakpoint('args', 'fail', ...);
    *   // OR
-   *   debug.turnOnDebugger([ 'args', 'fail', ... ]);
+   *   debug.addBreakpoint([ 'args', 'fail', ... ]);
    */
-  Debug.prototype.turnOnDebugger = function(logCat) {
+  Debug.prototype.addBreakpoint = function(method) {
 
-    /**
-     * @type {?strings}
-     * @private
-     */
+    /** @type {string} */
+    var msg;
+    /** @type {strings} */
     var args;
-    /**
-     * @type {number}
-     * @private
-     */
+    /** @type {number} */
     var len;
-    /**
-     * @type {number}
-     * @private
-     */
+    /** @type {number} */
     var i;
-    /**
-     * @type {(string|strings)}
-     * @private
-     */
+    /** @type {!(string|strings)} */
     var errors;
 
-    // Ensure arguments are supplied
-    if (!logCat) {
-      console.error('A debug.turnOnDebugger method received no args.');
+    // Setup the arguments
+    args = ( ( checkType(method, '!strings') ) ?
+      method.slice(0) : (arguments.length > 1) ?
+        Array.prototype.slice.call(arguments, 0) : [ method ]
+    );
+
+    // Ensure valid arguments are supplied
+    if ( !checkType(args, '!strings') ) {
+      msg = 'An aIV.debug addBreakpoint call received invalid arguments.';
+      console.error(msg);
       if (errorBreakpoints) {
         debugger;
       }
       return false;
     }
 
-    // Setup the variables
-    args = ( (checkType(logCat, 'strings') && logCat.length > 1) ?
-      logCat.slice(0) : (arguments.length > 1) ?
-        Array.prototype.slice.call(arguments, 0) : null
-    );
-    logCat = ( (args) ?
-      null : (typeof logCat === 'string') ?
-        logCat : ( checkType(logCat, 'strings') ) ?
-          logCat[0] : null
-    );
+    // Split strings with multiple methods
+    method = args.join(' ');
+    args = method.split(' ');
 
-    // Make sure a value still exists to test
-    if (!logCat && (!args || !checkType(args, 'strings'))) {
-      errors = 'A debug.turnOnDebugger method\'s arg(s) was ';
-      errors += 'the wrong data type.';
-      console.error(errors);
-      if (errorBreakpoints) {
-        debugger;
-      }
-      return false;
-    }
-
-    // Check for string with multiple categories
-    if (logCat && /\s/.test(logCat)) {
-      args = logCat.split(' ');
-      logCat = null;
-    }
-
-    // Turn on the debuggers & save any errors
-    if (args) {
-      len = args.length;
-      i = -1;
-      while (++i < len) {
-        if ( !this.setBreakpoint(args[i], true) ) {
-          if (!errors) {
-            errors = [];
-          }
-          errors.push("'" + args[i] + "'");
+    // Turn on the method breakpoints & save any errors
+    len = args.length;
+    i = -1;
+    while (++i < len) {
+      if ( !this.setBreakpoint(args[i], true) ) {
+        if (!errors) {
+          errors = [];
         }
-      }
-      if (errors) {
-        errors = errors.join(', ');
+        errors.push("'" + args[i] + "'");
       }
     }
-    else {
-      if ( !this.setBreakpoint(logCat, true) ) {
-        errors = "'" + logCat + "'";
-      }
+    if (errors) {
+      errors = errors.join(', ');
     }
 
     // Report any errors
     if (errors) {
-      errors = '' +
-        'A debug.turnOnDebugger method was given an invalid debug ' +
-        'category to turn on. The incorrect value(s) follow:' + errors;
-      console.error(errors);
+      msg = 'An aIV.debug addBreakpoint call was given invalid method ';
+      msg += 'names to enable. The incorrect name(s) follow:' + errors;
+      console.error(msg);
+      if (errorBreakpoints) {
+        debugger;
+      }
+      return false;
+    }
+
+    return true;
+  };
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (Debug.prototype.turnOnDebugger)
+   * -----------------------------------------------------
+   * @desc The same as {@link Debug.prototype.addBreakpoint}.
+   * @type {function( ...!(string|strings) ): boolean}
+   */
+  Debug.prototype.turnOnDebugger = Debug.prototype.addBreakpoint;
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (Debug.prototype.removeBreakpoint)
+   * -----------------------------------------------------
+   * @desc Used to remove debugger breakpoints from methods.
+   * @param {...!(string|strings)} method - The method to remove from.
+   *   If 'all' is provided then all methods will not add breakpoints.
+   * @return {boolean} The update's success (if error return false).
+   * @example
+   *   debug.removeBreakpoint('args', 'fail', ...);
+   *   // OR
+   *   debug.removeBreakpoint([ 'args', 'fail', ... ]);
+   */
+  Debug.prototype.removeBreakpoint = function(method) {
+
+    /** @type {string} */
+    var msg;
+    /** @type {strings} */
+    var args;
+    /** @type {number} */
+    var len;
+    /** @type {number} */
+    var i;
+    /** @type {!(string|strings)} */
+    var errors;
+
+    // Setup the arguments
+    args = ( ( checkType(method, '!strings') ) ?
+      method.slice(0) : (arguments.length > 1) ?
+        Array.prototype.slice.call(arguments, 0) : [ method ]
+    );
+
+    // Ensure valid arguments are supplied
+    if ( !checkType(args, '!strings') ) {
+      msg = 'An aIV.debug removeBreakpoint call received invalid arguments.';
+      console.error(msg);
+      if (errorBreakpoints) {
+        debugger;
+      }
+      return false;
+    }
+
+    // Split strings with multiple methods
+    method = args.join(' ');
+    args = method.split(' ');
+
+    // Turn on the method breakpoints & save any errors
+    len = args.length;
+    i = -1;
+    while (++i < len) {
+      if ( !this.setBreakpoint(args[i], false) ) {
+        if (!errors) {
+          errors = [];
+        }
+        errors.push("'" + args[i] + "'");
+      }
+    }
+    if (errors) {
+      errors = errors.join(', ');
+    }
+
+    // Report any errors
+    if (errors) {
+      msg = 'An aIV.debug removeBreakpoint call was given invalid method ';
+      msg += 'names to remove. The incorrect name(s) follow:' + errors;
+      console.error(msg);
       if (errorBreakpoints) {
         debugger;
       }
@@ -279,107 +329,7 @@
    * -----------------------------------------------------
    * Public Method (Debug.prototype.turnOffDebugger)
    * -----------------------------------------------------
-   * @desc Use to disable debugger instances in a debug method.
-   * @param {...(string|strings)} logCat - The log category(ies)'s debuggers to hide.
-   *   If 'all' is provided then all debugger instances will be disabled.
-   * @example
-   *   debug.turnOffDebugger('args', 'fail', ...);
-   *   // OR
-   *   debug.turnOffDebugger([ 'args', 'fail', ... ]);
+   * @desc The same as {@link Debug.prototype.removeBreakpoint}.
+   * @type {function( ...!(string|strings) ): boolean}
    */
-  Debug.prototype.turnOffDebugger = function(logCat) {
-
-    /**
-     * @type {?strings}
-     * @private
-     */
-    var args;
-    /**
-     * @type {number}
-     * @private
-     */
-    var len;
-    /**
-     * @type {number}
-     * @private
-     */
-    var i;
-    /**
-     * @type {(string|strings)}
-     * @private
-     */
-    var errors;
-
-    // Ensure arguments are supplied
-    if (!logCat) {
-      console.error('A debug.turnOffDebugger method received no args.');
-      if (errorBreakpoints) {
-        debugger;
-      }
-      return false;
-    }
-
-    // Setup the variables
-    args = ( (checkType(logCat, 'strings') && logCat.length > 1) ?
-      logCat.slice(0) : (arguments.length > 1) ?
-        Array.prototype.slice.call(arguments, 0) : null
-    );
-    logCat = ( (args) ?
-      null : (typeof logCat === 'string') ?
-        logCat : ( checkType(logCat, 'strings') ) ?
-          logCat[0] : null
-    );
-
-    // Make sure a value still exists to test
-    if (!logCat && (!args || !checkType(args, 'strings'))) {
-      errors = 'A debug.turnOffDebugger method\'s arg(s) was ';
-      errors += 'the wrong data type.';
-      console.error(errors);
-      if (errorBreakpoints) {
-        debugger;
-      }
-      return false;
-    }
-
-    // Check for string with multiple categories
-    if (logCat && /\s/.test(logCat)) {
-      args = logCat.split(' ');
-      logCat = null;
-    }
-
-    // Turn off the debuggers & save any errors
-    if (args) {
-      len = args.length;
-      i = -1;
-      while (++i < len) {
-        if ( !this.setBreakpoint(args[i], false) ) {
-          if (!errors) {
-            errors = [];
-          }
-          errors.push("'" + args[i] + "'");
-        }
-      }
-      if (errors) {
-        errors = errors.join(', ');
-      }
-    }
-    else {
-      if ( !this.setBreakpoint(logCat, false) ) {
-        errors = "'" + logCat + "'";
-      }
-    }
-
-    // Report any errors
-    if (errors) {
-      errors = '' +
-        'A debug.turnOffDebugger method was given an invalid debug ' +
-        'category to turn off. The incorrect value(s) follow:' + errors;
-      console.error(errors);
-      if (errorBreakpoints) {
-        debugger;
-      }
-      return false;
-    }
-
-    return false;
-  };
+  Debug.prototype.turnOffDebugger = Debug.prototype.removeBreakpoint;
