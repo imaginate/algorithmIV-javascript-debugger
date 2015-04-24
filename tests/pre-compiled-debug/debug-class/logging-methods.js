@@ -71,7 +71,7 @@
     message += ')';
 
     // Prepare the start log arguments
-    args = [ message ].concat(args);
+    args.unshift(message);
 
     // Insert auto grouping
     this.handleAuto('groups', methodName);
@@ -382,7 +382,7 @@
     message = 'FAIL: ' + this.classTitle + methodName + '() | ' + message;
 
     // Prepare the error log's arguments
-    args = [ message ].concat(args);
+    args.unshift(message);
 
     // Log the error
     console.error.apply(console, args);
@@ -511,7 +511,7 @@
     message = 'GROUP: ' + this.classTitle + methodName + '()' + message;
 
     // Prepare the group log's arguments
-    args = [ message ].concat(args);
+    args.unshift(message);
 
     // Open a console group
     if (openGroup === 'coll') {
