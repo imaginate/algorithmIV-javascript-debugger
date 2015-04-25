@@ -1,5 +1,5 @@
   /**
-   * ----------------------------------------------- 
+   * -----------------------------------------------
    * Public Class (RegExps)
    * -----------------------------------------------
    * @desc Regular expressions that are used throughout the module.
@@ -9,7 +9,7 @@
   var RegExps = {};
 
   /**
-   * ----------------------------------------------- 
+   * -----------------------------------------------
    * Public Property (RegExps.allDataTypes)
    * -----------------------------------------------
    * @desc All of the data types available to this module.
@@ -30,7 +30,7 @@
   })();
 
   /**
-   * ----------------------------------------------- 
+   * -----------------------------------------------
    * Public Property (RegExps.basicDataTypes)
    * -----------------------------------------------
    * @desc The basic data types available to this module.
@@ -48,7 +48,7 @@
   })();
 
   /**
-   * ----------------------------------------------- 
+   * -----------------------------------------------
    * Public Property (RegExps.arrayDataTypes)
    * -----------------------------------------------
    * @desc The array data types available to this module.
@@ -66,7 +66,7 @@
   })();
 
   /**
-   * ----------------------------------------------- 
+   * -----------------------------------------------
    * Public Property (RegExps.mapDataTypes)
    * -----------------------------------------------
    * @desc The hash map types available to this module.
@@ -84,7 +84,7 @@
   })();
 
   /**
-   * ----------------------------------------------- 
+   * -----------------------------------------------
    * Public Property (RegExps.dualDollarSigns)
    * -----------------------------------------------
    * @desc Two consecutive dollar signs.
