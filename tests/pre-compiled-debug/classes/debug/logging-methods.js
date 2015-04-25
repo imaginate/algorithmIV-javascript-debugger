@@ -1,5 +1,39 @@
   /**
    * -----------------------------------------------------
+   * Public Method (Debug.prototype.init)
+   * -----------------------------------------------------
+   * @desc Used to log the start of a method, check for incorrect argument
+   *   data types, and insert any automated actions.
+   * @param {!(string|vals)} methodName - The name of the method or an array
+   *   of all the parameters for this method in correct order.
+   * @param {...val=} val - Each argument passed to the method.
+   * @param {...string=} type -  Each passed argument's data type. To review
+   *   the input options available
+   *   [see the checkType helper method]{@link checkType}.
+   * @return {boolean} Whether the method made a log or not.
+   * @example
+   *   // Create an aIV.console class instance
+   *   Example.prototype.constructor = function Example() {
+   *     this.console = aIV.console.create('Example');
+   *   };
+   *   
+   *   // Calling init with multiple params
+   *   Example.prototype.paramsMethod = function paramsMethod(arg1, arg2) {
+   *     this.console.init('paramsMethod', arg1, 'object', arg2, 'number=');
+   *   };
+   *   
+   *   // Calling init with an array
+   *   Example.prototype.arrayMethod = function arrayMethod(arg1, arg2) {
+   *     var arr = [ 'arrayMethod', arg1, 'object', arg2, 'number=' ];
+   *     this.console.init(arr);
+   *   };
+   */
+  Debug.prototype.init = function(methodName) {
+
+  };
+
+  /**
+   * -----------------------------------------------------
    * Public Method (Debug.prototype.start)
    * -----------------------------------------------------
    * @desc Used to log the start of a method and insert any automated actions.
