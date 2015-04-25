@@ -15,7 +15,7 @@
    * @desc All of the data types available to this module.
    * @type {!RegExp}
    */
-  RegExps.allDataTypes = (function() {
+  RegExps.allDataTypes = (function setupAllDataTypes() {
 
     /** @type {string} */
     var types;
@@ -36,7 +36,7 @@
    * @desc The basic data types available to this module.
    * @type {!RegExp}
    */
-  RegExps.basicDataTypes = (function() {
+  RegExps.basicDataTypes = (function setupBasicDataTypes() {
 
     /** @type {string} */
     var types;
@@ -54,7 +54,7 @@
    * @desc The array data types available to this module.
    * @type {!RegExp}
    */
-  RegExps.arrayDataTypes = (function() {
+  RegExps.arrayDataTypes = (function setupArrayDataTypes() {
 
     /** @type {string} */
     var types;
@@ -72,7 +72,7 @@
    * @desc The hash map types available to this module.
    * @type {!RegExp}
    */
-  RegExps.mapDataTypes = (function() {
+  RegExps.mapDataTypes = (function setupMapDataTypes() {
 
     /** @type {string} */
     var types;
@@ -92,4 +92,4 @@
    */
   RegExps.dualDollarSigns = /([^\\]*?)\$\$/;
 
-  Object.freeze(RegExps);
+  freezeObj(RegExps, true);
