@@ -86,22 +86,32 @@
 
 
 /* -----------------------------------------------------------------------------
- * The Debug Class Constructor (debug-class/constructor.js)
+ * The ErrorMessages Class (classes/error-messages.js)
  * -------------------------------------------------------------------------- */
 
 
 /* -----------------------------------------------------------------------------
- * The Debug Class Logging Methods (debug-class/logging-methods.js)
+ * The RegExps Class (classes/reg-exps.js)
  * -------------------------------------------------------------------------- */
 
 
 /* -----------------------------------------------------------------------------
- * The Debug Class Controlling Methods (debug-class/controlling-methods.js)
+ * The Debug Class Constructor (classes/debug/constructor.js)
  * -------------------------------------------------------------------------- */
 
 
 /* -----------------------------------------------------------------------------
- * The Debug Class Helper Methods (debug-class/helper-methods.js)
+ * The Debug Class Logging Methods (classes/debug/logging-methods.js)
+ * -------------------------------------------------------------------------- */
+
+
+/* -----------------------------------------------------------------------------
+ * The Debug Class Controlling Methods (classes/debug/controlling-methods.js)
+ * -------------------------------------------------------------------------- */
+
+
+/* -----------------------------------------------------------------------------
+ * The Debug Class Helper Methods (classes/debug/helper-methods.js)
  * -------------------------------------------------------------------------- */
 
 
