@@ -1,5 +1,46 @@
   /**
    * ---------------------------------------------------
+   * Public Method (freezeObj)
+   * ---------------------------------------------------
+   * @desc A shortcut for the Object.freeze method.
+   * @param {!object|function} obj - The object to freeze.
+   * @return {!object|function} The frozen object.
+   */
+  function freezeObj(obj) {
+    return Object.freeze(obj);
+  }
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (hasOwnProp)
+   * ---------------------------------------------------
+   * @desc A shortcut for the Object.prototype.hasOwnProperty method.
+   * @param {!object|function} obj - The object to check.
+   * @param {string} prop - The property to check.
+   * @return {boolean} The result of the check.
+   */
+  function hasOwnProp(obj, prop) {
+
+    /** @type {string} */
+    var errorMessage;
+
+    if ( !checkType(obj, '!object|function') ) {
+      errorMessage = 'A hasOwnProp call received an invalid obj parameter.';
+      throw new TypeError(errorMessage);
+      return false;
+    }
+
+    if ( !checkType(prop, 'string') ) {
+      errorMessage = 'A hasOwnProp call received an invalid prop parameter.';
+      throw new TypeError(errorMessage);
+      return false;
+    }
+
+    return obj.hasOwnProperty(prop);
+  }
+
+  /**
+   * ---------------------------------------------------
    * Public Method (getSubstituteString)
    * ---------------------------------------------------
    * @desc Gets the correct substitution string for the given value.
