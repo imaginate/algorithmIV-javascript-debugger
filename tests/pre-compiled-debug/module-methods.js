@@ -4,11 +4,58 @@
    * ---------------------------------------------------
    * @desc A shortcut for the Object.freeze method.
    * @param {!object|function} obj - The object to freeze.
+   * @param {boolean=} deep - Deep freeze the object. The default is false.
    * @return {!object|function} The frozen object.
    */
-  function freezeObj(obj) {
-    return Object.freeze(obj);
-  }
+  var freezeObj = (function setupFreezeObj() {
+
+    /**
+     * -------------------------------------------------
+     * Private Method (deepFreeze)
+     * -------------------------------------------------
+     * @desc A helper to freezeObj that recursively freezes all of its
+     *   properties.
+     * @param {!object|function} obj - The object to freeze.
+     */
+    var deepFreeze = function deepFreeze(obj) {
+
+      /** @type {string} */
+      var prop;
+
+      Object.freeze(obj);
+
+      for (prop in obj) {
+        if (hasOwnProp(obj, prop) && checkType(obj[ prop ], '!object|function')) {
+          deepFreeze(obj[ prop ]);
+        }
+      }
+    };
+
+    return function freezeObj(obj, deep) {
+
+      /** @type {string} */
+      var errorMessage;
+
+      if ( !checkType(obj, '!object|function') ) {
+        errorMessage = 'A freezeObj call received an invalid obj parameter.';
+        throw new TypeError(errorMessage);
+        return;
+      }
+
+      if ( !checkType(deep, 'boolean') ) {
+        deep = false;
+      }
+
+      if (deep) {
+        deepFreeze(obj);
+      }
+      else {
+        Object.freeze(obj);
+      }
+
+      return obj;
+    };
+  })();
 
   /**
    * ---------------------------------------------------
