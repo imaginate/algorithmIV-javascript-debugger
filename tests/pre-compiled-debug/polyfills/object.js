@@ -8,7 +8,7 @@
      * @param {!(Object|function)} obj
      * @return {strings}
      */
-    Object.keys = (function() {
+    Object.keys = (function fixMissingObjectKeys() {
       "use strict";
 
       /** @type {Object} */
@@ -30,24 +30,23 @@
         'constructor'
       ];
 
-      return function(obj) {
+      return function fakeObjectKeys(obj) {
 
-        if (typeof obj !== 'object' && typeof obj !== 'function') {
-          throw new TypeError('Object.keys only accepts objects.');
-          return;
-        }
-
-        if (obj === null) {
-          throw new TypeError('Object.keys does not accept null types.');
-          return;
-        }
-
+        /** @type {string} */
+        var errorMessage;
         /** @type {string} */
         var prop;
         /** @type {number} */
         var i;
         /** @type {vals} */
         var result;
+
+        if (!obj || (typeof obj !== 'object' && typeof obj !== 'function')) {
+          errorMessage = 'An Object.keys call received an invalid object parameter. ';
+          errorMessage += 'Note: It only accepts non-null objects and functions.';
+          throw new TypeError(errorMessage);
+          return;
+        }
 
         result = [];
 
@@ -81,10 +80,15 @@
      * @param {Object} obj
      * @return {Object}
      */
-    Object.freeze = function(obj) {
+    Object.freeze = function fakeObjectFreeze(obj) {
 
-      if (typeof obj !== 'object' && typeof obj !== 'function') {
-        throw new TypeError('Object.freeze only accepts objects.');
+      /** @type {string} */
+      var errorMessage;
+
+      if (!obj || (typeof obj !== 'object' && typeof obj !== 'function')) {
+        errorMessage = 'An Object.freeze call received an invalid object parameter. ';
+        errorMessage += 'Note: It only accepts non-null objects and functions.';
+        throw new TypeError(errorMessage);
         return;
       }
 
@@ -94,18 +98,18 @@
 
   // Fix Object.freeze function param bug
   try {
-    Object.freeze(function() {});
+    Object.freeze(function testObjectFreezeForBug() {});
   }
   catch (e) {
-    Object.freeze = (function(originalFreeze) {
+    Object.freeze = (function fixObjectFreezeBug(orgObjectFreeze) {
       "use strict";
 
-      return function(obj) {
+      return function newObjectFreeze(obj) {
         if (typeof obj === 'function') {
           return obj;
         }
         else {
-          return originalFreeze(obj);
+          return orgObjectFreeze(obj);
         }
       };
     })(Object.freeze);
