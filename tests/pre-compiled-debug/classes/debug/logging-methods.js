@@ -5,12 +5,12 @@
    * @desc Used to log the start of a method, check for incorrect argument
    *   data types, and insert any automated actions.
    * @param {!(string|vals)} methodName - The name of the method or an array
-   *   of all the parameters for this method in correct order.
+   *   of all the parameters for this method (in the correct order).
    * @param {...val=} val - Each argument passed to the method.
    * @param {...string=} type -  Each passed argument's data type. To review
    *   the input options available
    *   [see the checkType helper method]{@link checkType}.
-   * @return {boolean} Whether the method made a log or not.
+   * @return {boolean} Whether the method made two logs or not.
    * @example
    *   // Create an aIV.console class instance
    *   Example.prototype.constructor = function Example() {
@@ -18,12 +18,12 @@
    *   };
    *   
    *   // Calling init with multiple params
-   *   Example.prototype.paramsMethod = function paramsMethod(arg1, arg2) {
+   *   Example.prototype.paramsMethod = function(arg1, arg2) {
    *     this.console.init('paramsMethod', arg1, 'object', arg2, 'number=');
    *   };
    *   
    *   // Calling init with an array
-   *   Example.prototype.arrayMethod = function arrayMethod(arg1, arg2) {
+   *   Example.prototype.arrayMethod = function(arg1, arg2) {
    *     var arr = [ 'arrayMethod', arg1, 'object', arg2, 'number=' ];
    *     this.console.init(arr);
    *   };
@@ -129,14 +129,26 @@
    * -----------------------------------------------------
    * @desc Used to log the start of a method and insert any automated actions.
    * @param {!(string|vals)} methodName - The name of the method or an array
-   *   of all the parameters for this method in correct order.
+   *   of all the parameters for this method (in the correct order).
    * @param {...val=} val - Each argument passed to the method in order of
    *   appearance.
-   * @return {boolean} The log's success (i.e. whether a log was made).
+   * @return {boolean} Whether a log was made.
    * @example
-   *   debug.start('methodName', arg1, arg2);
-   *   // OR
-   *   debug.start([ 'methodName', arg1, arg2 ]);
+   *   // Create an aIV.console class instance
+   *   Example.prototype.constructor = function Example() {
+   *     this.console = aIV.console.create('Example');
+   *   };
+   *   
+   *   // Calling start with multiple params
+   *   Example.prototype.paramsMethod = function(arg1, arg2) {
+   *     this.console.start('paramsMethod', arg1, arg2);
+   *   };
+   *   
+   *   // Calling start with an array
+   *   Example.prototype.arrayMethod = function(arg1, arg2) {
+   *     var arr = [ 'arrayMethod', arg1, arg2 ];
+   *     this.console.start(arr);
+   *   };
    */
   Debug.prototype.start = function(methodName) {
 
@@ -208,13 +220,25 @@
    * -----------------------------------------------------
    * @desc Used to log the end of a method and insert any automated actions.
    * @param {!(string|vals)} methodName - The name of the method or an array
-   *   of all the parameters for this method in correct order.
+   *   of all the parameters for this method (in the correct order).
    * @param {val=} returnVal - The return value for the method.
-   * @return {boolean} The log's success (i.e. whether a log was made).
+   * @return {boolean} Whether a log was made.
    * @example
-   *   debug.end('methodName', returnVal);
-   *   // OR
-   *   debug.end([ 'methodName', returnVal ]);
+   *   // Create an aIV.console class instance
+   *   Example.prototype.constructor = function Example() {
+   *     this.console = aIV.console.create('Example');
+   *   };
+   *   
+   *   // Calling end with multiple params
+   *   Example.prototype.paramsMethod = function() {
+   *     this.console.end('paramsMethod', returnVal);
+   *   };
+   *   
+   *   // Calling end with an array
+   *   Example.prototype.arrayMethod = function() {
+   *     var arr = [ 'arrayMethod', returnVal ];
+   *     this.console.end(arr);
+   *   };
    */
   Debug.prototype.end = function(methodName, returnVal) {
 
@@ -272,18 +296,30 @@
    * -----------------------------------------------------
    * Public Method (Debug.prototype.args)
    * -----------------------------------------------------
-   * @desc Used to catch undesired parameter/argument data types.
+   * @desc Used to catch undesired argument data types.
    * @param {!(string|vals)} methodName - The name of the method or an array
-   *   with all the parameters for this method (in correct order).
+   *   with all the parameters for this method (in the correct order).
    * @param {...val=} val - Each argument passed to the method.
-   * @param {...string=} type -  Each passed parameter's data type. To review
+   * @param {...string=} type -  Each argument's data type. To review
    *   the input options available
    *   [see the checkType helper method]{@link checkType}.
-   * @return {boolean} The log's success (i.e. whether a log was made).
+   * @return {boolean} Whether a log was made.
    * @example
-   *   debug.args('methodName', arg1, 'object', arg2, 'number');
-   *   // OR
-   *   debug.args([ 'methodName', arg1, 'object', arg2, 'number' ]);
+   *   // Create an aIV.console class instance
+   *   Example.prototype.constructor = function Example() {
+   *     this.console = aIV.console.create('Example');
+   *   };
+   *   
+   *   // Calling args with multiple params
+   *   Example.prototype.paramsMethod = function(arg1, arg2) {
+   *     this.console.args('paramsMethod', arg1, 'object', arg2, 'number=');
+   *   };
+   *   
+   *   // Calling args with an array
+   *   Example.prototype.arrayMethod = function(arg1, arg2) {
+   *     var arr = [ 'arrayMethod', arg1, 'object', arg2, 'number=' ];
+   *     this.console.args(arr);
+   *   };
    */
   Debug.prototype.args = function(methodName) {
 
@@ -373,25 +409,40 @@
    * @param {...val=} val - Any values to include in the error message.
    * @return {boolean} The log's success (i.e. whether a log was made).
    * @example
-   *   // A function that tests the value of testVar
-   *   var testFunc = (function(testVar) {
-   *     return function() {
-   *       return (testVar === 1);
-   *     };
-   *   })(testVar);
-   *   // The message to include
-   *   var errorMsg = 'Your error message var1 is $$. | var2= $$';
-   *
-   *   debug.fail('methodName', testFunc, errorMsg, var1, var2);
-   *   // OR
-   *   debug.fail([ 'methodName', testFunc, errorMsg, var1, var2 ]);
+   *   // Create an aIV.console class instance
+   *   Example.prototype.constructor = function Example() {
+   *     this.console = aIV.console.create('Example');
+   *   };
+   *   
+   *   Example.prototype.exampleMethod = function() {
+   *     // An important variable
+   *     var exampleVar = 'A random value';
+   *     
+   *     // A function that tests the value of exampleVar
+   *     var testFunc = (function(exampleVar) {
+   *       return function testFunc() {
+   *         return (exampleVar.length > 20);
+   *       };
+   *     })(exampleVar);
+   *     
+   *     // The message to log on an error
+   *     var errorMsg = 'Example error message exampleVar was $$.';
+   *     
+   *     // Calling fail with multiple params and a test function
+   *     this.console.fail('exampleMethod', testFunc, errorMsg, exampleVar);
+   *     
+   *     // A test boolean value for exampleVar
+   *     var testValue = (exampleVar.length > 20);
+   *     
+   *     // Calling fail with an array and a boolean test value
+   *     var arr = [ 'exampleMethod', testValue, errorMsg, exampleVar ];
+   *     this.console.fail(arr);
+   *   };
    */
   Debug.prototype.fail = function(methodName, pass, message) {
 
     /** @type {!vals} */
     var args;
-    /** @type {string} */
-    var msg;
 
     // Setup the variables
     if ( checkType(methodName, '!string|array') ) {
@@ -410,7 +461,7 @@
       }
     }
 
-    // Test the given arguments before executing
+    // Test the method name
     if ( !checkType(methodName, 'string') ) {
       console.error( ErrorMessages.missingMethodName('fail', methodName) );
       if (errorBreakpoints) {
@@ -418,13 +469,10 @@
       }
       return;
     }
+
+    // Test the error message
     if ( !checkType(message, 'string') ) {
-      msg = 'An aIV.debug fail method call was given an incorrect data ';
-      msg += 'type (should be a string) for its third parameter (the user\'s ';
-      msg += 'error message to log upon test failure). The incorrect data ';
-      msg += 'type given for the error message follows: ';
-      msg += (message === null) ? 'null' : typeof message;
-      console.error(msg);
+      console.error( ErrorMessages.missingErrorMessage(message) );
       if (errorBreakpoints) {
         debugger;
       }
@@ -467,7 +515,7 @@
    * -----------------------------------------------------
    * @desc Used to group console messages.
    * @param {(string|vals)} methodName - The name of the method or an array
-   *   of all the parameters for this method (in correct order).
+   *   of all the parameters for this method (in the correct order).
    * @param {string=} groupType - The type of console group method to use. The
    *   options are: 'open'= console.group() | 'coll'= console.groupCollapsed()
    *   | 'end'= console.groupEnd(). The default value is 'open'.
@@ -478,12 +526,29 @@
    * @param {...val=} val - Any values to include in the log message.
    * @return {boolean} The group's success (i.e. whether an action was made).
    * @example
-   *   // The message to include
-   *   var message = 'Lorem ipsem var1 is $$. | var2= $$';
-   *
-   *   debug.group('methodName', 'coll', message, var1, var2);
-   *   // OR
-   *   debug.group([ 'methodName', 'coll', message, var1, var2 ]);
+   *   // Create an aIV.console class instance
+   *   Example.prototype.constructor = function Example() {
+   *     this.console = aIV.console.create('Example');
+   *   };
+   *   
+   *   Example.prototype.exMethod = function() {
+   *     // Important variables
+   *     var exVar1 = 'A random value 1';
+   *     var exVar2 = 'A random value 2';
+   *     
+   *     // The message to log
+   *     var groupMsg = 'Lorem ipsem var1 is $$. | var2= $$';
+   *     
+   *     // Calling open group with multiple params
+   *     this.console.group('exMethod', 'open', groupMsg, exVar1, exVar2);
+   *     
+   *     // Calling collapsed group with an array
+   *     var arr = [ 'exMethod', 'coll', groupMsg, exVar1, exVar2 ];
+   *     this.console.group(arr);
+   *     
+   *     // Calling close group
+   *     this.console.group('exMethod', 'end');
+   *   };
    */
   Debug.prototype.group = function(methodName, groupType, message) {
 
@@ -491,8 +556,6 @@
     var groupTypes;
     /** @type {!vals} */
     var args;
-    /** @type {string} */
-    var msg;
 
     groupTypes = {
       open: 'open',
@@ -528,7 +591,7 @@
       }
     }
 
-    // Test the given arguments before executing
+    // Test the method name
     if ( !checkType(methodName, 'string') ) {
       console.error( ErrorMessages.missingMethodName('group', methodName) );
       if (errorBreakpoints) {
@@ -536,15 +599,10 @@
       }
       return;
     }
-    if (!checkType(groupType, 'string') ||
-        !groupTypes.hasOwnProperty(groupType)) {
-      msg = 'An aIV.debug group method call was given an incorrect value ';
-      msg += "(should be 'open', 'coll', or 'end') for its second ";
-      msg += 'parameter (the console group type to use). The data type ';
-      msg += 'given for the group type was \'';
-      msg += ( (groupType === null) ? 'null' : typeof groupType ) + '\', ';
-      msg += 'and the value converted to a string was \'' + groupType + "'.";
-      console.error(msg);
+
+    // Test the group type
+    if (!checkType(groupType, 'string') || !hasOwnProp(groupTypes, groupType)) {
+      console.error( ErrorMessages.invalidGroupType(groupType) );
       if (errorBreakpoints) {
         debugger;
       }
@@ -557,14 +615,14 @@
     }
 
     // Check for end group type
-    if (openGroup === 'end') {
+    if (groupType === 'end') {
       console.groupEnd();
       return true;
     }
 
     // Prepare the message
     if (message) {
-      if (args) {
+      if (args.length) {
         message = insertSubstituteStrings(message, args);
       }
       message = ' | ' + message;
@@ -575,7 +633,7 @@
     args.unshift(message);
 
     // Open a console group
-    if (openGroup === 'coll') {
+    if (groupType === 'coll') {
       console.groupCollapsed.apply(console, args);
     }
     else {
