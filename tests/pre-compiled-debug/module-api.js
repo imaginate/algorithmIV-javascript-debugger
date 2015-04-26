@@ -201,9 +201,7 @@
 
     if ( !checkType(settings, '!object') ) {
       console.error( ErrorMessages.setConsoleTypeError(settings) );
-      if (errorBreakpoints) {
-        debugger;
-      }
+      insertErrorBreakpoint();
       return;
     }
 

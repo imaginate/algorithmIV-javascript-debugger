@@ -217,9 +217,7 @@
 
       if (!checkType(method, 'string') ||  !hasOwnProp(methods, method)) {
         console.error( ErrorMessages.invalidGetName('getMethod', method) );
-        if (errorBreakpoints) {
-          debugger;
-        }
+        insertErrorBreakpoint();
         return;
       }
 
@@ -240,9 +238,7 @@
 
       if (!checkType(method, 'string') || !hasOwnProp(breakpoints, method)) {
         console.error( ErrorMessages.invalidGetName('getBreakpoint', method) );
-        if (errorBreakpoints) {
-          debugger;
-        }
+        insertErrorBreakpoint();
         return;
       }
 
@@ -270,9 +266,7 @@
 
       if (!checkType(prop, 'string') || !hasOwnProp(props, prop)) {
         console.error( ErrorMessages.invalidGetName('getAuto', prop) );
-        if (errorBreakpoints) {
-          debugger;
-        }
+        insertErrorBreakpoint();
         return;
       }
 

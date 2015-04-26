@@ -173,9 +173,7 @@
       errorMsg += 'msg= ' + ( (msg === null) ? 'null' : typeof msg ) + ', ';
       errorMsg += 'vals= ' + ( (vals === null) ? 'null' : typeof vals );
       console.error(errorMsg);
-      if (errorBreakpoints) {
-        debugger;
-      }
+      insertErrorBreakpoint();
       return errorMsg;
     }
 
@@ -221,9 +219,7 @@
       msg = 'A checkType method\'s type was the wrong data type. ';
       msg += 'It should be a string. The given type was a(n) %s.';
       console.error(msg, (typeof type));
-      if (errorBreakpoints) {
-        debugger;
-      }
+      insertErrorBreakpoint();
       return false;
     }
 
@@ -252,9 +248,7 @@
         msg += 'See the docs for acceptable values. ';
         msg += 'The incorrect value was \'%s\'.';
         console.error(msg, type);
-        if (errorBreakpoints) {
-          debugger;
-        }
+        insertErrorBreakpoint();
         return false;
       }
 
