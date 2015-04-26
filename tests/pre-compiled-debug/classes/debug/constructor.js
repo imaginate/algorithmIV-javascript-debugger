@@ -21,7 +21,6 @@
    */
   var Debug = function(settings) {
 
-
     ////////////////////////////////////////////////////////////////////////////
     // Define The Public Properties
     ////////////////////////////////////////////////////////////////////////////
@@ -57,7 +56,6 @@
      */
     this.autoSettings;
 
-
     ////////////////////////////////////////////////////////////////////////////
     // Setup The Public Properties
     ////////////////////////////////////////////////////////////////////////////
@@ -80,12 +78,6 @@
       startFunc: function(label) { console.time(label); },
       endFunc  : function(label) { console.timeEnd(label); }
     };
-
-    Object.freeze(this.autoSettings);
-    Object.freeze(this.autoSettings.groups);
-    Object.freeze(this.autoSettings.profiles);
-    Object.freeze(this.autoSettings.timers);
-
 
     ////////////////////////////////////////////////////////////////////////////
     // Define The Protected Properties
@@ -172,7 +164,6 @@
      */
     var timers;
 
-
     ////////////////////////////////////////////////////////////////////////////
     // Setup The Protected Properties
     ////////////////////////////////////////////////////////////////////////////
@@ -203,7 +194,6 @@
     groups   = settings.turnOnGroups;
     profiles = settings.turnOnProfiles;
     timers   = settings.turnOnTimers;
-
 
     ////////////////////////////////////////////////////////////////////////////
     // Define & Setup The Public Methods
@@ -391,21 +381,12 @@
       props[ prop ](!!val);
     };
 
-    // Freeze all of the public methods
-    Object.freeze(this.getMethod);
-    Object.freeze(this.getBreakpoint);
-    Object.freeze(this.getAuto);
-    Object.freeze(this.setMethod);
-    Object.freeze(this.setBreakpoint);
-    Object.freeze(this.setAuto);
-
-
     ////////////////////////////////////////////////////////////////////////////
     // End Of The Class Setup
     ////////////////////////////////////////////////////////////////////////////
 
-    // Freeze this class instance
-    Object.freeze(this);
+    // Deep freeze this class instance
+    freezeObj(this, true);
   };
 
 ////////////////////////////////////////////////////////////////////////////////
