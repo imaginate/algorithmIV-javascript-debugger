@@ -101,6 +101,7 @@
      *     <li>misc: Logs a custom message and properties.</li>
      *   </ol>
      * @type {{
+     *   init : boolean,
      *   start: boolean,
      *   end  : boolean,
      *   args : boolean,
@@ -119,6 +120,7 @@
      * -----------------------------------------------------
      * @desc Allows disabling of debugger breakpoints for specific methods.
      * @type {{
+     *   init : boolean,
      *   start: boolean,
      *   end  : boolean,
      *   args : boolean,
@@ -172,6 +174,7 @@
     settings.addBreakpoints = settings.addBreakpoints.toLowerCase();
 
     methods = {
+      init :  !/init|all/.test(settings.turnOffMethods),
       start: !/start|all/.test(settings.turnOffMethods),
       end  :   !/end|all/.test(settings.turnOffMethods),
       args :  !/args|all/.test(settings.turnOffMethods),
@@ -182,6 +185,7 @@
     };
 
     breakpoints = {
+      init :  /init|all/.test(settings.addBreakpoints),
       start: /start|all/.test(settings.addBreakpoints),
       end  :   /end|all/.test(settings.addBreakpoints),
       args :  /args|all/.test(settings.addBreakpoints),
@@ -211,13 +215,8 @@
      */
     this.getMethod = function(method) {
 
-      /** @type {string} */
-      var msg;
-
-      if (!checkType(method, 'string') ||  !methods.hasOwnProperty(method)) {
-        msg = 'An aIV.debug getMethod call was given an incorrect method ';
-        msg += 'name. The given incorrect method name was \'' + method + '\'.';
-        console.error(msg);
+      if (!checkType(method, 'string') ||  !hasOwnProp(methods, method)) {
+        console.error( ErrorMessages.invalidGetName('getMethod', method) );
         if (errorBreakpoints) {
           debugger;
         }
@@ -239,13 +238,8 @@
      */
     this.getBreakpoint = function(method) {
 
-      /** @type {string} */
-      var msg;
-
-      if (!checkType(method, 'string') || !breakpoints.hasOwnProperty(method)) {
-        msg = 'An aIV.debug getBreakpoint call was given an incorrect method ';
-        msg += 'name. The given incorrect method name was \'' + method + '\'.';
-        console.error(msg);
+      if (!checkType(method, 'string') || !hasOwnProp(breakpoints, method)) {
+        console.error( ErrorMessages.invalidGetName('getBreakpoint', method) );
         if (errorBreakpoints) {
           debugger;
         }
@@ -267,8 +261,6 @@
 
       /** @type {Object<string, boolean>} */
       var props;
-      /** @type {string} */
-      var msg;
 
       props = {
         groups  : groups,
@@ -276,10 +268,8 @@
         timers  : timers
       };
 
-      if (!checkType(prop, 'string') || !props.hasOwnProperty(prop)) {
-        msg = 'An aIV.debug getAuto call was given an incorrect type name. ';
-        msg += 'The given incorrect type name was \'' + prop + '\'.';
-        console.error(msg);
+      if (!checkType(prop, 'string') || !hasOwnProp(props, prop)) {
+        console.error( ErrorMessages.invalidGetName('getAuto', prop) );
         if (errorBreakpoints) {
           debugger;
         }
@@ -306,13 +296,13 @@
 
       method = method.toLowerCase();
 
-      if (!methods.hasOwnProperty(method) && method !== 'all') {
+      if (!hasOwnProp(methods, method) && method !== 'all') {
         return false;
       }
 
       if (method === 'all') {
         for (method in methods) {
-          if ( methods.hasOwnProperty(method) ) {
+          if ( hasOwnProp(methods, method) ) {
             methods[ method ] = val;
           }
         }
@@ -341,13 +331,13 @@
 
       method = method.toLowerCase();
 
-      if (!breakpoints.hasOwnProperty(method) && method !== 'all') {
+      if (!hasOwnProp(breakpoints, method) && method !== 'all') {
         return false;
       }
 
       if (method === 'all') {
         for (method in breakpoints) {
-          if ( breakpoints.hasOwnProperty(method) ) {
+          if ( hasOwnProp(breakpoints, method) ) {
             breakpoints[ method ] = val;
           }
         }
