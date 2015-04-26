@@ -113,6 +113,38 @@
 
   /**
    * ---------------------------------------------------
+   * Public Method (makeSubstituteStrings)
+   * ---------------------------------------------------
+   * @desc Creates a string of the correct matching substitution strings
+   *   for a console log message.
+   * @param {vals} vals - The values to match.
+   * @return {string} The substitution strings.
+   */
+  function makeSubstituteStrings(vals) {
+
+    /** @type {number} */
+    var i;
+    /** @type {number} */
+    var len;
+    /** @type {string} */
+    var message;
+
+    message = '';
+
+    len = vals.length;
+    i = -1;
+    while (++i < len) {
+      if (i) {
+        message += ', ';
+      }
+      message += getSubstituteString(vals[i]);
+    }
+
+    return message;
+  }
+
+  /**
+   * ---------------------------------------------------
    * Public Method (insertSubstituteStrings)
    * ---------------------------------------------------
    * @desc Inserts the correct substitution strings into a console message.
@@ -316,4 +348,107 @@
 
       return false;
     });
+  }
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (checkTypeStrings)
+   * ---------------------------------------------------
+   * @desc Evaluates argument data type strings.
+   * @param {!vals} args - The arguments to be evaluated.
+   * @return {boolean} The evaluation result.
+   */
+  function checkTypeStrings(args) {
+
+    /** @type {number} */
+    var i;
+    /** @type {boolean} */
+    var pass;
+
+    pass = true;
+
+    i = args.length;
+    while (i--) {
+
+      if (i % 2) {
+        pass = checkType(args[i], 'string');
+      }
+
+      if (!pass) {
+        break;
+      }
+    }
+
+    return pass;
+  }
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (testArgTypes)
+   * ---------------------------------------------------
+   * @desc Evaluates argument data types.
+   * @param {!vals} args - The arguments to be evaluated.
+   * @return {boolean} The evaluation result.
+   */
+  function testArgTypes(args) {
+
+    /** @type {number} */
+    var i;
+    /** @type {boolean} */
+    var pass;
+    /** @type {val} */
+    var arg;
+    /** @type {string} */
+    var dataTypeOpts;
+
+    pass = true;
+
+    i = args.length;
+    while (i--) {
+
+      dataTypeOpts = args[i];
+
+      --i;
+      arg = args[i];
+
+      pass = checkType(arg, dataTypeOpts);
+
+      if (!pass) {
+        break;
+      }
+    }
+
+    return pass;
+  }
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (stripArgTypeStrings)
+   * ---------------------------------------------------
+   * @desc Removes the data type strings from an array of arguments.
+   * @param {!vals} args - The arguments.
+   * @return {!vals} An array of the stripped arguments.
+   */
+  function stripArgTypeStrings(args) {
+
+    /** @type {number} */
+    var i;
+    /** @type {number} */
+    var ii;
+    /** @type {number} */
+    var len;
+    /** @type {!vals} */
+    var newArgs;
+
+    len = args.length / 2;
+    newArgs = new Array(len);
+
+    i = args.length;
+    ii = len;
+    while (ii--) {
+      i = i - 2;
+      newArgs[ii] = args[i];
+    }
+
+    return newArgs;
   }
