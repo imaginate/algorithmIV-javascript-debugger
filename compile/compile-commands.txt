@@ -99,12 +99,18 @@ cp -u tests/pre-compiled-debug/*.js src/pre-compiled-parts
 cp -u tests/pre-compiled-debug/classes/*.js src/pre-compiled-parts/classes
 cp -u tests/pre-compiled-debug/classes/debug/*.js src/pre-compiled-parts/classes/debug
 cp -u tests/pre-compiled-debug/polyfills/*.js src/pre-compiled-parts/polyfills
+cd src/pre-compiled-parts
+sed -i "s / setupThePolyfills//;s / setupThePublicAPI//;s / setupTheDebugModule//" skeleton.js
+rm -f sed*
 
 ## MS-DOS Commands
 copy /y tests\pre-compiled-debug\*.js src\pre-compiled-parts
 copy /y tests\pre-compiled-debug\classes\*.js src\pre-compiled-parts\classes
 copy /y tests\pre-compiled-debug\classes\debug\*.js src\pre-compiled-parts\classes\debug
 copy /y tests\pre-compiled-debug\polyfills\*.js src\pre-compiled-parts\polyfills
+cd src\pre-compiled-parts
+sed -i "s / setupThePolyfills//;s / setupThePublicAPI//;s / setupTheDebugModule//" skeleton.js
+del /f sed*
 
 ----------------------------------------------------------------
 COMPILE SRC                |
