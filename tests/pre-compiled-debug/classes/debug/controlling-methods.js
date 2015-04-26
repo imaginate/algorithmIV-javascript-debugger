@@ -7,14 +7,23 @@
    *   If 'all' is provided then all methods are enabled.
    * @return {boolean} The update's success (if error return false).
    * @example
-   *   debug.turnOnMethod('start', 'state', ...);
-   *   // OR
-   *   debug.turnOnMethod([ 'start', 'state', ... ]);
+   *   // Create an aIV.console class instance
+   *   Example.prototype.constructor = function Example() {
+   *     this.console = aIV.console.create('Example');
+   *   };
+   *   
+   *   Example.prototype.exMethod = function() {
+   *     
+   *     // Calling turnOnMethod with multiple params
+   *     this.console.turnOnMethod('start', 'state');
+   *     
+   *     // Calling turnOnMethod with an array
+   *     var arr = [ 'start', 'state' ];
+   *     this.console.turnOnMethod(arr);
+   *   };
    */
   Debug.prototype.turnOnMethod = function(method) {
 
-    /** @type {string} */
-    var msg;
     /** @type {strings} */
     var args;
     /** @type {number} */
@@ -32,12 +41,9 @@
 
     // Ensure valid arguments are supplied
     if ( !checkType(args, '!strings') ) {
-      msg = 'An aIV.debug turnOnMethod call received invalid arguments.';
-      console.error(msg);
-      if (errorBreakpoints) {
-        debugger;
-      }
-      return false;
+      console.error( ErrorMessages.invalidSetName('turnOnMethod', method) );
+      insertErrorBreakpoint();
+      return;
     }
 
     // Split strings with multiple methods
@@ -61,13 +67,9 @@
 
     // Report any errors
     if (errors) {
-      msg = 'An aIV.debug turnOnMethod call was given invalid method ';
-      msg += 'names to turn on. The incorrect name(s) follow:' + errors;
-      console.error(msg);
-      if (errorBreakpoints) {
-        debugger;
-      }
-      return false;
+      console.error( ErrorMessages.invalidSetName('turnOnMethod', errors) );
+      insertErrorBreakpoint();
+      return;
     }
 
     return true;
@@ -91,14 +93,23 @@
    *   If 'all' is provided then all methods are disabled.
    * @return {boolean} The update's success (if error return false).
    * @example
-   *   debug.turnOffMethod('args', 'fail', ...);
-   *   // OR
-   *   debug.turnOffMethod([ 'args', 'fail', ... ]);
+   *   // Create an aIV.console class instance
+   *   Example.prototype.constructor = function Example() {
+   *     this.console = aIV.console.create('Example');
+   *   };
+   *   
+   *   Example.prototype.exMethod = function() {
+   *     
+   *     // Calling turnOffMethod with multiple params
+   *     this.console.turnOffMethod('args', 'fail');
+   *     
+   *     // Calling turnOffMethod with an array
+   *     var arr = [ 'args', 'fail' ];
+   *     this.console.turnOffMethod(arr);
+   *   };
    */
   Debug.prototype.turnOffMethod = function(method) {
 
-    /** @type {string} */
-    var msg;
     /** @type {strings} */
     var args;
     /** @type {number} */
@@ -116,12 +127,9 @@
 
     // Ensure valid arguments are supplied
     if ( !checkType(args, '!strings') ) {
-      msg = 'An aIV.debug turnOffMethod call received invalid arguments.';
-      console.error(msg);
-      if (errorBreakpoints) {
-        debugger;
-      }
-      return false;
+      console.error( ErrorMessages.invalidSetName('turnOffMethod', method) );
+      insertErrorBreakpoint();
+      return;
     }
 
     // Split strings with multiple methods
@@ -145,13 +153,9 @@
 
     // Report any errors
     if (errors) {
-      msg = 'An aIV.debug turnOffMethod call was given invalid method ';
-      msg += 'names to turn off. The incorrect name(s) follow:' + errors;
-      console.error(msg);
-      if (errorBreakpoints) {
-        debugger;
-      }
-      return false;
+      console.error( ErrorMessages.invalidSetName('turnOffMethod', errors) );
+      insertErrorBreakpoint();
+      return;
     }
 
     return true;
@@ -175,14 +179,23 @@
    *   If 'all' is provided then all methods will add breakpoints.
    * @return {boolean} The update's success (if error return false).
    * @example
-   *   debug.addBreakpoint('args', 'fail', ...);
-   *   // OR
-   *   debug.addBreakpoint([ 'args', 'fail', ... ]);
+   *   // Create an aIV.console class instance
+   *   Example.prototype.constructor = function Example() {
+   *     this.console = aIV.console.create('Example');
+   *   };
+   *   
+   *   Example.prototype.exMethod = function() {
+   *     
+   *     // Calling addBreakpoint with multiple params
+   *     this.console.addBreakpoint('args', 'fail');
+   *     
+   *     // Calling addBreakpoint with an array
+   *     var arr = [ 'args', 'fail' ];
+   *     this.console.addBreakpoint(arr);
+   *   };
    */
   Debug.prototype.addBreakpoint = function(method) {
 
-    /** @type {string} */
-    var msg;
     /** @type {strings} */
     var args;
     /** @type {number} */
@@ -200,12 +213,9 @@
 
     // Ensure valid arguments are supplied
     if ( !checkType(args, '!strings') ) {
-      msg = 'An aIV.debug addBreakpoint call received invalid arguments.';
-      console.error(msg);
-      if (errorBreakpoints) {
-        debugger;
-      }
-      return false;
+      console.error( ErrorMessages.invalidSetName('addBreakpoint', method) );
+      insertErrorBreakpoint();
+      return;
     }
 
     // Split strings with multiple methods
@@ -229,13 +239,9 @@
 
     // Report any errors
     if (errors) {
-      msg = 'An aIV.debug addBreakpoint call was given invalid method ';
-      msg += 'names to enable. The incorrect name(s) follow:' + errors;
-      console.error(msg);
-      if (errorBreakpoints) {
-        debugger;
-      }
-      return false;
+      console.error( ErrorMessages.invalidSetName('addBreakpoint', errors) );
+      insertErrorBreakpoint();
+      return;
     }
 
     return true;
@@ -259,14 +265,23 @@
    *   If 'all' is provided then all methods will not add breakpoints.
    * @return {boolean} The update's success (if error return false).
    * @example
-   *   debug.removeBreakpoint('args', 'fail', ...);
-   *   // OR
-   *   debug.removeBreakpoint([ 'args', 'fail', ... ]);
+   *   // Create an aIV.console class instance
+   *   Example.prototype.constructor = function Example() {
+   *     this.console = aIV.console.create('Example');
+   *   };
+   *   
+   *   Example.prototype.exMethod = function() {
+   *     
+   *     // Calling removeBreakpoint with multiple params
+   *     this.console.removeBreakpoint('start', 'state');
+   *     
+   *     // Calling removeBreakpoint with an array
+   *     var arr = [ 'start', 'state' ];
+   *     this.console.removeBreakpoint(arr);
+   *   };
    */
   Debug.prototype.removeBreakpoint = function(method) {
 
-    /** @type {string} */
-    var msg;
     /** @type {strings} */
     var args;
     /** @type {number} */
@@ -284,12 +299,9 @@
 
     // Ensure valid arguments are supplied
     if ( !checkType(args, '!strings') ) {
-      msg = 'An aIV.debug removeBreakpoint call received invalid arguments.';
-      console.error(msg);
-      if (errorBreakpoints) {
-        debugger;
-      }
-      return false;
+      console.error( ErrorMessages.invalidSetName('removeBreakpoint', method) );
+      insertErrorBreakpoint();
+      return;
     }
 
     // Split strings with multiple methods
@@ -313,13 +325,9 @@
 
     // Report any errors
     if (errors) {
-      msg = 'An aIV.debug removeBreakpoint call was given invalid method ';
-      msg += 'names to remove. The incorrect name(s) follow:' + errors;
-      console.error(msg);
-      if (errorBreakpoints) {
-        debugger;
-      }
-      return false;
+      console.error( ErrorMessages.invalidSetName('removeBreakpoint', errors) );
+      insertErrorBreakpoint();
+      return;
     }
 
     return true;
