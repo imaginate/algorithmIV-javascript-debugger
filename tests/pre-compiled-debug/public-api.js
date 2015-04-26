@@ -29,14 +29,14 @@
    * @param {string=} settings.className - The same as settings.classTitle.
    * @param {!(string|strings)=} settings.turnOffMethods - Contains the methods
    *   to disable for this Debug instance. The options are 'all', 'none',
-   *   'start', 'end', 'args', 'fail', 'group', 'state', and 'misc'. This
-   *   setting does override the module defaults.
+   *   'init', 'start', 'end', 'args', 'fail', 'group', 'state', and 'misc'.
+   *   This setting does override the module defaults.
    * @param {!(string|strings)=} settings.turnOffTypes - The same as
    *   settings.turnOffMethods. Maintains backward compatibility.
    * @param {!(string|strings)=} settings.addBreakpoints - Contains the methods
    *   to add debugger breakpoints to for this Debug instance. The options are
-   *   'all', 'none', 'start', 'end', 'args', 'fail', 'group', 'state', and
-   *   'misc'. This setting does override the module defaults.
+   *   'all', 'none', 'init', 'start', 'end', 'args', 'fail', 'group', 'state',
+   *   and 'misc'. This setting does override the module defaults.
    * @param {!(string|strings)=} settings.turnOnDebuggers - The same as
    *   settings.addBreakpoints. Maintains backward compatibility.
    * @param {boolean=} settings.turnOnGroups - Enables/disables automatic
