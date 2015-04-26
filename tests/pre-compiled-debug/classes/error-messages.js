@@ -126,4 +126,52 @@
     return message;
   };
 
+  /**
+   * -----------------------------------------------------
+   * Public Method (ErrorMessages.invalidGroupType)
+   * -----------------------------------------------------
+   * @desc Creates an error message for an invalid console group type
+   *   in a Debug logging method.
+   * @param {*} groupType - The invalid group type.
+   * @return {string} The error message.
+   */
+  ErrorMessages.invalidGroupType = function(groupType) {
+
+    /** @type {string} */
+    var message;
+
+    message = 'An aIV.console group call was given an incorrect group ';
+    message += 'type value for its second parameter. The  group\'s data ';
+    message += 'type was \'';
+    message += (groupType === null) ? 'null' : typeof groupType;
+    message += '\',  and its value converted to a string was \'';
+    message += groupType + '\'. It should be either \'open\', \'coll\', ';
+    message += 'or \'end\'.';
+
+    return message;
+  };
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (ErrorMessages.missingErrorMessage)
+   * -----------------------------------------------------
+   * @desc Creates an error message for a missing error message parameter
+   *   in a Debug logging method.
+   * @param {string} logMessage - The log message.
+   * @return {string} The error message.
+   */
+  ErrorMessages.missingErrorMessage = function(logMessage) {
+
+    /** @type {string} */
+    var message;
+
+    message = 'An aIV.console fail call was missing a valid log message ';
+    message += 'parameter (its third parameter). It should be a string ';
+    message += 'of the error message to log upon test failure. The ';
+    message += 'invalid message parameter\'s data type follows: ';
+    message += (logMessage === null) ? 'null' : typeof logMessage;
+
+    return message;
+  };
+
   freezeObj(ErrorMessages, true);
