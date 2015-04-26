@@ -168,8 +168,55 @@
     message = 'An aIV.console fail call was missing a valid log message ';
     message += 'parameter (its third parameter). It should be a string ';
     message += 'of the error message to log upon test failure. The ';
-    message += 'invalid message parameter\'s data type follows: ';
+    message += 'invalid message\'s data type was \'';
     message += (logMessage === null) ? 'null' : typeof logMessage;
+    message += '\'';
+
+    return message;
+  };
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (ErrorMessages.missingStateValues)
+   * -----------------------------------------------------
+   * @desc Creates an error message for missing values in a Debug.proto.state
+   *   call.
+   * @return {string} The error message.
+   */
+  ErrorMessages.missingStateValues = function() {
+
+    /** @type {string} */
+    var message;
+
+    message = 'An aIV.console state call was missing a state to log. After ';
+    message += 'the first parameter (the method name), the second parameter ';
+    message += 'should be a log message with $$ in the places where you would ';
+    message += 'like the variable states to be inserted. The remaining ';
+    message += 'parameters should be the variables to capture.';
+
+    return message;
+  };
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (ErrorMessages.missingLogMessage)
+   * -----------------------------------------------------
+   * @desc Creates an error message for a missing log message parameter
+   *   in a Debug logging method.
+   * @param {string} logMessage - The log message.
+   * @return {string} The error message.
+   */
+  ErrorMessages.missingLogMessage = function(logMessage) {
+
+    /** @type {string} */
+    var message;
+
+    message = 'An aIV.console misc call was missing a valid log message ';
+    message += 'parameter (its second parameter). It should be a string ';
+    message += 'of the message to log. The invalid message\'s data type ';
+    message += 'was \'';
+    message += (logMessage === null) ? 'null' : typeof logMessage;
+    message += '\'';
 
     return message;
   };
