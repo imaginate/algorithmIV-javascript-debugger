@@ -10,30 +10,6 @@
 
   /**
    * -----------------------------------------------------
-   * Public Method (ErrorMessages.missingMethodName)
-   * -----------------------------------------------------
-   * @desc Creates an error message for a missing method name
-   *   parameter in a Debug logging method.
-   * @param {string} method - The name of the method that failed.
-   * @param {string} methodName - The user's method name parameter.
-   * @return {string} The error message.
-   */
-  ErrorMessages.missingMethodName = function(method, methodName) {
-
-    /** @type {string} */
-    var message;
-
-    message = 'An aIV.console ' + method + ' call was missing a valid method ';
-    message += 'name parameter (the first parameter). It should be a string ';
-    message += 'of the method\'s name that ' + method + ' is recording. The ';
-    message += 'invalid method name parameter\'s data type follows: ';
-    message += (methodName === null) ? 'null' : typeof methodName;
-
-    return message;
-  };
-
-  /**
-   * -----------------------------------------------------
    * Public Method (ErrorMessages.setConsoleTypeError)
    * -----------------------------------------------------
    * @desc Creates an error message for a param type error in aIV.console.set.
@@ -52,6 +28,53 @@
     message += '=> value). The invalid settings data type was \'';
     message += (settings === null) ? 'null' : typeof settings;
     message += '\'';
+
+    return message;
+  };
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (ErrorMessages.invalidGetName)
+   * -----------------------------------------------------
+   * @desc Creates an error message for an invalid method/type name
+   *   parameter in a Debug get method.
+   * @param {string} method - The name of the method that failed.
+   * @param {string} name - The user's method/type name parameter.
+   * @return {string} The error message.
+   */
+  ErrorMessages.invalidGetName = function(method, name) {
+
+    /** @type {string} */
+    var message;
+
+    message = 'An aIV.console ' + method + ' call was missing a valid method ';
+    message += 'or type name parameter (the first parameter). It should be a ';
+    message += 'string of the method/type name that ' + method + ' is to get. ';
+    message += 'The invalid name was \'' + name + '\'.';
+
+    return message;
+  };
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (ErrorMessages.missingMethodName)
+   * -----------------------------------------------------
+   * @desc Creates an error message for a missing method name
+   *   parameter in a Debug logging method.
+   * @param {string} method - The name of the method that failed.
+   * @param {string} methodName - The user's method name parameter.
+   * @return {string} The error message.
+   */
+  ErrorMessages.missingMethodName = function(method, methodName) {
+
+    /** @type {string} */
+    var message;
+
+    message = 'An aIV.console ' + method + ' call was missing a valid method ';
+    message += 'name parameter (the first parameter). It should be a string ';
+    message += 'of the method\'s name that ' + method + ' is recording. The ';
+    message += 'invalid method name parameter\'s data type follows: ';
+    message += (methodName === null) ? 'null' : typeof methodName;
 
     return message;
   };
