@@ -1,6 +1,6 @@
   /**
    * ---------------------------------------------------
-   * Global Variable (aIV)
+   * Global Object (aIV)
    * ---------------------------------------------------
    * @desc Holds the public API for aIV's apps, tools, and libraries.
    * @struct
@@ -10,7 +10,17 @@
 
   /**
    * ---------------------------------------------------
-   * Global Method (aIV.debug)
+   * Global Object (aIV.console)
+   * ---------------------------------------------------
+   * @desc Holds the public API for aIV's console.
+   * @struct
+   * @global
+   */
+  aIV.console = debugModuleAPI.console;
+
+  /**
+   * ---------------------------------------------------
+   * Global Method (aIV.console.create)
    * ---------------------------------------------------
    * @desc Creates or retrieves an instance of aIV's Debug class.
    * @param {?(string|Object)=} settings - A string of the Debug instance's
@@ -22,13 +32,13 @@
    *   'start', 'end', 'args', 'fail', 'group', 'state', and 'misc'. This
    *   setting does override the module defaults.
    * @param {!(string|strings)=} settings.turnOffTypes - The same as
-   *   settings.turnOffMethods.
+   *   settings.turnOffMethods. Maintains backward compatibility.
    * @param {!(string|strings)=} settings.addBreakpoints - Contains the methods
    *   to add debugger breakpoints to for this Debug instance. The options are
    *   'all', 'none', 'start', 'end', 'args', 'fail', 'group', 'state', and
    *   'misc'. This setting does override the module defaults.
    * @param {!(string|strings)=} settings.turnOnDebuggers - The same as
-   *   settings.addBreakpoints.
+   *   settings.addBreakpoints. Maintains backward compatibility.
    * @param {boolean=} settings.turnOnGroups - Enables/disables automatic
    *   grouping of all logs, timers, and profiles between every start and end
    *   method for this Debug instance.
@@ -41,11 +51,11 @@
    * @return {Debug} A new or existing Debug object.
    * @global
    */
-  aIV.debug = debugModuleAPI.init;
+  aIV.console.create = debugModuleAPI.init;
 
   /**
    * ---------------------------------------------------
-   * Global Method (aIV.debug.set)
+   * Global Method (aIV.console.set)
    * ---------------------------------------------------
    * @desc Allows you to configure the default settings for each new Debug class
    *   instance and enable/disable inserted breakpoints for user errors that
@@ -64,12 +74,12 @@
    * @param {!(string|strings)=} settings.turnOffMethods - The default methods
    *   to disable for all new Debug instances created after this call.
    * @param {!(string|strings)=} settings.turnOffTypes - The same as
-   *   settings.turnOffMethods.
+   *   settings.turnOffMethods. Maintains backward compatibility.
    * @param {!(string|strings)=} settings.addBreakpoints - The default
    *   methods to add debugger breakpoints to for all new Debug instances
    *   created after this call.
    * @param {!(string|strings)=} settings.turnOnDebuggers - The same as
-   *   settings.addBreakpoints.
+   *   settings.addBreakpoints. Maintains backward compatibility.
    * @param {boolean=} settings.turnOnGroups - The default setting for automatic
    *   grouping of all logs, timers, and profiles between every start and end
    *   method.
@@ -83,13 +93,25 @@
    *   [see Google's Console API Reference]{@link https://developer.chrome.com/devtools/docs/console-api#consolelogobject-object}.
    * @global
    */
-  aIV.debug.set = debugModuleAPI.set;
+  aIV.console.set = debugModuleAPI.set;
+
+  /**
+   * ---------------------------------------------------
+   * Global Method (aIV.debug)
+   * ---------------------------------------------------
+   * @desc The same as {@link aIV.console.create}. Maintains backward
+   *   compatibility.
+   * @type {function(!Object)}
+   * @global
+   */
+  aIV.debug = debugModuleAPI.init;
 
   /**
    * ---------------------------------------------------
    * Global Method (aIV.debug.setConfig)
    * ---------------------------------------------------
-   * @desc The same as {@link aIV.debug.set}.
+   * @desc The same as {@link aIV.console.set}. Maintains backward
+   *   compatibility.
    * @type {function(!Object)}
    * @global
    */
