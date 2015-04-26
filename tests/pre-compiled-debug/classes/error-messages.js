@@ -221,4 +221,27 @@
     return message;
   };
 
+  /**
+   * -----------------------------------------------------
+   * Public Method (ErrorMessages.invalidSetName)
+   * -----------------------------------------------------
+   * @desc Creates an error message for an invalid method/type name
+   *   parameter in a Debug controlling method.
+   * @param {string} method - The name of the method that failed.
+   * @param {*} name - The user's method/type name parameter.
+   * @return {string} The error message.
+   */
+  ErrorMessages.invalidSetName = function(method, name) {
+
+    /** @type {string} */
+    var message;
+
+    message = 'An aIV.console ' + method + ' call was missing a valid method ';
+    message += 'or type name parameter. It should be either a string or array ';
+    message += 'of strings of the method/type name that ' + method + ' is to ';
+    message += 'update. The invalid names follow: ' + name;
+
+    return message;
+  };
+
   freezeObj(ErrorMessages, true);
