@@ -73,15 +73,11 @@
 
     // Test the method name before executing
     if ( !checkType(methodName, 'string') ) {
-      message = 'An aIV.debug start method call was given an incorrect data ';
-      message += 'type for its method name param (should be a string). The ';
-      message += 'given incorrect data type for the method name follows: ';
-      message += (methodName === null) ? 'null' : typeof methodName;
-      console.error(message);
+      console.error( ErrorMessages.missingMethodName('start', methodName) );
       if (errorBreakpoints) {
         debugger;
       }
-      return false;
+      return;
     }
 
     // Check whether this method has been turned off
@@ -154,15 +150,11 @@
 
     // Test the method name before executing
     if ( !checkType(methodName, 'string') ) {
-      message = 'An aIV.debug end method call was given an incorrect data ';
-      message += 'type for its method name param (should be a string). The ';
-      message += 'given incorrect data type for the method name follows: ';
-      message += (methodName === null) ? 'null' : typeof methodName;
-      console.error(message);
+      console.error( ErrorMessages.missingMethodName('end', methodName) );
       if (errorBreakpoints) {
         debugger;
       }
-      return false;
+      return;
     }
 
     // Check whether this method has been turned off
@@ -242,16 +234,11 @@
 
     // Test the given arguments before executing
     if ( !checkType(methodName, 'string') ) {
-      message = 'An aIV.debug args method call was given an incorrect data ';
-      message += 'type (should be a string) for its first parameter (the name ';
-      message += 'of the user\'s method arguments being tested). The ';
-      message += 'incorrect data type given for the method name follows: ';
-      message += (methodName === null) ? 'null' : typeof methodName;
-      console.error(message);
+      console.error( ErrorMessages.missingMethodName('args', methodName) );
       if (errorBreakpoints) {
         debugger;
       }
-      return false;
+      return;
     }
     if (args.length < 2) {
       message = 'An aIV.debug args method call was missing arguments to test. ';
@@ -375,16 +362,11 @@
 
     // Test the given arguments before executing
     if ( !checkType(methodName, 'string') ) {
-      msg = 'An aIV.debug fail method call was given an incorrect data ';
-      msg += 'type (should be a string) for its first parameter (the name ';
-      msg += 'of the user\'s method to log). The incorrect data type ';
-      msg += 'given for the method name follows: ';
-      msg += (methodName === null) ? 'null' : typeof methodName;
-      console.error(msg);
+      console.error( ErrorMessages.missingMethodName('fail', methodName) );
       if (errorBreakpoints) {
         debugger;
       }
-      return false;
+      return;
     }
     if ( !checkType(message, 'string') ) {
       msg = 'An aIV.debug fail method call was given an incorrect data ';
@@ -498,16 +480,11 @@
 
     // Test the given arguments before executing
     if ( !checkType(methodName, 'string') ) {
-      msg = 'An aIV.debug group method call was given an incorrect data ';
-      msg += 'type (should be a string) for its first parameter (the name ';
-      msg += 'of the user\'s method to log). The incorrect data type ';
-      msg += 'given for the method name follows: ';
-      msg += (methodName === null) ? 'null' : typeof methodName;
-      console.error(msg);
+      console.error( ErrorMessages.missingMethodName('group', methodName) );
       if (errorBreakpoints) {
         debugger;
       }
-      return false;
+      return;
     }
     if (!checkType(groupType, 'string') ||
         !groupTypes.hasOwnProperty(groupType)) {
@@ -612,16 +589,11 @@
 
     // Test the given arguments before executing
     if ( !checkType(methodName, 'string') ) {
-      msg = 'An aIV.debug state method call was given an incorrect data ';
-      msg += 'type (should be a string) for its first parameter (the name ';
-      msg += 'of the user\'s method to log). The incorrect data type ';
-      msg += 'given for the method name follows: ';
-      msg += (methodName === null) ? 'null' : typeof methodName;
-      console.error(msg);
+      console.error( ErrorMessages.missingMethodName('state', methodName) );
       if (errorBreakpoints) {
         debugger;
       }
-      return false;
+      return;
     }
     if (!args.length) {
       msg = 'An aIV.debug state method call was missing a state to log. ';
@@ -710,16 +682,11 @@
 
     // Test the given arguments before executing
     if ( !checkType(methodName, 'string') ) {
-      msg = 'An aIV.debug misc method call was given an incorrect data ';
-      msg += 'type (should be a string) for its first parameter (the name ';
-      msg += 'of the user\'s method to log). The incorrect data type ';
-      msg += 'given for the method name follows: ';
-      msg += (methodName === null) ? 'null' : typeof methodName;
-      console.error(msg);
+      console.error( ErrorMessages.missingMethodName('misc', methodName) );
       if (errorBreakpoints) {
         debugger;
       }
-      return false;
+      return;
     }
     if (!message && !args.length) {
       msg = 'An aIV.debug misc method call was missing a message to log. ';
