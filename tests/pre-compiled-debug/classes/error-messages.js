@@ -79,4 +79,27 @@
     return message;
   };
 
+  /**
+   * -----------------------------------------------------
+   * Public Method (ErrorMessages.missingTypeStrings)
+   * -----------------------------------------------------
+   * @desc Creates an error message for missing type string parameters
+   *   in a Debug logging method.
+   * @param {string} method - The name of the method that failed.
+   * @return {string} The error message.
+   */
+  ErrorMessages.missingTypeStrings = function(method) {
+
+    /** @type {string} */
+    var message;
+
+    message = 'An aIV.console ' + method + ' call was missing valid data ';
+    message += 'type strings to use for testing arguments. For all arguments ';
+    message += 'you should include a string of each argument\'s possible data ';
+    message += 'types (e.g. \'!string|object\') as a parameter immediately ';
+    message += 'following the argument parameter.';
+
+    return message;
+  };
+
   freezeObj(ErrorMessages, true);
