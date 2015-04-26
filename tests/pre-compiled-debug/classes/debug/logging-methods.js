@@ -407,7 +407,7 @@
    *   (e.g. This string, '... numberVar is $$ and  objectVar is $$', will
    *   be automatically converted to '... numberVar is %i, objectVar is %O').
    * @param {...val=} val - Any values to include in the error message.
-   * @return {boolean} The log's success (i.e. whether a log was made).
+   * @return {boolean} Whether a log was made.
    * @example
    *   // Create an aIV.console class instance
    *   Example.prototype.constructor = function Example() {
@@ -490,7 +490,7 @@
     }
 
     // Prepare the message
-    if (args) {
+    if (args.length) {
       message = insertSubstituteStrings(message, args);
     }
     message = 'FAIL: ' + this.classTitle + methodName + '() | ' + message;
@@ -524,7 +524,8 @@
    *   (e.g. This string, '... numberVar is $$ and  objectVar is $$', will
    *   be automatically converted to '... numberVar is %i, objectVar is %O').
    * @param {...val=} val - Any values to include in the log message.
-   * @return {boolean} The group's success (i.e. whether an action was made).
+   * @return {boolean} Whether a group was opened/closed or not (i.e. action
+   *   vs no action).
    * @example
    *   // Create an aIV.console class instance
    *   Example.prototype.constructor = function Example() {
@@ -537,7 +538,7 @@
    *     var exVar2 = 'A random value 2';
    *     
    *     // The message to log
-   *     var groupMsg = 'Lorem ipsem var1 is $$. | var2= $$';
+   *     var groupMsg = 'Lorem ipsem exVar1 is $$. | exVar2= $$';
    *     
    *     // Calling open group with multiple params
    *     this.console.group('exMethod', 'open', groupMsg, exVar1, exVar2);
@@ -606,7 +607,7 @@
       if (errorBreakpoints) {
         debugger;
       }
-      return false;
+      return;
     }
 
     // Check whether this method has been turned off
@@ -654,27 +655,39 @@
    * -----------------------------------------------------
    * @desc Used to log the state of a variable or property.
    * @param {!(string|vals)} methodName - The name of the method or an array
-   *   of all the parameters for this method (in correct order).
+   *   of all the parameters for this method (in the correct order).
    * @param {string=} message - A log message that shares a state. Use two
    *   consecutive dollar signs to include variable values in the message
    *   (e.g. This string, '... numberVar is $$ and  objectVar is $$', will
    *   be automatically converted to '... numberVar is %i, objectVar is %O').
-   * @param {...val=} val - The current value of a variable to log.
-   * @return {boolean} The log's success (i.e. whether a log was made).
+   * @param {...val=} val - The value's state to log.
+   * @return {boolean} Whether a log was made.
    * @example
-   *   // The message to include
-   *   var message = 'Lorem ipsem var1 is $$ and var2= $$';
-   *
-   *   debug.state('methodName', message, var1, var2);
-   *   // OR
-   *   debug.state([ 'methodName', message, var1, var2 ]);
+   *   // Create an aIV.console class instance
+   *   Example.prototype.constructor = function Example() {
+   *     this.console = aIV.console.create('Example');
+   *   };
+   *   
+   *   Example.prototype.exMethod = function() {
+   *     // Important variables
+   *     var exVar1 = 'A random value 1';
+   *     var exVar2 = 'A random value 2';
+   *     
+   *     // The message to log
+   *     var stateMsg = 'Lorem ipsem exVar1 is $$ and exVar2= $$.';
+   *     
+   *     // Calling state with multiple params
+   *     this.console.state('exMethod', stateMsg, exVar1, exVar2);
+   *     
+   *     // Calling state with an array
+   *     var arr = [ 'exMethod', stateMsg, exVar1, exVar2 ];
+   *     this.console.state(arr);
+   *   };
    */
   Debug.prototype.state = function(methodName, message) {
 
     /** @type {!vals} */
     var args;
-    /** @type {string} */
-    var msg;
 
     // Setup the variables
     if ( checkType(methodName, '!string|array') ) {
@@ -695,7 +708,7 @@
       }
     }
 
-    // Test the given arguments before executing
+    // Test the method name
     if ( !checkType(methodName, 'string') ) {
       console.error( ErrorMessages.missingMethodName('state', methodName) );
       if (errorBreakpoints) {
@@ -703,19 +716,14 @@
       }
       return;
     }
+
+    // Test the remaining arguments
     if (!args.length) {
-      msg = 'An aIV.debug state method call was missing a state to log. ';
-      msg += 'The state method requires that at least one variable state ';
-      msg += 'be recorded. After the first parameter (the method name), the ';
-      msg += 'second parameter should be the log message with $$ in the ';
-      msg += 'places where you would like the variable states to be placed. The ';
-      msg += 'third parameter should be a variable state you would like to ';
-      msg += 'record. You can record as many variables as you like.';
-      console.error(msg);
+      console.error( ErrorMessages.missingStateValues() );
       if (errorBreakpoints) {
         debugger;
       }
-      return false;
+      return;
     }
 
     // Check whether this method has been turned off
@@ -723,11 +731,9 @@
       return false;
     }
 
-    // Prepare the message
+    // Prepare the message and arguments
     message = insertSubstituteStrings(message, args);
     message = 'STATE: ' + this.classTitle + methodName + '() | ' + message;
-
-    // Prepare the log's arguments
     args.unshift(message);
 
     // Log the state
@@ -747,27 +753,39 @@
    * -----------------------------------------------------
    * @desc Used to make a custom console log.
    * @param {!(string|vals)} methodName - The name of the method or an
-   *   array of all the parameters (in correct order).
-   * @param {string=} message - The misc log message. Use two consecutive
+   *   array of all the parameters (in the correct order).
+   * @param {string=} message - The log message. Use two consecutive
    *   dollar signs to include variable values in the message (e.g. This
    *   string, '... numberVar is $$ and  objectVar is $$', will be
    *   automatically converted to '... numberVar is %i, objectVar is %O').
    * @param {...val=} val - Any values to include in the log.
-   * @return {boolean} The log's success (i.e. whether a log was made).
+   * @return {boolean} Whether a log was made.
    * @example
-   *   // The message to include
-   *   var message = 'Lorem ipsem. | var1= $$, var2= $$';
-   *
-   *   debug.misc('methodName', message, var1, var2);
-   *   // OR
-   *   debug.misc([ 'methodName', message, var1, var2 ]);
+   *   // Create an aIV.console class instance
+   *   Example.prototype.constructor = function Example() {
+   *     this.console = aIV.console.create('Example');
+   *   };
+   *   
+   *   Example.prototype.exMethod = function() {
+   *     // Important variables
+   *     var exVar1 = 'A random value 1';
+   *     var exVar2 = 'A random value 2';
+   *     
+   *     // The message to log
+   *     var miscMsg = 'Lorem ipsem | exVar1= $$, exVar2= $$';
+   *     
+   *     // Calling misc with multiple params
+   *     this.console.misc('exMethod', miscMsg, exVar1, exVar2);
+   *     
+   *     // Calling misc with an array
+   *     var arr = [ 'exMethod', miscMsg, exVar1, exVar2 ];
+   *     this.console.misc(arr);
+   *   };
    */
   Debug.prototype.misc = function(methodName, message) {
 
     /** @type {!vals} */
     var args;
-    /** @type {string} */
-    var msg;
 
     // Setup the variables
     if ( checkType(methodName, '!string|array') ) {
@@ -788,7 +806,7 @@
       }
     }
 
-    // Test the given arguments before executing
+    // Test the method name
     if ( !checkType(methodName, 'string') ) {
       console.error( ErrorMessages.missingMethodName('misc', methodName) );
       if (errorBreakpoints) {
@@ -796,18 +814,14 @@
       }
       return;
     }
+
+    // Test the log message
     if (!message && !args.length) {
-      msg = 'An aIV.debug misc method call was missing a message to log. ';
-      msg += 'The misc method requires that a message be supplied. After ';
-      msg += 'the first parameter (the method name), the second parameter ';
-      msg += 'should be the log message with $$ in the places where you ';
-      msg += 'would like to add any variable states. The following ';
-      msg += 'parameters are optional variable states to include.';
-      console.error(msg);
+      console.error( ErrorMessages.missingLogMessage(message) );
       if (errorBreakpoints) {
         debugger;
       }
-      return false;
+      return;
     }
 
     // Check whether this method has been turned off
@@ -815,14 +829,14 @@
       return false;
     }
 
-    // Prepare the message
-    if (args) {
+    // Prepare the message and arguments
+    if (args.length) {
       message = insertSubstituteStrings(message, args);
     }
     message = 'MISC: ' + this.classTitle + methodName + '() | ' + message;
+    args.unshift(message);
 
     // Log the misc message
-    args.unshift(message);
     console.log.apply(console, args);
 
     // Insert a debugger breakpoint
