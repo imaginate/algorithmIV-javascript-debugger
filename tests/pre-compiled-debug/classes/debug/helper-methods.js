@@ -1,5 +1,39 @@
   /**
    * -----------------------------------------------------
+   * Public Method (Debug.prototype.insertBreakpoint)
+   * -----------------------------------------------------
+   * @desc Handles whether a debugger breakpoint is inserted for every
+   *   logging method.
+   * @param {string} method - The name of the method to insert for.
+   * @return {boolean} Whether a breakpoint was inserted.
+   */
+  Debug.prototype.insertBreakpoint = function(method) {
+
+    /** @type {number} */
+    var i;
+    /** @type {boolean} */
+    var pass;
+    /** @type {strings} */
+    var methods;
+
+    methods = ( space.test(method) ) ? method.split(' ') : [ method ];
+    pass = false;
+
+    i = methods.length;
+    while (i--) {
+      method = methods[i];
+      pass = this.getBreakpoint(method);
+      if (pass) {
+        debugger;
+        break;
+      }
+    }
+
+    return pass;
+  };
+
+  /**
+   * -----------------------------------------------------
    * Public Method (Debug.prototype.handleAuto)
    * -----------------------------------------------------
    * @desc Handles the automated actions for a logging method.

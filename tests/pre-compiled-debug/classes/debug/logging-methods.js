@@ -55,9 +55,7 @@
     // Test the method name
     if ( !checkType(methodName, 'string') ) {
       console.error( ErrorMessages.missingMethodName('init', methodName) );
-      if (errorBreakpoints) {
-        debugger;
-      }
+      insertErrorBreakpoint();
       return;
     }
 
@@ -68,9 +66,7 @@
     if (len) {
       if ((len % 2) || !checkTypeStrings(args)) {
         console.error( ErrorMessages.missingTypeStrings('init') );
-        if (errorBreakpoints) {
-          debugger;
-        }
+        insertErrorBreakpoint();
         return;
       }
     }
@@ -94,10 +90,7 @@
       message = 'ARGS: ' + this.classTitle + methodName + '() | ';
       message += 'Error: Incorrect argument data type.';
       console.error(message);
-
-      if (this.getBreakpoint('init') || this.getBreakpoint('args')) {
-        debugger;
-      }
+      this.insertBreakpoint('init args');
     }
 
     // Remove the data type strings
@@ -112,9 +105,7 @@
     console.log.apply(console, args);
 
     // Insert a debugger breakpoint
-    if ( this.getBreakpoint('init') ) {
-      debugger;
-    }
+    this.insertBreakpoint('init');
 
     // Insert auto profiling and timing
     this.handleAuto('profiles', methodName);
@@ -177,9 +168,7 @@
     // Test the method name before executing
     if ( !checkType(methodName, 'string') ) {
       console.error( ErrorMessages.missingMethodName('start', methodName) );
-      if (errorBreakpoints) {
-        debugger;
-      }
+      insertErrorBreakpoint();
       return;
     }
 
@@ -203,9 +192,7 @@
     console.log.apply(console, args);
 
     // Insert a debugger breakpoint
-    if ( this.getBreakpoint('start') ) {
-      debugger;
-    }
+    this.insertBreakpoint('start');
 
     // Insert auto profiling and timing
     this.handleAuto('profiles', methodName);
@@ -256,9 +243,7 @@
     // Test the method name before executing
     if ( !checkType(methodName, 'string') ) {
       console.error( ErrorMessages.missingMethodName('end', methodName) );
-      if (errorBreakpoints) {
-        debugger;
-      }
+      insertErrorBreakpoint();
       return;
     }
 
@@ -281,9 +266,7 @@
     console.log(message, returnVal);
 
     // Insert a debugger breakpoint
-    if ( this.getBreakpoint('end') ) {
-      debugger;
-    }
+    this.insertBreakpoint('end');
 
     // Insert auto profiling and timing
     this.handleAuto('profiles', methodName, true);
@@ -344,27 +327,21 @@
     // Test the method name
     if ( !checkType(methodName, 'string') ) {
       console.error( ErrorMessages.missingMethodName('args', methodName) );
-      if (errorBreakpoints) {
-        debugger;
-      }
+      insertErrorBreakpoint();
       return;
     }
 
     // Test for arguments
     if (args.length < 2) {
       console.error( ErrorMessages.missingTestArgs() );
-      if (errorBreakpoints) {
-        debugger;
-      }
+      insertErrorBreakpoint();
       return;
     }
 
     // Test for each argument's data type string
     if ((args.length % 2) || !checkTypeStrings(args)) {
       console.error( ErrorMessages.missingTypeStrings('args') );
-      if (errorBreakpoints) {
-        debugger;
-      }
+      insertErrorBreakpoint();
       return;
     }
 
@@ -384,9 +361,7 @@
     console.error(message);
 
     // Insert a debugger breakpoint
-    if ( this.getBreakpoint('args') ) {
-      debugger;
-    }
+    this.insertBreakpoint('args');
 
     return true;
   };
@@ -464,18 +439,14 @@
     // Test the method name
     if ( !checkType(methodName, 'string') ) {
       console.error( ErrorMessages.missingMethodName('fail', methodName) );
-      if (errorBreakpoints) {
-        debugger;
-      }
+      insertErrorBreakpoint();
       return;
     }
 
     // Test the error message
     if ( !checkType(message, 'string') ) {
       console.error( ErrorMessages.missingErrorMessage(message) );
-      if (errorBreakpoints) {
-        debugger;
-      }
+      insertErrorBreakpoint();
       return false;
     }
 
@@ -502,9 +473,7 @@
     console.error.apply(console, args);
 
     // Insert a debugger breakpoint
-    if ( this.getBreakpoint('fail') ) {
-      debugger;
-    }
+    this.insertBreakpoint('fail');
 
     return true;
   };
@@ -595,18 +564,14 @@
     // Test the method name
     if ( !checkType(methodName, 'string') ) {
       console.error( ErrorMessages.missingMethodName('group', methodName) );
-      if (errorBreakpoints) {
-        debugger;
-      }
+      insertErrorBreakpoint();
       return;
     }
 
     // Test the group type
     if (!checkType(groupType, 'string') || !hasOwnProp(groupTypes, groupType)) {
       console.error( ErrorMessages.invalidGroupType(groupType) );
-      if (errorBreakpoints) {
-        debugger;
-      }
+      insertErrorBreakpoint();
       return;
     }
 
@@ -642,9 +607,7 @@
     }
 
     // Insert a debugger breakpoint
-    if ( this.getBreakpoint('group') ) {
-      debugger;
-    }
+    this.insertBreakpoint('group');
 
     return true;
   };
@@ -711,18 +674,14 @@
     // Test the method name
     if ( !checkType(methodName, 'string') ) {
       console.error( ErrorMessages.missingMethodName('state', methodName) );
-      if (errorBreakpoints) {
-        debugger;
-      }
+      insertErrorBreakpoint();
       return;
     }
 
     // Test the remaining arguments
     if (!args.length) {
       console.error( ErrorMessages.missingStateValues() );
-      if (errorBreakpoints) {
-        debugger;
-      }
+      insertErrorBreakpoint();
       return;
     }
 
@@ -740,9 +699,7 @@
     console.log.apply(console, args);
 
     // Insert a debugger breakpoint
-    if ( this.getBreakpoint('state') ) {
-      debugger;
-    }
+    this.insertBreakpoint('state');
 
     return true;
   };
@@ -809,18 +766,14 @@
     // Test the method name
     if ( !checkType(methodName, 'string') ) {
       console.error( ErrorMessages.missingMethodName('misc', methodName) );
-      if (errorBreakpoints) {
-        debugger;
-      }
+      insertErrorBreakpoint();
       return;
     }
 
     // Test the log message
     if (!message && !args.length) {
       console.error( ErrorMessages.missingLogMessage(message) );
-      if (errorBreakpoints) {
-        debugger;
-      }
+      insertErrorBreakpoint();
       return;
     }
 
@@ -840,9 +793,7 @@
     console.log.apply(console, args);
 
     // Insert a debugger breakpoint
-    if ( this.getBreakpoint('misc') ) {
-      debugger;
-    }
+    this.insertBreakpoint('misc');
 
     return true;
   };
