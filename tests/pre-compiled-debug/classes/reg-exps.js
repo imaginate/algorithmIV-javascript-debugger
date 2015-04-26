@@ -92,4 +92,13 @@
    */
   RegExps.dualDollarSigns = /([^\\]*?)\$\$/;
 
+  /**
+   * -----------------------------------------------
+   * Public Property (RegExps.space)
+   * -----------------------------------------------
+   * @desc A whitespace.
+   * @type {!RegExp}
+   */
+  RegExps.space = /\s/;
+
   freezeObj(RegExps, true);
