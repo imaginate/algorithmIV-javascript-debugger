@@ -184,9 +184,9 @@
 
       substituteString = getSubstituteString(vals[i]);
 
-      if ( regexps.dualDollarSigns.test(msg) ) {
+      if ( RegExps.dualDollarSigns.test(msg) ) {
         substituteString = '$1' + substituteString;
-        msg = msg.replace(regexps.dualDollarSigns, substituteString);
+        msg = msg.replace(RegExps.dualDollarSigns, substituteString);
       }
       else {
         msg += ' unnamedVar' + i + '= ' + substituteString + ';';
@@ -243,7 +243,7 @@
       cleanType = type.replace(/\!|\=/g, '');
 
       // Ensure a correct type was given
-      if ( !regexps.types.all.test(cleanType) ) {
+      if ( !RegExps.allDataTypes.test(cleanType) ) {
         msg = 'A checkType method\'s type was the wrong value. ';
         msg += 'See the docs for acceptable values. ';
         msg += 'The incorrect value was \'%s\'.';
@@ -269,7 +269,7 @@
         }
 
         // Evaluate array types
-        if ( regexps.types.arrays.test(cleanType) ) {
+        if ( RegExps.arrayDataTypes.test(cleanType) ) {
 
           if ( !Array.isArray(val) ) {
             return false;
@@ -307,12 +307,12 @@
         }
 
         // Evaluate string, number, boolean, object, and function types
-        if ( regexps.types.basic.test(cleanType) ) {
+        if ( RegExps.basicDataTypes.test(cleanType) ) {
           return (typeof val === cleanType);
         }
 
         // Evaluate hash map types
-        if ( regexps.types.maps.test(cleanType) ) {
+        if ( RegExps.mapDataTypes.test(cleanType) ) {
 
           if (typeof val !== 'object') {
             return false;

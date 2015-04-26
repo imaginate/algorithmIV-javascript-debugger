@@ -16,7 +16,9 @@
     /** @type {strings} */
     var methods;
 
-    methods = ( space.test(method) ) ? method.split(' ') : [ method ];
+    methods = ( ( RegExps.space.test(method) ) ?
+      method.split(' ') : [ method ]
+    );
     pass = false;
 
     i = methods.length;
