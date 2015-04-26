@@ -30,6 +30,97 @@
    */
   Debug.prototype.init = function(methodName) {
 
+    /** @type {number} */
+    var len;
+    /** @type {!vals} */
+    var args;
+    /** @type {boolean} */
+    var pass;
+    /** @type {string} */
+    var message;
+
+    // Setup the variables
+    if ( checkType(methodName, '!string|array') ) {
+      if ( checkType(methodName, 'string') ) {
+        args = ( (arguments.length > 1) ?
+          Array.prototype.slice.call(arguments, 1) : []
+        );
+      }
+      else {
+        args = (methodName.length > 1) ? methodName.slice(1) : [];
+        methodName = methodName[0];
+      }
+    }
+
+    // Test the method name
+    if ( !checkType(methodName, 'string') ) {
+      console.error( ErrorMessages.missingMethodName('init', methodName) );
+      if (errorBreakpoints) {
+        debugger;
+      }
+      return;
+    }
+
+    // Save a length reference
+    len = args.length;
+
+    // Test for each argument's data type string
+    if (len) {
+      if ((len % 2) || !checkTypeStrings(args)) {
+        console.error( ErrorMessages.missingTypeStrings('init') );
+        if (errorBreakpoints) {
+          debugger;
+        }
+        return;
+      }
+    }
+
+    // Check whether this method has been turned off
+    if ( !this.getMethod('init') ) {
+      this.handleAuto('groups', methodName);
+      this.handleAuto('profiles', methodName);
+      this.handleAuto('timers', methodName);
+      return false;
+    }
+
+    // Insert auto grouping
+    this.handleAuto('groups', methodName);
+
+    // Test the arguments
+    pass = (len) ? testArgTypes(args) : true;
+
+    // Log an args error message and insert a debugger breakpoint
+    if (!pass) {
+      message = 'ARGS: ' + this.classTitle + methodName + '() | ';
+      message += 'Error: Incorrect argument data type.';
+      console.error(message);
+
+      if (this.getBreakpoint('init') || this.getBreakpoint('args')) {
+        debugger;
+      }
+    }
+
+    // Remove the data type strings
+    args = stripArgTypeStrings(args);
+
+    // Prepare the call log message and arguments
+    message = 'CALL: ' + this.classTitle + methodName;
+    message += '(' + makeSubstituteStrings(args) + ')';
+    args.unshift(message);
+
+    // Log the call message
+    console.log.apply(console, args);
+
+    // Insert a debugger breakpoint
+    if ( this.getBreakpoint('init') ) {
+      debugger;
+    }
+
+    // Insert auto profiling and timing
+    this.handleAuto('profiles', methodName);
+    this.handleAuto('timers', methodName);
+
+    return !pass;
   };
 
   /**
@@ -88,23 +179,13 @@
       return false;
     }
 
-    // Prepare the console message
-    message = 'START: ' + this.classTitle + methodName + '(';
-    len = args.length;
-    i = -1;
-    while (++i < len) {
-      if (i) {
-        message += ', ';
-      }
-      message += getSubstituteString(args[i]);
-    }
-    message += ')';
-
-    // Prepare the start log arguments
-    args.unshift(message);
-
     // Insert auto grouping
     this.handleAuto('groups', methodName);
+
+    // Prepare the call log message and arguments
+    message = 'CALL: ' + this.classTitle + methodName;
+    message += '(' + makeSubstituteStrings(args) + ')';
+    args.unshift(message);
 
     // Log the start message
     console.log.apply(console, args);
@@ -165,12 +246,12 @@
       return false;
     }
 
+    // Insert auto grouping
+    this.handleAuto('groups', methodName, true);
+
     // Prepare the console message
     message = 'END: ' + this.classTitle + methodName + '() | ';
     message += 'return= ' + getSubstituteString(returnVal);
-
-    // Insert auto grouping
-    this.handleAuto('groups', methodName, true);
 
     // Log the end message
     console.log(message, returnVal);
@@ -208,14 +289,6 @@
 
     /** @type {!vals} */
     var args;
-    /** @type {boolean} */
-    var pass;
-    /** @type {number} */
-    var i;
-    /** @type {val} */
-    var arg;
-    /** @type {string} */
-    var dataTypeOpts;
     /** @type {string} */
     var message;
 
@@ -232,7 +305,7 @@
       }
     }
 
-    // Test the given arguments before executing
+    // Test the method name
     if ( !checkType(methodName, 'string') ) {
       console.error( ErrorMessages.missingMethodName('args', methodName) );
       if (errorBreakpoints) {
@@ -240,30 +313,23 @@
       }
       return;
     }
+
+    // Test for arguments
     if (args.length < 2) {
-      message = 'An aIV.debug args method call was missing arguments to test. ';
-      message += 'The args method requires that at least one argument be ';
-      message += 'tested. After the first parameter (the method name), the ';
-      message += 'second parameter should be an argument to test, and the ';
-      message += 'third parameter should be a string of the argument\'s ';
-      message += 'optional data types. You can include as many pairs of ';
-      message += 'arguments and optional data types as you like.';
-      console.error(message);
+      console.error( ErrorMessages.missingTestArgs() );
       if (errorBreakpoints) {
         debugger;
       }
-      return false;
+      return;
     }
-    if ( !(args.length % 2) ) {
-      message = 'An aIV.debug args method call was missing optional data ';
-      message += 'type strings to use for testing arguments. You should ';
-      message += 'include a string of the optional data types after each ';
-      message += 'argument parameter.';
-      console.error(message);
+
+    // Test for each argument's data type string
+    if ((args.length % 2) || !checkTypeStrings(args)) {
+      console.error( ErrorMessages.missingTypeStrings('args') );
       if (errorBreakpoints) {
         debugger;
       }
-      return false;
+      return;
     }
 
     // Check whether this method has been turned off
@@ -271,24 +337,8 @@
       return false;
     }
 
-    // Test the arguments
-    pass = true;
-    i = args.length;
-    while (i--) {
-
-      dataTypeOpts = args[i];
-
-      --i;
-      arg = args[i];
-
-      if ( !checkType(arg, dataTypeOpts) ) {
-        pass = false;
-        break;
-      }
-    }
-
     // If test passes end this method
-    if (pass) {
+    if ( testArgTypes(args) ) {
       return false;
     }
 
