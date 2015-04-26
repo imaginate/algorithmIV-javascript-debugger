@@ -41,7 +41,7 @@
 // The JavaScript Polyfills
 ////////////////////////////////////////////////////////////////////////////////
 
-(function(/** Window */ window, /** Document */ document) {
+;(function setupThePolyfills(window, document, undefined) {
   "use strict";
 
 /* -----------------------------------------------------------------------------
@@ -54,7 +54,7 @@
 // The Public API
 ////////////////////////////////////////////////////////////////////////////////
 
-(function(/** Window */ window, /** Object */ debugModuleAPI) {
+(function setupThePublicAPI(window, debugModuleAPI) {
   "use strict";
 
 /* -----------------------------------------------------------------------------
@@ -67,7 +67,7 @@
 // The Debug Module
 ////////////////////////////////////////////////////////////////////////////////
 
-(function() {
+(function setupTheDebugModule(window, document, undefined) {
   "use strict";
 
 /* -----------------------------------------------------------------------------
@@ -121,4 +121,4 @@
 
   return debugModuleAPI;
 
-})());
+})(window, document));
