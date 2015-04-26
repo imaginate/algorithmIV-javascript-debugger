@@ -3,7 +3,7 @@
    * Public Class (ErrorMessages)
    * -----------------------------------------------------
    * @desc Error messages used throughout this module.
-   * @type {!Object<string, (string|function)>}
+   * @type {!Object<string, function>}
    * @struct
    */
   var ErrorMessages = {};
@@ -13,7 +13,7 @@
    * Public Method (ErrorMessages.setConsoleTypeError)
    * -----------------------------------------------------
    * @desc Creates an error message for a param type error in aIV.console.set.
-   * @param {!Object<string, *>} settings - The new settings.
+   * @param {*} settings - The new settings.
    * @return {string} The error message.
    */
   ErrorMessages.setConsoleTypeError = function(settings) {
@@ -62,7 +62,7 @@
    * @desc Creates an error message for a missing method name
    *   parameter in a Debug logging method.
    * @param {string} method - The name of the method that failed.
-   * @param {string} methodName - The user's method name parameter.
+   * @param {*} methodName - The user's method name parameter.
    * @return {string} The error message.
    */
   ErrorMessages.missingMethodName = function(method, methodName) {
@@ -98,6 +98,30 @@
     message += 'you should include a string of each argument\'s possible data ';
     message += 'types (e.g. \'!string|object\') as a parameter immediately ';
     message += 'following the argument parameter.';
+
+    return message;
+  };
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (ErrorMessages.missingTestArgs)
+   * -----------------------------------------------------
+   * @desc Creates an error message for missing type string parameters
+   *   in a Debug logging method.
+   * @return {string} The error message.
+   */
+  ErrorMessages.missingTestArgs = function() {
+
+    /** @type {string} */
+    var message;
+
+    message = 'An aIV.console args call was missing arguments to test. ';
+    message += 'The args method requires that at least one argument be ';
+    message += 'tested. After the first parameter (the method name), the ';
+    message += 'second parameter should be an argument to test, and the ';
+    message += 'third parameter should be a string of the argument\'s ';
+    message += 'optional data types. You can include as many pairs of ';
+    message += 'arguments and optional data types as you like.';
 
     return message;
   };
