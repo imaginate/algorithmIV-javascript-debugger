@@ -22,13 +22,13 @@
    *   'start', 'end', 'args', 'fail', 'group', 'state', and 'misc'. This
    *   setting does override the module defaults.
    * @param {!(string|strings)=} settings.turnOffTypes - The same as
-   *   settings.turnOffMethods.
+   *   settings.turnOffMethods. Maintains backward compatibility.
    * @param {!(string|strings)=} settings.addBreakpoints - Contains the methods
    *   to add debugger breakpoints to for this Debug instance. The options are
    *   'all', 'none', 'start', 'end', 'args', 'fail', 'group', 'state', and
    *   'misc'. This setting does override the module defaults.
    * @param {!(string|strings)=} settings.turnOnDebuggers - The same as
-   *   settings.addBreakpoints.
+   *   settings.addBreakpoints. Maintains backward compatibility.
    * @param {boolean=} settings.turnOnGroups - Enables/disables automatic
    *   grouping of all logs, timers, and profiles between every start and end
    *   method for this Debug instance.
@@ -67,21 +67,21 @@
       settings = null;
     }
     if (settings) {
-      if ( settings.hasOwnProperty('classTitle') ) {
+      if ( hasOwnProp(settings, 'classTitle') ) {
         classTitle = settings.classTitle;
       }
-      else if ( settings.hasOwnProperty('className') ) {
+      else if ( hasOwnProp(settings, 'className') ) {
         classTitle = settings.className;
       }
     }
 
     // Create a new Debug instance
-    if ( !debugInstances.hasOwnProperty(classTitle) ) {
+    if ( !hasOwnProp(debugInstances, classTitle) ) {
 
       // Setup turnOffMethods
       turnOffMethods = defaultSettings.turnOffMethods;
       if (settings) {
-        if ( settings.hasOwnProperty('turnOffMethods') ) {
+        if ( hasOwnProp(settings, 'turnOffMethods') ) {
           if ( checkType(settings.turnOffMethods, 'string') ) {
             turnOffMethods = settings.turnOffMethods;
           }
@@ -89,7 +89,7 @@
             turnOffMethods = settings.turnOffMethods.join(' ');
           }
         }
-        else if ( settings.hasOwnProperty('turnOffTypes') ) {
+        else if ( hasOwnProp(settings, 'turnOffTypes') ) {
           if ( checkType(settings.turnOffTypes, 'string') ) {
             turnOffMethods = settings.turnOffTypes;
           }
@@ -102,7 +102,7 @@
       // Setup addBreakpoints
       addBreakpoints = defaultSettings.addBreakpoints;
       if (settings) {
-        if ( settings.hasOwnProperty('addBreakpoints') ) {
+        if ( hasOwnProp(settings, 'addBreakpoints') ) {
           if ( checkType(settings.addBreakpoints, 'string') ) {
             addBreakpoints = settings.addBreakpoints;
           }
@@ -110,7 +110,7 @@
             addBreakpoints = settings.addBreakpoints.join(' ');
           }
         }
-        else if ( settings.hasOwnProperty('turnOnDebuggers') ) {
+        else if ( hasOwnProp(settings, 'turnOnDebuggers') ) {
           if ( checkType(settings.turnOnDebuggers, 'string') ) {
             addBreakpoints = settings.turnOnDebuggers;
           }
@@ -122,21 +122,21 @@
 
       // Setup turnOnGroups
       turnOnGroups = ( (settings &&
-                        settings.hasOwnProperty('turnOnGroups') &&
+                        hasOwnProp(settings, 'turnOnGroups') &&
                         checkType(settings.turnOnGroups, 'boolean')) ?
         settings.turnOnGroups : defaultSettings.turnOnGroups
       );
 
       // Setup turnOnProfiles
       turnOnProfiles = ( (settings &&
-                          settings.hasOwnProperty('turnOnProfiles') &&
+                          hasOwnProp(settings, 'turnOnProfiles') &&
                           checkType(settings.turnOnProfiles, 'boolean')) ?
         settings.turnOnProfiles : defaultSettings.turnOnProfiles
       );
 
       // Setup turnOnTimers
       turnOnTimers = ( (settings &&
-                        settings.hasOwnProperty('turnOnTimers') &&
+                        hasOwnProp(settings, 'turnOnTimers') &&
                         checkType(settings.turnOnTimers, 'boolean')) ?
         settings.turnOnTimers : defaultSettings.turnOnTimers
       );
@@ -179,12 +179,12 @@
    * @param {!(string|strings)=} settings.turnOffMethods - The default methods
    *   to disable for all new Debug instances created after this call.
    * @param {!(string|strings)=} settings.turnOffTypes - The same as
-   *   settings.turnOffMethods.
+   *   settings.turnOffMethods. Maintains backward compatibility.
    * @param {!(string|strings)=} settings.addBreakpoints - The default
    *   methods to add debugger breakpoints to for all new Debug instances
    *   created after this call.
    * @param {!(string|strings)=} settings.turnOnDebuggers - The same as
-   *   settings.addBreakpoints.
+   *   settings.addBreakpoints. Maintains backward compatibility.
    * @param {boolean=} settings.turnOnGroups - The default setting for automatic
    *   grouping of all logs, timers, and profiles between every start and end
    *   method.
@@ -199,18 +199,8 @@
    */
   debugModuleAPI.set = function(settings) {
 
-    /** @type {string} */
-    var msg;
-    /** @type {string} */
-    var dataType;
-
     if ( !checkType(settings, '!object') ) {
-      dataType = (settings === null) ? 'null' : typeof settings;
-      msg = 'The settings param given to aIV.debug.set was an incorrrect data ';
-      msg += 'type. It should be an object using strings of the items to set ';
-      msg += 'as its keys and the values to set each item to as the values. ';
-      msg += 'The given data type was \'' + dataType + '\'.';
-      console.error(msg);
+      console.error( ErrorMessages.setConsoleTypeError(settings) );
       if (errorBreakpoints) {
         debugger;
       }
@@ -218,27 +208,27 @@
     }
 
     // Set errorBreakpoints
-    if (settings.hasOwnProperty('errorBreakpoints') &&
+    if (hasOwnProp(settings, 'errorBreakpoints') &&
         checkType(settings.errorBreakpoints, 'boolean')) {
       errorBreakpoints = settings.errorBreakpoints;
     }
-    else if (settings.hasOwnProperty('errorDebuggers') &&
+    else if (hasOwnProp(settings, 'errorDebuggers') &&
              checkType(settings.errorDebuggers, 'boolean')) {
       errorBreakpoints = settings.errorDebuggers;
     }
 
     // Set the default value for classTitle
-    if (settings.hasOwnProperty('classTitle') &&
+    if (hasOwnProp(settings, 'classTitle') &&
         checkType(settings.classTitle, 'string')) {
       defaultSettings.classTitle = settings.classTitle;
     }
-    else if (settings.hasOwnProperty('className') &&
+    else if (hasOwnProp(settings, 'className') &&
              checkType(settings.className, 'string')) {
       defaultSettings.classTitle = settings.className;
     }
 
     // Set the default value for turnOffMethods
-    if ( settings.hasOwnProperty('turnOffMethods') ) {
+    if ( hasOwnProp(settings, 'turnOffMethods') ) {
       if ( checkType(settings.turnOffMethods, 'string') ) {
         defaultSettings.turnOffMethods = settings.turnOffMethods;
       }
@@ -246,7 +236,7 @@
         defaultSettings.turnOffMethods = settings.turnOffMethods.join(' ');
       }
     }
-    else if ( settings.hasOwnProperty('turnOffTypes') ) {
+    else if ( hasOwnProp(settings, 'turnOffTypes') ) {
       if ( checkType(settings.turnOffTypes, 'string') ) {
         defaultSettings.turnOffMethods = settings.turnOffTypes;
       }
@@ -256,7 +246,7 @@
     }
 
     // Set the default value for addBreakpoints
-    if ( settings.hasOwnProperty('addBreakpoints') ) {
+    if ( hasOwnProp(settings, 'addBreakpoints') ) {
       if ( checkType(settings.addBreakpoints, 'string') ) {
         defaultSettings.addBreakpoints = settings.addBreakpoints;
       }
@@ -264,7 +254,7 @@
         defaultSettings.addBreakpoints = settings.addBreakpoints.join(' ');
       }
     }
-    else if ( settings.hasOwnProperty('turnOnDebuggers') ) {
+    else if ( hasOwnProp(settings, 'turnOnDebuggers') ) {
       if ( checkType(settings.turnOnDebuggers, 'string') ) {
         defaultSettings.addBreakpoints = settings.turnOnDebuggers;
       }
@@ -274,26 +264,35 @@
     }
 
     // Set the default value for turnOnGroups
-    if (settings.hasOwnProperty('turnOnGroups') &&
+    if (hasOwnProp(settings, 'turnOnGroups') &&
         checkType(settings.turnOnGroups, 'boolean')) {
       defaultSettings.turnOnGroups = settings.turnOnGroups;
     }
 
     // Set the default value for turnOnProfiles
-    if (settings.hasOwnProperty('turnOnProfiles') &&
+    if (hasOwnProp(settings, 'turnOnProfiles') &&
         checkType(settings.turnOnProfiles, 'boolean')) {
       defaultSettings.turnOnProfiles = settings.turnOnProfiles;
     }
 
     // Set the default value for turnOnTimers
-    if (settings.hasOwnProperty('turnOnTimers') &&
+    if (hasOwnProp(settings, 'turnOnTimers') &&
         checkType(settings.turnOnTimers, 'boolean')) {
       defaultSettings.turnOnTimers = settings.turnOnTimers;
     }
 
     // Set formatElementsAsObj
-    if (settings.hasOwnProperty('formatElementsAsObj') &&
+    if (hasOwnProp(settings, 'formatElementsAsObj') &&
         checkType(settings.formatElementsAsObj, 'boolean')) {
       formatElementsAsObj = settings.formatElementsAsObj;
     }
   };
+
+  /**
+   * -----------------------------------------------------
+   * Public Object (debugModuleAPI.console)
+   * -----------------------------------------------------
+   * @desc The container for aIV's console.
+   * @type {!Object<string, function(*)>}
+   */
+  debugModuleAPI.console = {};
