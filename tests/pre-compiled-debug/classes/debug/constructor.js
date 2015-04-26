@@ -356,6 +356,7 @@
      * @desc Sets the current automated value for groups, profiles, and timers.
      * @param {string} prop - The automated type value to set.
      * @param {boolean} val - The new automated value.
+     * @return {boolean} Indicates whether correct arguments were given.
      */
     this.setAuto = function(prop, val) {
 
@@ -368,7 +369,28 @@
         timers  : function(val) { timers   = val; }
       };
 
-      props[ prop ](!!val);
+      if (!checkType(prop, 'string') || !checkType(val, 'boolean')) {
+        return false;
+      }
+
+      prop = prop.toLowerCase();
+
+      if (!hasOwnProp(props, prop) && prop !== 'all') {
+        return false;
+      }
+
+      if (prop === 'all') {
+        for (prop in props) {
+          if ( hasOwnProp(props, prop) ) {
+            props[ prop ](val);
+          }
+        }
+      }
+      else {
+        props[ prop ](val);
+      }
+
+      return true;
     };
 
     ////////////////////////////////////////////////////////////////////////////
