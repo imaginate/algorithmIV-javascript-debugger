@@ -17,7 +17,7 @@
      *   properties.
      * @param {!object|function} obj - The object to freeze.
      */
-    var deepFreeze = function deepFreeze(obj) {
+    var deepFreeze = function(obj) {
 
       /** @type {string} */
       var prop;
