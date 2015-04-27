@@ -46,7 +46,7 @@
     classTitle    : 'unknown',
     turnOffMethods: 'none',
     addBreakpoints: 'args fail',
-    turnOnGroups  : false,
+    turnOnGroups  : true,
     turnOnProfiles: false,
-    turnOnTimers  : false
+    turnOnTimers  : true
   };
