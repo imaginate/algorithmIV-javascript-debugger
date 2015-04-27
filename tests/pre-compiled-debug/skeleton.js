@@ -21,7 +21,7 @@
  *       and [See JSDoc3]{@link http://usejsdoc.org/}
  *   </li>
  *   <li>contributing: 
- *       [See our guideline]{@link https://github.com/imaginate/algorithmIV--javascript-debugger/blob/master/CONTRIBUTING.md}
+ *       [See our guideline]{@link https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/CONTRIBUTING.md}
  *   </li>
  * </ol>
  */
@@ -35,6 +35,7 @@
  * @typedef {Array<string>} strings
  * @typedef {Array<number>} numbers
  * @typedef {Array<Object>} objects
+ * @typedef {Array<boolean>} booleans
  */
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -46,6 +47,10 @@
 
 /* -----------------------------------------------------------------------------
  * The Object Polyfills (polyfills/object.js)
+ * -------------------------------------------------------------------------- */
+
+/* -----------------------------------------------------------------------------
+ * The Array Polyfills (polyfills/array.js)
  * -------------------------------------------------------------------------- */
 
 })(window, document);
