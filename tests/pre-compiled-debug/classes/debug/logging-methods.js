@@ -64,7 +64,7 @@
 
     // Test for each argument's data type string
     if (len) {
-      if ((len % 2) || !checkTypeStrings(args)) {
+      if ((len % 2) || !checkArgsDataTypeStrings(args)) {
         console.error( ErrorMessages.missingTypeStrings('init') );
         insertErrorBreakpoint();
         return;
@@ -338,8 +338,8 @@
       return;
     }
 
-    // Test for each argument's data type string
-    if ((args.length % 2) || !checkTypeStrings(args)) {
+    // Test each argument's data type string
+    if ((args.length % 2) || !checkArgsDataTypeStrings(args)) {
       console.error( ErrorMessages.missingTypeStrings('args') );
       insertErrorBreakpoint();
       return;
@@ -587,7 +587,7 @@
     }
 
     // Prepare the message
-    if (message) {
+    if (message || args.length) {
       if (args.length) {
         message = insertSubstituteStrings(message, args);
       }
@@ -595,7 +595,7 @@
     }
     message = 'GROUP: ' + this.classTitle + methodName + '()' + message;
 
-    // Prepare the group log's arguments
+    // Prepare the group's arguments
     args.unshift(message);
 
     // Open a console group
