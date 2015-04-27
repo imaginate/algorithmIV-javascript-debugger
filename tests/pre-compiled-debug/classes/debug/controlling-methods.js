@@ -24,7 +24,7 @@
    */
   Debug.prototype.turnOnMethod = function(method) {
 
-    /** @type {strings} */
+    /** @type {!strings} */
     var args;
     /** @type {number} */
     var len;
@@ -110,7 +110,7 @@
    */
   Debug.prototype.turnOffMethod = function(method) {
 
-    /** @type {strings} */
+    /** @type {!strings} */
     var args;
     /** @type {number} */
     var len;
@@ -196,7 +196,7 @@
    */
   Debug.prototype.addBreakpoint = function(method) {
 
-    /** @type {strings} */
+    /** @type {!strings} */
     var args;
     /** @type {number} */
     var len;
@@ -282,7 +282,7 @@
    */
   Debug.prototype.removeBreakpoint = function(method) {
 
-    /** @type {strings} */
+    /** @type {!strings} */
     var args;
     /** @type {number} */
     var len;
@@ -341,3 +341,157 @@
    * @type {function( ...!(string|strings) ): boolean}
    */
   Debug.prototype.turnOffDebugger = Debug.prototype.removeBreakpoint;
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (Debug.prototype.turnOnAuto)
+   * -----------------------------------------------------
+   * @desc Used to enable any automations that are disabled.
+   * @param {...!(string|strings)} type - The type to enable.
+   *   If 'all' is provided then all automations are enabled.
+   * @return {boolean} The update's success (if error return false).
+   * @example
+   *   // Create an aIV.console class instance
+   *   Example.prototype.constructor = function Example() {
+   *     this.console = aIV.console.create('Example');
+   *   };
+   *   
+   *   Example.prototype.exMethod = function() {
+   *     
+   *     // Calling turnOnAuto with multiple params
+   *     this.console.turnOnAuto('groups', 'timers');
+   *     
+   *     // Calling turnOnAuto with an array
+   *     var arr = [ 'groups', 'timers' ];
+   *     this.console.turnOnAuto(arr);
+   *   };
+   */
+  Debug.prototype.turnOnAuto = function(type) {
+
+    /** @type {!strings} */
+    var args;
+    /** @type {number} */
+    var len;
+    /** @type {number} */
+    var i;
+    /** @type {!(string|strings)} */
+    var errors;
+
+    // Setup the arguments
+    args = ( ( checkType(type, '!strings') ) ?
+      type.slice(0) : (arguments.length > 1) ?
+        Array.prototype.slice.call(arguments, 0) : [ type ]
+    );
+
+    // Ensure valid arguments are supplied
+    if ( !checkType(args, '!strings') ) {
+      console.error( ErrorMessages.invalidSetName('turnOnAuto', type) );
+      insertErrorBreakpoint();
+      return;
+    }
+
+    // Split strings with multiple types
+    type = args.join(' ');
+    args = type.split(' ');
+
+    // Turn on the types & save any errors
+    len = args.length;
+    i = -1;
+    while (++i < len) {
+      if ( !this.setAuto(args[i], true) ) {
+        if (!errors) {
+          errors = [];
+        }
+        errors.push("'" + args[i] + "'");
+      }
+    }
+    if (errors) {
+      errors = errors.join(', ');
+    }
+
+    // Report any errors
+    if (errors) {
+      console.error( ErrorMessages.invalidSetName('turnOnAuto', errors) );
+      insertErrorBreakpoint();
+      return;
+    }
+
+    return true;
+  };
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (Debug.prototype.turnOffAuto)
+   * -----------------------------------------------------
+   * @desc Used to disable any automations that are enabled.
+   * @param {...!(string|strings)} type - The type to disable.
+   *   If 'all' is provided then all automations are disabled.
+   * @return {boolean} The update's success (if error return false).
+   * @example
+   *   // Create an aIV.console class instance
+   *   Example.prototype.constructor = function Example() {
+   *     this.console = aIV.console.create('Example');
+   *   };
+   *   
+   *   Example.prototype.exMethod = function() {
+   *     
+   *     // Calling turnOffAuto with multiple params
+   *     this.console.turnOffAuto('groups', 'timers');
+   *     
+   *     // Calling turnOffAuto with an array
+   *     var arr = [ 'groups', 'timers' ];
+   *     this.console.turnOffAuto(arr);
+   *   };
+   */
+  Debug.prototype.turnOffAuto = function(type) {
+
+    /** @type {!strings} */
+    var args;
+    /** @type {number} */
+    var len;
+    /** @type {number} */
+    var i;
+    /** @type {!(string|strings)} */
+    var errors;
+
+    // Setup the arguments
+    args = ( ( checkType(type, '!strings') ) ?
+      type.slice(0) : (arguments.length > 1) ?
+        Array.prototype.slice.call(arguments, 0) : [ type ]
+    );
+
+    // Ensure valid arguments are supplied
+    if ( !checkType(args, '!strings') ) {
+      console.error( ErrorMessages.invalidSetName('turnOffAuto', type) );
+      insertErrorBreakpoint();
+      return;
+    }
+
+    // Split strings with multiple types
+    type = args.join(' ');
+    args = type.split(' ');
+
+    // Turn off the types & save any errors
+    len = args.length;
+    i = -1;
+    while (++i < len) {
+      if ( !this.setAuto(args[i], false) ) {
+        if (!errors) {
+          errors = [];
+        }
+        errors.push("'" + args[i] + "'");
+      }
+    }
+    if (errors) {
+      errors = errors.join(', ');
+    }
+
+    // Report any errors
+    if (errors) {
+      console.error( ErrorMessages.invalidSetName('turnOffAuto', errors) );
+      insertErrorBreakpoint();
+      return;
+    }
+
+    return true;
+  };
