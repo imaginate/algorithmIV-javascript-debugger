@@ -2,7 +2,7 @@
    * ---------------------------------------------------
    * Public Method (freezeObj)
    * ---------------------------------------------------
-   * @desc A shortcut for the Object.freeze method.
+   * @desc A shortcut for the Object.freeze method with a deep freeze option.
    * @param {!object|function} obj - The object to freeze.
    * @param {boolean=} deep - Deep freeze the object. The default is false.
    * @return {!object|function} The frozen object.
@@ -71,16 +71,17 @@
     /** @type {string} */
     var errorMessage;
 
-    if ( !checkType(obj, '!object|function') ) {
+    if (!obj || !checkTypeOf(obj, 'object') ||
+        !checkTypeOf(obj, 'function')) {
       errorMessage = 'A hasOwnProp call received an invalid obj parameter.';
       throw new TypeError(errorMessage);
-      return false;
+      return;
     }
 
-    if ( !checkType(prop, 'string') ) {
+    if (!prop || !checkTypeOf(prop, 'string')) {
       errorMessage = 'A hasOwnProp call received an invalid prop parameter.';
       throw new TypeError(errorMessage);
-      return false;
+      return;
     }
 
     return obj.hasOwnProperty(prop);
@@ -147,7 +148,7 @@
    * ---------------------------------------------------
    * Public Method (insertSubstituteStrings)
    * ---------------------------------------------------
-   * @desc Inserts the correct substitution strings into a console message.
+   * @desc Inserts the correct substitution strings into a log message.
    * @param {string} msg - The original console message string.
    * @param {vals} vals - The values to use for finding the
    *   substitution strings.
@@ -155,27 +156,12 @@
    */
   function insertSubstituteStrings(msg, vals) {
 
-    /** @type {string} */
-    var errorMsg;
     /** @type {number} */
     var len;
     /** @type {number} */
     var i;
     /** @type {string} */
     var substituteString;
-
-    // Test the given arguments before executing
-    if (!checkType(msg, 'string') || !checkType(vals, '!array')) {
-      errorMsg = 'An aIV.debug insertSubstituteStrings method was given a ';
-      errorMsg += 'param that was an incorrect data type. The console message ';
-      errorMsg += 'should be a string and the values should be an array of any ';
-      errorMsg += 'data type. The given data types for the params follow: ';
-      errorMsg += 'msg= ' + ( (msg === null) ? 'null' : typeof msg ) + ', ';
-      errorMsg += 'vals= ' + ( (vals === null) ? 'null' : typeof vals );
-      console.error(errorMsg);
-      insertErrorBreakpoint();
-      return errorMsg;
-    }
 
     // Insert the substitution strings
     len = vals.length;
@@ -200,159 +186,338 @@
    * ---------------------------------------------------
    * Public Method (checkType)
    * ---------------------------------------------------
-   * @param {val} val - The value to be evaluated.
-   * @param {string} type - The type to evaluate the value against. The optional
-   *   types are 'string', 'number', 'boolean', 'object', 'function', 'elem',
-   *   'undefined', 'array', 'strings', 'numbers', 'booleans', 'objects',
-   *   'functions', 'arrays', 'elems', 'stringMap', 'numberMap', 'booleanMap',
-   *   'objectMap', 'functionMap', 'arrayMap', and 'elemMap'. Use '|' as the
-   *   separator for multiple types (e.g.'strings|numbers'). Use '=' to indicate
-   *   the value is optional (e.g. 'array=' or 'string|number='). Use '!' to
-   *   indicate that null is not a possibility (e.g. '!string').
+   * @desc Checks a value's data type against the given optional types.
+   * @param {*} val - The value to be evaluated.
+   * @param {string} type - A string of the data types to evaluate the value
+   *   against. The optional data type strings are below:
+   *   <table>
+   *     <tr><th>Main Types</th><th>Array Types</th><th>Hash Map Types</th></tr>
+   *     <tr>
+   *       <td>
+   *         <span>'string', 'number', 'boolean', 'object', 'array', </span>
+   *         <span>'function', 'elem', 'element', 'undefined'</span>
+   *       </td>
+   *       <td>
+   *         <span>'strings', 'numbers', 'booleans', 'objects', </span>
+   *         <span>'arrays', 'functions', 'elems', 'elements'</span>
+   *       </td>
+   *       <td>
+   *         <span>'stringMap', 'numberMap', 'booleanMap', 'objectMap', </span>
+   *         <span>'arrayMap', 'functionMap', 'elemMap', 'elementMap'</span>
+   *       </td>
+   *     </tr>
+   *   </table>
+   *   Other important characters are below:
+   *   <table>
+   *     <tr><th>Character</th><th>Details</th><th>Example</th></tr>
+   *     <tr>
+   *       <td>'|'</td>
+   *       <td>Separates multiple type options.</td>
+   *       <td>'strings|numbers'</td>
+   *     </tr>
+   *     <tr>
+   *       <td>'!'</td>
+   *       <td>
+   *         <span>Indicates an object is not nullable. By default all </span>
+   *         <span>functions, primitive data types (string, number, </span>
+   *         <span>or boolean), and undefined are not nullable.</span>
+   *       </td>
+   *       <td>'!stringMap'</td>
+   *     </tr>
+   *     <tr>
+   *       <td>'?'</td>
+   *       <td>
+   *         <span>Indicates a function or primitive data type is </span>
+   *         <span>nullable. By default all objects except functions </span>
+   *         <span>are nullable.</span>
+   *       </td>
+   *       <td>'?string'</td>
+   *     </tr>
+   *     <tr>
+   *       <td>'='</td>
+   *       <td>Indicates that the value can be undefined.</td>
+   *       <td>'array=' or 'string|number='</td>
+   *     </tr>
+   *   </table>
    * @return {boolean} The evaluation result.
    */
   function checkType(val, type) {
 
-    // Test the given arguments before executing
-    var msg;
-    if (typeof type !== 'string') {
-      msg = 'A checkType method\'s type was the wrong data type. ';
-      msg += 'It should be a string. The given type was a(n) %s.';
-      console.error(msg, (typeof type));
-      insertErrorBreakpoint();
-      return false;
+    /** @type {number} */
+    var i;
+    /** @type {!strings} */
+    var types;
+    /** @type {boolean} */
+    var nullable;
+    /** @type {boolean} */
+    var earlyPass;
+    /** @type {string} */
+    var errorMessage;
+    /** @type {boolean} */
+    var nullableOverride;
+
+    if ( !checkTypeOf(type, 'string') ) {
+      errorMessage = 'A checkType call received an invalid type parameter.';
+      throw new TypeError(errorMessage);
+      return;
     }
 
-    /**
-     * @type {strings}
-     * @private
-     */
-    var types;
+    earlyPass = false;
 
-    type = type.toLowerCase().replace(/[^a-z\|\=\!]/g, '');
+    if (val === null) {
+      nullable = false;
+      nullableOverride = RegExps.exclamationPoint.test(type);
+      if ( RegExps.questionMark.test(type) ) {
+        nullableOverride = !nullableOverride;
+        nullable = !nullableOverride;
+      }
+      if (nullable && nullableOverride) {
+        earlyPass = true;
+      }
+    }
+    else {
+      nullableOverride = true;
+      nullable = false;
+    }
 
-    types = ( /\|/.test(type) ) ? type.split('|') : [ type ];
+    if (val === undefined && RegExps.equalSign.test(type)) {
+      earlyPass = true;
+    }
 
-    return types.some(function(/** string */ type) {
-      /**
-       * @type {string}
-       * @private
-       */
-      var cleanType;
+    // Remove everything except lowercase letters and pipes
+    type = type.toLowerCase();
+    type = type.replace(RegExps.lowerAlphaAndPipe, '');
 
-      cleanType = type.replace(/\!|\=/g, '');
+    types = ( RegExps.pipe.test(type) ) ? type.split('|') : [ type ];
 
-      // Ensure a correct type was given
-      if ( !RegExps.allDataTypes.test(cleanType) ) {
-        msg = 'A checkType method\'s type was the wrong value. ';
-        msg += 'See the docs for acceptable values. ';
-        msg += 'The incorrect value was \'%s\'.';
-        console.error(msg, type);
-        insertErrorBreakpoint();
-        return false;
+    if ( !checkDataTypeStrings(types) ) {
+      errorMessage = 'A checkType call received an invalid type parameter.';
+      throw new RangeError(errorMessage);
+      return;
+    }
+
+    if (earlyPass) {
+      return true;
+    }
+
+    // Test the value against each type
+    i = types.length;
+    while (i--) {
+
+      type = types[i];
+
+      if (!nullableOverride) {
+        nullable = !RegExps.nonNullableDataTypes.test(type);
       }
 
-      // Handle undefined val
-      if (val === undefined) {
-        type = type.replace(/\!/g, '');
-        return /\=|^undefined$/.test(type);
-      }
-      else {
-
-        // Evaluate null
-        if (val === null) {
-          return !(/\!/.test(type));
-        }
-
-        if (cleanType === 'undefined') {
-          return false;
-        }
-
-        // Evaluate array types
-        if ( RegExps.arrayDataTypes.test(cleanType) ) {
-
-          if ( !Array.isArray(val) ) {
-            return false;
-          }
-
-          // Evaluate a basic array
-          if (cleanType === 'array') {
-            return true;
-          }
-
-          // Evaluate an array of arrays
-          if (cleanType === 'arrays') {
-            return val.every(function(subVal) {
-              return ( Array.isArray(subVal) );
-            });
-          }
-
-          // Evaluate an array of elements
-          if (cleanType === 'elems') {
-            return val.every(function(subVal) {
-              return (subVal instanceof HTMLElement);
-            });
-          }
-
-          // Evaluate each value of the array
-          cleanType = cleanType.replace(/s$/, '');
-          return val.every(function(subVal) {
-            return (typeof subVal === cleanType);
-          });
-        }
-
-        // Evaluate element
-        if (cleanType === 'elem') {
-          return (val instanceof HTMLElement);
-        }
-
-        // Evaluate string, number, boolean, object, and function types
-        if ( RegExps.basicDataTypes.test(cleanType) ) {
-          return (typeof val === cleanType);
-        }
-
-        // Evaluate hash map types
-        if ( RegExps.mapDataTypes.test(cleanType) ) {
-
-          if (typeof val !== 'object') {
-            return false;
-          }
-
-          // Evaluate a hash map of arrays
-          if (cleanType === 'arraymap') {
-            return Object.keys(val).every(function(subVal) {
-              return ( Array.isArray(val[ subVal ]) );
-            });
-          }
-
-          // Evaluate a hash map of elements
-          if (cleanType === 'elemmap') {
-            return Object.keys(val).every(function(subVal) {
-              return (val[ subVal ] instanceof HTMLElement);
-            });
-          }
-
-          // Evaluate each value of the hash map
-          cleanType = cleanType.replace(/map$/, '');
-          return Object.keys(val).every(function(subVal) {
-            return (typeof val[ subVal ] === cleanType);
-          });
-        }
+      if (nullable && val === null) {
+        return true;
       }
 
-      return false;
-    });
+      if ( RegExps.typeOfDataTypes.test(type) ) {
+        if ( checkTypeOf(val, type) ) {
+          return true;
+        }
+        continue;
+      }
+
+      if ( RegExps.instanceOfDataTypes.test(type) ) {
+        if ( checkInstanceOf(val, type) ) {
+          return true;
+        }
+        continue;
+      }
+
+      if ( RegExps.arrayDataTypes.test(type) ) {
+        if ( checkArrayType(val, type) ) {
+          return true;
+        }
+        continue;
+      }
+
+      if ( RegExps.mapDataTypes.test(type) ) {
+        if ( checkHashMapType(val, type) ) {
+          return true;
+        }
+        continue;
+      }
+    }
+
+    return false;
   }
 
   /**
    * ---------------------------------------------------
-   * Public Method (checkTypeStrings)
+   * Public Method (checkDataTypeStrings)
    * ---------------------------------------------------
-   * @desc Evaluates argument data type strings.
+   * @desc Evaluates whether each value is a valid data type string.
+   * @param {!(string|strings)} types - The strings to evaluate.
+   * @return {boolean} The evaluation result.
+   */
+  function checkDataTypeStrings(types) {
+
+    /** @type {number} */
+    var i;
+    /** @type {boolean} */
+    var pass;
+
+    if ( checkTypeOf(types, 'string') ) {
+      types = types.toLowerCase();
+      types = types.replace(RegExps.lowerAlphaAndPipe, '');
+      types = ( RegExps.pipe.test(types) ) ? types.split('|') : [ types ];
+    }
+
+    pass = true;
+
+    i = types.length;
+    while (i--) {
+      pass = RegExps.allDataTypes.test(types[i]);
+      if (!pass) {
+        break;
+      }
+    }
+
+    return pass;
+  }
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (checkTypeOf)
+   * ---------------------------------------------------
+   * @desc Checks a value's typeof against the given type.
+   * @param {*} val - The value to be evaluated.
+   * @param {string} type - The data type.
+   * @return {boolean} The evaluation result.
+   */
+  function checkTypeOf(val, type) {
+    return (typeof val === type);
+  }
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (checkInstanceOf)
+   * ---------------------------------------------------
+   * @desc Checks a value's instanceof against the given type.
+   * @param {*} val - The value to be evaluated.
+   * @param {string} type - The data type.
+   * @return {boolean} The evaluation result.
+   */
+  function checkInstanceOf(val, type) {
+
+    /** @type {!Object<string, function>} */
+    var constructors;
+
+    if ( !checkTypeOf(val, 'object') ) {
+      return false;
+    }
+
+    constructors = {
+      'elem'   : HTMLElement,
+      'element': HTMLElement
+    };
+
+    return (val instanceof constructors[ type ]);
+  }
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (checkArrayType)
+   * ---------------------------------------------------
+   * @desc Checks a value's data type against the given array type.
+   * @param {*} vals - The value to be evaluated.
+   * @param {string} type - The array data type.
+   * @return {boolean} The evaluation result.
+   */
+  function checkArrayType(vals, type) {
+
+    /** @type {number} */
+    var i;
+    /** @type {boolean} */
+    var pass;
+    /** @type {function} */
+    var testFunc;
+
+    if ( !Array.isArray(vals) ) {
+      return false;
+    }
+
+    if (type === 'array') {
+      return true;
+    }
+
+    type = type.slice(0, -1);
+
+    testFunc = ( (type === 'array') ?
+      Array.isArray : ( RegExps.instanceOfDataTypes.test(type) ) ?
+        checkInstanceOf : checkTypeOf
+    );
+
+    pass = true;
+
+    i = vals.length;
+    while (i--) {
+      pass = testFunc(vals[i], type);
+      if (!pass) {
+        break;
+      }
+    }
+
+    return pass;
+  }
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (checkHashMapType)
+   * ---------------------------------------------------
+   * @desc Checks a value's data type against the given object type.
+   * @param {*} val - The value to be evaluated.
+   * @param {string} type - The hash map's data type.
+   * @return {boolean} The evaluation result.
+   */
+  function checkHashMapType(val, type) {
+
+    /** @type {string} */
+    var prop;
+    /** @type {boolean} */
+    var pass;
+    /** @type {function} */
+    var testFunc;
+
+    if ( !checkTypeOf(val, 'object') ) {
+      return false;
+    }
+
+    type = type.slice(0, -3);
+
+    testFunc = ( (type === 'array') ?
+      Array.isArray : ( RegExps.instanceOfDataTypes.test(type) ) ?
+        checkInstanceOf : checkTypeOf
+    );
+
+    pass = true;
+
+    for (prop in val) {
+      if ( hasOwnProp(val, prop) ) {
+        pass = testFunc(val[ prop ], type);
+        if (!pass) {
+          break;
+        }
+      }
+    }
+
+    return pass;
+  }
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (checkArgsDataTypeStrings)
+   * ---------------------------------------------------
+   * @desc Evaluates whether the arguments contain valid data type string
+   *   values for each argument.
    * @param {!vals} args - The arguments to be evaluated.
    * @return {boolean} The evaluation result.
    */
-  function checkTypeStrings(args) {
+  function checkArgsDataTypeStrings(args) {
 
     /** @type {number} */
     var i;
@@ -366,6 +531,7 @@
 
       if (i % 2) {
         pass = checkType(args[i], 'string');
+        pass = pass && checkDataTypeString(args[i]);
       }
 
       if (!pass) {
