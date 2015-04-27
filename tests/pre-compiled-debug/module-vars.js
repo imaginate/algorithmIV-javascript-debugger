@@ -3,7 +3,7 @@
    * Public Variable (debugInstances)
    * -----------------------------------------------------
    * @desc Saves a reference to all of the created Debug instances.
-   * @type {!Object<string, Debug>}
+   * @type {!Object<string, !Debug>}
    */
   var debugInstances = {};
 
@@ -33,7 +33,7 @@
    * @desc Sets default settings for all instances of the debugger. Note that
    *   if local settings are provided upon a new instance call they will be used
    *   instead of the default settings.
-   * @type {{
+   * @type {!{
    *   classTitle    : string,
    *   turnOffMethods: string,
    *   addBreakpoints: string,

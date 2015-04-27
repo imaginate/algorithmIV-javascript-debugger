@@ -48,7 +48,7 @@
    * @param {boolean=} settings.turnOnTimers - Enables/disables automatic
    *   timing for all logic between every start and end method for this
    *   Debug instance.
-   * @return {Debug} A new or existing Debug object.
+   * @return {!Debug} A new or existing Debug object.
    * @global
    */
   aIV.console.create = debugModuleAPI.init;
