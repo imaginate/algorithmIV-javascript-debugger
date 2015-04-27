@@ -25,7 +25,8 @@ sed \
   -e "/debug\/logging-methods.js/ r classes/debug/logging-methods.js" \
   -e "/debug\/controlling-methods.js/ r classes/debug/controlling-methods.js" \
   -e "/debug\/helper-methods.js/ r classes/debug/helper-methods.js" \
-  -e "/polyfills\/object.js/ r polyfills/object.js" <skeleton.js>algorithmIV-debug-temp.js
+  -e "/polyfills\/object.js/ r polyfills/object.js" \
+  -e "/polyfills\/array.js/ r polyfills/array.js" <skeleton.js>algorithmIV-debug-temp.js
 cd ..
 cp -u pre-compiled-debug/algorithmIV-debug-temp.js algorithmIV-debug.js
 rm -f pre-compiled-debug/algorithmIV-debug-temp.js
@@ -43,7 +44,8 @@ sed ^
   -e "/debug\/logging-methods.js/ r classes\debug\logging-methods.js" ^
   -e "/debug\/controlling-methods.js/ r classes\debug\controlling-methods.js" ^
   -e "/debug\/helper-methods.js/ r classes\debug\helper-methods.js" ^
-  -e "/polyfills\/object.js/ r polyfills\object.js" <skeleton.js>algorithmIV-debug-temp.js
+  -e "/polyfills\/object.js/ r polyfills\object.js" ^
+  -e "/polyfills\/array.js/ r polyfills\array.js" <skeleton.js>algorithmIV-debug-temp.js
 cd ..
 copy /y pre-compiled-debug\algorithmIV-debug-temp.js algorithmIV-debug.js
 del /f pre-compiled-debug\algorithmIV-debug-temp.js
@@ -132,7 +134,8 @@ sed \
   -e "/debug\/logging-methods.js/ r classes/debug/logging-methods.js" \
   -e "/debug\/controlling-methods.js/ r classes/debug/controlling-methods.js" \
   -e "/debug\/helper-methods.js/ r classes/debug/helper-methods.js" \
-  -e "/polyfills\/object.js/ r polyfills/object.js" <skeleton.js>algorithmIV-debug-temp.js
+  -e "/polyfills\/object.js/ r polyfills/object.js" \
+  -e "/polyfills\/array.js/ r polyfills/array.js" <skeleton.js>algorithmIV-debug-temp.js
 cd ..
 cp -u pre-compiled-parts/algorithmIV-debug-temp.js algorithmIV-debug.js
 rm -f pre-compiled-parts/algorithmIV-debug-temp.js
@@ -150,7 +153,8 @@ sed ^
   -e "/debug\/logging-methods.js/ r classes\debug\logging-methods.js" ^
   -e "/debug\/controlling-methods.js/ r classes\debug\controlling-methods.js" ^
   -e "/debug\/helper-methods.js/ r classes\debug\helper-methods.js" ^
-  -e "/polyfills\/object.js/ r polyfills\object.js" <skeleton.js>algorithmIV-debug-temp.js
+  -e "/polyfills\/object.js/ r polyfills\object.js" ^
+  -e "/polyfills\/array.js/ r polyfills\array.js" <skeleton.js>algorithmIV-debug-temp.js
 cd ..
 copy /y pre-compiled-parts\algorithmIV-debug-temp.js algorithmIV-debug.js
 del /f pre-compiled-parts\algorithmIV-debug-temp.js
