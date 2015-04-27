@@ -30,7 +30,7 @@
         'constructor'
       ];
 
-      return function fakeObjectKeys(obj) {
+      return function keys(obj) {
 
         /** @type {string} */
         var errorMessage;
@@ -80,7 +80,7 @@
      * @param {Object} obj
      * @return {Object}
      */
-    Object.freeze = function fakeObjectFreeze(obj) {
+    Object.freeze = function(obj) {
 
       /** @type {string} */
       var errorMessage;
@@ -104,7 +104,7 @@
     Object.freeze = (function fixObjectFreezeBug(orgObjectFreeze) {
       "use strict";
 
-      return function newObjectFreeze(obj) {
+      return function freeze(obj) {
         if (typeof obj === 'function') {
           return obj;
         }
