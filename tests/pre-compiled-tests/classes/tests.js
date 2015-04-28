@@ -3,7 +3,7 @@
    * Public Class (Tests)
    * -----------------------------------------------------
    * @desc The tests to run.
-   * @type {Object<string, function>}
+   * @type {!Object<string, function>}
    */
   var Tests = {};
 
@@ -16,21 +16,22 @@
    */
   Tests.checkClassTitle = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var msg;
     /** @type {Object} */
     var tests;
 
-    results = new TestResults('Tests.checkClassTitle');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkClassTitle');;
 
     // Setup for the tests
     tests = {
-      prop: aIV.debug({ classTitle: 'Tests.checkClassTitle.prop' }),
-      str : aIV.debug('Tests.checkClassTitle.str'),
-      none: aIV.debug()
+      prop: aIV.console.create({
+        classTitle: 'Tests.checkClassTitle.prop'
+      }),
+      str : aIV.console.create('Tests.checkClassTitle.str'),
+      none: aIV.console.create()
     };
 
     // Run the tests
@@ -58,68 +59,67 @@
 
   /**
    * -------------------------------------------------
-   * Public Method (Tests.checkTurnOffTypes)
+   * Public Method (Tests.checkTurnOffMethods)
    * -------------------------------------------------
-   * @desc Checks the setting of the turnOffTypes param.
+   * @desc Checks the setting of the turnOffMethods param.
    * @type {function}
    */
-  Tests.checkTurnOffTypes = function() {
+  Tests.checkTurnOffMethods = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var msg;
     /** @type {Object} */
     var tests;
 
-    results = new TestResults('Tests.checkTurnOffTypes');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkTurnOffMethods');;
 
     // Setup for the tests
     tests = {
-      all: aIV.debug({
-        classTitle  : 'Tests.checkTurnOffTypes.all',
-        turnOffTypes: 'all'
+      all: aIV.console.create({
+        classTitle    : 'Tests.checkTurnOffMethods.all',
+        turnOffMethods: 'all'
       }),
-      str: aIV.debug({
-        classTitle  : 'Tests.checkTurnOffTypes.str',
-        turnOffTypes: 'fail state'
+      str: aIV.console.create({
+        classTitle    : 'Tests.checkTurnOffMethods.str',
+        turnOffMethods: 'fail state'
       }),
-      arr: aIV.debug({
-        classTitle  : 'Tests.checkTurnOffTypes.arr',
-        turnOffTypes: [ 'fail', 'state' ]
+      arr: aIV.console.create({
+        classTitle    : 'Tests.checkTurnOffMethods.arr',
+        turnOffMethods: [ 'fail', 'state' ]
       })
     };
 
     // Run the tests
-    if (tests.all.getType('start') ||
-        tests.all.getType('args')  ||
-        tests.all.getType('fail')  ||
-        tests.all.getType('group') ||
-        tests.all.getType('state') ||
-        tests.all.getType('misc')) {
-      msg = 'Tests.turnOffTypes.all failed: no types should be on';
+    if (tests.all.getMethod('start') ||
+        tests.all.getMethod('args')  ||
+        tests.all.getMethod('fail')  ||
+        tests.all.getMethod('group') ||
+        tests.all.getMethod('state') ||
+        tests.all.getMethod('misc')) {
+      msg = 'Tests.turnOffMethods.all failed: no types should be on';
       results.addError(msg);
     }
 
-    if (!tests.str.getType('start') ||
-        !tests.str.getType('args')  ||
-        tests.str.getType('fail')   ||
-        !tests.str.getType('group') ||
-        tests.str.getType('state')  ||
-        !tests.str.getType('misc')) {
-      msg = "Tests.turnOffTypes.str failed: only 'fail' and 'state'";
+    if (!tests.str.getMethod('start') ||
+        !tests.str.getMethod('args')  ||
+        tests.str.getMethod('fail')   ||
+        !tests.str.getMethod('group') ||
+        tests.str.getMethod('state')  ||
+        !tests.str.getMethod('misc')) {
+      msg = "Tests.turnOffMethods.str failed: only 'fail' and 'state'";
       msg += ' should be off';
       results.addError(msg);
     }
 
-    if (!tests.arr.getType('start') ||
-        !tests.arr.getType('args')  ||
-        tests.arr.getType('fail')   ||
-        !tests.arr.getType('group') ||
-        tests.arr.getType('state')  ||
-        !tests.arr.getType('misc')) {
-      msg = "Tests.turnOffTypes.arr failed: only 'fail' and 'state'";
+    if (!tests.arr.getMethod('start') ||
+        !tests.arr.getMethod('args')  ||
+        tests.arr.getMethod('fail')   ||
+        !tests.arr.getMethod('group') ||
+        tests.arr.getMethod('state')  ||
+        !tests.arr.getMethod('misc')) {
+      msg = "Tests.turnOffMethods.arr failed: only 'fail' and 'state'";
       msg += ' should be off';
       results.addError(msg);
     }
@@ -130,68 +130,67 @@
 
   /**
    * -------------------------------------------------
-   * Public Method (Tests.checkTurnOnDebuggers)
+   * Public Method (Tests.checkAddBreakpoints)
    * -------------------------------------------------
-   * @desc Checks the setting of the turnOnDebuggers param.
+   * @desc Checks the setting of the addBreakpoints param.
    * @type {function}
    */
-  Tests.checkTurnOnDebuggers = function() {
+  Tests.checkAddBreakpoints = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var msg;
     /** @type {Object} */
     var tests;
 
-    results = new TestResults('Tests.checkTurnOnDebuggers');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkAddBreakpoints');;
 
     // Setup for the tests
     tests = {
-      all: aIV.debug({
-        classTitle     : 'Tests.checkTurnOnDebuggers.all',
-        turnOnDebuggers: 'all'
+      all: aIV.console.create({
+        classTitle    : 'Tests.checkAddBreakpoints.all',
+        addBreakpoints: 'all'
       }),
-      str: aIV.debug({
-        classTitle     : 'Tests.checkTurnOnDebuggers.str',
-        turnOnDebuggers: 'fail state'
+      str: aIV.console.create({
+        classTitle    : 'Tests.checkAddBreakpoints.str',
+        addBreakpoints: 'fail state'
       }),
-      arr: aIV.debug({
-        classTitle     : 'Tests.checkTurnOnDebuggers.arr',
-        turnOnDebuggers: [ 'fail', 'state' ]
+      arr: aIV.console.create({
+        classTitle    : 'Tests.checkAddBreakpoints.arr',
+        addBreakpoints: [ 'fail', 'state' ]
       })
     };
 
     // Run the tests
-    if (!tests.all.getBugger('start') ||
-        !tests.all.getBugger('args')  ||
-        !tests.all.getBugger('fail')  ||
-        !tests.all.getBugger('group') ||
-        !tests.all.getBugger('state') ||
-        !tests.all.getBugger('misc')) {
-      msg = 'Tests.turnOnDebuggers.all failed: no debuggers should be off';
+    if (!tests.all.getBreakpoint('start') ||
+        !tests.all.getBreakpoint('args')  ||
+        !tests.all.getBreakpoint('fail')  ||
+        !tests.all.getBreakpoint('group') ||
+        !tests.all.getBreakpoint('state') ||
+        !tests.all.getBreakpoint('misc')) {
+      msg = 'Tests.addBreakpoints.all failed: no debuggers should be off';
       results.addError(msg);
     }
 
-    if (tests.str.getBugger('start')  ||
-        tests.str.getBugger('args')   ||
-        !tests.str.getBugger('fail')  ||
-        tests.str.getBugger('group')  ||
-        !tests.str.getBugger('state') ||
-        tests.str.getBugger('misc')) {
-      msg = "Tests.turnOnDebuggers.str failed: only 'fail' and 'state'";
+    if (tests.str.getBreakpoint('start')  ||
+        tests.str.getBreakpoint('args')   ||
+        !tests.str.getBreakpoint('fail')  ||
+        tests.str.getBreakpoint('group')  ||
+        !tests.str.getBreakpoint('state') ||
+        tests.str.getBreakpoint('misc')) {
+      msg = "Tests.addBreakpoints.str failed: only 'fail' and 'state'";
       msg += ' should be on';
       results.addError(msg);
     }
 
-    if (tests.str.getBugger('start')  ||
-        tests.str.getBugger('args')   ||
-        !tests.str.getBugger('fail')  ||
-        tests.str.getBugger('group')  ||
-        !tests.str.getBugger('state') ||
-        tests.arr.getBugger('misc')) {
-      msg = "Tests.turnOnDebuggers.arr failed: only 'fail' and 'state'";
+    if (tests.str.getBreakpoint('start')  ||
+        tests.str.getBreakpoint('args')   ||
+        !tests.str.getBreakpoint('fail')  ||
+        tests.str.getBreakpoint('group')  ||
+        !tests.str.getBreakpoint('state') ||
+        tests.arr.getBreakpoint('misc')) {
+      msg = "Tests.addBreakpoints.arr failed: only 'fail' and 'state'";
       msg += ' should be on';
       results.addError(msg);
     }
@@ -210,7 +209,7 @@
    */
   Tests.checkInstances = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var choiceMsg;
@@ -221,15 +220,14 @@
     /** @type {boolean} */
     var pass;
 
-    results = new TestResults('Tests.checkInstances');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkInstances');;
 
     // Setup for the tests
     tests = {
-      first : aIV.debug('Tests.checkInstances'),
-      second: aIV.debug({
+      first : aIV.console.create('Tests.checkInstances'),
+      second: aIV.console.create({
         classTitle  : 'Tests.checkInstances',
-        turnOffTypes: 'misc'
+        turnOffMethods: 'misc'
       })
     };
 
@@ -262,7 +260,7 @@
    */
   Tests.checkStart = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var choiceMsg;
@@ -273,11 +271,10 @@
     /** @type {boolean} */
     var pass;
 
-    results = new TestResults('Tests.checkStart');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkStart');;
 
     // Setup for the tests
-    tests = aIV.debug('Tests.checkStart');
+    tests = aIV.console.create('Tests.checkStart');
 
     // Run the tests
     pass = tests.start('testMethod');
@@ -319,7 +316,7 @@
    */
   Tests.checkArgs = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var choiceMsg;
@@ -338,11 +335,10 @@
 
     elem = document.createElement('div');
 
-    results = new TestResults('Tests.checkArgs');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkArgs');;
 
     // Setup for the tests
-    tests = aIV.debug('Tests.checkArgs');
+    tests = aIV.console.create('Tests.checkArgs');
 
     // Run the tests on 'string', 'number', 'boolean', 'object',
     // 'function', 'elem', 'undefined', 'array', 'strings', 
@@ -649,7 +645,7 @@
    */
   Tests.checkFail = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var choiceMsg;
@@ -664,11 +660,10 @@
     /** @type {function(): boolean} */
     var testFunction;
 
-    results = new TestResults('Tests.checkFail');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkFail');;
 
     // Setup for the tests
-    tests = aIV.debug('Tests.checkFail');
+    tests = aIV.console.create('Tests.checkFail');
 
     // Run the tests
     pass = tests.fail('testMethod', true, 'Pass');
@@ -722,7 +717,7 @@
    */
   Tests.checkGroup = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var choiceMsg;
@@ -731,11 +726,10 @@
     /** @type {Object} */
     var tests;
 
-    results = new TestResults('Tests.checkGroup');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkGroup');;
 
     // Setup for the tests
-    tests = aIV.debug('Tests.checkGroup');
+    tests = aIV.console.create('Tests.checkGroup');
 
     // Run the tests
     choiceMsg = '"GROUP: Tests.checkGroup.testMethod()" ';
@@ -782,7 +776,7 @@
    */
   Tests.checkState = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var choiceMsg;
@@ -793,11 +787,10 @@
     /** @type {boolean} */
     var pass;
 
-    results = new TestResults('Tests.checkState');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkState');;
 
     // Setup for the tests
-    tests = aIV.debug('Tests.checkState');
+    tests = aIV.console.create('Tests.checkState');
 
     // Run the tests
     pass = tests.state('testMethod');
@@ -834,7 +827,7 @@
    */
   Tests.checkMisc = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var choiceMsg;
@@ -845,11 +838,10 @@
     /** @type {boolean} */
     var pass;
 
-    results = new TestResults('Tests.checkMisc');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkMisc');;
 
     // Setup for the tests
-    tests = aIV.debug('Tests.checkMisc');
+    tests = aIV.console.create('Tests.checkMisc');
 
     // Run the tests
     pass = tests.misc('testMethod');
@@ -886,7 +878,7 @@
    */
   Tests.checkTurnOn = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {boolean} */
     var before;
@@ -897,46 +889,45 @@
     /** @type {Object} */
     var tests;
 
-    results = new TestResults('Tests.checkTurnOn');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkTurnOn');;
 
     // Setup for the tests
-    tests = aIV.debug({
+    tests = aIV.console.create({
       classTitle  : 'Tests.checkTurnOn',
       turnOffTypes: 'all'
     });
 
     // Run the tests
-    before = tests.getType('misc');
+    before = tests.getMethod('misc');
     tests.turnOn('misc');
-    after = tests.getType('misc');
+    after = tests.getMethod('misc');
     if (before || !after) {
       errorMsg = 'debug.turnOn failed to turn on one type';
       results.addError(errorMsg);
     }
     tests.setType('misc', false);
 
-    before = tests.getType('start') && tests.getType('misc');
+    before = tests.getMethod('start') && tests.getMethod('misc');
     tests.turnOn('start misc');
-    after = tests.getType('start') && tests.getType('misc');
+    after = tests.getMethod('start') && tests.getMethod('misc');
     if (before || !after) {
       errorMsg = 'debug.turnOn failed to turn on two types with a string';
       results.addError(errorMsg);
     }
     tests.setType('all', false);
 
-    before = tests.getType('start') && tests.getType('misc');
+    before = tests.getMethod('start') && tests.getMethod('misc');
     tests.turnOn([ 'start', 'misc' ]);
-    after = tests.getType('start') && tests.getType('misc');
+    after = tests.getMethod('start') && tests.getMethod('misc');
     if (before || !after) {
       errorMsg = 'debug.turnOn failed to turn on two types with an array';
       results.addError(errorMsg);
     }
     tests.setType('all', false);
 
-    before = tests.getType('start') && tests.getType('misc');
+    before = tests.getMethod('start') && tests.getMethod('misc');
     tests.turnOn('all');
-    after = tests.getType('start') && tests.getType('misc');
+    after = tests.getMethod('start') && tests.getMethod('misc');
     if (before || !after) {
       errorMsg = 'debug.turnOn failed to turn on all types';
       results.addError(errorMsg);
@@ -955,7 +946,7 @@
    */
   Tests.checkTurnOff = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {boolean} */
     var before;
@@ -966,43 +957,42 @@
     /** @type {Object} */
     var tests;
 
-    results = new TestResults('Tests.checkTurnOff');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkTurnOff');;
 
     // Setup for the tests
-    tests = aIV.debug('Tests.checkTurnOff');
+    tests = aIV.console.create('Tests.checkTurnOff');
 
     // Run the tests
-    before = tests.getType('misc');
+    before = tests.getMethod('misc');
     tests.turnOff('misc');
-    after = tests.getType('misc');
+    after = tests.getMethod('misc');
     if (!before || after) {
       errorMsg = 'debug.turnOff failed to turn off one type';
       results.addError(errorMsg);
     }
     tests.setType('misc', true);
 
-    before = tests.getType('start') && tests.getType('misc');
+    before = tests.getMethod('start') && tests.getMethod('misc');
     tests.turnOff('start misc');
-    after = tests.getType('start') && tests.getType('misc');
+    after = tests.getMethod('start') && tests.getMethod('misc');
     if (!before || after) {
       errorMsg = 'debug.turnOff failed to turn off two types with a string';
       results.addError(errorMsg);
     }
     tests.setType('all', true);
 
-    before = tests.getType('start') && tests.getType('misc');
+    before = tests.getMethod('start') && tests.getMethod('misc');
     tests.turnOff([ 'start', 'misc' ]);
-    after = tests.getType('start') && tests.getType('misc');
+    after = tests.getMethod('start') && tests.getMethod('misc');
     if (!before || after) {
       errorMsg = 'debug.turnOff failed to turn off two types with an array';
       results.addError(errorMsg);
     }
     tests.setType('all', true);
 
-    before = tests.getType('start') && tests.getType('misc');
+    before = tests.getMethod('start') && tests.getMethod('misc');
     tests.turnOff('all');
-    after = tests.getType('start') && tests.getType('misc');
+    after = tests.getMethod('start') && tests.getMethod('misc');
     if (!before || after) {
       errorMsg = 'debug.turnOff failed to turn off all types';
       results.addError(errorMsg);
@@ -1021,7 +1011,7 @@
    */
   Tests.checkTurnOnDebugger = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {boolean} */
     var before;
@@ -1032,25 +1022,24 @@
     /** @type {Object} */
     var tests;
 
-    results = new TestResults('Tests.checkTurnOnDebugger');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkTurnOnDebugger');;
 
     // Setup for the tests
-    tests = aIV.debug('Tests.checkTurnOnDebugger');
+    tests = aIV.console.create('Tests.checkTurnOnDebugger');
 
     // Run the tests
-    before = tests.getBugger('misc');
+    before = tests.getBreakpoint('misc');
     tests.turnOnDebugger('misc');
-    after = tests.getBugger('misc');
+    after = tests.getBreakpoint('misc');
     if (before || !after) {
       errorMsg = 'debug.turnOnDebugger failed to turn on one type';
       results.addError(errorMsg);
     }
     tests.setBugger('misc', false);
 
-    before = tests.getBugger('start') && tests.getBugger('misc');
+    before = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     tests.turnOnDebugger('start misc');
-    after = tests.getBugger('start') && tests.getBugger('misc');
+    after = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     if (before || !after) {
       errorMsg = 'debug.turnOnDebugger failed to turn on two ';
       errorMsg += 'types with a string';
@@ -1058,9 +1047,9 @@
     }
     tests.setBugger('all', false);
 
-    before = tests.getBugger('start') && tests.getBugger('misc');
+    before = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     tests.turnOnDebugger([ 'start', 'misc' ]);
-    after = tests.getBugger('start') && tests.getBugger('misc');
+    after = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     if (before || !after) {
       errorMsg = 'debug.turnOnDebugger failed to turn on two ';
       errorMsg += 'types with an array';
@@ -1068,9 +1057,9 @@
     }
     tests.setBugger('all', false);
 
-    before = tests.getBugger('start') && tests.getBugger('misc');
+    before = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     tests.turnOnDebugger('all');
-    after = tests.getBugger('start') && tests.getBugger('misc');
+    after = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     if (before || !after) {
       errorMsg = 'debug.turnOnDebugger failed to turn on all types';
       results.addError(errorMsg);
@@ -1089,7 +1078,7 @@
    */
   Tests.checkTurnOffDebugger = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {boolean} */
     var before;
@@ -1100,28 +1089,27 @@
     /** @type {Object} */
     var tests;
 
-    results = new TestResults('Tests.checkTurnOffDebugger');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkTurnOffDebugger');;
 
     // Setup for the tests
-    tests = aIV.debug({
+    tests = aIV.console.create({
       classTitle     : 'Tests.checkTurnOffDebugger',
-      turnOnDebuggers: 'all'
+      addBreakpoints: 'all'
     });
 
     // Run the tests
-    before = tests.getBugger('misc');
+    before = tests.getBreakpoint('misc');
     tests.turnOffDebugger('misc');
-    after = tests.getBugger('misc');
+    after = tests.getBreakpoint('misc');
     if (!before || after) {
       errorMsg = 'debug.turnOffDebugger failed to turn off one type';
       results.addError(errorMsg);
     }
     tests.setBugger('misc', true);
 
-    before = tests.getBugger('start') && tests.getBugger('misc');
+    before = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     tests.turnOffDebugger('start misc');
-    after = tests.getBugger('start') && tests.getBugger('misc');
+    after = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     if (!before || after) {
       errorMsg = 'debug.turnOffDebugger failed to turn off two ';
       errorMsg += 'types with a string';
@@ -1129,9 +1117,9 @@
     }
     tests.setBugger('all', true);
 
-    before = tests.getBugger('start') && tests.getBugger('misc');
+    before = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     tests.turnOffDebugger([ 'start', 'misc' ]);
-    after = tests.getBugger('start') && tests.getBugger('misc');
+    after = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     if (!before || after) {
       errorMsg = 'debug.turnOffDebugger failed to turn off two ';
       errorMsg += 'types with an array';
@@ -1139,9 +1127,9 @@
     }
     tests.setBugger('all', true);
 
-    before = tests.getBugger('start') && tests.getBugger('misc');
+    before = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     tests.turnOffDebugger('all');
-    after = tests.getBugger('start') && tests.getBugger('misc');
+    after = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     if (!before || after) {
       errorMsg = 'debug.turnOffDebugger failed to turn off all types';
       results.addError(errorMsg);
@@ -1160,67 +1148,66 @@
    */
   Tests.checkSetConfig = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var msg;
     /** @type {Object} */
     var tests;
 
-    results = new TestResults('Tests.checkSetConfig');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkSetConfig');;
 
     // Setup for the tests
     aIV.debug.setConfig({
       turnOffTypes   : 'all',
-      turnOnDebuggers: 'all'
+      addBreakpoints: 'all'
     });
     tests = {
-      all : aIV.debug('Tests.checkSetConfig.all'),
-      none: aIV.debug({
+      all : aIV.console.create('Tests.checkSetConfig.all'),
+      none: aIV.console.create({
         classTitle     : 'Tests.checkSetConfig.none',
         turnOffTypes   : 'none',
-        turnOnDebuggers: 'none'
+        addBreakpoints: 'none'
       })
     };
 
     // Run the tests
-    if (tests.all.getType('start') ||
-        tests.all.getType('args')  ||
-        tests.all.getType('fail')  ||
-        tests.all.getType('group') ||
-        tests.all.getType('state') ||
-        tests.all.getType('misc')) {
+    if (tests.all.getMethod('start') ||
+        tests.all.getMethod('args')  ||
+        tests.all.getMethod('fail')  ||
+        tests.all.getMethod('group') ||
+        tests.all.getMethod('state') ||
+        tests.all.getMethod('misc')) {
       msg = 'Tests.checkSetConfig.all failed: no types should be on';
       results.addError(msg);
     }
 
-    if (!tests.all.getBugger('start') ||
-        !tests.all.getBugger('args')  ||
-        !tests.all.getBugger('fail')  ||
-        !tests.all.getBugger('group') ||
-        !tests.all.getBugger('state') ||
-        !tests.all.getBugger('misc')) {
+    if (!tests.all.getBreakpoint('start') ||
+        !tests.all.getBreakpoint('args')  ||
+        !tests.all.getBreakpoint('fail')  ||
+        !tests.all.getBreakpoint('group') ||
+        !tests.all.getBreakpoint('state') ||
+        !tests.all.getBreakpoint('misc')) {
       msg = 'Tests.checkSetConfig.all failed: all debuggers should be on';
       results.addError(msg);
     }
 
-    if (!tests.none.getType('start') ||
-        !tests.none.getType('args')  ||
-        !tests.none.getType('fail')  ||
-        !tests.none.getType('group') ||
-        !tests.none.getType('state') ||
-        !tests.none.getType('misc')) {
+    if (!tests.none.getMethod('start') ||
+        !tests.none.getMethod('args')  ||
+        !tests.none.getMethod('fail')  ||
+        !tests.none.getMethod('group') ||
+        !tests.none.getMethod('state') ||
+        !tests.none.getMethod('misc')) {
       msg = 'Tests.checkSetConfig.none failed: all types should be on';
       results.addError(msg);
     }
 
-    if (tests.none.getBugger('start') ||
-        tests.none.getBugger('args')  ||
-        tests.none.getBugger('fail')  ||
-        tests.none.getBugger('group') ||
-        tests.none.getBugger('state') ||
-        tests.none.getBugger('misc')) {
+    if (tests.none.getBreakpoint('start') ||
+        tests.none.getBreakpoint('args')  ||
+        tests.none.getBreakpoint('fail')  ||
+        tests.none.getBreakpoint('group') ||
+        tests.none.getBreakpoint('state') ||
+        tests.none.getBreakpoint('misc')) {
       msg = 'Tests.checkSetConfig.none failed: no debuggers should be on';
       results.addError(msg);
     }
@@ -1228,14 +1215,23 @@
     // Reset the config before continuing
     aIV.debug.setConfig({
       turnOffTypes   : '',
-      turnOnDebuggers: 'none'
+      addBreakpoints: 'none'
     });
 
     // Save the results
     app.results.push(results);
   };
 
-  Object.freeze(Tests);
-  Object.keys(Tests).forEach(function(/** string */ name) {
-    Object.freeze(Tests[name]);
-  });
+  (function(Tests) {
+
+    /** @type {string} */
+    var prop;
+
+    Object.freeze(Tests);
+
+    for (prop in Tests) {
+      if ( hasOwnProp(Tests, prop) ) {
+        Object.freeze(Tests[ prop ]);
+      }
+    }
+  })(Tests);

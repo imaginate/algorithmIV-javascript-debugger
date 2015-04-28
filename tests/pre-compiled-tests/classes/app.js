@@ -82,8 +82,8 @@
 
     // Check init's params
     Tests.checkClassTitle();
-    Tests.checkTurnOffTypes();
-    Tests.checkTurnOnDebuggers();
+    Tests.checkTurnOffMethods();
+    Tests.checkAddBreakpoints();
 
     // Check instance 
     Tests.checkInstances();
