@@ -1,10 +1,10 @@
 /**
  * -----------------------------------------------------------------------------
- * Algorithm IV Debug Tests - Module (v1.0.2)
+ * Algorithm IV Debugger Tests (v1.1.0)
  * -----------------------------------------------------------------------------
- * @file The module for testing the aIV debug module.
- * @module aIVDebugTests
- * @version 1.0.2
+ * @file The module used to run all testing for aIV.conole.
+ * @module aIVConsoleTests
+ * @version 1.1.0
  * @author Adam Smith ({@link adamsmith@youlum.com})
  * @copyright 2015 Adam A Smith ([github.com/imaginate]{@link https://github.com/imaginate})
  * @license The MIT License ([algorithmiv.com/docs/license]{@link http://algorithmiv.com/docs/license})
@@ -15,7 +15,7 @@
  *       and [See JSDoc3]{@link http://usejsdoc.org/}
  *   </li>
  *   <li>contributing: 
- *       [See the guideline]{@link https://github.com/imaginate/algorithmIV--javascript-debugger/blob/master/CONTRIBUTING.md}
+ *       [See the guideline]{@link https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/CONTRIBUTING.md}
  *   </li>
  * </ol>
  */
@@ -29,16 +29,20 @@
  * @typedef {Array<string>} strings
  * @typedef {Array<number>} numbers
  * @typedef {Array<Object>} objects
+ * @typedef {Array<boolean>} booleans
  */
 
-(function(/** Window */ window, /** function */ tests) {
+////////////////////////////////////////////////////////////////////////////////
+// The Public API
+////////////////////////////////////////////////////////////////////////////////
+
+;(function setupThePublicAPI(testsModuleAPI, undefined) {
   "use strict";
 
-
 /* -----------------------------------------------------------------------------
- * | The Public API                                                            |
- * v ------------------------------------------------------------------------- v
-                                                              public-api.js */
+ * The Public API (public-api.js)
+ * -------------------------------------------------------------------------- */
+
   /**
    * ---------------------------------------------------
    * Global Variable (aIV)
@@ -51,76 +55,82 @@
 
   /**
    * ---------------------------------------------------
-   * Global Method (aIV.tests)
+   * Global Method (aIV.runTests)
    * ---------------------------------------------------
-   * @desc Runs the tests for aIV.debug.
+   * @desc Runs the tests for aIV.console.
    * @type {function}
    * @global
    */
-  aIV.tests = tests;
+  aIV.runTests = testsModuleAPI.runTests;
 
-})(window, (function() {
+})(
+
+////////////////////////////////////////////////////////////////////////////////
+// The Tests Module
+////////////////////////////////////////////////////////////////////////////////
+
+(function setupTheTestsModule(undefined) {
   "use strict"; 
 
-
 /* -----------------------------------------------------------------------------
- * | The External API for the Module                                           |
- * v ------------------------------------------------------------------------- v
-                                                            external-api.js */
-  /**
-   * -----------------------------------------------------
-   * Private Variable (_initialized)
-   * -----------------------------------------------------
-   * @desc Indicates whether the tests module has been initialized.
-   * @type {boolean}
-   * @private
-   */
-  var _initialized = false;
+ * The Tests Module API (module-api.js)
+ * -------------------------------------------------------------------------- */
 
   /**
    * -----------------------------------------------------
-   * Public Method (_init)
+   * Public Variable (testsModuleAPI)
    * -----------------------------------------------------
-   * @desc Initializes the aIV.debug tests.
+   * @desc Holds the module's public properties and methods.
+   * @type {!Object<string, function>}
+   * @struct
+   */
+  var testsModuleAPI = {};
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (testsModuleAPI.runTests)
+   * -----------------------------------------------------
+   * @desc Initializes the aIV.console tests.
    * @type {function}
    */
-  var _init = function() {
+  testsModuleAPI.runTests = function() {
 
-    // Check if tests module has been initialized
-    if (_initialized) {
+    if (testsBeenInitialized) {
       return;
     }
 
-    // Save the init to prevent second init
-    _initialized = true;
+    testsBeenInitialized = true;
 
-    // Setup the tests app
     app = new App();
-    Object.freeze(app);
-
-    // Run the tests
     app.runTests();
   };
 
-
 /* -----------------------------------------------------------------------------
- * | The Public Variables for the Module                                       |
- * v ------------------------------------------------------------------------- v
-                                                             module-vars.js */
+ * The Public Module Variables (module-vars.js)
+ * -------------------------------------------------------------------------- */
+
+  /**
+   * -----------------------------------------------------
+   * Public Variable (testsBeenInitialized)
+   * -----------------------------------------------------
+   * @desc Indicates whether the tests module has been initialized.
+   * @type {boolean}
+   */
+  var testsBeenInitialized = false;
+
   /**
    * ----------------------------------------------- 
    * Public Variable (app)
    * -----------------------------------------------
    * @desc The instance of the tests App.
-   * @type {App}
+   * @type {!App}
    */
   var app;
 
-
 /* -----------------------------------------------------------------------------
- * | The Public Methods for the Module                                         |
- * v ------------------------------------------------------------------------- v
-                                                          module-methods.js */
+ * The Public Module Methods (module-methods.js)
+ * -------------------------------------------------------------------------- */
+
   /**
    * ---------------------------------------------
    * Public Method (getID)
@@ -133,17 +143,45 @@
     return document.getElementById(title);
   }
 
+  /**
+   * ---------------------------------------------------
+   * Public Method (hasOwnProp)
+   * ---------------------------------------------------
+   * @desc A shortcut for the Object.prototype.hasOwnProperty method.
+   * @param {!object|function} obj - The object to check.
+   * @param {string} prop - The property to check.
+   * @return {boolean} The result of the check.
+   */
+  function hasOwnProp(obj, prop) {
+
+    /** @type {string} */
+    var errorMessage;
+
+    if (!obj || typeof obj !== 'object' || typeof obj !== 'function') {
+      errorMessage = 'A hasOwnProp call received an invalid obj parameter.';
+      throw new TypeError(errorMessage);
+      return;
+    }
+
+    if (!prop || typeof prop !== 'string') {
+      errorMessage = 'A hasOwnProp call received an invalid prop parameter.';
+      throw new TypeError(errorMessage);
+      return;
+    }
+
+    return obj.hasOwnProperty(prop);
+  }
 
 /* -----------------------------------------------------------------------------
- * | The Tests Class                                                           |
- * v ------------------------------------------------------------------------- v
-                                                           classes/tests.js */
+ * The Tests Class (classes/tests.js)
+ * -------------------------------------------------------------------------- */
+
   /**
    * -----------------------------------------------------
    * Public Class (Tests)
    * -----------------------------------------------------
    * @desc The tests to run.
-   * @type {Object<string, function>}
+   * @type {!Object<string, function>}
    */
   var Tests = {};
 
@@ -156,21 +194,22 @@
    */
   Tests.checkClassTitle = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var msg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
 
-    results = new TestResults('Tests.checkClassTitle');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkClassTitle');;
 
     // Setup for the tests
     tests = {
-      prop: aIV.debug({ classTitle: 'Tests.checkClassTitle.prop' }),
-      str : aIV.debug('Tests.checkClassTitle.str'),
-      none: aIV.debug()
+      prop: aIV.console.create({
+        classTitle: 'Tests.checkClassTitle.prop'
+      }),
+      str : aIV.console.create('Tests.checkClassTitle.str'),
+      none: aIV.console.create()
     };
 
     // Run the tests
@@ -198,68 +237,67 @@
 
   /**
    * -------------------------------------------------
-   * Public Method (Tests.checkTurnOffTypes)
+   * Public Method (Tests.checkTurnOffMethods)
    * -------------------------------------------------
-   * @desc Checks the setting of the turnOffTypes param.
+   * @desc Checks the setting of the turnOffMethods param.
    * @type {function}
    */
-  Tests.checkTurnOffTypes = function() {
+  Tests.checkTurnOffMethods = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var msg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
 
-    results = new TestResults('Tests.checkTurnOffTypes');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkTurnOffMethods');;
 
     // Setup for the tests
     tests = {
-      all: aIV.debug({
-        classTitle  : 'Tests.checkTurnOffTypes.all',
-        turnOffTypes: 'all'
+      all: aIV.console.create({
+        classTitle    : 'Tests.checkTurnOffMethods.all',
+        turnOffMethods: 'all'
       }),
-      str: aIV.debug({
-        classTitle  : 'Tests.checkTurnOffTypes.str',
-        turnOffTypes: 'fail state'
+      str: aIV.console.create({
+        classTitle    : 'Tests.checkTurnOffMethods.str',
+        turnOffMethods: 'fail state'
       }),
-      arr: aIV.debug({
-        classTitle  : 'Tests.checkTurnOffTypes.arr',
-        turnOffTypes: [ 'fail', 'state' ]
+      arr: aIV.console.create({
+        classTitle    : 'Tests.checkTurnOffMethods.arr',
+        turnOffMethods: [ 'fail', 'state' ]
       })
     };
 
     // Run the tests
-    if (tests.all.getType('start') ||
-        tests.all.getType('args')  ||
-        tests.all.getType('fail')  ||
-        tests.all.getType('group') ||
-        tests.all.getType('state') ||
-        tests.all.getType('misc')) {
-      msg = 'Tests.turnOffTypes.all failed: no types should be on';
+    if (tests.all.getMethod('start') ||
+        tests.all.getMethod('args')  ||
+        tests.all.getMethod('fail')  ||
+        tests.all.getMethod('group') ||
+        tests.all.getMethod('state') ||
+        tests.all.getMethod('misc')) {
+      msg = 'Tests.turnOffMethods.all failed: no types should be on';
       results.addError(msg);
     }
 
-    if (!tests.str.getType('start') ||
-        !tests.str.getType('args')  ||
-        tests.str.getType('fail')   ||
-        !tests.str.getType('group') ||
-        tests.str.getType('state')  ||
-        !tests.str.getType('misc')) {
-      msg = "Tests.turnOffTypes.str failed: only 'fail' and 'state'";
+    if (!tests.str.getMethod('start') ||
+        !tests.str.getMethod('args')  ||
+        tests.str.getMethod('fail')   ||
+        !tests.str.getMethod('group') ||
+        tests.str.getMethod('state')  ||
+        !tests.str.getMethod('misc')) {
+      msg = "Tests.turnOffMethods.str failed: only 'fail' and 'state'";
       msg += ' should be off';
       results.addError(msg);
     }
 
-    if (!tests.arr.getType('start') ||
-        !tests.arr.getType('args')  ||
-        tests.arr.getType('fail')   ||
-        !tests.arr.getType('group') ||
-        tests.arr.getType('state')  ||
-        !tests.arr.getType('misc')) {
-      msg = "Tests.turnOffTypes.arr failed: only 'fail' and 'state'";
+    if (!tests.arr.getMethod('start') ||
+        !tests.arr.getMethod('args')  ||
+        tests.arr.getMethod('fail')   ||
+        !tests.arr.getMethod('group') ||
+        tests.arr.getMethod('state')  ||
+        !tests.arr.getMethod('misc')) {
+      msg = "Tests.turnOffMethods.arr failed: only 'fail' and 'state'";
       msg += ' should be off';
       results.addError(msg);
     }
@@ -270,68 +308,67 @@
 
   /**
    * -------------------------------------------------
-   * Public Method (Tests.checkTurnOnDebuggers)
+   * Public Method (Tests.checkAddBreakpoints)
    * -------------------------------------------------
-   * @desc Checks the setting of the turnOnDebuggers param.
+   * @desc Checks the setting of the addBreakpoints param.
    * @type {function}
    */
-  Tests.checkTurnOnDebuggers = function() {
+  Tests.checkAddBreakpoints = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var msg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
 
-    results = new TestResults('Tests.checkTurnOnDebuggers');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkAddBreakpoints');;
 
     // Setup for the tests
     tests = {
-      all: aIV.debug({
-        classTitle     : 'Tests.checkTurnOnDebuggers.all',
-        turnOnDebuggers: 'all'
+      all: aIV.console.create({
+        classTitle    : 'Tests.checkAddBreakpoints.all',
+        addBreakpoints: 'all'
       }),
-      str: aIV.debug({
-        classTitle     : 'Tests.checkTurnOnDebuggers.str',
-        turnOnDebuggers: 'fail state'
+      str: aIV.console.create({
+        classTitle    : 'Tests.checkAddBreakpoints.str',
+        addBreakpoints: 'fail state'
       }),
-      arr: aIV.debug({
-        classTitle     : 'Tests.checkTurnOnDebuggers.arr',
-        turnOnDebuggers: [ 'fail', 'state' ]
+      arr: aIV.console.create({
+        classTitle    : 'Tests.checkAddBreakpoints.arr',
+        addBreakpoints: [ 'fail', 'state' ]
       })
     };
 
     // Run the tests
-    if (!tests.all.getBugger('start') ||
-        !tests.all.getBugger('args')  ||
-        !tests.all.getBugger('fail')  ||
-        !tests.all.getBugger('group') ||
-        !tests.all.getBugger('state') ||
-        !tests.all.getBugger('misc')) {
-      msg = 'Tests.turnOnDebuggers.all failed: no debuggers should be off';
+    if (!tests.all.getBreakpoint('start') ||
+        !tests.all.getBreakpoint('args')  ||
+        !tests.all.getBreakpoint('fail')  ||
+        !tests.all.getBreakpoint('group') ||
+        !tests.all.getBreakpoint('state') ||
+        !tests.all.getBreakpoint('misc')) {
+      msg = 'Tests.addBreakpoints.all failed: no debuggers should be off';
       results.addError(msg);
     }
 
-    if (tests.str.getBugger('start')  ||
-        tests.str.getBugger('args')   ||
-        !tests.str.getBugger('fail')  ||
-        tests.str.getBugger('group')  ||
-        !tests.str.getBugger('state') ||
-        tests.str.getBugger('misc')) {
-      msg = "Tests.turnOnDebuggers.str failed: only 'fail' and 'state'";
+    if (tests.str.getBreakpoint('start')  ||
+        tests.str.getBreakpoint('args')   ||
+        !tests.str.getBreakpoint('fail')  ||
+        tests.str.getBreakpoint('group')  ||
+        !tests.str.getBreakpoint('state') ||
+        tests.str.getBreakpoint('misc')) {
+      msg = "Tests.addBreakpoints.str failed: only 'fail' and 'state'";
       msg += ' should be on';
       results.addError(msg);
     }
 
-    if (tests.str.getBugger('start')  ||
-        tests.str.getBugger('args')   ||
-        !tests.str.getBugger('fail')  ||
-        tests.str.getBugger('group')  ||
-        !tests.str.getBugger('state') ||
-        tests.arr.getBugger('misc')) {
-      msg = "Tests.turnOnDebuggers.arr failed: only 'fail' and 'state'";
+    if (tests.str.getBreakpoint('start')  ||
+        tests.str.getBreakpoint('args')   ||
+        !tests.str.getBreakpoint('fail')  ||
+        tests.str.getBreakpoint('group')  ||
+        !tests.str.getBreakpoint('state') ||
+        tests.arr.getBreakpoint('misc')) {
+      msg = "Tests.addBreakpoints.arr failed: only 'fail' and 'state'";
       msg += ' should be on';
       results.addError(msg);
     }
@@ -344,32 +381,30 @@
    * -------------------------------------------------
    * Public Method (Tests.checkInstances)
    * -------------------------------------------------
-   * @desc Checks that instances are not created twice for the
-   *   same class.
+   * @desc Checks that instances are not created twice for the same class.
    * @type {function}
    */
   Tests.checkInstances = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var choiceMsg;
     /** @type {string} */
     var errorMsg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
     /** @type {boolean} */
     var pass;
 
-    results = new TestResults('Tests.checkInstances');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkInstances');;
 
     // Setup for the tests
     tests = {
-      first : aIV.debug('Tests.checkInstances'),
-      second: aIV.debug({
-        classTitle  : 'Tests.checkInstances',
-        turnOffTypes: 'misc'
+      first : aIV.console.create('Tests.checkInstances'),
+      second: aIV.console.create({
+        classTitle    : 'Tests.checkInstances',
+        turnOffMethods: 'misc'
       })
     };
 
@@ -381,7 +416,7 @@
       results.addError(errorMsg);
     }
 
-    tests.first.setType('misc', false);
+    tests.first.setMethod('misc', false);
     pass = tests.first.misc('test3', 'Instance Test 3');
     pass = pass || tests.second.misc('test4', 'Instance Test 4');
     if (pass) {
@@ -402,22 +437,21 @@
    */
   Tests.checkStart = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var choiceMsg;
     /** @type {string} */
     var errorMsg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
     /** @type {boolean} */
     var pass;
 
-    results = new TestResults('Tests.checkStart');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkStart');;
 
     // Setup for the tests
-    tests = aIV.debug('Tests.checkStart');
+    tests = aIV.console.create('Tests.checkStart');
 
     // Run the tests
     pass = tests.start('testMethod');
@@ -459,13 +493,13 @@
    */
   Tests.checkArgs = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var choiceMsg;
     /** @type {string} */
     var errorMsg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
     /** @type {boolean} */
     var pass;
@@ -473,16 +507,24 @@
     var fail;
     /** @type {HTMLElement} */
     var elem;
-    /** @type {Object} */
+    /** @type {!Object} */
+    var obj;
+    /** @type {function} */
+    var func;
+    /** @type {!Array} */
+    var arr;
+    /** @type {!Object} */
     var testMap;
 
     elem = document.createElement('div');
+    obj = {};
+    func = function() {};
+    arr = [];
 
-    results = new TestResults('Tests.checkArgs');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkArgs');;
 
     // Setup for the tests
-    tests = aIV.debug('Tests.checkArgs');
+    tests = aIV.console.create('Tests.checkArgs');
 
     // Run the tests on 'string', 'number', 'boolean', 'object',
     // 'function', 'elem', 'undefined', 'array', 'strings', 
@@ -521,8 +563,8 @@
     }
 
     // Object check
-    pass = tests.args('testMethod', {}, 'object');
-    pass = pass && tests.args([ 'testMethod', {}, 'object' ]);
+    pass = tests.args('testMethod', obj, 'object');
+    pass = pass && tests.args([ 'testMethod', obj, 'object' ]);
     fail = tests.args('testMethod', 's', 'object');
     fail = fail || tests.args([ 'testMethod', 1, 'object' ]);
     if (pass || !fail) {
@@ -531,10 +573,10 @@
     }
 
     // Function check
-    pass = tests.args('testMethod', function(){}, 'function');
-    pass = pass && tests.args([ 'testMethod', function(){}, 'function' ]);
+    pass = tests.args('testMethod', func, 'function');
+    pass = pass && tests.args([ 'testMethod', func, 'function' ]);
     fail = tests.args('testMethod', 's', 'function');
-    fail = fail || tests.args([ 'testMethod', {}, 'function' ]);
+    fail = fail || tests.args([ 'testMethod', obj, 'function' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: function check failed';
       results.addError(errorMsg);
@@ -543,17 +585,25 @@
     // Element check
     pass = tests.args('testMethod', elem, 'elem');
     pass = pass && tests.args([ 'testMethod',  elem, 'elem' ]);
-    fail = tests.args('testMethod', {}, 'elem');
+    fail = tests.args('testMethod', obj, 'elem');
     fail = fail || tests.args([ 'testMethod', 5, 'elem' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: elem check failed';
+      results.addError(errorMsg);
+    }
+    pass = tests.args('testMethod', elem, 'element');
+    pass = pass && tests.args([ 'testMethod',  elem, 'element' ]);
+    fail = tests.args('testMethod', obj, 'element');
+    fail = fail || tests.args([ 'testMethod', 5, 'element' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: element check failed';
       results.addError(errorMsg);
     }
 
     // Undefined check
     pass = tests.args('testMethod', undefined, 'undefined');
     pass = pass && tests.args([ 'testMethod', undefined, 'undefined' ]);
-    fail = tests.args('testMethod', {}, 'undefined');
+    fail = tests.args('testMethod', obj, 'undefined');
     fail = fail || tests.args([ 'testMethod', 's', 'undefined' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: undefined check failed';
@@ -561,9 +611,9 @@
     }
 
     // Array check
-    pass = tests.args('testMethod', [], 'array');
-    pass = pass && tests.args([ 'testMethod', [], 'array' ]);
-    fail = tests.args('testMethod', {}, 'array');
+    pass = tests.args('testMethod', arr, 'array');
+    pass = pass && tests.args([ 'testMethod', arr, 'array' ]);
+    fail = tests.args('testMethod', obj, 'array');
     fail = fail || tests.args([ 'testMethod', 1, 'array' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: array check failed';
@@ -574,7 +624,7 @@
     pass = tests.args('testMethod', [ 's' ], 'strings');
     pass = pass && tests.args([ 'testMethod', [ 's' ], 'strings' ]);
     fail = tests.args('testMethod', [ 1 ], 'strings');
-    fail = fail || tests.args([ 'testMethod', {}, 'strings' ]);
+    fail = fail || tests.args([ 'testMethod', obj, 'strings' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: strings check failed';
       results.addError(errorMsg);
@@ -582,9 +632,9 @@
 
     // Numbers check
     pass = tests.args('testMethod', [ 1, 5 ], 'numbers');
-    pass = pass && tests.args([ 'testMethod', [], 'numbers' ]);
+    pass = pass && tests.args([ 'testMethod', arr, 'numbers' ]);
     fail = tests.args('testMethod', [ 1, 's' ], 'numbers');
-    fail = fail || tests.args([ 'testMethod', {}, 'numbers' ]);
+    fail = fail || tests.args([ 'testMethod', obj, 'numbers' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: numbers check failed';
       results.addError(errorMsg);
@@ -594,27 +644,27 @@
     pass = tests.args('testMethod', [ false ], 'booleans');
     pass = pass && tests.args([ 'testMethod', [ true ], 'booleans' ]);
     fail = tests.args('testMethod', [ 's' ], 'booleans');
-    fail = fail || tests.args([ 'testMethod', {}, 'booleans' ]);
+    fail = fail || tests.args([ 'testMethod', obj, 'booleans' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: booleans check failed';
       results.addError(errorMsg);
     }
 
     // Functions check
-    pass = tests.args('testMethod', [ function(){} ], 'functions');
-    pass = pass && tests.args([ 'testMethod', [ function(){} ], 'functions' ]);
-    fail = tests.args('testMethod', [ function(){}, 1 ], 'functions');
-    fail = fail || tests.args([ 'testMethod', [ {} ], 'functions' ]);
+    pass = tests.args('testMethod', [ func ], 'functions');
+    pass = pass && tests.args([ 'testMethod', [ func ], 'functions' ]);
+    fail = tests.args('testMethod', [ func, 1 ], 'functions');
+    fail = fail || tests.args([ 'testMethod', [ obj ], 'functions' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: functions check failed';
       results.addError(errorMsg);
     }
 
     // Objects check
-    pass = tests.args('testMethod', [ {} ], 'objects');
-    pass = pass && tests.args([ 'testMethod', [ {} ], 'objects' ]);
+    pass = tests.args('testMethod', [ obj ], 'objects');
+    pass = pass && tests.args([ 'testMethod', [ obj ], 'objects' ]);
     fail = tests.args('testMethod', [ 1 ], 'objects');
-    fail = fail || tests.args([ 'testMethod', {}, 'objects' ]);
+    fail = fail || tests.args([ 'testMethod', obj, 'objects' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: objects check failed';
       results.addError(errorMsg);
@@ -622,9 +672,9 @@
 
     // Arrays check
     pass = tests.args('testMethod', [ [ 1 ] ], 'arrays');
-    pass = pass && tests.args([ 'testMethod', [ [] ], 'arrays' ]);
-    fail = tests.args('testMethod', [ [], 1 ], 'arrays');
-    fail = fail || tests.args([ 'testMethod', [ {} ], 'arrays' ]);
+    pass = pass && tests.args([ 'testMethod', [ arr ], 'arrays' ]);
+    fail = tests.args('testMethod', [ arr, 1 ], 'arrays');
+    fail = fail || tests.args([ 'testMethod', [ obj ], 'arrays' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: arrays check failed';
       results.addError(errorMsg);
@@ -633,17 +683,25 @@
     // Elements check
     pass = tests.args('testMethod', [ elem ], 'elems');
     pass = pass && tests.args([ 'testMethod',  [ elem ], 'elems' ]);
-    fail = tests.args('testMethod', [ {} ], 'elems');
+    fail = tests.args('testMethod', [ obj ], 'elems');
     fail = fail || tests.args([ 'testMethod', 5, 'elems' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: elems check failed';
+      results.addError(errorMsg);
+    }
+    pass = tests.args('testMethod', [ elem ], 'elements');
+    pass = pass && tests.args([ 'testMethod',  [ elem ], 'elements' ]);
+    fail = tests.args('testMethod', [ obj ], 'elements');
+    fail = fail || tests.args([ 'testMethod', 5, 'elements' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: elements check failed';
       results.addError(errorMsg);
     }
 
     // String Map check
     testMap = { slot1: 'str', slot2: 'str' };
     pass = tests.args('testMethod', testMap, 'stringMap');
-    pass = pass && tests.args([ 'testMethod',  {}, 'stringMap' ]);
+    pass = pass && tests.args([ 'testMethod',  obj, 'stringMap' ]);
     testMap = { slot1: 'str', slot2: 1 };
     fail = tests.args('testMethod', testMap, 'stringMap');
     fail = fail || tests.args([ 'testMethod', 5, 'stringMap' ]);
@@ -655,7 +713,7 @@
     // Number Map check
     testMap = { slot1: 1, slot2: 5 };
     pass = tests.args('testMethod', testMap, 'numberMap');
-    pass = pass && tests.args([ 'testMethod',  {}, 'numberMap' ]);
+    pass = pass && tests.args([ 'testMethod',  obj, 'numberMap' ]);
     testMap = { slot1: 5, slot2: 'str' };
     fail = tests.args('testMethod', testMap, 'numberMap');
     fail = fail || tests.args([ 'testMethod', 5, 'numberMap' ]);
@@ -667,7 +725,7 @@
     // Boolean Map check
     testMap = { slot1: false, slot2: true };
     pass = tests.args('testMethod', testMap, 'booleanMap');
-    pass = pass && tests.args([ 'testMethod',  {}, 'booleanMap' ]);
+    pass = pass && tests.args([ 'testMethod',  obj, 'booleanMap' ]);
     testMap = { slot1: true, slot2: 'str' };
     fail = tests.args('testMethod', testMap, 'booleanMap');
     fail = fail || tests.args([ 'testMethod', 5, 'booleanMap' ]);
@@ -677,10 +735,10 @@
     }
 
     // Object Map check
-    testMap = { slot1: {}, slot2: {} };
+    testMap = { slot1: obj, slot2: obj };
     pass = tests.args('testMethod', testMap, 'objectMap');
-    pass = pass && tests.args([ 'testMethod',  {}, 'objectMap' ]);
-    testMap = { slot1: {}, slot2: 'str' };
+    pass = pass && tests.args([ 'testMethod',  obj, 'objectMap' ]);
+    testMap = { slot1: obj, slot2: 'str' };
     fail = tests.args('testMethod', testMap, 'objectMap');
     fail = fail || tests.args([ 'testMethod', 5, 'objectMap' ]);
     if (pass || !fail) {
@@ -689,10 +747,10 @@
     }
 
     // Function Map check
-    testMap = { slot1: function(){}, slot2: function(){} };
+    testMap = { slot1: func, slot2: func };
     pass = tests.args('testMethod', testMap, 'functionMap');
-    pass = pass && tests.args([ 'testMethod',  {}, 'functionMap' ]);
-    testMap = { slot1: {}, slot2: function(){} };
+    pass = pass && tests.args([ 'testMethod',  obj, 'functionMap' ]);
+    testMap = { slot1: obj, slot2: func };
     fail = tests.args('testMethod', testMap, 'functionMap');
     fail = fail || tests.args([ 'testMethod', 5, 'functionMap' ]);
     if (pass || !fail) {
@@ -701,10 +759,10 @@
     }
 
     // Array Map check
-    testMap = { slot1: [ 1 ], slot2: [] };
+    testMap = { slot1: [ 1 ], slot2: arr };
     pass = tests.args('testMethod', testMap, 'arrayMap');
-    pass = pass && tests.args([ 'testMethod',  {}, 'arrayMap' ]);
-    testMap = { slot1: {}, slot2: [] };
+    pass = pass && tests.args([ 'testMethod',  obj, 'arrayMap' ]);
+    testMap = { slot1: obj, slot2: arr };
     fail = tests.args('testMethod', testMap, 'arrayMap');
     fail = fail || tests.args([ 'testMethod', 5, 'arrayMap' ]);
     if (pass || !fail) {
@@ -715,34 +773,53 @@
     // Element Map check
     testMap = { slot1: elem, slot2: elem };
     pass = tests.args('testMethod', testMap, 'elemMap');
-    pass = pass && tests.args([ 'testMethod',  {}, 'elemMap' ]);
-    testMap = { slot1: {}, slot2: elem };
+    pass = pass && tests.args([ 'testMethod',  obj, 'elemMap' ]);
+    testMap = { slot1: obj, slot2: elem };
     fail = tests.args('testMethod', testMap, 'elemMap');
     fail = fail || tests.args([ 'testMethod', 5, 'elemMap' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: elemMap check failed';
       results.addError(errorMsg);
     }
+    pass = tests.args('testMethod', testMap, 'elementMap');
+    pass = pass && tests.args([ 'testMethod',  obj, 'elementMap' ]);
+    testMap = { slot1: obj, slot2: elem };
+    fail = tests.args('testMethod', testMap, 'elementMap');
+    fail = fail || tests.args([ 'testMethod', 5, 'elementMap' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: elementMap check failed';
+      results.addError(errorMsg);
+    }
 
     // Null check
-    pass = tests.args('testMethod', 's', 'string');
-    pass = pass && tests.args('testMethod', null, 'string');
-    pass = pass && tests.args([ 'testMethod', 's', 'string' ]);
-    pass = pass && tests.args([ 'testMethod', null, 'string' ]);
-    fail = tests.args('testMethod', 1, 'string');
-    fail = fail || tests.args('testMethod', undefined, 'string');
+    pass = tests.args('testMethod', null, 'string|object');
+    pass = pass && tests.args('testMethod', null, 'array');
+    pass = pass && tests.args([ 'testMethod', null, 'elem' ]);
+    pass = pass && tests.args([ 'testMethod', null, 'strings' ]);
+    fail = tests.args('testMethod', null, 'string');
+    fail = fail || tests.args('testMethod', null, 'function');
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: null check failed';
       results.addError(errorMsg);
     }
 
     // ! check
-    pass = tests.args('testMethod', 's', '!string');
-    pass = pass && tests.args([ 'testMethod', 's', '!string' ]);
-    fail = tests.args('testMethod', null, '!string');
-    fail = fail || tests.args([ 'testMethod', null, '!string' ]);
+    pass = tests.args('testMethod', null, 'array');
+    pass = pass && tests.args([ 'testMethod', null, 'object' ]);
+    fail = tests.args('testMethod', null, '!array');
+    fail = fail || tests.args([ 'testMethod', null, '!object' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: ! check failed';
+      results.addError(errorMsg);
+    }
+
+    // ? check
+    pass = tests.args('testMethod', null, '?(string|number)');
+    pass = pass && tests.args([ 'testMethod', null, '?string' ]);
+    fail = tests.args('testMethod', null, '(string|number)');
+    fail = fail || tests.args([ 'testMethod', null, 'string' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: ? check failed';
       results.addError(errorMsg);
     }
 
@@ -750,7 +827,7 @@
     pass = tests.args('testMethod', 's', 'string|number');
     pass = pass && tests.args([ 'testMethod', 1, 'string|number' ]);
     fail = tests.args('testMethod', true, 'string|number');
-    fail = fail || tests.args([ 'testMethod', {}, 'string|number' ]);
+    fail = fail || tests.args([ 'testMethod', obj, 'string|number' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: | check failed';
       results.addError(errorMsg);
@@ -759,7 +836,7 @@
     // = check
     pass = tests.args('testMethod', undefined, 'number=');
     pass = pass && tests.args([ 'testMethod', undefined, 'number=' ]);
-    fail = tests.args('testMethod', {}, 'number=');
+    fail = tests.args('testMethod', obj, 'number=');
     fail = fail || tests.args([ 'testMethod', 's', 'number=' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: = check failed';
@@ -789,13 +866,13 @@
    */
   Tests.checkFail = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var choiceMsg;
     /** @type {string} */
     var errorMsg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
     /** @type {boolean} */
     var pass;
@@ -804,11 +881,10 @@
     /** @type {function(): boolean} */
     var testFunction;
 
-    results = new TestResults('Tests.checkFail');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkFail');;
 
     // Setup for the tests
-    tests = aIV.debug('Tests.checkFail');
+    tests = aIV.console.create('Tests.checkFail');
 
     // Run the tests
     pass = tests.fail('testMethod', true, 'Pass');
@@ -821,7 +897,7 @@
     }
 
     pass = tests.fail('testMethod', 1, 'Pass');
-    pass = pass && tests.fail([ 'testMethod', {}, 'Pass' ]);
+    pass = pass && tests.fail([ 'testMethod', obj, 'Pass' ]);
     fail = tests.fail('testMethod', 0, 'Fail');
     fail = fail || tests.fail([ 'testMethod', null, 'Fail' ]);
     if (pass || !fail) {
@@ -862,20 +938,19 @@
    */
   Tests.checkGroup = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var choiceMsg;
     /** @type {string} */
     var errorMsg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
 
-    results = new TestResults('Tests.checkGroup');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkGroup');;
 
     // Setup for the tests
-    tests = aIV.debug('Tests.checkGroup');
+    tests = aIV.console.create('Tests.checkGroup');
 
     // Run the tests
     choiceMsg = '"GROUP: Tests.checkGroup.testMethod()" ';
@@ -922,22 +997,21 @@
    */
   Tests.checkState = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var choiceMsg;
     /** @type {string} */
     var errorMsg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
     /** @type {boolean} */
     var pass;
 
-    results = new TestResults('Tests.checkState');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkState');;
 
     // Setup for the tests
-    tests = aIV.debug('Tests.checkState');
+    tests = aIV.console.create('Tests.checkState');
 
     // Run the tests
     pass = tests.state('testMethod');
@@ -974,22 +1048,21 @@
    */
   Tests.checkMisc = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var choiceMsg;
     /** @type {string} */
     var errorMsg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
     /** @type {boolean} */
     var pass;
 
-    results = new TestResults('Tests.checkMisc');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkMisc');;
 
     // Setup for the tests
-    tests = aIV.debug('Tests.checkMisc');
+    tests = aIV.console.create('Tests.checkMisc');
 
     // Run the tests
     pass = tests.misc('testMethod');
@@ -1019,14 +1092,14 @@
 
   /**
    * -------------------------------------------------
-   * Public Method (Tests.checkTurnOn)
+   * Public Method (Tests.checkTurnOnMethod)
    * -------------------------------------------------
-   * @desc Checks Debug.turnOn method.
+   * @desc Checks Debug.turnOnMethod method.
    * @type {function}
    */
-  Tests.checkTurnOn = function() {
+  Tests.checkTurnOnMethod = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {boolean} */
     var before;
@@ -1034,51 +1107,50 @@
     var after;
     /** @type {string} */
     var errorMsg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
 
-    results = new TestResults('Tests.checkTurnOn');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkTurnOnMethod');;
 
     // Setup for the tests
-    tests = aIV.debug({
-      classTitle  : 'Tests.checkTurnOn',
-      turnOffTypes: 'all'
+    tests = aIV.console.create({
+      classTitle    : 'Tests.checkTurnOnMethod',
+      turnOffMethods: 'all'
     });
 
     // Run the tests
-    before = tests.getType('misc');
-    tests.turnOn('misc');
-    after = tests.getType('misc');
+    before = tests.getMethod('misc');
+    tests.turnOnMethod('misc');
+    after = tests.getMethod('misc');
     if (before || !after) {
-      errorMsg = 'debug.turnOn failed to turn on one type';
+      errorMsg = 'debug.turnOnMethod failed to turn on one type';
       results.addError(errorMsg);
     }
-    tests.setType('misc', false);
+    tests.setMethod('misc', false);
 
-    before = tests.getType('start') && tests.getType('misc');
-    tests.turnOn('start misc');
-    after = tests.getType('start') && tests.getType('misc');
+    before = tests.getMethod('start') && tests.getMethod('misc');
+    tests.turnOnMethod('start misc');
+    after = tests.getMethod('start') && tests.getMethod('misc');
     if (before || !after) {
-      errorMsg = 'debug.turnOn failed to turn on two types with a string';
+      errorMsg = 'debug.turnOnMethod failed to turn on two types with a string';
       results.addError(errorMsg);
     }
-    tests.setType('all', false);
+    tests.setMethod('all', false);
 
-    before = tests.getType('start') && tests.getType('misc');
-    tests.turnOn([ 'start', 'misc' ]);
-    after = tests.getType('start') && tests.getType('misc');
+    before = tests.getMethod('start') && tests.getMethod('misc');
+    tests.turnOnMethod([ 'start', 'misc' ]);
+    after = tests.getMethod('start') && tests.getMethod('misc');
     if (before || !after) {
-      errorMsg = 'debug.turnOn failed to turn on two types with an array';
+      errorMsg = 'debug.turnOnMethod failed to turn on two types with an array';
       results.addError(errorMsg);
     }
-    tests.setType('all', false);
+    tests.setMethod('all', false);
 
-    before = tests.getType('start') && tests.getType('misc');
-    tests.turnOn('all');
-    after = tests.getType('start') && tests.getType('misc');
+    before = tests.getMethod('start') && tests.getMethod('misc');
+    tests.turnOnMethod('all');
+    after = tests.getMethod('start') && tests.getMethod('misc');
     if (before || !after) {
-      errorMsg = 'debug.turnOn failed to turn on all types';
+      errorMsg = 'debug.turnOnMethod failed to turn on all types';
       results.addError(errorMsg);
     }
 
@@ -1088,14 +1160,14 @@
 
   /**
    * -------------------------------------------------
-   * Public Method (Tests.checkTurnOff)
+   * Public Method (Tests.checkTurnOffMethod)
    * -------------------------------------------------
-   * @desc Checks Debug.turnOff method.
+   * @desc Checks Debug.turnOffMethod method.
    * @type {function}
    */
-  Tests.checkTurnOff = function() {
+  Tests.checkTurnOffMethod = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {boolean} */
     var before;
@@ -1103,48 +1175,47 @@
     var after;
     /** @type {string} */
     var errorMsg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
 
-    results = new TestResults('Tests.checkTurnOff');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkTurnOffMethod');;
 
     // Setup for the tests
-    tests = aIV.debug('Tests.checkTurnOff');
+    tests = aIV.console.create('Tests.checkTurnOffMethod');
 
     // Run the tests
-    before = tests.getType('misc');
-    tests.turnOff('misc');
-    after = tests.getType('misc');
+    before = tests.getMethod('misc');
+    tests.turnOffMethod('misc');
+    after = tests.getMethod('misc');
     if (!before || after) {
-      errorMsg = 'debug.turnOff failed to turn off one type';
+      errorMsg = 'debug.turnOffMethod failed to turn off one type';
       results.addError(errorMsg);
     }
-    tests.setType('misc', true);
+    tests.setMethod('misc', true);
 
-    before = tests.getType('start') && tests.getType('misc');
-    tests.turnOff('start misc');
-    after = tests.getType('start') && tests.getType('misc');
+    before = tests.getMethod('start') && tests.getMethod('misc');
+    tests.turnOffMethod('start misc');
+    after = tests.getMethod('start') && tests.getMethod('misc');
     if (!before || after) {
-      errorMsg = 'debug.turnOff failed to turn off two types with a string';
+      errorMsg = 'debug.turnOffMethod failed to turn off two types with a string';
       results.addError(errorMsg);
     }
-    tests.setType('all', true);
+    tests.setMethod('all', true);
 
-    before = tests.getType('start') && tests.getType('misc');
-    tests.turnOff([ 'start', 'misc' ]);
-    after = tests.getType('start') && tests.getType('misc');
+    before = tests.getMethod('start') && tests.getMethod('misc');
+    tests.turnOffMethod([ 'start', 'misc' ]);
+    after = tests.getMethod('start') && tests.getMethod('misc');
     if (!before || after) {
-      errorMsg = 'debug.turnOff failed to turn off two types with an array';
+      errorMsg = 'debug.turnOffMethod failed to turn off two types with an array';
       results.addError(errorMsg);
     }
-    tests.setType('all', true);
+    tests.setMethod('all', true);
 
-    before = tests.getType('start') && tests.getType('misc');
-    tests.turnOff('all');
-    after = tests.getType('start') && tests.getType('misc');
+    before = tests.getMethod('start') && tests.getMethod('misc');
+    tests.turnOffMethod('all');
+    after = tests.getMethod('start') && tests.getMethod('misc');
     if (!before || after) {
-      errorMsg = 'debug.turnOff failed to turn off all types';
+      errorMsg = 'debug.turnOffMethod failed to turn off all types';
       results.addError(errorMsg);
     }
 
@@ -1154,14 +1225,14 @@
 
   /**
    * -------------------------------------------------
-   * Public Method (Tests.checkTurnOnDebugger)
+   * Public Method (Tests.checkAddBreakpoint)
    * -------------------------------------------------
-   * @desc Checks Debug.turnOnDebugger method.
+   * @desc Checks Debug.addBreakpoint method.
    * @type {function}
    */
-  Tests.checkTurnOnDebugger = function() {
+  Tests.checkAddBreakpoint = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {boolean} */
     var before;
@@ -1169,50 +1240,49 @@
     var after;
     /** @type {string} */
     var errorMsg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
 
-    results = new TestResults('Tests.checkTurnOnDebugger');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkAddBreakpoint');
 
     // Setup for the tests
-    tests = aIV.debug('Tests.checkTurnOnDebugger');
+    tests = aIV.console.create('Tests.checkAddBreakpoint');
 
     // Run the tests
-    before = tests.getBugger('misc');
-    tests.turnOnDebugger('misc');
-    after = tests.getBugger('misc');
+    before = tests.getBreakpoint('misc');
+    tests.addBreakpoint('misc');
+    after = tests.getBreakpoint('misc');
     if (before || !after) {
-      errorMsg = 'debug.turnOnDebugger failed to turn on one type';
+      errorMsg = 'debug.addBreakpoint failed to turn on one type';
       results.addError(errorMsg);
     }
-    tests.setBugger('misc', false);
+    tests.setBreakpoint('misc', false);
 
-    before = tests.getBugger('start') && tests.getBugger('misc');
-    tests.turnOnDebugger('start misc');
-    after = tests.getBugger('start') && tests.getBugger('misc');
+    before = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
+    tests.addBreakpoint('start misc');
+    after = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     if (before || !after) {
-      errorMsg = 'debug.turnOnDebugger failed to turn on two ';
+      errorMsg = 'debug.addBreakpoint failed to turn on two ';
       errorMsg += 'types with a string';
       results.addError(errorMsg);
     }
-    tests.setBugger('all', false);
+    tests.setBreakpoint('all', false);
 
-    before = tests.getBugger('start') && tests.getBugger('misc');
-    tests.turnOnDebugger([ 'start', 'misc' ]);
-    after = tests.getBugger('start') && tests.getBugger('misc');
+    before = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
+    tests.addBreakpoint([ 'start', 'misc' ]);
+    after = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     if (before || !after) {
-      errorMsg = 'debug.turnOnDebugger failed to turn on two ';
+      errorMsg = 'debug.addBreakpoint failed to turn on two ';
       errorMsg += 'types with an array';
       results.addError(errorMsg);
     }
-    tests.setBugger('all', false);
+    tests.setBreakpoint('all', false);
 
-    before = tests.getBugger('start') && tests.getBugger('misc');
-    tests.turnOnDebugger('all');
-    after = tests.getBugger('start') && tests.getBugger('misc');
+    before = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
+    tests.addBreakpoint('all');
+    after = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     if (before || !after) {
-      errorMsg = 'debug.turnOnDebugger failed to turn on all types';
+      errorMsg = 'debug.addBreakpoint failed to turn on all types';
       results.addError(errorMsg);
     }
 
@@ -1222,14 +1292,14 @@
 
   /**
    * -------------------------------------------------
-   * Public Method (Tests.checkTurnOffDebugger)
+   * Public Method (Tests.checkRemoveBreakpoint)
    * -------------------------------------------------
-   * @desc Checks Debug.turnOffDebugger method.
+   * @desc Checks Debug.removeBreakpoint method.
    * @type {function}
    */
-  Tests.checkTurnOffDebugger = function() {
+  Tests.checkRemoveBreakpoint = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {boolean} */
     var before;
@@ -1237,53 +1307,52 @@
     var after;
     /** @type {string} */
     var errorMsg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
 
-    results = new TestResults('Tests.checkTurnOffDebugger');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkRemoveBreakpoint');;
 
     // Setup for the tests
-    tests = aIV.debug({
-      classTitle     : 'Tests.checkTurnOffDebugger',
-      turnOnDebuggers: 'all'
+    tests = aIV.console.create({
+      classTitle    : 'Tests.checkRemoveBreakpoint',
+      addBreakpoints: 'all'
     });
 
     // Run the tests
-    before = tests.getBugger('misc');
-    tests.turnOffDebugger('misc');
-    after = tests.getBugger('misc');
+    before = tests.getBreakpoint('misc');
+    tests.removeBreakpoint('misc');
+    after = tests.getBreakpoint('misc');
     if (!before || after) {
-      errorMsg = 'debug.turnOffDebugger failed to turn off one type';
+      errorMsg = 'debug.removeBreakpoint failed to turn off one type';
       results.addError(errorMsg);
     }
-    tests.setBugger('misc', true);
+    tests.setBreakpoint('misc', true);
 
-    before = tests.getBugger('start') && tests.getBugger('misc');
-    tests.turnOffDebugger('start misc');
-    after = tests.getBugger('start') && tests.getBugger('misc');
+    before = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
+    tests.removeBreakpoint('start misc');
+    after = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     if (!before || after) {
-      errorMsg = 'debug.turnOffDebugger failed to turn off two ';
+      errorMsg = 'debug.removeBreakpoint failed to turn off two ';
       errorMsg += 'types with a string';
       results.addError(errorMsg);
     }
-    tests.setBugger('all', true);
+    tests.setBreakpoint('all', true);
 
-    before = tests.getBugger('start') && tests.getBugger('misc');
-    tests.turnOffDebugger([ 'start', 'misc' ]);
-    after = tests.getBugger('start') && tests.getBugger('misc');
+    before = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
+    tests.removeBreakpoint([ 'start', 'misc' ]);
+    after = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     if (!before || after) {
-      errorMsg = 'debug.turnOffDebugger failed to turn off two ';
+      errorMsg = 'debug.removeBreakpoint failed to turn off two ';
       errorMsg += 'types with an array';
       results.addError(errorMsg);
     }
-    tests.setBugger('all', true);
+    tests.setBreakpoint('all', true);
 
-    before = tests.getBugger('start') && tests.getBugger('misc');
-    tests.turnOffDebugger('all');
-    after = tests.getBugger('start') && tests.getBugger('misc');
+    before = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
+    tests.removeBreakpoint('all');
+    after = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     if (!before || after) {
-      errorMsg = 'debug.turnOffDebugger failed to turn off all types';
+      errorMsg = 'debug.removeBreakpoint failed to turn off all types';
       results.addError(errorMsg);
     }
 
@@ -1293,115 +1362,126 @@
 
   /**
    * -------------------------------------------------
-   * Public Method (Tests.checkSetConfig)
+   * Public Method (Tests.checkConsoleSet)
    * -------------------------------------------------
-   * @desc Checks the setting of the debug module configuration.
+   * @desc Checks aIV.console.set method.
    * @type {function}
    */
-  Tests.checkSetConfig = function() {
+  Tests.checkConsoleSet = function() {
 
-    /** @type {TestResults} */
+    /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var msg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
 
-    results = new TestResults('Tests.checkSetConfig');
-    Object.freeze(results);
+    results = new TestResults('Tests.checkConsoleSet');
 
     // Setup for the tests
-    aIV.debug.setConfig({
-      turnOffTypes   : 'all',
-      turnOnDebuggers: 'all'
+    aIV.console.set({
+      turnOffMethods: 'all',
+      addBreakpoints: 'all'
     });
     tests = {
-      all : aIV.debug('Tests.checkSetConfig.all'),
-      none: aIV.debug({
-        classTitle     : 'Tests.checkSetConfig.none',
-        turnOffTypes   : 'none',
-        turnOnDebuggers: 'none'
+      all : aIV.console.create('Tests.checkConsoleSet.all'),
+      none: aIV.console.create({
+        classTitle    : 'Tests.checkConsoleSet.none',
+        turnOffMethods: 'none',
+        addBreakpoints: 'none'
       })
     };
 
     // Run the tests
-    if (tests.all.getType('start') ||
-        tests.all.getType('args')  ||
-        tests.all.getType('fail')  ||
-        tests.all.getType('group') ||
-        tests.all.getType('state') ||
-        tests.all.getType('misc')) {
-      msg = 'Tests.checkSetConfig.all failed: no types should be on';
+    if (tests.all.getMethod('start') ||
+        tests.all.getMethod('args')  ||
+        tests.all.getMethod('fail')  ||
+        tests.all.getMethod('group') ||
+        tests.all.getMethod('state') ||
+        tests.all.getMethod('misc')) {
+      msg = 'Tests.checkConsoleSet.all failed: no types should be on';
       results.addError(msg);
     }
 
-    if (!tests.all.getBugger('start') ||
-        !tests.all.getBugger('args')  ||
-        !tests.all.getBugger('fail')  ||
-        !tests.all.getBugger('group') ||
-        !tests.all.getBugger('state') ||
-        !tests.all.getBugger('misc')) {
-      msg = 'Tests.checkSetConfig.all failed: all debuggers should be on';
+    if (!tests.all.getBreakpoint('start') ||
+        !tests.all.getBreakpoint('args')  ||
+        !tests.all.getBreakpoint('fail')  ||
+        !tests.all.getBreakpoint('group') ||
+        !tests.all.getBreakpoint('state') ||
+        !tests.all.getBreakpoint('misc')) {
+      msg = 'Tests.checkConsoleSet.all failed: all debuggers should be on';
       results.addError(msg);
     }
 
-    if (!tests.none.getType('start') ||
-        !tests.none.getType('args')  ||
-        !tests.none.getType('fail')  ||
-        !tests.none.getType('group') ||
-        !tests.none.getType('state') ||
-        !tests.none.getType('misc')) {
-      msg = 'Tests.checkSetConfig.none failed: all types should be on';
+    if (!tests.none.getMethod('start') ||
+        !tests.none.getMethod('args')  ||
+        !tests.none.getMethod('fail')  ||
+        !tests.none.getMethod('group') ||
+        !tests.none.getMethod('state') ||
+        !tests.none.getMethod('misc')) {
+      msg = 'Tests.checkConsoleSet.none failed: all types should be on';
       results.addError(msg);
     }
 
-    if (tests.none.getBugger('start') ||
-        tests.none.getBugger('args')  ||
-        tests.none.getBugger('fail')  ||
-        tests.none.getBugger('group') ||
-        tests.none.getBugger('state') ||
-        tests.none.getBugger('misc')) {
-      msg = 'Tests.checkSetConfig.none failed: no debuggers should be on';
+    if (tests.none.getBreakpoint('start') ||
+        tests.none.getBreakpoint('args')  ||
+        tests.none.getBreakpoint('fail')  ||
+        tests.none.getBreakpoint('group') ||
+        tests.none.getBreakpoint('state') ||
+        tests.none.getBreakpoint('misc')) {
+      msg = 'Tests.checkConsoleSet.none failed: no debuggers should be on';
       results.addError(msg);
     }
 
     // Reset the config before continuing
-    aIV.debug.setConfig({
-      turnOffTypes   : '',
-      turnOnDebuggers: 'none'
+    //aIV.console.reset();
+    aIV.console.set({
+      turnOffMethods: '',
+      addBreakpoints: 'none'
     });
 
     // Save the results
     app.results.push(results);
   };
 
-  Object.freeze(Tests);
-  Object.keys(Tests).forEach(function(/** string */ name) {
-    Object.freeze(Tests[name]);
-  });
+  // Deep freeze Tests
+  (function(Tests) {
 
+    /** @type {string} */
+    var prop;
+
+    Object.freeze(Tests);
+
+    for (prop in Tests) {
+      if ( hasOwnProp(Tests, prop) ) {
+        Object.freeze(Tests[ prop ]);
+      }
+    }
+  })(Tests);
 
 /* -----------------------------------------------------------------------------
- * | The App Class                                                             |
- * v ------------------------------------------------------------------------- v
-                                                             classes/app.js */
+ * The App Class (classes/app.js)
+ * -------------------------------------------------------------------------- */
+
   /**
    * -----------------------------------------------------
    * Public Class (App)
    * -----------------------------------------------------
-   * @desc The base class for the app.
+   * @desc The constructor for the App class.
    * @constructor
    */
   var App = function() {
 
-    console.log('The tests App is being setup.');
+    ////////////////////////////////////////////////////////////////////////////
+    // Define The Public Properties
+    ////////////////////////////////////////////////////////////////////////////
 
     /**
      * ---------------------------------------------------
-     * Private Property (App.elems)
+     * Public Property (App.elems)
      * ---------------------------------------------------
-     * @desc The elements for this app.
-     * @type {Object}
+     * @desc The DOM elements for this app.
+     * @type {!Object}
      */
     this.elems;
 
@@ -1410,7 +1490,7 @@
      * Public Property (App.results)
      * -----------------------------------------------
      * @desc Saves the results of the tests.
-     * @type {Array<TestResults>}
+     * @type {!Array<TestResults>}
      */
     this.results;
 
@@ -1419,20 +1499,29 @@
      * Public Property (App.choices)
      * -----------------------------------------------
      * @desc Saves the choices to be executed.
-     * @type {Array<Choices>}
+     * @type {!Array<Choices>}
      */
     this.choices;
 
+    ////////////////////////////////////////////////////////////////////////////
+    // Setup The Public Properties
+    ////////////////////////////////////////////////////////////////////////////
 
-    // Setup the properties
     this.elems = new Elems();
     this.results = [];
     this.choices = [];
 
-    Object.freeze(this.elems);
+    ////////////////////////////////////////////////////////////////////////////
+    // End Of The Class Setup
+    ////////////////////////////////////////////////////////////////////////////
+
+    Object.freeze(this);
   };
 
-  // Ensure constructor is set to this class.
+////////////////////////////////////////////////////////////////////////////////
+// The Prototype Methods
+////////////////////////////////////////////////////////////////////////////////
+
   App.prototype.constructor = App;
 
   /**
@@ -1458,8 +1547,8 @@
 
     // Check init's params
     Tests.checkClassTitle();
-    Tests.checkTurnOffTypes();
-    Tests.checkTurnOnDebuggers();
+    Tests.checkTurnOffMethods();
+    Tests.checkAddBreakpoints();
 
     // Check instance 
     Tests.checkInstances();
@@ -1473,13 +1562,13 @@
     Tests.checkMisc();
 
     // Check the setting methods
-    Tests.checkTurnOn();
-    Tests.checkTurnOff();
-    Tests.checkTurnOnDebugger();
-    Tests.checkTurnOffDebugger();
+    Tests.checkTurnOnMethod();
+    Tests.checkTurnOffMethod();
+    Tests.checkAddBreakpoint();
+    Tests.checkRemoveBreakpoint();
 
     // Check the config setter
-    Tests.checkSetConfig();
+    Tests.checkConsoleSet();
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -1487,8 +1576,9 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-    // Run the choices and record the results
-    this.runChoices();
+    // Show the choices and record the results
+    this.choices.reverse();
+    this.showChoices();
   };
 
   /**
@@ -1497,50 +1587,50 @@
    * -----------------------------------------------
    * @desc Adds a new choice to the app.
    * @param {string} choiceMsg - The choice message.
-   * @param {TestResults} results - The results object.
+   * @param {!TestResults} results - The results object.
    * @param {string} errorMsg - The error message.
-   * @param {?Object=} before - A function that gets called before
+   * @param {?function=} before - A function that gets called before
    *   the choice is shown.
-   * @param {?Object=} after - A function that gets called after
+   * @param {?function=} after - A function that gets called after
    *   a choice is completed.
    */
   App.prototype.addChoice = function(choiceMsg, results, errorMsg, before, after) {
 
-    /** @type {Choice} */
+    /** @type {!Choice} */
     var choice;
     /** @type {string} */
-    var argsMsg;
+    var typeErrorMsg;
 
     if (typeof choiceMsg !== 'string' || !(results instanceof TestResults) ||
         typeof errorMsg !== 'string') {
-      argsMsg = 'An addChoice call was given an argument of the wrong data type.';
-      console.error(argsMsg);
-      debugger;
+      typeErrorMsg = 'An addChoice call was given an invalid param data type.';
+      throw new TypeError(typeErrorMsg);
+      return;
     }
+
     if (!before || typeof before !== 'function') {
-      before = null;
+      before = function() {};
     }
     if (!after || typeof after !== 'function') {
-      after = null;
+      after = function() {};
     }
 
     choice = new Choice(choiceMsg, results, errorMsg, before, after);
-    Object.freeze(choice);
 
     this.choices.push(choice);
   };
 
   /**
    * -----------------------------------------------
-   * Public Method (App.prototype.runChoices)
+   * Public Method (App.prototype.showChoices)
    * -----------------------------------------------
    * @desc Show each choice until all results have been recorded.
    *   Then show the results.
    * @type {function}
    */
-  App.prototype.runChoices = function() {
+  App.prototype.showChoices = function() {
 
-    /** @type {Choice} */
+    /** @type {!Choice} */
     var choice;
 
     console.clear();
@@ -1550,35 +1640,29 @@
       return;
     }
 
-    choice = this.choices.splice(0, 1)[0];
+    choice = this.choices.pop();
 
     // Hide the UI while setup is occurring
     this.elems.ui.style.opacity = '0';
 
-    if (choice.before) {
-      choice.before();
-    }
+    choice.before();
 
     setTimeout(function() {
 
       // Give the choice directions
-      app.elems.msg.textContent = choice.msg;
+      app.elems.msg.innerHTML = choice.msg;
 
       // Set the #yes onClick event
       app.elems.yes.onclick = function() {
-        if (choice.after) {
-          choice.after();
-        }
-        app.runChoices();
+        choice.after();
+        app.showChoices();
       };
 
       // Set the #no onClick event
       app.elems.no.onclick = function() {
         choice.fail();
-        if (choice.after) {
-          choice.after();
-        }
-        app.runChoices();
+        choice.after();
+        app.showChoices();
       };
 
       app.elems.choose.style.display = 'block';
@@ -1649,11 +1733,10 @@
     }, 500);
   };
 
-
 /* -----------------------------------------------------------------------------
- * | The Elems Class                                                           |
- * v ------------------------------------------------------------------------- v
-                                                           classes/elems.js */
+ * The Elems Class (classes/elems.js)
+ * -------------------------------------------------------------------------- */
+
   /**
    * -----------------------------------------------------
    * Public Class (Elems)
@@ -1663,11 +1746,13 @@
    */
   var Elems = function() {
 
-    console.log('Elems is being setup.');
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Public Properties
+    ////////////////////////////////////////////////////////////////////////////
 
     /**
      * ---------------------------------------------------
-     * Private Property (Elems.msg)
+     * Public Property (Elems.msg)
      * ---------------------------------------------------
      * @desc Element: #msg
      * @type {HTMLElement}
@@ -1676,7 +1761,7 @@
 
     /**
      * ---------------------------------------------------
-     * Private Property (Elems.ui)
+     * Public Property (Elems.ui)
      * ---------------------------------------------------
      * @desc Element: #ui
      * @type {HTMLElement}
@@ -1685,7 +1770,7 @@
 
     /**
      * ---------------------------------------------------
-     * Private Property (Elems.start)
+     * Public Property (Elems.start)
      * ---------------------------------------------------
      * @desc Element: #start
      * @type {HTMLElement}
@@ -1694,7 +1779,7 @@
 
     /**
      * ---------------------------------------------------
-     * Private Property (Elems.choose)
+     * Public Property (Elems.choose)
      * ---------------------------------------------------
      * @desc Element: #choose
      * @type {HTMLElement}
@@ -1703,7 +1788,7 @@
 
     /**
      * ---------------------------------------------------
-     * Private Property (Elems.yes)
+     * Public Property (Elems.yes)
      * ---------------------------------------------------
      * @desc Element: #yes
      * @type {HTMLElement}
@@ -1712,15 +1797,24 @@
 
     /**
      * ---------------------------------------------------
-     * Private Property (Elems.no)
+     * Public Property (Elems.no)
      * ---------------------------------------------------
      * @desc Element: #no
      * @type {HTMLElement}
      */
     this.no = getID('no');
+
+    ////////////////////////////////////////////////////////////////////////////
+    // End Of The Class Setup
+    ////////////////////////////////////////////////////////////////////////////
+
+    Object.freeze(this);
   };
 
-  // Ensure constructor is set to this class.
+////////////////////////////////////////////////////////////////////////////////
+// The Prototype Methods
+////////////////////////////////////////////////////////////////////////////////
+
   Elems.prototype.constructor = Elems;
 
   /**
@@ -1728,11 +1822,11 @@
    * Public Method (Elems.prototype.clearUI)
    * -----------------------------------------------
    * @desc Clears the current interactions.
-   * @type {function()}
+   * @type {function}
    */
   Elems.prototype.clearUI = function() {
 
-    /** @type {Object} */
+    /** @type {!Elems} */
     var that;
 
     that = this;
@@ -1740,64 +1834,17 @@
     this.ui.style.opacity = '0';
 
     setTimeout(function() {
-      that.msg.textContent = 'Tests are running.';
+      that.msg.innerHTML = 'Tests are running.';
       that.start.style.display = 'none';
       that.choose.style.display = 'none';
       that.ui.style.opacity = '1';
     }, 500);
   };
 
-  /**
-   * -----------------------------------------------
-   * Public Method (Elems.prototype.showMsg)
-   * -----------------------------------------------
-   * @desc Shows a message to the user.
-   * @param {string} msg - The message to show.
-   */
-  Elems.prototype.showMsg = function(msg) {
-
-    /** @type {Object} */
-    var that;
-
-    that = this;
-
-    this.ui.style.opacity = '0';
-
-    setTimeout(function() {
-      that.msg.textContent = msg;
-      that.choose.style.display = 'none';
-      that.ui.style.opacity = '1';
-    }, 500);
-  };
-
-  /**
-   * -----------------------------------------------
-   * Public Method (Elems.prototype.showChoice)
-   * -----------------------------------------------
-   * @desc Shows a message with 'yes' or 'no' options to the user.
-   * @param {string} msg - The message to show.
-   */
-  Elems.prototype.showChoice = function(msg) {
-
-    /** @type {Object} */
-    var that;
-
-    that = this;
-
-    this.ui.style.opacity = '0';
-
-    setTimeout(function() {
-      that.msg.textContent = msg;
-      that.choose.style.display = 'block';
-      that.ui.style.opacity = '1';
-    }, 500);
-  };
-
-
 /* -----------------------------------------------------------------------------
- * | The Test Results Class                                                    |
- * v ------------------------------------------------------------------------- v
-                                                    classes/test-results.js */
+ * The Test Results Class (classes/test-results.js)
+ * -------------------------------------------------------------------------- */
+
   /**
    * -----------------------------------------------------
    * Public Class (TestResults)
@@ -1807,6 +1854,10 @@
    * @constructor
    */
   var TestResults = function(type) {
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Protected Properties
+    ////////////////////////////////////////////////////////////////////////////
 
     /**
      * ----------------------------------------------- 
@@ -1825,6 +1876,10 @@
      * @type {?strings}
      */
     var errors = null;
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Public Methods
+    ////////////////////////////////////////////////////////////////////////////
 
     /**
      * ----------------------------------------------- 
@@ -1851,7 +1906,6 @@
 
       return report;
     };
-    Object.freeze(this.reportResult);
 
     /**
      * ----------------------------------------------- 
@@ -1891,7 +1945,6 @@
 
       return report;
     };
-    Object.freeze(this.reportErrors);
 
     /**
      * ----------------------------------------------- 
@@ -1903,7 +1956,6 @@
     this.getResult = function() {
       return result;
     };
-    Object.freeze(this.getResult);
 
     /**
      * ----------------------------------------------- 
@@ -1917,7 +1969,6 @@
         result = pass;
       }
     };
-    Object.freeze(this.setResult);
 
     /**
      * ----------------------------------------------- 
@@ -1931,7 +1982,7 @@
       result = false;
 
       if (typeof msg !== 'string') {
-        msg = 'No error message was provided';
+        msg = 'No error message was provided.';
       }
 
       if (errors) {
@@ -1941,32 +1992,48 @@
         errors = [ msg ];
       }
     };
+
+    ////////////////////////////////////////////////////////////////////////////
+    // End Of The Class Setup
+    ////////////////////////////////////////////////////////////////////////////
+
+    Object.freeze(this.reportResult);
+    Object.freeze(this.reportErrors);
+    Object.freeze(this.getResult);
+    Object.freeze(this.setResult);
     Object.freeze(this.addError);
+    Object.freeze(this);
   };
 
-  // Ensure constructor is set to this class.
+////////////////////////////////////////////////////////////////////////////////
+// The Prototype Methods
+////////////////////////////////////////////////////////////////////////////////
+
   TestResults.prototype.constructor = TestResults;
 
-
 /* -----------------------------------------------------------------------------
- * | The Choice Class                                                          |
- * v ------------------------------------------------------------------------- v
-                                                          classes/choice.js */
+ * The Choice Class (classes/choice.js)
+ * -------------------------------------------------------------------------- */
+
   /**
    * -----------------------------------------------------
    * Public Class (Choice)
    * -----------------------------------------------------
    * @desc A choice to be executed.
    * @param {string} choiceMsg - The choice message.
-   * @param {TestResults} results - The results object.
+   * @param {!TestResults} results - The results object.
    * @param {string} errorMsg - The error message.
-   * @param {?function} before - A function that gets called before
+   * @param {function} before - A function that gets called before
    *   the choice is shown.
-   * @param {?function} after - A function that gets called after
+   * @param {function} after - A function that gets called after
    *   a choice is completed.
    * @constructor
    */
   var Choice = function(choiceMsg, results, errorMsg, before, after) {
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Public Properties
+    ////////////////////////////////////////////////////////////////////////////
 
     /**
      * ----------------------------------------------- 
@@ -1976,6 +2043,10 @@
      * @type {string}
      */
     this.msg = choiceMsg;
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Public Methods
+    ////////////////////////////////////////////////////////////////////////////
 
     /**
      * ----------------------------------------------- 
@@ -1989,41 +2060,45 @@
       results.addError(errorMsg);
       results.setResult(false);
     };
-    Object.freeze(this.fail);
 
     /**
      * ----------------------------------------------- 
      * Public Method (Choice.before)
      * -----------------------------------------------
      * @desc Logic to call before showing the choice.
-     * @type {?function}
+     * @type {function}
      */
     this.before = before;
-    if (before) {
-      Object.freeze(before);
-    }
 
     /**
      * ----------------------------------------------- 
      * Public Method (Choice.after)
      * -----------------------------------------------
      * @desc Logic to call after completing the choice.
-     * @type {?function}
+     * @type {function}
      */
     this.after = after;
-    if (after) {
-      Object.freeze(after);
-    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // End Of The Class Setup
+    ////////////////////////////////////////////////////////////////////////////
+
+    Object.freeze(this.fail);
+    Object.freeze(this.before);
+    Object.freeze(this.after);
+    Object.freeze(this);
   };
 
-  // Ensure constructor is set to this class.
+////////////////////////////////////////////////////////////////////////////////
+// The Prototype Methods
+////////////////////////////////////////////////////////////////////////////////
+
   Choice.prototype.constructor = Choice;
 
+////////////////////////////////////////////////////////////////////////////////
+// The Tests Module End
+////////////////////////////////////////////////////////////////////////////////
 
-/* -----------------------------------------------------------------------------
- * | End of module                                                             |
- * v ------------------------------------------------------------------------- v
-                                                                            */
-  return _init;
+  return testsModuleAPI;
 
 })());
