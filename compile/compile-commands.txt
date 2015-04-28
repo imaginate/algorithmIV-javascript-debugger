@@ -61,7 +61,7 @@ tests/algorithmIV-tests.js |    |
 cd tests/pre-compiled-tests
 sed \
   -e "/public-api.js/ r public-api.js" \
-  -e "/external-api.js/ r external-api.js" \
+  -e "/module-api.js/ r module-api.js" \
   -e "/module-vars.js/ r module-vars.js" \
   -e "/module-methods.js/ r module-methods.js" \
   -e "/tests.js/ r classes/tests.js" \
@@ -77,7 +77,7 @@ rm -f pre-compiled-tests/algorithmIV-tests-temp.js
 cd tests/pre-compiled-tests
 sed ^
   -e "/public-api.js/ r public-api.js" ^
-  -e "/external-api.js/ r external-api.js" ^
+  -e "/module-api.js/ r module-api.js" ^
   -e "/module-vars.js/ r module-vars.js" ^
   -e "/module-methods.js/ r module-methods.js" ^
   -e "/tests.js/ r classes/tests.js" ^
