@@ -4,12 +4,13 @@
  * -----------------------------------------------------------------------------
  * Algorithm IV Debugger (v1.1.0)
  * -----------------------------------------------------------------------------
- * @file Algorithm IV's debugger is a console wrapper that provides a clear log
- * structure for you to follow, reduces the amount of time and code it takes to
- * find a bug, and gives you complete control over switching logs, breakpoints,
- * tests, and more on or off. With proper use you will know and control the
- * actions of every JavaScript module in your code base!
- * @module aIVDebug
+ * @file Algorithm IV's debugger is a console wrapper that fixes cross-browser
+ *   console issues and provides a set of new console methods that make your
+ *   console more powerful. Reduce the amount of time and code it takes to find
+ *   a bug, automatically insert breakpoints, profiles, and timers, and switch
+ *   everything on or off with one command. With proper use you will know and
+ *   control the actions of every JavaScript method in your code base!
+ * @module aIVConsole
  * @version 1.1.0
  * @author Adam Smith ({@link adamsmith@youlum.com})
  * @copyright 2015 Adam A Smith ([github.com/imaginate]{@link https://github.com/imaginate})
