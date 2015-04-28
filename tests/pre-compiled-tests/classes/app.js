@@ -2,19 +2,21 @@
    * -----------------------------------------------------
    * Public Class (App)
    * -----------------------------------------------------
-   * @desc The base class for the app.
+   * @desc The constructor for the App class.
    * @constructor
    */
   var App = function() {
 
-    console.log('The tests App is being setup.');
+    ////////////////////////////////////////////////////////////////////////////
+    // Define The Public Properties
+    ////////////////////////////////////////////////////////////////////////////
 
     /**
      * ---------------------------------------------------
-     * Private Property (App.elems)
+     * Public Property (App.elems)
      * ---------------------------------------------------
-     * @desc The elements for this app.
-     * @type {Object}
+     * @desc The DOM elements for this app.
+     * @type {!Object}
      */
     this.elems;
 
@@ -23,7 +25,7 @@
      * Public Property (App.results)
      * -----------------------------------------------
      * @desc Saves the results of the tests.
-     * @type {Array<TestResults>}
+     * @type {!Array<TestResults>}
      */
     this.results;
 
@@ -32,20 +34,29 @@
      * Public Property (App.choices)
      * -----------------------------------------------
      * @desc Saves the choices to be executed.
-     * @type {Array<Choices>}
+     * @type {!Array<Choices>}
      */
     this.choices;
 
+    ////////////////////////////////////////////////////////////////////////////
+    // Setup The Public Properties
+    ////////////////////////////////////////////////////////////////////////////
 
-    // Setup the properties
     this.elems = new Elems();
     this.results = [];
     this.choices = [];
 
-    Object.freeze(this.elems);
+    ////////////////////////////////////////////////////////////////////////////
+    // End Of The Class Setup
+    ////////////////////////////////////////////////////////////////////////////
+
+    Object.freeze(this);
   };
 
-  // Ensure constructor is set to this class.
+////////////////////////////////////////////////////////////////////////////////
+// The Prototype Methods
+////////////////////////////////////////////////////////////////////////////////
+
   App.prototype.constructor = App;
 
   /**
