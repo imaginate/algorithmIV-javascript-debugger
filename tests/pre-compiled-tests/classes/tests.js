@@ -20,7 +20,7 @@
     var results;
     /** @type {string} */
     var msg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
 
     results = new TestResults('Tests.checkClassTitle');;
@@ -70,7 +70,7 @@
     var results;
     /** @type {string} */
     var msg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
 
     results = new TestResults('Tests.checkTurnOffMethods');;
@@ -141,7 +141,7 @@
     var results;
     /** @type {string} */
     var msg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
 
     results = new TestResults('Tests.checkAddBreakpoints');;
@@ -203,8 +203,7 @@
    * -------------------------------------------------
    * Public Method (Tests.checkInstances)
    * -------------------------------------------------
-   * @desc Checks that instances are not created twice for the
-   *   same class.
+   * @desc Checks that instances are not created twice for the same class.
    * @type {function}
    */
   Tests.checkInstances = function() {
@@ -215,7 +214,7 @@
     var choiceMsg;
     /** @type {string} */
     var errorMsg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
     /** @type {boolean} */
     var pass;
@@ -226,7 +225,7 @@
     tests = {
       first : aIV.console.create('Tests.checkInstances'),
       second: aIV.console.create({
-        classTitle  : 'Tests.checkInstances',
+        classTitle    : 'Tests.checkInstances',
         turnOffMethods: 'misc'
       })
     };
@@ -239,7 +238,7 @@
       results.addError(errorMsg);
     }
 
-    tests.first.setType('misc', false);
+    tests.first.setMethod('misc', false);
     pass = tests.first.misc('test3', 'Instance Test 3');
     pass = pass || tests.second.misc('test4', 'Instance Test 4');
     if (pass) {
@@ -266,7 +265,7 @@
     var choiceMsg;
     /** @type {string} */
     var errorMsg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
     /** @type {boolean} */
     var pass;
@@ -322,7 +321,7 @@
     var choiceMsg;
     /** @type {string} */
     var errorMsg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
     /** @type {boolean} */
     var pass;
@@ -330,10 +329,19 @@
     var fail;
     /** @type {HTMLElement} */
     var elem;
-    /** @type {Object} */
+    /** @type {!Object} */
+    var obj;
+    /** @type {function} */
+    var func;
+    /** @type {!Array} */
+    var arr;
+    /** @type {!Object} */
     var testMap;
 
     elem = document.createElement('div');
+    obj = {};
+    func = function() {};
+    arr = [];
 
     results = new TestResults('Tests.checkArgs');;
 
@@ -377,8 +385,8 @@
     }
 
     // Object check
-    pass = tests.args('testMethod', {}, 'object');
-    pass = pass && tests.args([ 'testMethod', {}, 'object' ]);
+    pass = tests.args('testMethod', obj, 'object');
+    pass = pass && tests.args([ 'testMethod', obj, 'object' ]);
     fail = tests.args('testMethod', 's', 'object');
     fail = fail || tests.args([ 'testMethod', 1, 'object' ]);
     if (pass || !fail) {
@@ -387,10 +395,10 @@
     }
 
     // Function check
-    pass = tests.args('testMethod', function(){}, 'function');
-    pass = pass && tests.args([ 'testMethod', function(){}, 'function' ]);
+    pass = tests.args('testMethod', func, 'function');
+    pass = pass && tests.args([ 'testMethod', func, 'function' ]);
     fail = tests.args('testMethod', 's', 'function');
-    fail = fail || tests.args([ 'testMethod', {}, 'function' ]);
+    fail = fail || tests.args([ 'testMethod', obj, 'function' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: function check failed';
       results.addError(errorMsg);
@@ -399,17 +407,25 @@
     // Element check
     pass = tests.args('testMethod', elem, 'elem');
     pass = pass && tests.args([ 'testMethod',  elem, 'elem' ]);
-    fail = tests.args('testMethod', {}, 'elem');
+    fail = tests.args('testMethod', obj, 'elem');
     fail = fail || tests.args([ 'testMethod', 5, 'elem' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: elem check failed';
+      results.addError(errorMsg);
+    }
+    pass = tests.args('testMethod', elem, 'element');
+    pass = pass && tests.args([ 'testMethod',  elem, 'element' ]);
+    fail = tests.args('testMethod', obj, 'element');
+    fail = fail || tests.args([ 'testMethod', 5, 'element' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: element check failed';
       results.addError(errorMsg);
     }
 
     // Undefined check
     pass = tests.args('testMethod', undefined, 'undefined');
     pass = pass && tests.args([ 'testMethod', undefined, 'undefined' ]);
-    fail = tests.args('testMethod', {}, 'undefined');
+    fail = tests.args('testMethod', obj, 'undefined');
     fail = fail || tests.args([ 'testMethod', 's', 'undefined' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: undefined check failed';
@@ -417,9 +433,9 @@
     }
 
     // Array check
-    pass = tests.args('testMethod', [], 'array');
-    pass = pass && tests.args([ 'testMethod', [], 'array' ]);
-    fail = tests.args('testMethod', {}, 'array');
+    pass = tests.args('testMethod', arr, 'array');
+    pass = pass && tests.args([ 'testMethod', arr, 'array' ]);
+    fail = tests.args('testMethod', obj, 'array');
     fail = fail || tests.args([ 'testMethod', 1, 'array' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: array check failed';
@@ -430,7 +446,7 @@
     pass = tests.args('testMethod', [ 's' ], 'strings');
     pass = pass && tests.args([ 'testMethod', [ 's' ], 'strings' ]);
     fail = tests.args('testMethod', [ 1 ], 'strings');
-    fail = fail || tests.args([ 'testMethod', {}, 'strings' ]);
+    fail = fail || tests.args([ 'testMethod', obj, 'strings' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: strings check failed';
       results.addError(errorMsg);
@@ -438,9 +454,9 @@
 
     // Numbers check
     pass = tests.args('testMethod', [ 1, 5 ], 'numbers');
-    pass = pass && tests.args([ 'testMethod', [], 'numbers' ]);
+    pass = pass && tests.args([ 'testMethod', arr, 'numbers' ]);
     fail = tests.args('testMethod', [ 1, 's' ], 'numbers');
-    fail = fail || tests.args([ 'testMethod', {}, 'numbers' ]);
+    fail = fail || tests.args([ 'testMethod', obj, 'numbers' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: numbers check failed';
       results.addError(errorMsg);
@@ -450,27 +466,27 @@
     pass = tests.args('testMethod', [ false ], 'booleans');
     pass = pass && tests.args([ 'testMethod', [ true ], 'booleans' ]);
     fail = tests.args('testMethod', [ 's' ], 'booleans');
-    fail = fail || tests.args([ 'testMethod', {}, 'booleans' ]);
+    fail = fail || tests.args([ 'testMethod', obj, 'booleans' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: booleans check failed';
       results.addError(errorMsg);
     }
 
     // Functions check
-    pass = tests.args('testMethod', [ function(){} ], 'functions');
-    pass = pass && tests.args([ 'testMethod', [ function(){} ], 'functions' ]);
-    fail = tests.args('testMethod', [ function(){}, 1 ], 'functions');
-    fail = fail || tests.args([ 'testMethod', [ {} ], 'functions' ]);
+    pass = tests.args('testMethod', [ func ], 'functions');
+    pass = pass && tests.args([ 'testMethod', [ func ], 'functions' ]);
+    fail = tests.args('testMethod', [ func, 1 ], 'functions');
+    fail = fail || tests.args([ 'testMethod', [ obj ], 'functions' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: functions check failed';
       results.addError(errorMsg);
     }
 
     // Objects check
-    pass = tests.args('testMethod', [ {} ], 'objects');
-    pass = pass && tests.args([ 'testMethod', [ {} ], 'objects' ]);
+    pass = tests.args('testMethod', [ obj ], 'objects');
+    pass = pass && tests.args([ 'testMethod', [ obj ], 'objects' ]);
     fail = tests.args('testMethod', [ 1 ], 'objects');
-    fail = fail || tests.args([ 'testMethod', {}, 'objects' ]);
+    fail = fail || tests.args([ 'testMethod', obj, 'objects' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: objects check failed';
       results.addError(errorMsg);
@@ -478,9 +494,9 @@
 
     // Arrays check
     pass = tests.args('testMethod', [ [ 1 ] ], 'arrays');
-    pass = pass && tests.args([ 'testMethod', [ [] ], 'arrays' ]);
-    fail = tests.args('testMethod', [ [], 1 ], 'arrays');
-    fail = fail || tests.args([ 'testMethod', [ {} ], 'arrays' ]);
+    pass = pass && tests.args([ 'testMethod', [ arr ], 'arrays' ]);
+    fail = tests.args('testMethod', [ arr, 1 ], 'arrays');
+    fail = fail || tests.args([ 'testMethod', [ obj ], 'arrays' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: arrays check failed';
       results.addError(errorMsg);
@@ -489,17 +505,25 @@
     // Elements check
     pass = tests.args('testMethod', [ elem ], 'elems');
     pass = pass && tests.args([ 'testMethod',  [ elem ], 'elems' ]);
-    fail = tests.args('testMethod', [ {} ], 'elems');
+    fail = tests.args('testMethod', [ obj ], 'elems');
     fail = fail || tests.args([ 'testMethod', 5, 'elems' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: elems check failed';
+      results.addError(errorMsg);
+    }
+    pass = tests.args('testMethod', [ elem ], 'elements');
+    pass = pass && tests.args([ 'testMethod',  [ elem ], 'elements' ]);
+    fail = tests.args('testMethod', [ obj ], 'elements');
+    fail = fail || tests.args([ 'testMethod', 5, 'elements' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: elements check failed';
       results.addError(errorMsg);
     }
 
     // String Map check
     testMap = { slot1: 'str', slot2: 'str' };
     pass = tests.args('testMethod', testMap, 'stringMap');
-    pass = pass && tests.args([ 'testMethod',  {}, 'stringMap' ]);
+    pass = pass && tests.args([ 'testMethod',  obj, 'stringMap' ]);
     testMap = { slot1: 'str', slot2: 1 };
     fail = tests.args('testMethod', testMap, 'stringMap');
     fail = fail || tests.args([ 'testMethod', 5, 'stringMap' ]);
@@ -511,7 +535,7 @@
     // Number Map check
     testMap = { slot1: 1, slot2: 5 };
     pass = tests.args('testMethod', testMap, 'numberMap');
-    pass = pass && tests.args([ 'testMethod',  {}, 'numberMap' ]);
+    pass = pass && tests.args([ 'testMethod',  obj, 'numberMap' ]);
     testMap = { slot1: 5, slot2: 'str' };
     fail = tests.args('testMethod', testMap, 'numberMap');
     fail = fail || tests.args([ 'testMethod', 5, 'numberMap' ]);
@@ -523,7 +547,7 @@
     // Boolean Map check
     testMap = { slot1: false, slot2: true };
     pass = tests.args('testMethod', testMap, 'booleanMap');
-    pass = pass && tests.args([ 'testMethod',  {}, 'booleanMap' ]);
+    pass = pass && tests.args([ 'testMethod',  obj, 'booleanMap' ]);
     testMap = { slot1: true, slot2: 'str' };
     fail = tests.args('testMethod', testMap, 'booleanMap');
     fail = fail || tests.args([ 'testMethod', 5, 'booleanMap' ]);
@@ -533,10 +557,10 @@
     }
 
     // Object Map check
-    testMap = { slot1: {}, slot2: {} };
+    testMap = { slot1: obj, slot2: obj };
     pass = tests.args('testMethod', testMap, 'objectMap');
-    pass = pass && tests.args([ 'testMethod',  {}, 'objectMap' ]);
-    testMap = { slot1: {}, slot2: 'str' };
+    pass = pass && tests.args([ 'testMethod',  obj, 'objectMap' ]);
+    testMap = { slot1: obj, slot2: 'str' };
     fail = tests.args('testMethod', testMap, 'objectMap');
     fail = fail || tests.args([ 'testMethod', 5, 'objectMap' ]);
     if (pass || !fail) {
@@ -545,10 +569,10 @@
     }
 
     // Function Map check
-    testMap = { slot1: function(){}, slot2: function(){} };
+    testMap = { slot1: func, slot2: func };
     pass = tests.args('testMethod', testMap, 'functionMap');
-    pass = pass && tests.args([ 'testMethod',  {}, 'functionMap' ]);
-    testMap = { slot1: {}, slot2: function(){} };
+    pass = pass && tests.args([ 'testMethod',  obj, 'functionMap' ]);
+    testMap = { slot1: obj, slot2: func };
     fail = tests.args('testMethod', testMap, 'functionMap');
     fail = fail || tests.args([ 'testMethod', 5, 'functionMap' ]);
     if (pass || !fail) {
@@ -557,10 +581,10 @@
     }
 
     // Array Map check
-    testMap = { slot1: [ 1 ], slot2: [] };
+    testMap = { slot1: [ 1 ], slot2: arr };
     pass = tests.args('testMethod', testMap, 'arrayMap');
-    pass = pass && tests.args([ 'testMethod',  {}, 'arrayMap' ]);
-    testMap = { slot1: {}, slot2: [] };
+    pass = pass && tests.args([ 'testMethod',  obj, 'arrayMap' ]);
+    testMap = { slot1: obj, slot2: arr };
     fail = tests.args('testMethod', testMap, 'arrayMap');
     fail = fail || tests.args([ 'testMethod', 5, 'arrayMap' ]);
     if (pass || !fail) {
@@ -571,34 +595,53 @@
     // Element Map check
     testMap = { slot1: elem, slot2: elem };
     pass = tests.args('testMethod', testMap, 'elemMap');
-    pass = pass && tests.args([ 'testMethod',  {}, 'elemMap' ]);
-    testMap = { slot1: {}, slot2: elem };
+    pass = pass && tests.args([ 'testMethod',  obj, 'elemMap' ]);
+    testMap = { slot1: obj, slot2: elem };
     fail = tests.args('testMethod', testMap, 'elemMap');
     fail = fail || tests.args([ 'testMethod', 5, 'elemMap' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: elemMap check failed';
       results.addError(errorMsg);
     }
+    pass = tests.args('testMethod', testMap, 'elementMap');
+    pass = pass && tests.args([ 'testMethod',  obj, 'elementMap' ]);
+    testMap = { slot1: obj, slot2: elem };
+    fail = tests.args('testMethod', testMap, 'elementMap');
+    fail = fail || tests.args([ 'testMethod', 5, 'elementMap' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: elementMap check failed';
+      results.addError(errorMsg);
+    }
 
     // Null check
-    pass = tests.args('testMethod', 's', 'string');
-    pass = pass && tests.args('testMethod', null, 'string');
-    pass = pass && tests.args([ 'testMethod', 's', 'string' ]);
-    pass = pass && tests.args([ 'testMethod', null, 'string' ]);
-    fail = tests.args('testMethod', 1, 'string');
-    fail = fail || tests.args('testMethod', undefined, 'string');
+    pass = tests.args('testMethod', null, 'string|object');
+    pass = pass && tests.args('testMethod', null, 'array');
+    pass = pass && tests.args([ 'testMethod', null, 'elem' ]);
+    pass = pass && tests.args([ 'testMethod', null, 'strings' ]);
+    fail = tests.args('testMethod', null, 'string');
+    fail = fail || tests.args('testMethod', null, 'function');
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: null check failed';
       results.addError(errorMsg);
     }
 
     // ! check
-    pass = tests.args('testMethod', 's', '!string');
-    pass = pass && tests.args([ 'testMethod', 's', '!string' ]);
-    fail = tests.args('testMethod', null, '!string');
-    fail = fail || tests.args([ 'testMethod', null, '!string' ]);
+    pass = tests.args('testMethod', null, 'array');
+    pass = pass && tests.args([ 'testMethod', null, 'object' ]);
+    fail = tests.args('testMethod', null, '!array');
+    fail = fail || tests.args([ 'testMethod', null, '!object' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: ! check failed';
+      results.addError(errorMsg);
+    }
+
+    // ? check
+    pass = tests.args('testMethod', null, '?(string|number)');
+    pass = pass && tests.args([ 'testMethod', null, '?string' ]);
+    fail = tests.args('testMethod', null, '(string|number)');
+    fail = fail || tests.args([ 'testMethod', null, 'string' ]);
+    if (pass || !fail) {
+      errorMsg = 'Tests.checkArgs failed: ? check failed';
       results.addError(errorMsg);
     }
 
@@ -606,7 +649,7 @@
     pass = tests.args('testMethod', 's', 'string|number');
     pass = pass && tests.args([ 'testMethod', 1, 'string|number' ]);
     fail = tests.args('testMethod', true, 'string|number');
-    fail = fail || tests.args([ 'testMethod', {}, 'string|number' ]);
+    fail = fail || tests.args([ 'testMethod', obj, 'string|number' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: | check failed';
       results.addError(errorMsg);
@@ -615,7 +658,7 @@
     // = check
     pass = tests.args('testMethod', undefined, 'number=');
     pass = pass && tests.args([ 'testMethod', undefined, 'number=' ]);
-    fail = tests.args('testMethod', {}, 'number=');
+    fail = tests.args('testMethod', obj, 'number=');
     fail = fail || tests.args([ 'testMethod', 's', 'number=' ]);
     if (pass || !fail) {
       errorMsg = 'Tests.checkArgs failed: = check failed';
@@ -651,7 +694,7 @@
     var choiceMsg;
     /** @type {string} */
     var errorMsg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
     /** @type {boolean} */
     var pass;
@@ -676,7 +719,7 @@
     }
 
     pass = tests.fail('testMethod', 1, 'Pass');
-    pass = pass && tests.fail([ 'testMethod', {}, 'Pass' ]);
+    pass = pass && tests.fail([ 'testMethod', obj, 'Pass' ]);
     fail = tests.fail('testMethod', 0, 'Fail');
     fail = fail || tests.fail([ 'testMethod', null, 'Fail' ]);
     if (pass || !fail) {
@@ -723,7 +766,7 @@
     var choiceMsg;
     /** @type {string} */
     var errorMsg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
 
     results = new TestResults('Tests.checkGroup');;
@@ -782,7 +825,7 @@
     var choiceMsg;
     /** @type {string} */
     var errorMsg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
     /** @type {boolean} */
     var pass;
@@ -833,7 +876,7 @@
     var choiceMsg;
     /** @type {string} */
     var errorMsg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
     /** @type {boolean} */
     var pass;
@@ -871,12 +914,12 @@
 
   /**
    * -------------------------------------------------
-   * Public Method (Tests.checkTurnOn)
+   * Public Method (Tests.checkTurnOnMethod)
    * -------------------------------------------------
-   * @desc Checks Debug.turnOn method.
+   * @desc Checks Debug.turnOnMethod method.
    * @type {function}
    */
-  Tests.checkTurnOn = function() {
+  Tests.checkTurnOnMethod = function() {
 
     /** @type {!TestResults} */
     var results;
@@ -886,50 +929,50 @@
     var after;
     /** @type {string} */
     var errorMsg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
 
-    results = new TestResults('Tests.checkTurnOn');;
+    results = new TestResults('Tests.checkTurnOnMethod');;
 
     // Setup for the tests
     tests = aIV.console.create({
-      classTitle  : 'Tests.checkTurnOn',
-      turnOffTypes: 'all'
+      classTitle    : 'Tests.checkTurnOnMethod',
+      turnOffMethods: 'all'
     });
 
     // Run the tests
     before = tests.getMethod('misc');
-    tests.turnOn('misc');
+    tests.turnOnMethod('misc');
     after = tests.getMethod('misc');
     if (before || !after) {
-      errorMsg = 'debug.turnOn failed to turn on one type';
+      errorMsg = 'debug.turnOnMethod failed to turn on one type';
       results.addError(errorMsg);
     }
-    tests.setType('misc', false);
+    tests.setMethod('misc', false);
 
     before = tests.getMethod('start') && tests.getMethod('misc');
-    tests.turnOn('start misc');
+    tests.turnOnMethod('start misc');
     after = tests.getMethod('start') && tests.getMethod('misc');
     if (before || !after) {
-      errorMsg = 'debug.turnOn failed to turn on two types with a string';
+      errorMsg = 'debug.turnOnMethod failed to turn on two types with a string';
       results.addError(errorMsg);
     }
-    tests.setType('all', false);
+    tests.setMethod('all', false);
 
     before = tests.getMethod('start') && tests.getMethod('misc');
-    tests.turnOn([ 'start', 'misc' ]);
+    tests.turnOnMethod([ 'start', 'misc' ]);
     after = tests.getMethod('start') && tests.getMethod('misc');
     if (before || !after) {
-      errorMsg = 'debug.turnOn failed to turn on two types with an array';
+      errorMsg = 'debug.turnOnMethod failed to turn on two types with an array';
       results.addError(errorMsg);
     }
-    tests.setType('all', false);
+    tests.setMethod('all', false);
 
     before = tests.getMethod('start') && tests.getMethod('misc');
-    tests.turnOn('all');
+    tests.turnOnMethod('all');
     after = tests.getMethod('start') && tests.getMethod('misc');
     if (before || !after) {
-      errorMsg = 'debug.turnOn failed to turn on all types';
+      errorMsg = 'debug.turnOnMethod failed to turn on all types';
       results.addError(errorMsg);
     }
 
@@ -939,12 +982,12 @@
 
   /**
    * -------------------------------------------------
-   * Public Method (Tests.checkTurnOff)
+   * Public Method (Tests.checkTurnOffMethod)
    * -------------------------------------------------
-   * @desc Checks Debug.turnOff method.
+   * @desc Checks Debug.turnOffMethod method.
    * @type {function}
    */
-  Tests.checkTurnOff = function() {
+  Tests.checkTurnOffMethod = function() {
 
     /** @type {!TestResults} */
     var results;
@@ -954,47 +997,47 @@
     var after;
     /** @type {string} */
     var errorMsg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
 
-    results = new TestResults('Tests.checkTurnOff');;
+    results = new TestResults('Tests.checkTurnOffMethod');;
 
     // Setup for the tests
-    tests = aIV.console.create('Tests.checkTurnOff');
+    tests = aIV.console.create('Tests.checkTurnOffMethod');
 
     // Run the tests
     before = tests.getMethod('misc');
-    tests.turnOff('misc');
+    tests.turnOffMethod('misc');
     after = tests.getMethod('misc');
     if (!before || after) {
-      errorMsg = 'debug.turnOff failed to turn off one type';
+      errorMsg = 'debug.turnOffMethod failed to turn off one type';
       results.addError(errorMsg);
     }
-    tests.setType('misc', true);
+    tests.setMethod('misc', true);
 
     before = tests.getMethod('start') && tests.getMethod('misc');
-    tests.turnOff('start misc');
+    tests.turnOffMethod('start misc');
     after = tests.getMethod('start') && tests.getMethod('misc');
     if (!before || after) {
-      errorMsg = 'debug.turnOff failed to turn off two types with a string';
+      errorMsg = 'debug.turnOffMethod failed to turn off two types with a string';
       results.addError(errorMsg);
     }
-    tests.setType('all', true);
+    tests.setMethod('all', true);
 
     before = tests.getMethod('start') && tests.getMethod('misc');
-    tests.turnOff([ 'start', 'misc' ]);
+    tests.turnOffMethod([ 'start', 'misc' ]);
     after = tests.getMethod('start') && tests.getMethod('misc');
     if (!before || after) {
-      errorMsg = 'debug.turnOff failed to turn off two types with an array';
+      errorMsg = 'debug.turnOffMethod failed to turn off two types with an array';
       results.addError(errorMsg);
     }
-    tests.setType('all', true);
+    tests.setMethod('all', true);
 
     before = tests.getMethod('start') && tests.getMethod('misc');
-    tests.turnOff('all');
+    tests.turnOffMethod('all');
     after = tests.getMethod('start') && tests.getMethod('misc');
     if (!before || after) {
-      errorMsg = 'debug.turnOff failed to turn off all types';
+      errorMsg = 'debug.turnOffMethod failed to turn off all types';
       results.addError(errorMsg);
     }
 
@@ -1004,12 +1047,12 @@
 
   /**
    * -------------------------------------------------
-   * Public Method (Tests.checkTurnOnDebugger)
+   * Public Method (Tests.checkAddBreakpoint)
    * -------------------------------------------------
-   * @desc Checks Debug.turnOnDebugger method.
+   * @desc Checks Debug.addBreakpoint method.
    * @type {function}
    */
-  Tests.checkTurnOnDebugger = function() {
+  Tests.checkAddBreakpoint = function() {
 
     /** @type {!TestResults} */
     var results;
@@ -1019,49 +1062,49 @@
     var after;
     /** @type {string} */
     var errorMsg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
 
-    results = new TestResults('Tests.checkTurnOnDebugger');;
+    results = new TestResults('Tests.checkAddBreakpoint');
 
     // Setup for the tests
-    tests = aIV.console.create('Tests.checkTurnOnDebugger');
+    tests = aIV.console.create('Tests.checkAddBreakpoint');
 
     // Run the tests
     before = tests.getBreakpoint('misc');
-    tests.turnOnDebugger('misc');
+    tests.addBreakpoint('misc');
     after = tests.getBreakpoint('misc');
     if (before || !after) {
-      errorMsg = 'debug.turnOnDebugger failed to turn on one type';
+      errorMsg = 'debug.addBreakpoint failed to turn on one type';
       results.addError(errorMsg);
     }
-    tests.setBugger('misc', false);
+    tests.setBreakpoint('misc', false);
 
     before = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
-    tests.turnOnDebugger('start misc');
+    tests.addBreakpoint('start misc');
     after = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     if (before || !after) {
-      errorMsg = 'debug.turnOnDebugger failed to turn on two ';
+      errorMsg = 'debug.addBreakpoint failed to turn on two ';
       errorMsg += 'types with a string';
       results.addError(errorMsg);
     }
-    tests.setBugger('all', false);
+    tests.setBreakpoint('all', false);
 
     before = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
-    tests.turnOnDebugger([ 'start', 'misc' ]);
+    tests.addBreakpoint([ 'start', 'misc' ]);
     after = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     if (before || !after) {
-      errorMsg = 'debug.turnOnDebugger failed to turn on two ';
+      errorMsg = 'debug.addBreakpoint failed to turn on two ';
       errorMsg += 'types with an array';
       results.addError(errorMsg);
     }
-    tests.setBugger('all', false);
+    tests.setBreakpoint('all', false);
 
     before = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
-    tests.turnOnDebugger('all');
+    tests.addBreakpoint('all');
     after = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     if (before || !after) {
-      errorMsg = 'debug.turnOnDebugger failed to turn on all types';
+      errorMsg = 'debug.addBreakpoint failed to turn on all types';
       results.addError(errorMsg);
     }
 
@@ -1071,12 +1114,12 @@
 
   /**
    * -------------------------------------------------
-   * Public Method (Tests.checkTurnOffDebugger)
+   * Public Method (Tests.checkRemoveBreakpoint)
    * -------------------------------------------------
-   * @desc Checks Debug.turnOffDebugger method.
+   * @desc Checks Debug.removeBreakpoint method.
    * @type {function}
    */
-  Tests.checkTurnOffDebugger = function() {
+  Tests.checkRemoveBreakpoint = function() {
 
     /** @type {!TestResults} */
     var results;
@@ -1086,52 +1129,52 @@
     var after;
     /** @type {string} */
     var errorMsg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
 
-    results = new TestResults('Tests.checkTurnOffDebugger');;
+    results = new TestResults('Tests.checkRemoveBreakpoint');;
 
     // Setup for the tests
     tests = aIV.console.create({
-      classTitle     : 'Tests.checkTurnOffDebugger',
+      classTitle    : 'Tests.checkRemoveBreakpoint',
       addBreakpoints: 'all'
     });
 
     // Run the tests
     before = tests.getBreakpoint('misc');
-    tests.turnOffDebugger('misc');
+    tests.removeBreakpoint('misc');
     after = tests.getBreakpoint('misc');
     if (!before || after) {
-      errorMsg = 'debug.turnOffDebugger failed to turn off one type';
+      errorMsg = 'debug.removeBreakpoint failed to turn off one type';
       results.addError(errorMsg);
     }
-    tests.setBugger('misc', true);
+    tests.setBreakpoint('misc', true);
 
     before = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
-    tests.turnOffDebugger('start misc');
+    tests.removeBreakpoint('start misc');
     after = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     if (!before || after) {
-      errorMsg = 'debug.turnOffDebugger failed to turn off two ';
+      errorMsg = 'debug.removeBreakpoint failed to turn off two ';
       errorMsg += 'types with a string';
       results.addError(errorMsg);
     }
-    tests.setBugger('all', true);
+    tests.setBreakpoint('all', true);
 
     before = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
-    tests.turnOffDebugger([ 'start', 'misc' ]);
+    tests.removeBreakpoint([ 'start', 'misc' ]);
     after = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     if (!before || after) {
-      errorMsg = 'debug.turnOffDebugger failed to turn off two ';
+      errorMsg = 'debug.removeBreakpoint failed to turn off two ';
       errorMsg += 'types with an array';
       results.addError(errorMsg);
     }
-    tests.setBugger('all', true);
+    tests.setBreakpoint('all', true);
 
     before = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
-    tests.turnOffDebugger('all');
+    tests.removeBreakpoint('all');
     after = tests.getBreakpoint('start') && tests.getBreakpoint('misc');
     if (!before || after) {
-      errorMsg = 'debug.turnOffDebugger failed to turn off all types';
+      errorMsg = 'debug.removeBreakpoint failed to turn off all types';
       results.addError(errorMsg);
     }
 
@@ -1141,32 +1184,32 @@
 
   /**
    * -------------------------------------------------
-   * Public Method (Tests.checkSetConfig)
+   * Public Method (Tests.checkConsoleSet)
    * -------------------------------------------------
-   * @desc Checks the setting of the debug module configuration.
+   * @desc Checks aIV.console.set method.
    * @type {function}
    */
-  Tests.checkSetConfig = function() {
+  Tests.checkConsoleSet = function() {
 
     /** @type {!TestResults} */
     var results;
     /** @type {string} */
     var msg;
-    /** @type {Object} */
+    /** @type {!Object} */
     var tests;
 
-    results = new TestResults('Tests.checkSetConfig');;
+    results = new TestResults('Tests.checkConsoleSet');
 
     // Setup for the tests
-    aIV.debug.setConfig({
-      turnOffTypes   : 'all',
+    aIV.console.set({
+      turnOffMethods: 'all',
       addBreakpoints: 'all'
     });
     tests = {
-      all : aIV.console.create('Tests.checkSetConfig.all'),
+      all : aIV.console.create('Tests.checkConsoleSet.all'),
       none: aIV.console.create({
-        classTitle     : 'Tests.checkSetConfig.none',
-        turnOffTypes   : 'none',
+        classTitle    : 'Tests.checkConsoleSet.none',
+        turnOffMethods: 'none',
         addBreakpoints: 'none'
       })
     };
@@ -1178,7 +1221,7 @@
         tests.all.getMethod('group') ||
         tests.all.getMethod('state') ||
         tests.all.getMethod('misc')) {
-      msg = 'Tests.checkSetConfig.all failed: no types should be on';
+      msg = 'Tests.checkConsoleSet.all failed: no types should be on';
       results.addError(msg);
     }
 
@@ -1188,7 +1231,7 @@
         !tests.all.getBreakpoint('group') ||
         !tests.all.getBreakpoint('state') ||
         !tests.all.getBreakpoint('misc')) {
-      msg = 'Tests.checkSetConfig.all failed: all debuggers should be on';
+      msg = 'Tests.checkConsoleSet.all failed: all debuggers should be on';
       results.addError(msg);
     }
 
@@ -1198,7 +1241,7 @@
         !tests.none.getMethod('group') ||
         !tests.none.getMethod('state') ||
         !tests.none.getMethod('misc')) {
-      msg = 'Tests.checkSetConfig.none failed: all types should be on';
+      msg = 'Tests.checkConsoleSet.none failed: all types should be on';
       results.addError(msg);
     }
 
@@ -1208,13 +1251,14 @@
         tests.none.getBreakpoint('group') ||
         tests.none.getBreakpoint('state') ||
         tests.none.getBreakpoint('misc')) {
-      msg = 'Tests.checkSetConfig.none failed: no debuggers should be on';
+      msg = 'Tests.checkConsoleSet.none failed: no debuggers should be on';
       results.addError(msg);
     }
 
     // Reset the config before continuing
-    aIV.debug.setConfig({
-      turnOffTypes   : '',
+    //aIV.console.reset();
+    aIV.console.set({
+      turnOffMethods: '',
       addBreakpoints: 'none'
     });
 
@@ -1222,6 +1266,7 @@
     app.results.push(results);
   };
 
+  // Deep freeze Tests
   (function(Tests) {
 
     /** @type {string} */

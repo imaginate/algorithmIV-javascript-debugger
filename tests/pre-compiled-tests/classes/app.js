@@ -97,13 +97,13 @@
     Tests.checkMisc();
 
     // Check the setting methods
-    Tests.checkTurnOn();
-    Tests.checkTurnOff();
-    Tests.checkTurnOnDebugger();
-    Tests.checkTurnOffDebugger();
+    Tests.checkTurnOnMethod();
+    Tests.checkTurnOffMethod();
+    Tests.checkAddBreakpoint();
+    Tests.checkRemoveBreakpoint();
 
     // Check the config setter
-    Tests.checkSetConfig();
+    Tests.checkConsoleSet();
 
 ////////////////////////////////////////////////////////////////////////////////
 
