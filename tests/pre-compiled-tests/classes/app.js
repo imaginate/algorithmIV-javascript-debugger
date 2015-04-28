@@ -111,8 +111,9 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-    // Run the choices and record the results
-    this.runChoices();
+    // Show the choices and record the results
+    this.choices.reverse();
+    this.showChoices();
   };
 
   /**
@@ -121,50 +122,50 @@
    * -----------------------------------------------
    * @desc Adds a new choice to the app.
    * @param {string} choiceMsg - The choice message.
-   * @param {TestResults} results - The results object.
+   * @param {!TestResults} results - The results object.
    * @param {string} errorMsg - The error message.
-   * @param {?Object=} before - A function that gets called before
+   * @param {?function=} before - A function that gets called before
    *   the choice is shown.
-   * @param {?Object=} after - A function that gets called after
+   * @param {?function=} after - A function that gets called after
    *   a choice is completed.
    */
   App.prototype.addChoice = function(choiceMsg, results, errorMsg, before, after) {
 
-    /** @type {Choice} */
+    /** @type {!Choice} */
     var choice;
     /** @type {string} */
-    var argsMsg;
+    var typeErrorMsg;
 
     if (typeof choiceMsg !== 'string' || !(results instanceof TestResults) ||
         typeof errorMsg !== 'string') {
-      argsMsg = 'An addChoice call was given an argument of the wrong data type.';
-      console.error(argsMsg);
-      debugger;
+      typeErrorMsg = 'An addChoice call was given an invalid param data type.';
+      throw new TypeError(typeErrorMsg);
+      return;
     }
+
     if (!before || typeof before !== 'function') {
-      before = null;
+      before = function() {};
     }
     if (!after || typeof after !== 'function') {
-      after = null;
+      after = function() {};
     }
 
     choice = new Choice(choiceMsg, results, errorMsg, before, after);
-    Object.freeze(choice);
 
     this.choices.push(choice);
   };
 
   /**
    * -----------------------------------------------
-   * Public Method (App.prototype.runChoices)
+   * Public Method (App.prototype.showChoices)
    * -----------------------------------------------
    * @desc Show each choice until all results have been recorded.
    *   Then show the results.
    * @type {function}
    */
-  App.prototype.runChoices = function() {
+  App.prototype.showChoices = function() {
 
-    /** @type {Choice} */
+    /** @type {!Choice} */
     var choice;
 
     console.clear();
@@ -174,35 +175,29 @@
       return;
     }
 
-    choice = this.choices.splice(0, 1)[0];
+    choice = this.choices.pop();
 
     // Hide the UI while setup is occurring
     this.elems.ui.style.opacity = '0';
 
-    if (choice.before) {
-      choice.before();
-    }
+    choice.before();
 
     setTimeout(function() {
 
       // Give the choice directions
-      app.elems.msg.textContent = choice.msg;
+      app.elems.msg.innerHTML = choice.msg;
 
       // Set the #yes onClick event
       app.elems.yes.onclick = function() {
-        if (choice.after) {
-          choice.after();
-        }
-        app.runChoices();
+        choice.after();
+        app.showChoices();
       };
 
       // Set the #no onClick event
       app.elems.no.onclick = function() {
         choice.fail();
-        if (choice.after) {
-          choice.after();
-        }
-        app.runChoices();
+        choice.after();
+        app.showChoices();
       };
 
       app.elems.choose.style.display = 'block';
