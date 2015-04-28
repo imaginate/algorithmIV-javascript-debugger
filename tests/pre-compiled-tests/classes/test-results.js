@@ -8,6 +8,10 @@
    */
   var TestResults = function(type) {
 
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Protected Properties
+    ////////////////////////////////////////////////////////////////////////////
+
     /**
      * ----------------------------------------------- 
      * Protected Property (TestResults.result)
@@ -25,6 +29,10 @@
      * @type {?strings}
      */
     var errors = null;
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Public Methods
+    ////////////////////////////////////////////////////////////////////////////
 
     /**
      * ----------------------------------------------- 
@@ -51,7 +59,6 @@
 
       return report;
     };
-    Object.freeze(this.reportResult);
 
     /**
      * ----------------------------------------------- 
@@ -91,7 +98,6 @@
 
       return report;
     };
-    Object.freeze(this.reportErrors);
 
     /**
      * ----------------------------------------------- 
@@ -103,7 +109,6 @@
     this.getResult = function() {
       return result;
     };
-    Object.freeze(this.getResult);
 
     /**
      * ----------------------------------------------- 
@@ -117,7 +122,6 @@
         result = pass;
       }
     };
-    Object.freeze(this.setResult);
 
     /**
      * ----------------------------------------------- 
@@ -131,7 +135,7 @@
       result = false;
 
       if (typeof msg !== 'string') {
-        msg = 'No error message was provided';
+        msg = 'No error message was provided.';
       }
 
       if (errors) {
@@ -141,8 +145,21 @@
         errors = [ msg ];
       }
     };
+
+    ////////////////////////////////////////////////////////////////////////////
+    // End Of The Class Setup
+    ////////////////////////////////////////////////////////////////////////////
+
+    Object.freeze(this.reportResult);
+    Object.freeze(this.reportErrors);
+    Object.freeze(this.getResult);
+    Object.freeze(this.setResult);
     Object.freeze(this.addError);
+    Object.freeze(this);
   };
 
-  // Ensure constructor is set to this class.
+////////////////////////////////////////////////////////////////////////////////
+// The Prototype Methods
+////////////////////////////////////////////////////////////////////////////////
+
   TestResults.prototype.constructor = TestResults;
