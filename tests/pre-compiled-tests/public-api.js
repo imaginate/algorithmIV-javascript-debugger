@@ -10,10 +10,10 @@
 
   /**
    * ---------------------------------------------------
-   * Global Method (aIV.tests)
+   * Global Method (aIV.runTests)
    * ---------------------------------------------------
-   * @desc Runs the tests for aIV.debug.
+   * @desc Runs the tests for aIV.console.
    * @type {function}
    * @global
    */
-  aIV.tests = tests;
+  aIV.runTests = testsModuleAPI.runTests;
