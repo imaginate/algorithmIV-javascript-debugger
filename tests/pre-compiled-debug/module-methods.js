@@ -239,9 +239,11 @@
    *       <td>'array=' or 'string|number='</td>
    *     </tr>
    *   </table>
+   * @param {boolean=} noTypeValCheck - If true skips the data type string checks.
+   *   The default is false. Use to avoid duplicating checks.
    * @return {boolean} The evaluation result.
    */
-  function checkType(val, type) {
+  function checkType(val, type, noTypeValCheck) {
 
     /** @type {number} */
     var i;
@@ -290,7 +292,7 @@
 
     types = ( RegExps.pipe.test(type) ) ? type.split('|') : [ type ];
 
-    if ( !checkDataTypeStrings(types) ) {
+    if (!noTypeValCheck && !checkDataTypeStrings(types)) {
       errorMessage = 'A checkType call received an invalid type parameter.';
       throw new RangeError(errorMessage);
       return;
@@ -530,7 +532,7 @@
     while (i--) {
 
       if (i % 2) {
-        pass = checkType(args[i], 'string');
+        pass = checkType(args[i], 'string', true);
         pass = pass && checkDataTypeString(args[i]);
       }
 
@@ -571,7 +573,7 @@
       --i;
       arg = args[i];
 
-      pass = checkType(arg, dataTypeOpts);
+      pass = checkType(arg, dataTypeOpts, true);
 
       if (!pass) {
         break;
