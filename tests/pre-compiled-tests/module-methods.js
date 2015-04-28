@@ -24,7 +24,7 @@
     /** @type {string} */
     var errorMessage;
 
-    if (!obj || typeof obj !== 'object' || typeof obj !== 'function') {
+    if (!obj || (typeof obj !== 'object' && typeof obj !== 'function')) {
       errorMessage = 'A hasOwnProp call received an invalid obj parameter.';
       throw new TypeError(errorMessage);
       return;
