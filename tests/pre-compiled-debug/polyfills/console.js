@@ -211,7 +211,76 @@
       console.profile = emptyFunc;
     }
 
-// profiles,profileEnd,show,table,time,timeEnd,timeline,timelineEnd
+    if (!console.profileEnd) {
+      /**
+       * ---------------------------------------------
+       * Public Method (console.profileEnd)
+       * ---------------------------------------------
+       * @desc A polyfill for the native method. For method details
+       *   [see Chrome]{@link https://developer.chrome.com/devtools/docs/console-api#consoleprofileend}
+       * @type {function}
+       */
+      console.profileEnd = emptyFunc;
+    }
+
+    if (!console.table) {
+      /**
+       * ---------------------------------------------
+       * Public Method (console.table)
+       * ---------------------------------------------
+       * @desc A polyfill for the native method. For method details
+       *   [see MDN]{@link https://developer.mozilla.org/en-US/docs/Web/API/Console/table}
+       * @param {!(Object|Array)} data
+       * @param {!Array=} columns
+       */
+      console.table = emptyFunc;
+    }
+
+    if (!console.time) {
+      /**
+       * ---------------------------------------------
+       * Public Method (console.time)
+       * ---------------------------------------------
+       * @desc A polyfill for the native method. For method details
+       *   [see MDN]{@link https://developer.mozilla.org/en-US/docs/Web/API/Console/time}
+       * @param {string} label
+       */
+      console.time = emptyFunc;
+    }
+
+    if (!console.timeEnd) {
+      /**
+       * ---------------------------------------------
+       * Public Method (console.timeEnd)
+       * ---------------------------------------------
+       * @desc A polyfill for the native method. For method details
+       *   [see MDN]{@link https://developer.mozilla.org/en-US/docs/Web/API/Console/timeEnd}
+       * @param {string} label
+       */
+      console.timeEnd = emptyFunc;
+    }
+
+    if (!console.timeline) {
+      /**
+       * ---------------------------------------------
+       * Public Method (console.timeline)
+       * ---------------------------------------------
+       * @desc A polyfill for the deprecated Chrome method.
+       * @param {string} label
+       */
+      console.timeline = emptyFunc;
+    }
+
+    if (!console.timelineEnd) {
+      /**
+       * ---------------------------------------------
+       * Public Method (console.timelineEnd)
+       * ---------------------------------------------
+       * @desc A polyfill for the deprecated Chrome method.
+       * @param {string} label
+       */
+      console.timelineEnd = emptyFunc;
+    }
 
     if (!console.timeStamp) {
       /**
@@ -285,4 +354,4 @@
     })((typeof console.log === 'object'), Function.prototype.bind,
         Function.prototype.call, Array.prototype.slice);
 
-  })(window.console, function() { return; });
+  })(window.console, function() {});
