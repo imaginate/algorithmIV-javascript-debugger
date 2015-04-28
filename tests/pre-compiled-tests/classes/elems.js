@@ -7,11 +7,13 @@
    */
   var Elems = function() {
 
-    console.log('Elems is being setup.');
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Public Properties
+    ////////////////////////////////////////////////////////////////////////////
 
     /**
      * ---------------------------------------------------
-     * Private Property (Elems.msg)
+     * Public Property (Elems.msg)
      * ---------------------------------------------------
      * @desc Element: #msg
      * @type {HTMLElement}
@@ -20,7 +22,7 @@
 
     /**
      * ---------------------------------------------------
-     * Private Property (Elems.ui)
+     * Public Property (Elems.ui)
      * ---------------------------------------------------
      * @desc Element: #ui
      * @type {HTMLElement}
@@ -29,7 +31,7 @@
 
     /**
      * ---------------------------------------------------
-     * Private Property (Elems.start)
+     * Public Property (Elems.start)
      * ---------------------------------------------------
      * @desc Element: #start
      * @type {HTMLElement}
@@ -38,7 +40,7 @@
 
     /**
      * ---------------------------------------------------
-     * Private Property (Elems.choose)
+     * Public Property (Elems.choose)
      * ---------------------------------------------------
      * @desc Element: #choose
      * @type {HTMLElement}
@@ -47,7 +49,7 @@
 
     /**
      * ---------------------------------------------------
-     * Private Property (Elems.yes)
+     * Public Property (Elems.yes)
      * ---------------------------------------------------
      * @desc Element: #yes
      * @type {HTMLElement}
@@ -56,15 +58,24 @@
 
     /**
      * ---------------------------------------------------
-     * Private Property (Elems.no)
+     * Public Property (Elems.no)
      * ---------------------------------------------------
      * @desc Element: #no
      * @type {HTMLElement}
      */
     this.no = getID('no');
+
+    ////////////////////////////////////////////////////////////////////////////
+    // End Of The Class Setup
+    ////////////////////////////////////////////////////////////////////////////
+
+    Object.freeze(this);
   };
 
-  // Ensure constructor is set to this class.
+////////////////////////////////////////////////////////////////////////////////
+// The Prototype Methods
+////////////////////////////////////////////////////////////////////////////////
+
   Elems.prototype.constructor = Elems;
 
   /**
@@ -72,11 +83,11 @@
    * Public Method (Elems.prototype.clearUI)
    * -----------------------------------------------
    * @desc Clears the current interactions.
-   * @type {function()}
+   * @type {function}
    */
   Elems.prototype.clearUI = function() {
 
-    /** @type {Object} */
+    /** @type {!Elems} */
     var that;
 
     that = this;
@@ -84,55 +95,9 @@
     this.ui.style.opacity = '0';
 
     setTimeout(function() {
-      that.msg.textContent = 'Tests are running.';
+      that.msg.innerHTML = 'Tests are running.';
       that.start.style.display = 'none';
       that.choose.style.display = 'none';
-      that.ui.style.opacity = '1';
-    }, 500);
-  };
-
-  /**
-   * -----------------------------------------------
-   * Public Method (Elems.prototype.showMsg)
-   * -----------------------------------------------
-   * @desc Shows a message to the user.
-   * @param {string} msg - The message to show.
-   */
-  Elems.prototype.showMsg = function(msg) {
-
-    /** @type {Object} */
-    var that;
-
-    that = this;
-
-    this.ui.style.opacity = '0';
-
-    setTimeout(function() {
-      that.msg.textContent = msg;
-      that.choose.style.display = 'none';
-      that.ui.style.opacity = '1';
-    }, 500);
-  };
-
-  /**
-   * -----------------------------------------------
-   * Public Method (Elems.prototype.showChoice)
-   * -----------------------------------------------
-   * @desc Shows a message with 'yes' or 'no' options to the user.
-   * @param {string} msg - The message to show.
-   */
-  Elems.prototype.showChoice = function(msg) {
-
-    /** @type {Object} */
-    var that;
-
-    that = this;
-
-    this.ui.style.opacity = '0';
-
-    setTimeout(function() {
-      that.msg.textContent = msg;
-      that.choose.style.display = 'block';
       that.ui.style.opacity = '1';
     }, 500);
   };
