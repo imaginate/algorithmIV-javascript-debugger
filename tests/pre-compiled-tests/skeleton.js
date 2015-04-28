@@ -1,10 +1,10 @@
 /**
  * -----------------------------------------------------------------------------
- * Algorithm IV Debug Tests - Module (v1.0.2)
+ * Algorithm IV Debugger Tests (v1.1.0)
  * -----------------------------------------------------------------------------
- * @file The module for testing the aIV debug module.
- * @module aIVDebugTests
- * @version 1.0.2
+ * @file The module used to run all testing for aIV.conole.
+ * @module aIVConsoleTests
+ * @version 1.1.0
  * @author Adam Smith ({@link adamsmith@youlum.com})
  * @copyright 2015 Adam A Smith ([github.com/imaginate]{@link https://github.com/imaginate})
  * @license The MIT License ([algorithmiv.com/docs/license]{@link http://algorithmiv.com/docs/license})
@@ -15,7 +15,7 @@
  *       and [See JSDoc3]{@link http://usejsdoc.org/}
  *   </li>
  *   <li>contributing: 
- *       [See the guideline]{@link https://github.com/imaginate/algorithmIV--javascript-debugger/blob/master/CONTRIBUTING.md}
+ *       [See the guideline]{@link https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/CONTRIBUTING.md}
  *   </li>
  * </ol>
  */
@@ -29,73 +29,73 @@
  * @typedef {Array<string>} strings
  * @typedef {Array<number>} numbers
  * @typedef {Array<Object>} objects
+ * @typedef {Array<boolean>} booleans
  */
 
-(function(/** Window */ window, /** function */ tests) {
+////////////////////////////////////////////////////////////////////////////////
+// The Public API
+////////////////////////////////////////////////////////////////////////////////
+
+;(function setupThePublicAPI(testsModuleAPI, undefined) {
   "use strict";
 
-
 /* -----------------------------------------------------------------------------
- * | The Public API                                                            |
- * v ------------------------------------------------------------------------- v
-                                                              public-api.js */
+ * The Public API (public-api.js)
+ * -------------------------------------------------------------------------- */
 
-})(window, (function() {
+})(
+
+////////////////////////////////////////////////////////////////////////////////
+// The Tests Module
+////////////////////////////////////////////////////////////////////////////////
+
+(function(undefined) {
   "use strict"; 
 
-
 /* -----------------------------------------------------------------------------
- * | The External API for the Module                                           |
- * v ------------------------------------------------------------------------- v
-                                                            external-api.js */
+ * The Tests Module API (module-api.js)
+ * -------------------------------------------------------------------------- */
 
 
 /* -----------------------------------------------------------------------------
- * | The Public Variables for the Module                                       |
- * v ------------------------------------------------------------------------- v
-                                                             module-vars.js */
+ * The Public Module Variables (module-vars.js)
+ * -------------------------------------------------------------------------- */
 
 
 /* -----------------------------------------------------------------------------
- * | The Public Methods for the Module                                         |
- * v ------------------------------------------------------------------------- v
-                                                          module-methods.js */
+ * The Public Module Methods (module-methods.js)
+ * -------------------------------------------------------------------------- */
 
 
 /* -----------------------------------------------------------------------------
- * | The Tests Class                                                           |
- * v ------------------------------------------------------------------------- v
-                                                           classes/tests.js */
+ * The Tests Class (classes/tests.js)
+ * -------------------------------------------------------------------------- */
 
 
 /* -----------------------------------------------------------------------------
- * | The App Class                                                             |
- * v ------------------------------------------------------------------------- v
-                                                             classes/app.js */
+ * The App Class (classes/app.js)
+ * -------------------------------------------------------------------------- */
 
 
 /* -----------------------------------------------------------------------------
- * | The Elems Class                                                           |
- * v ------------------------------------------------------------------------- v
-                                                           classes/elems.js */
+ * The Elems Class (classes/elems.js)
+ * -------------------------------------------------------------------------- */
 
 
 /* -----------------------------------------------------------------------------
- * | The Test Results Class                                                    |
- * v ------------------------------------------------------------------------- v
-                                                    classes/test-results.js */
+ * The Test Results Class (classes/test-results.js)
+ * -------------------------------------------------------------------------- */
 
 
 /* -----------------------------------------------------------------------------
- * | The Choice Class                                                          |
- * v ------------------------------------------------------------------------- v
-                                                          classes/choice.js */
+ * The Choice Class (classes/choice.js)
+ * -------------------------------------------------------------------------- */
 
 
-/* -----------------------------------------------------------------------------
- * | End of module                                                             |
- * v ------------------------------------------------------------------------- v
-                                                                            */
-  return _init;
+////////////////////////////////////////////////////////////////////////////////
+// The Tests Module End
+////////////////////////////////////////////////////////////////////////////////
+
+  return testsModuleAPI;
 
 })());
