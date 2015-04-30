@@ -7,11 +7,11 @@
  * @version 1.1.0
  * @author Adam Smith ({@link adamsmith@youlum.com})
  * @copyright 2015 Adam A Smith ([github.com/imaginate]{@link https://github.com/imaginate})
- * @license The MIT License ([algorithmiv.com/docs/license]{@link http://algorithmiv.com/docs/license})
+ * @license The Apache License ([algorithmiv.com/docs/license]{@link http://algorithmiv.com/docs/license})
  * @desc More details about the module for aIV.tests:
  * <ol>
  *   <li>annotations: 
- *       [See Closure Compiler specific JSDoc]{@link https://developers.google.com/closure/compiler/}
+ *       [See Closure Compiler specific JSDoc]{@link https://developers.google.com/closure/compiler/docs/js-for-compiler}
  *       and [See JSDoc3]{@link http://usejsdoc.org/}
  *   </li>
  *   <li>contributing: 
@@ -36,7 +36,7 @@
 // The Public API
 ////////////////////////////////////////////////////////////////////////////////
 
-;(function setupThePublicAPI(testsModuleAPI, undefined) {
+;(function setupTheTestsPublicAPI(testsModuleAPI, undefined) {
   "use strict";
 
 /* -----------------------------------------------------------------------------
@@ -69,11 +69,6 @@
 // insert-module-methods
 
 /* -----------------------------------------------------------------------------
- * The Tests Class (classes/tests.js)
- * -------------------------------------------------------------------------- */
-// insert-tests
-
-/* -----------------------------------------------------------------------------
  * The App Class (classes/app.js)
  * -------------------------------------------------------------------------- */
 // insert-app
@@ -92,6 +87,112 @@
  * The Choice Class (classes/choice.js)
  * -------------------------------------------------------------------------- */
 // insert-choice
+
+/* -----------------------------------------------------------------------------
+ * The Tests Class Construct (classes/tests/construct-tests.js)
+ * -------------------------------------------------------------------------- */
+// insert-tests-construct
+
+/* -----------------------------------------------------------------------------
+ * The createInstance Test (classes/tests/createInstance.js)
+ * -------------------------------------------------------------------------- */
+// insert-tests-createInstance
+
+/* -----------------------------------------------------------------------------
+ * The classTitle Test (classes/tests/classTitle.js)
+ * -------------------------------------------------------------------------- */
+// insert-tests-classTitle
+
+/* -----------------------------------------------------------------------------
+ * The turnOffMethods Test (classes/tests/turnOffMethods.js)
+ * -------------------------------------------------------------------------- */
+// insert-tests-turnOffMethods
+
+/* -----------------------------------------------------------------------------
+ * The addBreakpoints Test (classes/tests/addBreakpoints.js)
+ * -------------------------------------------------------------------------- */
+// insert-tests-addBreakpoints
+
+/* -----------------------------------------------------------------------------
+ * The turnOnGroups Test (classes/tests/turnOnGroups.js)
+ * -------------------------------------------------------------------------- */
+// insert-tests-turnOnGroups
+
+/* -----------------------------------------------------------------------------
+ * The turnOnProfiles Test (classes/tests/turnOnProfiles.js)
+ * -------------------------------------------------------------------------- */
+// insert-tests-turnOnProfiles
+
+/* -----------------------------------------------------------------------------
+ * The turnOnTimers Test (classes/tests/turnOnTimers.js)
+ * -------------------------------------------------------------------------- */
+// insert-tests-turnOnTimers
+
+/* -----------------------------------------------------------------------------
+ * The init Test (classes/tests/init.js)
+ * -------------------------------------------------------------------------- */
+// insert-tests-init
+
+/* -----------------------------------------------------------------------------
+ * The start Test (classes/tests/start.js)
+ * -------------------------------------------------------------------------- */
+// insert-tests-start
+
+/* -----------------------------------------------------------------------------
+ * The args Test (classes/tests/args.js)
+ * -------------------------------------------------------------------------- */
+// insert-tests-args
+
+/* -----------------------------------------------------------------------------
+ * The fail Test (classes/tests/fail.js)
+ * -------------------------------------------------------------------------- */
+// insert-tests-fail
+
+/* -----------------------------------------------------------------------------
+ * The group Test (classes/tests/group.js)
+ * -------------------------------------------------------------------------- */
+// insert-tests-group
+
+/* -----------------------------------------------------------------------------
+ * The state Test (classes/tests/state.js)
+ * -------------------------------------------------------------------------- */
+// insert-tests-state
+
+/* -----------------------------------------------------------------------------
+ * The misc Test (classes/tests/misc.js)
+ * -------------------------------------------------------------------------- */
+// insert-tests-misc
+
+/* -----------------------------------------------------------------------------
+ * The toggleMethod Test (classes/tests/toggleMethod.js)
+ * -------------------------------------------------------------------------- */
+// insert-tests-toggleMethod
+
+/* -----------------------------------------------------------------------------
+ * The toggleBreakpoint Test (classes/tests/toggleBreakpoint.js)
+ * -------------------------------------------------------------------------- */
+// insert-tests-toggleBreakpoint
+
+/* -----------------------------------------------------------------------------
+ * The toggleAuto Test (classes/tests/toggleAuto.js)
+ * -------------------------------------------------------------------------- */
+// insert-tests-toggleAuto
+
+/* -----------------------------------------------------------------------------
+ * The set Test (classes/tests/set.js)
+ * -------------------------------------------------------------------------- */
+// insert-tests-set
+
+/* -----------------------------------------------------------------------------
+ * The Location For New Tests (classes/tests/new-tests-here.js)
+ * -------------------------------------------------------------------------- */
+// insert-tests-new-tests
+
+/* -----------------------------------------------------------------------------
+ * Deep Freeze The Tests Class
+ * -------------------------------------------------------------------------- */
+
+  aIV.utils.freezeObj(Tests, true);
 
 ////////////////////////////////////////////////////////////////////////////////
 // The Tests Module End
