@@ -1,4 +1,4 @@
-/** @preserve blank line for custom compile (sed scripting) */
+/** @preserve blank line */
 
 /**
  * -----------------------------------------------------------------------------
@@ -6,19 +6,20 @@
  * -----------------------------------------------------------------------------
  * @file Algorithm IV's debugger is a console wrapper that fixes cross-browser
  *   console issues and provides a set of new console methods that make your
- *   console more powerful. Reduce the amount of time and code it takes to find
- *   a bug, automatically insert breakpoints, profiles, and timers, and switch
- *   everything on or off with one command. With proper use you will know and
- *   control the actions of every JavaScript method in your code base!
+ *   console more powerful. It will allow you to reduce the amount of time and
+ *   code it takes to find a bug, automatically insert breakpoints, profiles,
+ *   and timers, and switch everything on or off with one command. With proper
+ *   use you will know and control the actions of every JavaScript method in
+ *   your code base!
  * @module aIVConsole
  * @version 1.1.0
  * @author Adam Smith ({@link adamsmith@youlum.com})
  * @copyright 2015 Adam A Smith ([github.com/imaginate]{@link https://github.com/imaginate})
- * @license The MIT License ([algorithmiv.com/docs/license]{@link http://algorithmiv.com/docs/license})
- * @desc More details about aIV.debug's module:
+ * @license The Apache License ([algorithmiv.com/docs/license]{@link http://algorithmiv.com/docs/license})
+ * @desc More details about aIV.console:
  * <ol>
  *   <li>annotations: 
- *       [See Closure Compiler specific JSDoc]{@link https://developers.google.com/closure/compiler/}
+ *       [See Closure Compiler specific JSDoc]{@link https://developers.google.com/closure/compiler/docs/js-for-compiler}
  *       and [See JSDoc3]{@link http://usejsdoc.org/}
  *   </li>
  *   <li>contributing: 
@@ -40,521 +41,40 @@
  */
 
 ////////////////////////////////////////////////////////////////////////////////
-// The JavaScript Polyfills
+// The Dependencies
 ////////////////////////////////////////////////////////////////////////////////
 
-;(function setupThePolyfills(window, document, undefined) {
-  "use strict";
-
 /* -----------------------------------------------------------------------------
- * The Console Polyfills (polyfills/console.js)
+ * Algorithm IV JavaScript Shortcuts (dependencies/algorithmIV-utils.min.js)
  * -------------------------------------------------------------------------- */
 
-  /**
-   * -----------------------------------------------------
-   * Global Object (console)
-   * -----------------------------------------------------
-   * @desc A polyfill for the native object. For method details
-   *   [see MDN]{@link https://developer.mozilla.org/en-US/docs/Web/API/Console}
-   * @type {Object<string, function}
-   */
-  window.console = window.console || {};
+/* Algorithm IV JavaScript Polyfills (v0.0.1) (learn@algorithmiv.com)
+ * Author: Adam Smith (adamsmith@youlum.com)
+ * Copyright (c) 2015 Adam A Smith (github.com/imaginate)
+ * The Apache License (algorithmiv.com/docs/license) */
+(function(h,m,n){h.console=h.console||{};(function(a,b){a.log||(a.log=b);a.error||(a.error=a.log);a.assert||(a.assert=function(b){var c;if(!b)return c=1<arguments.length?Array.prototype.slice.call(arguments,1):["A console.assert call failed."],a.error.apply(this,c)});a.clear||(a.clear=b);a.count||(a.count=b);a.debug||(a.debug=a.log);a.dir||(a.dir=a.log);a.dirxml||(a.dirxml=a.log);a.exception||(a.exception=a.error);a.group||(a.group=b);a.groupCollapsed||(a.groupCollapsed=a.group);a.groupEnd||(a.groupEnd=
+b);a.info||(a.info=a.log);a.markTimeline||(a.markTimeline=a.timeStamp?a.timeStamp:b);a.profile||(a.profile=b);a.profileEnd||(a.profileEnd=b);a.table||(a.table=b);a.time||(a.time=b);a.timeEnd||(a.timeEnd=b);a.timeline||(a.timeline=b);a.timelineEnd||(a.timelineEnd=b);a.timeStamp||(a.timeStamp=a.markTimeline);a.trace||(a.trace=a.log);a.warn||(a.warn=a.error);(function(b,c,f,h){var d,k,l,g;if(b)if(l=["assert","error","info","log","warn"],g=["clear","dir","profile","profileEnd"],g=l.concat(g),c)for(d=
+g.length;d--;)k=a[g[d]],a[g[d]]=c.call(k,a);else for(d=l.length;d--;)k=a[l[d]],f.call(k,a,h.call(arguments))})("object"===typeof a.log,Function.prototype.bind,Function.prototype.call,Array.prototype.slice)})(h.console,function(){});Object.keys||(Object.keys=function(){var a,b;a=!{toString:null}.propertyIsEnumerable("toString");b="toString toLocaleString valueOf hasOwnProperty isPrototypeOf propertyIsEnumerable constructor".split(" ");return function(e){var c,f;if(!e||"object"!==typeof e&&"function"!==
+typeof e)throw new TypeError("An Object.keys call received an invalid object parameter. Note: It only accepts non-null objects and functions.");f=[];for(c in e)e.hasOwnProperty(c)&&f.push(c);if(a)for(c=b.length;c--;)e.hasOwnProperty(b[c])&&f.push(b[c]);return f}}());Object.freeze||(Object.freeze=function(a){if(!a||"object"!==typeof a&&"function"!==typeof a)throw new TypeError("An Object.freeze call received an invalid object parameter. Note: It only accepts non-null objects and functions.");return a});
+try{Object.freeze(function(){})}catch(p){Object.freeze=function(a){return function(b){return"function"===typeof b?b:a(b)}}(Object.freeze)}Object.isFrozen||(Object.isFrozen=function(a){if(!a||"object"!==typeof a&&"function"!==typeof a)throw new TypeError("An Object.isFrozen call received an invalid object parameter. Note: It only accepts non-null objects and functions.");return!0});Array.isArray||(Array.isArray=function(a){return"[object Array]"===Object.prototype.toString.call(a)})})(window,document);
 
-  (function(console, emptyFunc) {
-
-    // Note: The console method polyfills are completed alphabetically with the
-    // exception of console.log and console.error
-
-    if (!console.log) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.log)
-       * ---------------------------------------------
-       * @desc A polyfill for the native method. For method details
-       *   [see MDN]{@link https://developer.mozilla.org/en-US/docs/Web/API/Console/log}
-       * @param {...*} val
-       */
-      console.log = emptyFunc;
-    }
-
-    if (!console.error) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.error)
-       * ---------------------------------------------
-       * @desc A polyfill for the native method. For method details
-       *   [see MDN]{@link https://developer.mozilla.org/en-US/docs/Web/API/Console/error}
-       * @param {...*} val
-       */
-      console.error = console.log;
-    }
-
-    if (!console.assert) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.assert)
-       * ---------------------------------------------
-       * @desc A polyfill for the native method. For method details
-       *   [see MDN]{@link https://developer.mozilla.org/en-US/docs/Web/API/console/assert}
-       * @param {boolean} assertion
-       * @param {...*} val
-       */
-      console.assert = function(assertion) {
-
-        /** @type {!Array<*>} */
-        var args;
-
-        if (assertion) {
-          return;
-        }
-
-        args = ( (arguments.length > 1) ?
-          Array.prototype.slice.call(arguments, 1)
-          : [ 'A console.assert call failed.' ]
-        );
-
-        return console.error.apply(this, args);
-      };
-    }
-
-    if (!console.clear) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.clear)
-       * ---------------------------------------------
-       * @desc A polyfill for the native method. For method details
-       *   [see Chrome]{@link https://developer.chrome.com/devtools/docs/console-api#consoleclear}
-       * @type {function}
-       */
-      console.clear = emptyFunc;
-    }
-
-    if (!console.count) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.count)
-       * ---------------------------------------------
-       * @desc A polyfill for the native method. For method details
-       *   [see MDN]{@link https://developer.mozilla.org/en-US/docs/Web/API/Console/count}
-       * @param {string=} label
-       */
-      console.count = emptyFunc;
-    }
-
-    if (!console.debug) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.debug)
-       * ---------------------------------------------
-       * @desc A polyfill for the native method. For method details
-       *   [see Chrome]{@link https://developer.chrome.com/devtools/docs/console-api#consoledebugobject-object}
-       * @param {...*} val
-       */
-      console.debug = console.log;
-    }
-
-    if (!console.dir) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.dir)
-       * ---------------------------------------------
-       * @desc A polyfill for the native method. For method details
-       *   [see Chrome]{@link https://developer.chrome.com/devtools/docs/console-api#consoledirobject}
-       * @param {!(Object|function)} obj
-       */
-      console.dir = console.log;
-    }
-
-    if (!console.dirxml) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.dirxml)
-       * ---------------------------------------------
-       * @desc A polyfill for the native method. For method details
-       *   [see Chrome]{@link https://developer.chrome.com/devtools/docs/console-api#consoledirxmlobject}
-       * @param {!(Object|function)} obj
-       */
-      console.dirxml = console.log;
-    }
-
-    if (!console.exception) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.exception)
-       * ---------------------------------------------
-       * @desc A polyfill for the native method. For method details
-       *   [see MDN]{@link https://developer.mozilla.org/en-US/docs/Web/API/Console/error}
-       * @param {...*} val
-       */
-      console.exception = console.error;
-    }
-
-    if (!console.group) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.group)
-       * ---------------------------------------------
-       * @desc A polyfill for the native method. For method details
-       *   [see Chrome]{@link https://developer.chrome.com/devtools/docs/console-api#consolegroupobject-object}
-       * @param {...*} val
-       */
-      console.group = emptyFunc;
-    }
-
-    if (!console.groupCollapsed) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.groupCollapsed)
-       * ---------------------------------------------
-       * @desc A polyfill for the native method. For method details
-       *   [see Chrome]{@link https://developer.chrome.com/devtools/docs/console-api#consolegroupcollapsedobject-object}
-       * @param {...*} val
-       */
-      console.groupCollapsed = console.group;
-    }
-
-    if (!console.groupEnd) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.groupEnd)
-       * ---------------------------------------------
-       * @desc A polyfill for the native method. For method details
-       *   [see MDN]{@link https://developer.mozilla.org/en-US/docs/Web/API/Console/groupEnd}
-       * @type {function}
-       */
-      console.groupEnd = emptyFunc;
-    }
-
-    if (!console.info) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.info)
-       * ---------------------------------------------
-       * @desc A polyfill for the native method. For method details
-       *   [see MDN]{@link https://developer.mozilla.org/en-US/docs/Web/API/Console/info}
-       * @param {...*} val
-       */
-      console.info = console.log;
-    }
-
-    if (!console.markTimeline) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.markTimeline)
-       * ---------------------------------------------
-       * @desc A polyfill for the native method. For method details
-       *   [see Apple]{@link https://developer.apple.com/library/mac/documentation/AppleApplications/Conceptual/Safari_Developer_Guide/Console/Console.html#//apple_ref/doc/uid/TP40007874-CH6-SW8}
-       * @param {string} label
-       */
-      console.markTimeline = ( (!console.timeStamp) ?
-        emptyFunc : console.timeStamp
-      );
-    }
-
-    if (!console.profile) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.profile)
-       * ---------------------------------------------
-       * @desc A polyfill for the native method. For method details
-       *   [see Chrome]{@link https://developer.chrome.com/devtools/docs/console-api#consoleprofilelabel}
-       * @param {string=} label
-       */
-      console.profile = emptyFunc;
-    }
-
-    if (!console.profileEnd) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.profileEnd)
-       * ---------------------------------------------
-       * @desc A polyfill for the native method. For method details
-       *   [see Chrome]{@link https://developer.chrome.com/devtools/docs/console-api#consoleprofileend}
-       * @type {function}
-       */
-      console.profileEnd = emptyFunc;
-    }
-
-    if (!console.table) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.table)
-       * ---------------------------------------------
-       * @desc A polyfill for the native method. For method details
-       *   [see MDN]{@link https://developer.mozilla.org/en-US/docs/Web/API/Console/table}
-       * @param {!(Object|Array)} data
-       * @param {!Array=} columns
-       */
-      console.table = emptyFunc;
-    }
-
-    if (!console.time) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.time)
-       * ---------------------------------------------
-       * @desc A polyfill for the native method. For method details
-       *   [see MDN]{@link https://developer.mozilla.org/en-US/docs/Web/API/Console/time}
-       * @param {string} label
-       */
-      console.time = emptyFunc;
-    }
-
-    if (!console.timeEnd) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.timeEnd)
-       * ---------------------------------------------
-       * @desc A polyfill for the native method. For method details
-       *   [see MDN]{@link https://developer.mozilla.org/en-US/docs/Web/API/Console/timeEnd}
-       * @param {string} label
-       */
-      console.timeEnd = emptyFunc;
-    }
-
-    if (!console.timeline) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.timeline)
-       * ---------------------------------------------
-       * @desc A polyfill for the deprecated Chrome method.
-       * @param {string} label
-       */
-      console.timeline = emptyFunc;
-    }
-
-    if (!console.timelineEnd) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.timelineEnd)
-       * ---------------------------------------------
-       * @desc A polyfill for the deprecated Chrome method.
-       * @param {string} label
-       */
-      console.timelineEnd = emptyFunc;
-    }
-
-    if (!console.timeStamp) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.timeStamp)
-       * ---------------------------------------------
-       * @desc A polyfill for the native method. For method details
-       *   [see Chrome]{@link https://developer.chrome.com/devtools/docs/console-api#consoletimestamplabel}
-       * @param {string=} label
-       */
-      console.timeStamp = console.markTimeline;
-    }
-
-    if (!console.trace) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.trace)
-       * ---------------------------------------------
-       * @desc A polyfill for the native method. For method details
-       *   [see Chrome]{@link https://developer.chrome.com/devtools/docs/console-api#consoletraceobject}
-       * @param {...*} val
-       */
-      console.trace = console.log;
-    }
-
-    if (!console.warn) {
-      /**
-       * ---------------------------------------------
-       * Public Method (console.warn)
-       * ---------------------------------------------
-       * @desc A polyfill for the native method. For method details
-       *   [see MDN]{@link https://developer.mozilla.org/en-US/docs/Web/API/Console/error}
-       * @param {...*} val
-       */
-      console.warn = console.error;
-    }
-
-    // Convert console objects to functions if needed (IE8 & IE9)
-    (function(funcSetupNeeded, bind, call, slice) {
-
-      /** @type {number} */
-      var i;
-      /** @type {string} */
-      var method;
-      /** @type {!Array<string>} */
-      var methodsIE8;
-      /** @type {!Array<string>} */
-      var methodsIE9;
-
-      if (funcSetupNeeded) {
-
-        methodsIE8 = [ 'assert', 'error', 'info', 'log', 'warn' ];
-        methodsIE9 = [ 'clear', 'dir', 'profile', 'profileEnd' ];
-        methodsIE9 = methodsIE8.concat(methodsIE9);
-
-        if (bind) {
-          i = methodsIE9.length;
-          while (i--) {
-            method = console[ methodsIE9[i] ];
-            console[ methodsIE9[i] ] = bind.call(method, console);
-          }
-        }
-        else {
-          i = methodsIE8.length;
-          while (i--) {
-            method = console[ methodsIE8[i] ];
-            call.call(method, console, slice.call(arguments));
-          }
-        }
-      }
-    })((typeof console.log === 'object'), Function.prototype.bind,
-        Function.prototype.call, Array.prototype.slice);
-
-  })(window.console, function() {});
-
-/* -----------------------------------------------------------------------------
- * The Object Polyfills (polyfills/object.js)
- * -------------------------------------------------------------------------- */
-
-  if (!Object.keys) {
-    /**
-     * ---------------------------------------------
-     * Public Method (Object.keys)
-     * ---------------------------------------------
-     * @desc A polyfill for the native method. For method details
-     *   [see MDN]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys}
-     * @param {!(Object|function)} obj
-     * @return {strings}
-     */
-    Object.keys = (function fixMissingObjectKeys() {
-      "use strict";
-
-      /** @type {Object} */
-      var testObj;
-      /** @type {boolean} */
-      var enumBug;
-      /** @type {strings} */
-      var notEnum;
-
-      testObj = { toString: null };
-      enumBug = !( testObj.propertyIsEnumerable('toString') );
-      notEnum = [
-        'toString',
-        'toLocaleString',
-        'valueOf',
-        'hasOwnProperty',
-        'isPrototypeOf',
-        'propertyIsEnumerable',
-        'constructor'
-      ];
-
-      return function keys(obj) {
-
-        /** @type {string} */
-        var errorMessage;
-        /** @type {string} */
-        var prop;
-        /** @type {number} */
-        var i;
-        /** @type {vals} */
-        var result;
-
-        if (!obj || (typeof obj !== 'object' && typeof obj !== 'function')) {
-          errorMessage = 'An Object.keys call received an invalid object parameter. ';
-          errorMessage += 'Note: It only accepts non-null objects and functions.';
-          throw new TypeError(errorMessage);
-          return;
-        }
-
-        result = [];
-
-        for (prop in obj) {
-          if ( obj.hasOwnProperty(prop) ) {
-            result.push(prop);
-          }
-        }
-
-        if (enumBug) {
-          i = notEnum.length;
-          while (i--) {
-            if ( obj.hasOwnProperty(notEnum[i]) ) {
-              result.push(notEnum[i]);
-            }
-          }
-        }
-
-        return result;
-      };
-    })();
-  }
-
-  if (!Object.freeze) {
-    /**
-     * ---------------------------------------------
-     * Public Method (Object.freeze)
-     * ---------------------------------------------
-     * @desc A polyfill for the native method. For method details
-     *   [see MDN]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze}
-     * @param {Object} obj
-     * @return {Object}
-     */
-    Object.freeze = function(obj) {
-
-      /** @type {string} */
-      var errorMessage;
-
-      if (!obj || (typeof obj !== 'object' && typeof obj !== 'function')) {
-        errorMessage = 'An Object.freeze call received an invalid object parameter. ';
-        errorMessage += 'Note: It only accepts non-null objects and functions.';
-        throw new TypeError(errorMessage);
-        return;
-      }
-
-      return obj;
-    };
-  }
-
-  // Fix Object.freeze function param bug
-  try {
-    Object.freeze(function testObjectFreezeForBug() {});
-  }
-  catch (e) {
-    Object.freeze = (function fixObjectFreezeBug(orgObjectFreeze) {
-      "use strict";
-
-      return function freeze(obj) {
-        if (typeof obj === 'function') {
-          return obj;
-        }
-        else {
-          return orgObjectFreeze(obj);
-        }
-      };
-    })(Object.freeze);
-  }
-
-/* -----------------------------------------------------------------------------
- * The Array Polyfills (polyfills/array.js)
- * -------------------------------------------------------------------------- */
-
-  if (!Array.isArray) {
-    /**
-     * ---------------------------------------------
-     * Public Method (Array.isArray)
-     * ---------------------------------------------
-     * @desc A polyfill for the native method. For method details
-     *   [see MDN]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray}
-     * @param {*} val
-     * @return {boolean}
-     */
-    Array.isArray = function(val) {
-      return Object.prototype.toString.call(val) === '[object Array]';
-    };
-  }
-
-})(window, document);
+/* Algorithm IV JavaScript Shortcuts (v1.0.0) (learn@algorithmiv.com)
+ * Author: Adam Smith (adamsmith@youlum.com)
+ * Copyright (c) 2015 Adam A Smith (github.com/imaginate)
+ * The Apache License (algorithmiv.com/docs/license) */
+(function(f,q){f.aIV=f.aIV||{};aIV.utils=q})(window,function(f,q,r){f={};f.checkType=function(){var d=function(b,a){return null===b?!1:typeof b===a},c=function(b,a){return d(b,"object")?b instanceof{elem:HTMLElement,element:HTMLElement}[a]:!1};return function(b,a,e){var f,n,m,k;if(!d(a,"string"))throw new TypeError("An aIV.utils.checkType call received an invalid (a non-string) type parameter.");f=!1;null===b?(m=!1,k=g.exclamationPoint.test(a),g.questionMark.test(a)&&(m=!k,k=!k),m&&k&&(f=!0)):(k=
+!0,m=!1);b===r&&g.equalSign.test(a)&&(f=!0);a=a.toLowerCase();a=a.replace(g.lowerAlphaAndPipe,"");n=g.pipe.test(a)?a.split("|"):[a];if(e=!e){a=!0;for(e=n.length;e--&&(a=g.allDataTypes.test(n[e]),a););e=!a}if(e)throw b="An aIV.utils.checkType call received an invalid type string. Check aIV.utils.checkType's documentation ",b+="for a list of acceptable type strings.",new RangeError(b);if(f)return!0;for(f=n.length;f--;){a=n[f];k||(m=!g.nonNullableDataTypes.test(a));if(m&&null===b)return!0;if(g.typeOfDataTypes.test(a)){if(d(b,
+a))return!0}else if(g.instanceOfDataTypes.test(a)){if(c(b,a))return!0}else if(g.arrayDataTypes.test(a)){e=b;var l=void 0,h=void 0,p=void 0;if(Array.isArray(e))if("array"===a)e=!0;else{a=a.slice(0,-1);p="array"===a?Array.isArray:g.instanceOfDataTypes.test(a)?c:d;h=!0;for(l=e.length;l--&&(h=p(e[l],a),h););e=h}else e=!1;if(e)return!0}else if(g.mapDataTypes.test(a)){e=b;p=h=l=void 0;if(d(e,"object")){a=a.slice(0,-3);p="array"===a?Array.isArray:g.instanceOfDataTypes.test(a)?c:d;h=!0;for(l in e)if(e.hasOwnProperty(l)&&
+(h=p(e[l],a),!h))break;e=h}else e=!1;if(e)return!0}}return!1}}();f.isValidTypeString=function(d){var c,b;if("string"!==typeof d)throw new TypeError("An aIV.utils.isValidTypeString call received an invalid (a non-string) typeString parameter.");d=d.toLowerCase();d=d.replace(g.lowerAlphaAndPipe,"");b=g.pipe.test(d)?d.split("|"):[d];c=!0;for(d=b.length;d--&&(c=g.allDataTypes.test(b[d]),c););return c};f.freezeObj=function(){var d=function(c){var b;Object.freeze(c);for(b in c)c.hasOwnProperty(b)&&c[b]&&
+("object"===typeof c[b]||"function"===typeof c[b])&&d(c[b])};return function(c,b){if(!c||"object"!==typeof c&&"function"!==typeof c)throw new TypeError("An aIV.utils.freezeObj call received an invalid obj parameter.");"boolean"!==typeof b&&(b=!1);b?d(c):Object.freeze(c);return c}}();f.hasOwnProp=function(d,c){var b;if(!d||"object"!==typeof d&&"function"!==typeof d)throw new TypeError("An aIV.utils.hasOwnProp call received an invalid obj parameter.");if(!c||"string"!==typeof c)throw b="An aIV.utils.hasOwnProp call received an invalid prop parameter.",
+new TypeError(b);return d.hasOwnProperty(c)};var g={allDataTypes:/^string$|^number$|^boolean$|^object$|^array$|^function$|^elem$|^element$|^undefined$|^null$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems$|^elements$|^functions$|^stringmap$|^numbermap$|^booleanmap$|^objectmap$|^arraymap$|^functionmap$|^elemmap$|^elementmap$/,nonNullableDataTypes:/^string$|^number$|^boolean$|^function$|^undefined$/,typeOfDataTypes:/^string$|^number$|^boolean$|^object$|^function$|^undefined$/,instanceOfDataTypes:/^elem$|^element$/,
+arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems$|^elements$|^functions$/,mapDataTypes:/^stringmap$|^numbermap$|^booleanmap$|^objectmap$|^arraymap$|^functionmap$|^elemmap$|^elementmap$/,dualDollarSigns:/([^\\]*?)\$\$/,space:/\s/,exclamationPoint:/\!/,questionMark:/\?/,equalSign:/\=/,pipe:/\|/,lowerAlphaAndPipe:/[^a-z\|]/g};f.freezeObj(g,!0);return f}(window,document));
 
 ////////////////////////////////////////////////////////////////////////////////
 // The Public API
 ////////////////////////////////////////////////////////////////////////////////
 
-(function setupThePublicAPI(window, debugModuleAPI) {
+(function setupTheDebugPublicAPI(window, debugModuleAPI) {
   "use strict";
 
 /* -----------------------------------------------------------------------------
@@ -1048,7 +568,7 @@
   };
 
 /* -----------------------------------------------------------------------------
- * The Public Module Methods (module-methods.js)
+ * The Public Module Utility Methods (module-utils.js)
  * -------------------------------------------------------------------------- */
 
   /**
@@ -1056,89 +576,51 @@
    * Public Method (freezeObj)
    * ---------------------------------------------------
    * @desc A shortcut for the Object.freeze method with a deep freeze option.
-   * @param {!object|function} obj - The object to freeze.
+   * @param {!(Object|function)} obj - The object to freeze.
    * @param {boolean=} deep - Deep freeze the object. The default is false.
-   * @return {!object|function} The frozen object.
+   * @return {!(Object|function)} The frozen object.
    */
-  var freezeObj = (function setupFreezeObj() {
-
-    /**
-     * -------------------------------------------------
-     * Private Method (deepFreeze)
-     * -------------------------------------------------
-     * @desc A helper to freezeObj that recursively freezes all of its
-     *   properties.
-     * @param {!object|function} obj - The object to freeze.
-     */
-    var deepFreeze = function(obj) {
-
-      /** @type {string} */
-      var prop;
-
-      Object.freeze(obj);
-
-      for (prop in obj) {
-        if (hasOwnProp(obj, prop) && checkType(obj[ prop ], '!object|function')) {
-          deepFreeze(obj[ prop ]);
-        }
-      }
-    };
-
-    return function freezeObj(obj, deep) {
-
-      /** @type {string} */
-      var errorMessage;
-
-      if ( !checkType(obj, '!object|function') ) {
-        errorMessage = 'A freezeObj call received an invalid obj parameter.';
-        throw new TypeError(errorMessage);
-        return;
-      }
-
-      if ( !checkType(deep, 'boolean') ) {
-        deep = false;
-      }
-
-      if (deep) {
-        deepFreeze(obj);
-      }
-      else {
-        Object.freeze(obj);
-      }
-
-      return obj;
-    };
-  })();
+  var freezeObj = aIV.utils.freezeObj;
 
   /**
    * ---------------------------------------------------
    * Public Method (hasOwnProp)
    * ---------------------------------------------------
    * @desc A shortcut for the Object.prototype.hasOwnProperty method.
-   * @param {!object|function} obj - The object to check.
+   * @param {!(Object|function)} obj - The object to check.
    * @param {string} prop - The property to check.
    * @return {boolean} The result of the check.
    */
-  function hasOwnProp(obj, prop) {
+  var hasOwnProp = aIV.utils.hasOwnProp;
 
-    /** @type {string} */
-    var errorMessage;
+  /**
+   * ---------------------------------------------------
+   * Public Method (checkType)
+   * ---------------------------------------------------
+   * @desc Checks a value's data type against the given optional types.
+   * @param {*} val - The value to be evaluated.
+   * @param {string} type - A string of the data types to evaluate the value
+   *   against. For a complete list of acceptable strings
+   *   [see aIV.utils.checkType]{@link https://github.com/imaginate/algorithmIV-javascript-shortcuts/blob/master/src/pre-compiled-parts/methods/checkType.js}.
+   * @param {boolean=} noTypeValCheck - If true skips the data type string checks.
+   *   The default is false. Use to avoid duplicating checks.
+   * @return {boolean} The evaluation result.
+   */
+  var checkType = aIV.utils.checkType;
 
-    if (!obj || (!checkTypeOf(obj, 'object') &&
-        !checkTypeOf(obj, 'function'))) {
-      errorMessage = 'A hasOwnProp call received an invalid obj parameter.';
-      throw new TypeError(errorMessage);
-      return;
-    }
+  /**
+   * ---------------------------------------------------
+   * Public Method (checkDataTypeStrings)
+   * ---------------------------------------------------
+   * @desc Evaluates whether each value is a valid data type string.
+   * @param {!(string|strings)} types - The strings to evaluate.
+   * @return {boolean} The evaluation result.
+   */
+  var checkDataTypeStrings = aIV.utils.isValidTypeString;
 
-    if (!prop || !checkTypeOf(prop, 'string')) {
-      errorMessage = 'A hasOwnProp call received an invalid prop parameter.';
-      throw new TypeError(errorMessage);
-      return;
-    }
-
-    return obj.hasOwnProperty(prop);
-  }
+/* -----------------------------------------------------------------------------
+ * The Public Module Methods (module-methods.js)
+ * -------------------------------------------------------------------------- */
 
   /**
    * ---------------------------------------------------
@@ -1207,361 +689,41 @@
    *   substitution strings.
    * @return {string} The prepared console message.
    */
-  function insertSubstituteStrings(msg, vals) {
+  var insertSubstituteStrings = (function() {
 
-    /** @type {number} */
-    var len;
-    /** @type {number} */
-    var i;
-    /** @type {string} */
-    var substituteString;
+    /** @type {!RegExp} */
+    var dualDollarSigns;
 
-    // Insert the substitution strings
-    len = vals.length;
-    i = -1;
-    while (++i < len) {
+    dualDollarSigns = /([^\\]*?)\$\$/;
 
-      substituteString = getSubstituteString(vals[i]);
+    return function insertSubstituteStrings(msg, vals) {
 
-      if ( RegExps.dualDollarSigns.test(msg) ) {
-        substituteString = '$1' + substituteString;
-        msg = msg.replace(RegExps.dualDollarSigns, substituteString);
-      }
-      else {
-        msg += ' unnamedVar' + i + '= ' + substituteString + ';';
-      }
-    }
+      /** @type {number} */
+      var len;
+      /** @type {number} */
+      var i;
+      /** @type {string} */
+      var substituteString;
 
-    return msg;
-  }
+      // Insert the substitution strings
+      len = vals.length;
+      i = -1;
+      while (++i < len) {
 
-  /**
-   * ---------------------------------------------------
-   * Public Method (checkType)
-   * ---------------------------------------------------
-   * @desc Checks a value's data type against the given optional types.
-   * @param {*} val - The value to be evaluated.
-   * @param {string} type - A string of the data types to evaluate the value
-   *   against. The optional data type strings are below:
-   *   <table>
-   *     <tr><th>Main Types</th><th>Array Types</th><th>Hash Map Types</th></tr>
-   *     <tr>
-   *       <td>
-   *         <span>'string', 'number', 'boolean', 'object', 'array', </span>
-   *         <span>'function', 'elem', 'element', 'undefined'</span>
-   *       </td>
-   *       <td>
-   *         <span>'strings', 'numbers', 'booleans', 'objects', </span>
-   *         <span>'arrays', 'functions', 'elems', 'elements'</span>
-   *       </td>
-   *       <td>
-   *         <span>'stringMap', 'numberMap', 'booleanMap', 'objectMap', </span>
-   *         <span>'arrayMap', 'functionMap', 'elemMap', 'elementMap'</span>
-   *       </td>
-   *     </tr>
-   *   </table>
-   *   Other important characters are below:
-   *   <table>
-   *     <tr><th>Character</th><th>Details</th><th>Example</th></tr>
-   *     <tr>
-   *       <td>'|'</td>
-   *       <td>Separates multiple type options.</td>
-   *       <td>'strings|numbers'</td>
-   *     </tr>
-   *     <tr>
-   *       <td>'!'</td>
-   *       <td>
-   *         <span>Indicates an object is not nullable. By default all </span>
-   *         <span>functions, primitive data types (string, number, </span>
-   *         <span>or boolean), and undefined are not nullable.</span>
-   *       </td>
-   *       <td>'!stringMap'</td>
-   *     </tr>
-   *     <tr>
-   *       <td>'?'</td>
-   *       <td>
-   *         <span>Indicates a function or primitive data type is </span>
-   *         <span>nullable. By default all objects except functions </span>
-   *         <span>are nullable.</span>
-   *       </td>
-   *       <td>'?string'</td>
-   *     </tr>
-   *     <tr>
-   *       <td>'='</td>
-   *       <td>Indicates that the value can be undefined.</td>
-   *       <td>'array=' or 'string|number='</td>
-   *     </tr>
-   *   </table>
-   * @param {boolean=} noTypeValCheck - If true skips the data type string checks.
-   *   The default is false. Use to avoid duplicating checks.
-   * @return {boolean} The evaluation result.
-   */
-  function checkType(val, type, noTypeValCheck) {
+        substituteString = getSubstituteString(vals[i]);
 
-    /** @type {number} */
-    var i;
-    /** @type {!strings} */
-    var types;
-    /** @type {boolean} */
-    var nullable;
-    /** @type {boolean} */
-    var earlyPass;
-    /** @type {string} */
-    var errorMessage;
-    /** @type {boolean} */
-    var nullableOverride;
-
-    if ( !checkTypeOf(type, 'string') ) {
-      errorMessage = 'A checkType call received an invalid type parameter.';
-      throw new TypeError(errorMessage);
-      return;
-    }
-
-    earlyPass = false;
-
-    if (val === null) {
-      nullable = false;
-      nullableOverride = RegExps.exclamationPoint.test(type);
-      if ( RegExps.questionMark.test(type) ) {
-        nullableOverride = !nullableOverride;
-        nullable = !nullableOverride;
-      }
-      if (nullable && nullableOverride) {
-        earlyPass = true;
-      }
-    }
-    else {
-      nullableOverride = true;
-      nullable = false;
-    }
-
-    if (val === undefined && RegExps.equalSign.test(type)) {
-      earlyPass = true;
-    }
-
-    // Remove everything except lowercase letters and pipes
-    type = type.toLowerCase();
-    type = type.replace(RegExps.lowerAlphaAndPipe, '');
-
-    types = ( RegExps.pipe.test(type) ) ? type.split('|') : [ type ];
-
-    if (!noTypeValCheck && !checkDataTypeStrings(types)) {
-      errorMessage = 'A checkType call received an invalid type parameter.';
-      throw new RangeError(errorMessage);
-      return;
-    }
-
-    if (earlyPass) {
-      return true;
-    }
-
-    // Test the value against each type
-    i = types.length;
-    while (i--) {
-
-      type = types[i];
-
-      if (!nullableOverride) {
-        nullable = !RegExps.nonNullableDataTypes.test(type);
-      }
-
-      if (nullable && val === null) {
-        return true;
-      }
-
-      if ( RegExps.typeOfDataTypes.test(type) ) {
-        if ( checkTypeOf(val, type) ) {
-          return true;
+        if ( dualDollarSigns.test(msg) ) {
+          substituteString = '$1' + substituteString;
+          msg = msg.replace(dualDollarSigns, substituteString);
         }
-        continue;
-      }
-
-      if ( RegExps.instanceOfDataTypes.test(type) ) {
-        if ( checkInstanceOf(val, type) ) {
-          return true;
+        else {
+          msg += ' unnamedVar' + i + '= ' + substituteString + ';';
         }
-        continue;
       }
 
-      if ( RegExps.arrayDataTypes.test(type) ) {
-        if ( checkArrayType(val, type) ) {
-          return true;
-        }
-        continue;
-      }
-
-      if ( RegExps.mapDataTypes.test(type) ) {
-        if ( checkHashMapType(val, type) ) {
-          return true;
-        }
-        continue;
-      }
-    }
-
-    return false;
-  }
-
-  /**
-   * ---------------------------------------------------
-   * Public Method (checkDataTypeStrings)
-   * ---------------------------------------------------
-   * @desc Evaluates whether each value is a valid data type string.
-   * @param {!(string|strings)} types - The strings to evaluate.
-   * @return {boolean} The evaluation result.
-   */
-  function checkDataTypeStrings(types) {
-
-    /** @type {number} */
-    var i;
-    /** @type {boolean} */
-    var pass;
-
-    if ( checkTypeOf(types, 'string') ) {
-      types = types.toLowerCase();
-      types = types.replace(RegExps.lowerAlphaAndPipe, '');
-      types = ( RegExps.pipe.test(types) ) ? types.split('|') : [ types ];
-    }
-
-    pass = true;
-
-    i = types.length;
-    while (i--) {
-      pass = RegExps.allDataTypes.test(types[i]);
-      if (!pass) {
-        break;
-      }
-    }
-
-    return pass;
-  }
-
-  /**
-   * ---------------------------------------------------
-   * Public Method (checkTypeOf)
-   * ---------------------------------------------------
-   * @desc Checks a value's typeof against the given type.
-   * @param {*} val - The value to be evaluated.
-   * @param {string} type - The data type.
-   * @return {boolean} The evaluation result.
-   */
-  function checkTypeOf(val, type) {
-    return (typeof val === type);
-  }
-
-  /**
-   * ---------------------------------------------------
-   * Public Method (checkInstanceOf)
-   * ---------------------------------------------------
-   * @desc Checks a value's instanceof against the given type.
-   * @param {*} val - The value to be evaluated.
-   * @param {string} type - The data type.
-   * @return {boolean} The evaluation result.
-   */
-  function checkInstanceOf(val, type) {
-
-    /** @type {!Object<string, function>} */
-    var constructors;
-
-    if ( !checkTypeOf(val, 'object') ) {
-      return false;
-    }
-
-    constructors = {
-      'elem'   : HTMLElement,
-      'element': HTMLElement
+      return msg;
     };
-
-    return (val instanceof constructors[ type ]);
-  }
-
-  /**
-   * ---------------------------------------------------
-   * Public Method (checkArrayType)
-   * ---------------------------------------------------
-   * @desc Checks a value's data type against the given array type.
-   * @param {*} vals - The value to be evaluated.
-   * @param {string} type - The array data type.
-   * @return {boolean} The evaluation result.
-   */
-  function checkArrayType(vals, type) {
-
-    /** @type {number} */
-    var i;
-    /** @type {boolean} */
-    var pass;
-    /** @type {function} */
-    var testFunc;
-
-    if ( !Array.isArray(vals) ) {
-      return false;
-    }
-
-    if (type === 'array') {
-      return true;
-    }
-
-    type = type.slice(0, -1);
-
-    testFunc = ( (type === 'array') ?
-      Array.isArray : ( RegExps.instanceOfDataTypes.test(type) ) ?
-        checkInstanceOf : checkTypeOf
-    );
-
-    pass = true;
-
-    i = vals.length;
-    while (i--) {
-      pass = testFunc(vals[i], type);
-      if (!pass) {
-        break;
-      }
-    }
-
-    return pass;
-  }
-
-  /**
-   * ---------------------------------------------------
-   * Public Method (checkHashMapType)
-   * ---------------------------------------------------
-   * @desc Checks a value's data type against the given object type.
-   * @param {*} val - The value to be evaluated.
-   * @param {string} type - The hash map's data type.
-   * @return {boolean} The evaluation result.
-   */
-  function checkHashMapType(val, type) {
-
-    /** @type {string} */
-    var prop;
-    /** @type {boolean} */
-    var pass;
-    /** @type {function} */
-    var testFunc;
-
-    if ( !checkTypeOf(val, 'object') ) {
-      return false;
-    }
-
-    type = type.slice(0, -3);
-
-    testFunc = ( (type === 'array') ?
-      Array.isArray : ( RegExps.instanceOfDataTypes.test(type) ) ?
-        checkInstanceOf : checkTypeOf
-    );
-
-    pass = true;
-
-    for (prop in val) {
-      if ( hasOwnProp(val, prop) ) {
-        pass = testFunc(val[ prop ], type);
-        if (!pass) {
-          break;
-        }
-      }
-    }
-
-    return pass;
-  }
+  })();
 
   /**
    * ---------------------------------------------------
@@ -1683,187 +845,6 @@
 
     return errorBreakpoints;
   };
-
-/* -----------------------------------------------------------------------------
- * The RegExps Class (classes/reg-exps.js)
- * -------------------------------------------------------------------------- */
-
-  /**
-   * -----------------------------------------------
-   * Public Class (RegExps)
-   * -----------------------------------------------
-   * @desc Regular expressions that are used throughout the module.
-   * @type {!Object<string, RegExp>}
-   * @struct
-   */
-  var RegExps = {};
-
-  /**
-   * -----------------------------------------------
-   * Public Property (RegExps.allDataTypes)
-   * -----------------------------------------------
-   * @desc All of the data types available to this module.
-   * @type {!RegExp}
-   */
-  RegExps.allDataTypes = (function setupRegExpsAllDataTypes() {
-
-    /** @type {string} */
-    var types;
-
-    types = '' +
-    '^string$|^number$|^boolean$|^object$|^array$|^function$|^elem$|'          +
-    '^element$|^undefined$|^null$|^strings$|^numbers$|^booleans$|^objects$|'   +
-    '^arrays$|^elems$|^elements$|^functions$|^stringmap$|^numbermap$|'         +
-    '^booleanmap$|^objectmap$|^arraymap$|^functionmap$|^elemmap$|^elementmap$';
-
-    return new RegExp(types);
-  })();
-
-  /**
-   * -----------------------------------------------
-   * Public Property (RegExps.nonNullableDataTypes)
-   * -----------------------------------------------
-   * @desc The non-nullable data types available to this module.
-   * @type {!RegExp}
-   */
-  RegExps.nonNullableDataTypes = (function setupRegExpsNonNullableDataTypes() {
-
-    /** @type {string} */
-    var types;
-
-    types = '^string$|^number$|^boolean$|^function$|^undefined$';
-
-    return new RegExp(types);
-  })();
-
-  /**
-   * -----------------------------------------------
-   * Public Property (RegExps.typeOfDataTypes)
-   * -----------------------------------------------
-   * @desc The data types that can be accurately checked with the
-   *   native JavaScript typeof operator.
-   * @type {!RegExp}
-   */
-  RegExps.typeOfDataTypes = (function setupRegExpsTypeOfDataTypes() {
-
-    /** @type {string} */
-    var types;
-
-    types = '^string$|^number$|^boolean$|^object$|^function$|^undefined$';
-
-    return new RegExp(types);
-  })();
-
-  /**
-   * -----------------------------------------------
-   * Public Property (RegExps.instanceOfDataTypes)
-   * -----------------------------------------------
-   * @desc The data types that can be accurately checked with the
-   *   native JavaScript instanceof operator.
-   * @type {!RegExp}
-   */
-  RegExps.instanceOfDataTypes = /^elem$|^element$/;
-
-  /**
-   * -----------------------------------------------
-   * Public Property (RegExps.arrayDataTypes)
-   * -----------------------------------------------
-   * @desc The array data types available to this module.
-   * @type {!RegExp}
-   */
-  RegExps.arrayDataTypes = (function setupRegExpsArrayDataTypes() {
-
-    /** @type {string} */
-    var types;
-
-    types = '^array$|^strings$|^numbers$|^booleans$|^objects$|' +
-            '^arrays$|^elems$|^elements$|^functions$';
-
-    return new RegExp(types);
-  })();
-
-  /**
-   * -----------------------------------------------
-   * Public Property (RegExps.mapDataTypes)
-   * -----------------------------------------------
-   * @desc The hash map types available to this module.
-   * @type {!RegExp}
-   */
-  RegExps.mapDataTypes = (function setupRegExpsMapDataTypes() {
-
-    /** @type {string} */
-    var types;
-
-    types = '^stringmap$|^numbermap$|^booleanmap$|^objectmap$|' +
-            '^arraymap$|^functionmap$|^elemmap$|^elementmap$';
-
-    return new RegExp(types);
-  })();
-
-  /**
-   * -----------------------------------------------
-   * Public Property (RegExps.dualDollarSigns)
-   * -----------------------------------------------
-   * @desc Two consecutive dollar signs.
-   * @type {!RegExp}
-   */
-  RegExps.dualDollarSigns = /([^\\]*?)\$\$/;
-
-  /**
-   * -----------------------------------------------
-   * Public Property (RegExps.space)
-   * -----------------------------------------------
-   * @desc A whitespace.
-   * @type {!RegExp}
-   */
-  RegExps.space = /\s/;
-
-  /**
-   * -----------------------------------------------
-   * Public Property (RegExps.exclamationPoint)
-   * -----------------------------------------------
-   * @desc An exclamation point.
-   * @type {!RegExp}
-   */
-  RegExps.exclamationPoint = /\!/;
-
-  /**
-   * -----------------------------------------------
-   * Public Property (RegExps.questionMark)
-   * -----------------------------------------------
-   * @desc A question mark.
-   * @type {!RegExp}
-   */
-  RegExps.questionMark = /\?/;
-
-  /**
-   * -----------------------------------------------
-   * Public Property (RegExps.equalSign)
-   * -----------------------------------------------
-   * @desc An equal sign.
-   * @type {!RegExp}
-   */
-  RegExps.equalSign = /\=/;
-
-  /**
-   * -----------------------------------------------
-   * Public Property (RegExps.pipe)
-   * -----------------------------------------------
-   * @desc A pipe.
-   * @type {!RegExp}
-   */
-  RegExps.pipe = /\|/;
-
-  /**
-   * -----------------------------------------------
-   * Public Property (RegExps.lowerAlphaAndPipe)
-   * -----------------------------------------------
-   * @desc All characters except lowercase letters and the pipe.
-   * @type {!RegExp}
-   */
-  RegExps.lowerAlphaAndPipe = /[^a-z\|]/g;
-
-  freezeObj(RegExps, true);
 
 /* -----------------------------------------------------------------------------
  * The ErrorMessages Class (classes/error-messages.js)
@@ -3843,32 +2824,40 @@
    * @param {string} method - The name of the method to insert for.
    * @return {boolean} Whether a breakpoint was inserted.
    */
-  Debug.prototype.insertBreakpoint = function(method) {
+  Debug.prototype.insertBreakpoint = (function() {
 
-    /** @type {number} */
-    var i;
-    /** @type {boolean} */
-    var pass;
-    /** @type {strings} */
-    var methods;
+    /** @type {!RegExp} */
+    var space;
 
-    methods = ( ( RegExps.space.test(method) ) ?
-      method.split(' ') : [ method ]
-    );
-    pass = false;
+    space = /\s/;
 
-    i = methods.length;
-    while (i--) {
-      method = methods[i];
-      pass = this.getBreakpoint(method);
-      if (pass) {
-        debugger;
-        break;
+    return function insertBreakpoint(method) {
+
+      /** @type {number} */
+      var i;
+      /** @type {boolean} */
+      var pass;
+      /** @type {strings} */
+      var methods;
+
+      methods = ( ( space.test(method) ) ?
+        method.split(' ') : [ method ]
+      );
+      pass = false;
+
+      i = methods.length;
+      while (i--) {
+        method = methods[i];
+        pass = this.getBreakpoint(method);
+        if (pass) {
+          debugger;
+          break;
+        }
       }
-    }
 
-    return pass;
-  };
+      return pass;
+    };
+  })();
 
   /**
    * -----------------------------------------------------
