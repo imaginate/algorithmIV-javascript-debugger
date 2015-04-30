@@ -1,4 +1,4 @@
-/** @preserve blank line for custom compile (sed scripting) */
+/** @preserve blank line */
 
 /**
  * -----------------------------------------------------------------------------
@@ -6,19 +6,20 @@
  * -----------------------------------------------------------------------------
  * @file Algorithm IV's debugger is a console wrapper that fixes cross-browser
  *   console issues and provides a set of new console methods that make your
- *   console more powerful. Reduce the amount of time and code it takes to find
- *   a bug, automatically insert breakpoints, profiles, and timers, and switch
- *   everything on or off with one command. With proper use you will know and
- *   control the actions of every JavaScript method in your code base!
+ *   console more powerful. It will allow you to reduce the amount of time and
+ *   code it takes to find a bug, automatically insert breakpoints, profiles,
+ *   and timers, and switch everything on or off with one command. With proper
+ *   use you will know and control the actions of every JavaScript method in
+ *   your code base!
  * @module aIVConsole
  * @version 1.1.0
  * @author Adam Smith ({@link adamsmith@youlum.com})
  * @copyright 2015 Adam A Smith ([github.com/imaginate]{@link https://github.com/imaginate})
- * @license The MIT License ([algorithmiv.com/docs/license]{@link http://algorithmiv.com/docs/license})
- * @desc More details about aIV.debug's module:
+ * @license The Apache License ([algorithmiv.com/docs/license]{@link http://algorithmiv.com/docs/license})
+ * @desc More details about aIV.console:
  * <ol>
  *   <li>annotations: 
- *       [See Closure Compiler specific JSDoc]{@link https://developers.google.com/closure/compiler/}
+ *       [See Closure Compiler specific JSDoc]{@link https://developers.google.com/closure/compiler/docs/js-for-compiler}
  *       and [See JSDoc3]{@link http://usejsdoc.org/}
  *   </li>
  *   <li>contributing: 
@@ -40,28 +41,13 @@
  */
 
 ////////////////////////////////////////////////////////////////////////////////
-// The JavaScript Polyfills
+// The Dependencies
 ////////////////////////////////////////////////////////////////////////////////
 
-;(function setupThePolyfills(window, document, undefined) {
-  "use strict";
-
 /* -----------------------------------------------------------------------------
- * The Console Polyfills (polyfills/console.js)
+ * Algorithm IV JavaScript Shortcuts (dependencies/algorithmIV-utils.min.js)
  * -------------------------------------------------------------------------- */
-// insert-polyfills-console
-
-/* -----------------------------------------------------------------------------
- * The Object Polyfills (polyfills/object.js)
- * -------------------------------------------------------------------------- */
-// insert-polyfills-object
-
-/* -----------------------------------------------------------------------------
- * The Array Polyfills (polyfills/array.js)
- * -------------------------------------------------------------------------- */
-// insert-polyfills-array
-
-})(window, document);
+// insert-aIV-utils
 
 ////////////////////////////////////////////////////////////////////////////////
 // The Public API
@@ -95,14 +81,14 @@
 // insert-module-vars
 
 /* -----------------------------------------------------------------------------
+ * The Public Module Utility Methods (module-utils.js)
+ * -------------------------------------------------------------------------- */
+// insert-module-utils
+
+/* -----------------------------------------------------------------------------
  * The Public Module Methods (module-methods.js)
  * -------------------------------------------------------------------------- */
 // insert-module-methods
-
-/* -----------------------------------------------------------------------------
- * The RegExps Class (classes/reg-exps.js)
- * -------------------------------------------------------------------------- */
-// insert-reg-exps
 
 /* -----------------------------------------------------------------------------
  * The ErrorMessages Class (classes/error-messages.js)
