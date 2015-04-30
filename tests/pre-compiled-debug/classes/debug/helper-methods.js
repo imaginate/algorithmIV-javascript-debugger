@@ -7,32 +7,40 @@
    * @param {string} method - The name of the method to insert for.
    * @return {boolean} Whether a breakpoint was inserted.
    */
-  Debug.prototype.insertBreakpoint = function(method) {
+  Debug.prototype.insertBreakpoint = (function() {
 
-    /** @type {number} */
-    var i;
-    /** @type {boolean} */
-    var pass;
-    /** @type {strings} */
-    var methods;
+    /** @type {!RegExp} */
+    var space;
 
-    methods = ( ( RegExps.space.test(method) ) ?
-      method.split(' ') : [ method ]
-    );
-    pass = false;
+    space = /\s/;
 
-    i = methods.length;
-    while (i--) {
-      method = methods[i];
-      pass = this.getBreakpoint(method);
-      if (pass) {
-        debugger;
-        break;
+    return function insertBreakpoint(method) {
+
+      /** @type {number} */
+      var i;
+      /** @type {boolean} */
+      var pass;
+      /** @type {strings} */
+      var methods;
+
+      methods = ( ( space.test(method) ) ?
+        method.split(' ') : [ method ]
+      );
+      pass = false;
+
+      i = methods.length;
+      while (i--) {
+        method = methods[i];
+        pass = this.getBreakpoint(method);
+        if (pass) {
+          debugger;
+          break;
+        }
       }
-    }
 
-    return pass;
-  };
+      return pass;
+    };
+  })();
 
   /**
    * -----------------------------------------------------
