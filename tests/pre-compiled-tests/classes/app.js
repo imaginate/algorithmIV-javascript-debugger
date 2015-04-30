@@ -69,9 +69,11 @@
   App.prototype.runTests = function() {
 
     // Turn off the debugger instances for errors
-    aIV.debug.setConfig({
-      errorDebuggers : false,
-      turnOnDebuggers: 'none'
+    aIV.console.set({
+      errorBreakpoints: false,
+      addBreakpoints  : 'none',
+      turnOnGroups    : false,
+      turnOnTimers    : false
     });
 
     // Clear the console
@@ -80,36 +82,12 @@
     // Clear the start message
     this.elems.clearUI();
 
-    // Check init's params
-    Tests.checkClassTitle();
-    Tests.checkTurnOffMethods();
-    Tests.checkAddBreakpoints();
-
-    // Check instance 
-    Tests.checkInstances();
-
-    // Check the type methods
-    Tests.checkStart();
-    Tests.checkArgs();
-    Tests.checkFail();
-    Tests.checkGroup();
-    Tests.checkState();
-    Tests.checkMisc();
-
-    // Check the setting methods
-    Tests.checkTurnOnMethod();
-    Tests.checkTurnOffMethod();
-    Tests.checkAddBreakpoint();
-    Tests.checkRemoveBreakpoint();
-
-    // Check the config setter
-    Tests.checkConsoleSet();
-
-////////////////////////////////////////////////////////////////////////////////
-
-// ADD NEW TEST CALLS HERE
-
-////////////////////////////////////////////////////////////////////////////////
+    // Run all the tests
+    for (prop in Tests) {
+      if ( hasOwnProp(Tests, prop) ) {
+        Tests[ prop ]();
+      }
+    }
 
     // Show the choices and record the results
     this.choices.reverse();
