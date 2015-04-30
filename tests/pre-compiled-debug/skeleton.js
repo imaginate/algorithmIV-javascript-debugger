@@ -53,7 +53,7 @@
 // The Public API
 ////////////////////////////////////////////////////////////////////////////////
 
-(function setupThePublicAPI(window, debugModuleAPI) {
+(function setupTheDebugPublicAPI(window, debugModuleAPI) {
   "use strict";
 
 /* -----------------------------------------------------------------------------
