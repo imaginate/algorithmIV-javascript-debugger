@@ -15,45 +15,41 @@ tests/algorithmIV-debug.js |    |
 ## UNIX Commands
 cd tests/pre-compiled-debug
 sed \
+  -e "/insert-aIV-utils/ r dependencies/algorithmIV-utils.min.js" \
   -e "/insert-public-api/ r public-api.js" \
   -e "/insert-module-api/ r module-api.js" \
   -e "/insert-module-vars/ r module-vars.js" \
+  -e "/insert-module-utils/ r module-utils.js" \
   -e "/insert-module-methods/ r module-methods.js" \
   -e "/insert-error-messages/ r classes/error-messages.js" \
-  -e "/insert-reg-exps/ r classes/reg-exps.js" \
   -e "/insert-debug-constructor/ r classes/debug/constructor.js" \
   -e "/insert-debug-logging-methods/ r classes/debug/logging-methods.js" \
   -e "/insert-debug-controlling-methods/ r classes/debug/controlling-methods.js" \
-  -e "/insert-debug-helper-methods/ r classes/debug/helper-methods.js" \
-  -e "/insert-polyfills-console/ r polyfills/console.js" \
-  -e "/insert-polyfills-object/ r polyfills/object.js" \
-  -e "/insert-polyfills-array/ r polyfills/array.js" <skeleton.js>algorithmIV-debug-temp.js
+  -e "/insert-debug-helper-methods/ r classes/debug/helper-methods.js" <skeleton.js>algorithmIV-debug-temp.js
 cd ..
 cp -u pre-compiled-debug/algorithmIV-debug-temp.js algorithmIV-debug.js
 rm -f pre-compiled-debug/algorithmIV-debug-temp.js
-sed -i "s/^\/\/ insert-[a-z\-]*//" algorithmIV-debug.js
+sed -i "s/^\/\/ insert-[a-zA-Z\-]*//" algorithmIV-debug.js
 rm -f sed*
 
 ## MS-DOS Commands
 cd tests/pre-compiled-debug
 sed ^
+  -e "/insert-aIV-utils/ r dependencies\algorithmIV-utils.min.js" ^
   -e "/insert-public-api/ r public-api.js" ^
   -e "/insert-module-api/ r module-api.js" ^
   -e "/insert-module-vars/ r module-vars.js" ^
+  -e "/insert-module-utils/ r module-utils.js" ^
   -e "/insert-module-methods/ r module-methods.js" ^
   -e "/insert-error-messages/ r classes\error-messages.js" ^
-  -e "/insert-reg-exps/ r classes\reg-exps.js" ^
   -e "/insert-debug-constructor/ r classes\debug\constructor.js" ^
   -e "/insert-debug-logging-methods/ r classes\debug\logging-methods.js" ^
   -e "/insert-debug-controlling-methods/ r classes\debug\controlling-methods.js" ^
-  -e "/insert-debug-helper-methods/ r classes\debug\helper-methods.js" ^
-  -e "/insert-polyfills-console/ r polyfills\console.js" ^
-  -e "/insert-polyfills-object/ r polyfills\object.js" ^
-  -e "/insert-polyfills-array/ r polyfills\array.js" <skeleton.js>algorithmIV-debug-temp.js
+  -e "/insert-debug-helper-methods/ r classes\debug\helper-methods.js" <skeleton.js>algorithmIV-debug-temp.js
 cd ..
 copy /y pre-compiled-debug\algorithmIV-debug-temp.js algorithmIV-debug.js
 del /f pre-compiled-debug\algorithmIV-debug-temp.js
-sed -i "s/^\/\/ insert-[a-z\-]*//" algorithmIV-debug.js
+sed -i "s/^\/\/ insert-[a-zA-Z\-]*//" algorithmIV-debug.js
 del /f sed*
 
 ----------------------------------------------------------------
@@ -78,7 +74,7 @@ sed \
 cd ..
 cp -u pre-compiled-tests/algorithmIV-tests-temp.js algorithmIV-tests.js
 rm -f pre-compiled-tests/algorithmIV-tests-temp.js
-sed -i "s/^\/\/ insert-[a-z\-]*//" algorithmIV-tests.js
+sed -i "s/^\/\/ insert-[a-zA-Z\-]*//" algorithmIV-tests.js
 rm -f sed*
 
 ## MS-DOS Commands
@@ -96,7 +92,7 @@ sed ^
 cd ..
 copy /y pre-compiled-tests\algorithmIV-tests-temp.js algorithmIV-tests.js
 del /f pre-compiled-tests\algorithmIV-tests-temp.js
-sed -i "s/^\/\/ insert-[a-z\-]*//" algorithmIV-tests.js
+sed -i "s/^\/\/ insert-[a-zA-Z\-]*//" algorithmIV-tests.js
 del /f sed*
 
 ----------------------------------------------------------------
@@ -110,18 +106,18 @@ src/pre-compiled-parts/ |    |
 cp -u tests/pre-compiled-debug/*.js src/pre-compiled-parts
 cp -u tests/pre-compiled-debug/classes/*.js src/pre-compiled-parts/classes
 cp -u tests/pre-compiled-debug/classes/debug/*.js src/pre-compiled-parts/classes/debug
-cp -u tests/pre-compiled-debug/polyfills/*.js src/pre-compiled-parts/polyfills
+cp -u tests/pre-compiled-debug/dependencies/*.js src/pre-compiled-parts/dependencies
 cd src/pre-compiled-parts
-sed -i "s/ setupThePolyfills//;s/ setupThePublicAPI//;s/ setupTheDebugModule//" skeleton.js
+sed -i "s/function setup[a-zA-Z]*(/function(/" skeleton.js
 rm -f sed*
 
 ## MS-DOS Commands
 copy /y tests\pre-compiled-debug\*.js src\pre-compiled-parts
 copy /y tests\pre-compiled-debug\classes\*.js src\pre-compiled-parts\classes
 copy /y tests\pre-compiled-debug\classes\debug\*.js src\pre-compiled-parts\classes\debug
-copy /y tests\pre-compiled-debug\polyfills\*.js src\pre-compiled-parts\polyfills
+copy /y tests\pre-compiled-debug\dependencies\*.js src\pre-compiled-parts\dependencies
 cd src\pre-compiled-parts
-sed -i "s/ setupThePolyfills//;s/ setupThePublicAPI//;s/ setupTheDebugModule//" skeleton.js
+sed -i "s/function setup[a-zA-Z]*(/function(/" skeleton.js
 del /f sed*
 
 ----------------------------------------------------------------
@@ -134,40 +130,42 @@ src/algorithmIV-debug.js   |    |
 ## UNIX Commands
 cd src/pre-compiled-parts
 sed \
-  -e "/public-api.js/ r public-api.js" \
-  -e "/module-api.js/ r module-api.js" \
-  -e "/module-vars.js/ r module-vars.js" \
-  -e "/module-methods.js/ r module-methods.js" \
-  -e "/error-messages.js/ r classes/error-messages.js" \
-  -e "/reg-exps.js/ r classes/reg-exps.js" \
-  -e "/debug\/constructor.js/ r classes/debug/constructor.js" \
-  -e "/debug\/logging-methods.js/ r classes/debug/logging-methods.js" \
-  -e "/debug\/controlling-methods.js/ r classes/debug/controlling-methods.js" \
-  -e "/debug\/helper-methods.js/ r classes/debug/helper-methods.js" \
-  -e "/polyfills\/object.js/ r polyfills/object.js" \
-  -e "/polyfills\/array.js/ r polyfills/array.js" <skeleton.js>algorithmIV-debug-temp.js
+  -e "/insert-aIV-utils/ r dependencies/algorithmIV-utils.min.js" \
+  -e "/insert-public-api/ r public-api.js" \
+  -e "/insert-module-api/ r module-api.js" \
+  -e "/insert-module-vars/ r module-vars.js" \
+  -e "/insert-module-utils/ r module-utils.js" \
+  -e "/insert-module-methods/ r module-methods.js" \
+  -e "/insert-error-messages/ r classes/error-messages.js" \
+  -e "/insert-debug-constructor/ r classes/debug/constructor.js" \
+  -e "/insert-debug-logging-methods/ r classes/debug/logging-methods.js" \
+  -e "/insert-debug-controlling-methods/ r classes/debug/controlling-methods.js" \
+  -e "/insert-debug-helper-methods/ r classes/debug/helper-methods.js" <skeleton.js>algorithmIV-debug-temp.js
 cd ..
 cp -u pre-compiled-parts/algorithmIV-debug-temp.js algorithmIV-debug.js
 rm -f pre-compiled-parts/algorithmIV-debug-temp.js
+sed -i "s/^\/\/ insert-[a-zA-Z\-]*//" algorithmIV-debug.js
+rm -f sed*
 
 ## MS-DOS Commands
 cd src\pre-compiled-parts
 sed ^
-  -e "/public-api.js/ r public-api.js" ^
-  -e "/module-api.js/ r module-api.js" ^
-  -e "/module-vars.js/ r module-vars.js" ^
-  -e "/module-methods.js/ r module-methods.js" ^
-  -e "/error-messages.js/ r classes\error-messages.js" ^
-  -e "/reg-exps.js/ r classes\reg-exps.js" ^
-  -e "/debug\/constructor.js/ r classes\debug\constructor.js" ^
-  -e "/debug\/logging-methods.js/ r classes\debug\logging-methods.js" ^
-  -e "/debug\/controlling-methods.js/ r classes\debug\controlling-methods.js" ^
-  -e "/debug\/helper-methods.js/ r classes\debug\helper-methods.js" ^
-  -e "/polyfills\/object.js/ r polyfills\object.js" ^
-  -e "/polyfills\/array.js/ r polyfills\array.js" <skeleton.js>algorithmIV-debug-temp.js
+  -e "/insert-aIV-utils/ r dependencies\algorithmIV-utils.min.js" ^
+  -e "/insert-public-api/ r public-api.js" ^
+  -e "/insert-module-api/ r module-api.js" ^
+  -e "/insert-module-vars/ r module-vars.js" ^
+  -e "/insert-module-utils/ r module-utils.js" ^
+  -e "/insert-module-methods/ r module-methods.js" ^
+  -e "/insert-error-messages/ r classes\error-messages.js" ^
+  -e "/insert-debug-constructor/ r classes\debug\constructor.js" ^
+  -e "/insert-debug-logging-methods/ r classes\debug\logging-methods.js" ^
+  -e "/insert-debug-controlling-methods/ r classes\debug\controlling-methods.js" ^
+  -e "/insert-debug-helper-methods/ r classes\debug\helper-methods.js" <skeleton.js>algorithmIV-debug-temp.js
 cd ..
 copy /y pre-compiled-parts\algorithmIV-debug-temp.js algorithmIV-debug.js
 del /f pre-compiled-parts\algorithmIV-debug-temp.js
+sed -i "s/^\/\/ insert-[a-zA-Z\-]*//" algorithmIV-debug.js
+del /f sed*
 
 ----------------------------------------------------------------
 MINIFY SRC                 |
@@ -177,7 +175,7 @@ src/algorithmIV-debug.js   |    |
 ----------------------------    v
 
 ## UNIX Commands
-sed "3,27 d" <src/algorithmIV-debug.js>compile/algorithmIV-debug.js
+sed "3,29 d;ADDLINESHERE d" <src/algorithmIV-debug.js>compile/algorithmIV-debug.js
 cd compile
 java \
   -jar minifier.jar \
@@ -186,12 +184,14 @@ java \
 rm -f algorithmIV-debug.js
 cd ..
 sed \
+  -e "1 r src/pre-compiled-parts/dependencies/algorithmIV-utils.min.js" \
+  -e "s/ blank line \*\///" \
   -e "2 r compile/copyright.txt" \
-  -e "1,2 d" <compile/algorithmIV-debug.min.js>src/algorithmIV-debug.min.js
+  -e "1 d" <compile/algorithmIV-debug.min.js>src/algorithmIV-debug.min.js
 rm -f compile/algorithmIV-debug.min.js
 
 ## MS-DOS Commands
-sed "3,27 d" <src\algorithmIV-debug.js>compile\algorithmIV-debug.js
+sed "3,29 d;ADDLINESHERE d" <src\algorithmIV-debug.js>compile\algorithmIV-debug.js
 cd compile
 java ^
   -jar minifier.jar ^
@@ -200,6 +200,8 @@ java ^
 del /f algorithmIV-debug.js
 cd ..
 sed ^
+  -e "1 r src\pre-compiled-parts\dependencies\algorithmIV-utils.min.js" ^
+  -e "s/ blank line \*\///" ^
   -e "2 r compile\copyright.txt" ^
-  -e "1,2 d" <compile\algorithmIV-debug.min.js>src\algorithmIV-debug.min.js
+  -e "1 d" <compile\algorithmIV-debug.min.js>src\algorithmIV-debug.min.js
 del /f compile\algorithmIV-debug.min.js
