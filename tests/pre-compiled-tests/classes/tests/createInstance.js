@@ -79,10 +79,21 @@
       var errorMsg;
       /** @type {!Debug} */
       var consoleInst;
+      /** @type {strings} */
+      var props;
+      /** @type {number} */
+      var i;
 
       consoleInst = aIV.console.create('createInst.testOneInstanceCreate');
 
-      pass = (Object.prototype.toString.call(consoleInst) === '[object Debug]');
+      props = String('classTitle autoSettings getMethod getBreakpoint ' +
+                     'getAuto setMethod setBreakpoint setAuto').split(' ');
+
+      pass = true;
+      i = props.length;
+      while (i--) {
+        pass = pass && hasOwnProp(consoleInst, props[i]);
+      }
 
       if (!pass) {
         errorMsg = 'aIV.console.create failed to create a Debug instance';
