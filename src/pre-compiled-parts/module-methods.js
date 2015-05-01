@@ -8,206 +8,216 @@
    */
   function getSubstituteString(val) {
 
-    if ( checkType(val, 'object|function') ) {
-      return '%O';
+    /** @type {string} */
+    var str;
+
+    str = '%s';
+
+    if ( checkType(val, '!number|object|function') ) {
+      str = ( ( checkType(val, 'number') ) ?
+        '%i' : (!formatElementsAsObj && val instanceof HTMLElement) ?
+          '%o' : '%O'
+      );
     }
 
-    if (typeof val === 'number') {
-      return '%i';
+    return str;
+  }
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (makeSubstituteStrings)
+   * ---------------------------------------------------
+   * @desc Creates a string of the correct matching substitution strings
+   *   for a console log message.
+   * @param {vals} vals - The values to match.
+   * @return {string} The substitution strings.
+   */
+  function makeSubstituteStrings(vals) {
+
+    /** @type {number} */
+    var i;
+    /** @type {number} */
+    var len;
+    /** @type {string} */
+    var message;
+
+    message = '';
+
+    len = vals.length;
+    i = -1;
+    while (++i < len) {
+      if (i) {
+        message += ', ';
+      }
+      message += getSubstituteString(vals[i]);
     }
 
-    return '%s';
-  };
+    return message;
+  }
 
   /**
    * ---------------------------------------------------
    * Public Method (insertSubstituteStrings)
    * ---------------------------------------------------
-   * @desc Inserts the correct substitution strings into a console message.
+   * @desc Inserts the correct substitution strings into a log message.
    * @param {string} msg - The original console message string.
    * @param {vals} vals - The values to use for finding the
    *   substitution strings.
    * @return {string} The prepared console message.
    */
-  function insertSubstituteStrings(msg, vals) {
+  var insertSubstituteStrings = (function() {
 
-    // Test the given arguments before executing
-    if (typeof msg !== 'string' || !Array.isArray(vals)) {
-      console.error('An insertSubstituteStrings method\'s arg(s) was wrong.');
-      if (debuggers) {
-        debugger;
+    /** @type {!RegExp} */
+    var dualDollarSigns;
+
+    dualDollarSigns = /([^\\]*?)\$\$/;
+
+    return function insertSubstituteStrings(msg, vals) {
+
+      /** @type {number} */
+      var len;
+      /** @type {number} */
+      var i;
+      /** @type {string} */
+      var substituteString;
+
+      // Insert the substitution strings
+      len = vals.length;
+      i = -1;
+      while (++i < len) {
+
+        substituteString = getSubstituteString(vals[i]);
+
+        if ( dualDollarSigns.test(msg) ) {
+          substituteString = '$1' + substituteString;
+          msg = msg.replace(dualDollarSigns, substituteString);
+        }
+        else {
+          msg += ' unnamedVar' + i + '= ' + substituteString + ';';
+        }
       }
-      return '';
-    }
 
-    // Insert the substitution strings
-    vals.forEach(function(/** val */ val, /** number */ i) {
-      /**
-       * @type {string}
-       * @private
-       */
-      var sub;
-
-      sub = getSubstituteString(val);
-      if ( /(\$\$)/.test(msg) ) {
-        msg = msg.replace(/(\$\$)/, sub);
-      }
-      else {
-        msg += ' var' + i + '= ' + sub + ';';
-      }
-    });
-
-    return msg;
-  };
+      return msg;
+    };
+  })();
 
   /**
    * ---------------------------------------------------
-   * Public Method (checkType)
+   * Public Method (checkArgsDataTypeStrings)
    * ---------------------------------------------------
-   * @param {val} val - The value to be evaluated.
-   * @param {string} type - The type to evaluate the value against. The optional
-   *   types are 'string', 'number', 'boolean', 'object', 'function', 'elem',
-   *   'undefined', 'array', 'strings', 'numbers', 'booleans', 'objects',
-   *   'functions', 'arrays', 'elems', 'stringMap', 'numberMap', 'booleanMap',
-   *   'objectMap', 'functionMap', 'arrayMap', and 'elemMap'. Use '|' as the
-   *   separator for multiple types (e.g.'strings|numbers'). Use '=' to indicate
-   *   the value is optional (e.g. 'array=' or 'string|number='). Use '!' to
-   *   indicate that null is not a possibility (e.g. '!string').
+   * @desc Evaluates whether the arguments contain valid data type string
+   *   values for each argument.
+   * @param {!vals} args - The arguments to be evaluated.
    * @return {boolean} The evaluation result.
    */
-  function checkType(val, type) {
+  function checkArgsDataTypeStrings(args) {
 
-    // Test the given arguments before executing
-    var msg;
-    if (typeof type !== 'string') {
-      msg = 'A checkType method\'s type was the wrong data type. ';
-      msg += 'It should be a string. The given type was a(n) %s.';
-      console.error(msg, (typeof type));
-      if (debuggers) {
-        debugger;
+    /** @type {number} */
+    var i;
+    /** @type {boolean} */
+    var pass;
+
+    pass = true;
+
+    i = args.length;
+    while (i--) {
+
+      if (i % 2) {
+        pass = checkType(args[i], 'string', true);
+        pass = pass && checkDataTypeString(args[i]);
       }
-      return false;
+
+      if (!pass) {
+        break;
+      }
     }
 
-    /**
-     * @type {strings}
-     * @private
-     */
-    var types;
+    return pass;
+  }
 
-    type = type.toLowerCase().replace(/[^a-z\|\=\!]/g, '');
+  /**
+   * ---------------------------------------------------
+   * Public Method (testArgTypes)
+   * ---------------------------------------------------
+   * @desc Evaluates argument data types.
+   * @param {!vals} args - The arguments to be evaluated.
+   * @return {boolean} The evaluation result.
+   */
+  function testArgTypes(args) {
 
-    types = ( /\|/.test(type) ) ? type.split('|') : [ type ];
+    /** @type {number} */
+    var i;
+    /** @type {boolean} */
+    var pass;
+    /** @type {val} */
+    var arg;
+    /** @type {string} */
+    var dataTypeOpts;
 
-    return types.some(function(/** string */ type) {
-      /**
-       * @type {string}
-       * @private
-       */
-      var cleanType;
+    pass = true;
 
-      cleanType = type.replace(/\!|\=/g, '');
+    i = args.length;
+    while (i--) {
 
-      // Ensure a correct type was given
-      if ( !regexps.types.all.test(cleanType) ) {
-        msg = 'A checkType method\'s type was the wrong value. ';
-        msg += 'See the docs for acceptable values. ';
-        msg += 'The incorrect value was \'%s\'.';
-        console.error(msg, type);
-        if (debuggers) {
-          debugger;
-        }
-        return false;
+      dataTypeOpts = args[i];
+
+      --i;
+      arg = args[i];
+
+      pass = checkType(arg, dataTypeOpts, true);
+
+      if (!pass) {
+        break;
       }
+    }
 
-      // Handle undefined val
-      if (val === undefined) {
-        type = type.replace(/\!/g, '');
-        return /\=|^undefined$/.test(type);
-      }
-      else {
+    return pass;
+  }
 
-        // Evaluate null
-        if (val === null) {
-          return !(/\!/.test(type));
-        }
+  /**
+   * ---------------------------------------------------
+   * Public Method (stripArgTypeStrings)
+   * ---------------------------------------------------
+   * @desc Removes the data type strings from an array of arguments.
+   * @param {!vals} args - The arguments.
+   * @return {!vals} An array of the stripped arguments.
+   */
+  function stripArgTypeStrings(args) {
 
-        if (cleanType === 'undefined') {
-          return false;
-        }
+    /** @type {number} */
+    var i;
+    /** @type {number} */
+    var ii;
+    /** @type {number} */
+    var len;
+    /** @type {!vals} */
+    var newArgs;
 
-        // Evaluate array types
-        if ( regexps.types.arrays.test(cleanType) ) {
+    len = args.length / 2;
+    newArgs = new Array(len);
 
-          if ( !Array.isArray(val) ) {
-            return false;
-          }
+    i = args.length;
+    ii = len;
+    while (ii--) {
+      i = i - 2;
+      newArgs[ii] = args[i];
+    }
 
-          // Evaluate a basic array
-          if (cleanType === 'array') {
-            return true;
-          }
+    return newArgs;
+  }
 
-          // Evaluate an array of arrays
-          if (cleanType === 'arrays') {
-            return val.every(function(subVal) {
-              return ( Array.isArray(subVal) );
-            });
-          }
+  /**
+   * -----------------------------------------------------
+   * Public Method (insertErrorBreakpoint)
+   * -----------------------------------------------------
+   * @desc Handles whether a debugger breakpoint is inserted for an error.
+   * @return {boolean} Whether a breakpoint was inserted.
+   */
+  function insertErrorBreakpoint() {
 
-          // Evaluate an array of elements
-          if (cleanType === 'elems') {
-            return val.every(function(subVal) {
-              return (subVal instanceof HTMLElement);
-            });
-          }
+    if (errorBreakpoints) {
+      debugger;
+    }
 
-          // Evaluate each value of the array
-          cleanType = cleanType.replace(/s$/, '');
-          return val.every(function(subVal) {
-            return (typeof subVal === cleanType);
-          });
-        }
-
-        // Evaluate element
-        if (cleanType === 'elem') {
-          return (val instanceof HTMLElement);
-        }
-
-        // Evaluate string, number, boolean, object, and function types
-        if ( regexps.types.basic.test(cleanType) ) {
-          return (typeof val === cleanType);
-        }
-
-        // Evaluate hash map types
-        if ( regexps.types.maps.test(cleanType) ) {
-
-          if (typeof val !== 'object') {
-            return false;
-          }
-
-          // Evaluate a hash map of arrays
-          if (cleanType === 'arraymap') {
-            return Object.keys(val).every(function(subVal) {
-              return ( Array.isArray(val[ subVal ]) );
-            });
-          }
-
-          // Evaluate a hash map of elements
-          if (cleanType === 'elemmap') {
-            return Object.keys(val).every(function(subVal) {
-              return (val[ subVal ] instanceof HTMLElement);
-            });
-          }
-
-          // Evaluate each value of the hash map
-          cleanType = cleanType.replace(/map$/, '');
-          return Object.keys(val).every(function(subVal) {
-            return (typeof val[ subVal ] === cleanType);
-          });
-        }
-      }
-
-      return false;
-    });
+    return errorBreakpoints;
   };
