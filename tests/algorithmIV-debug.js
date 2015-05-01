@@ -182,12 +182,21 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
    * ---------------------------------------------------
    * Global Method (aIV.debug)
    * ---------------------------------------------------
-   * @desc The same as {@link aIV.console.create}. Maintains backward
-   *   compatibility.
+   * @desc The same as {@link aIV.console.create}.
    * @type {function(!Object)}
    * @global
    */
   aIV.debug = debugModuleAPI.init;
+
+  /**
+   * ---------------------------------------------------
+   * Global Method (aIV.debug.set)
+   * ---------------------------------------------------
+   * @desc The same as {@link aIV.console.set}.
+   * @type {function(!Object)}
+   * @global
+   */
+  aIV.debug.set = debugModuleAPI.set;
 
   /**
    * ---------------------------------------------------
