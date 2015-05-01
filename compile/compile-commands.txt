@@ -33,19 +33,19 @@ sed -i "s/^\/\/ insert-[a-zA-Z\-]*//" algorithmIV-debug.js
 rm -f sed*
 
 ## MS-DOS Commands
-cd tests/pre-compiled-debug
+cd tests\pre-compiled-debug
 sed ^
-  -e "/insert-aIV-utils/ r dependencies\algorithmIV-utils.min.js" ^
+  -e "/insert-aIV-utils/ r dependencies/algorithmIV-utils.min.js" ^
   -e "/insert-public-api/ r public-api.js" ^
   -e "/insert-module-api/ r module-api.js" ^
   -e "/insert-module-vars/ r module-vars.js" ^
   -e "/insert-module-utils/ r module-utils.js" ^
   -e "/insert-module-methods/ r module-methods.js" ^
-  -e "/insert-error-messages/ r classes\error-messages.js" ^
-  -e "/insert-debug-constructor/ r classes\debug\constructor.js" ^
-  -e "/insert-debug-logging-methods/ r classes\debug\logging-methods.js" ^
-  -e "/insert-debug-controlling-methods/ r classes\debug\controlling-methods.js" ^
-  -e "/insert-debug-helper-methods/ r classes\debug\helper-methods.js" <skeleton.js>algorithmIV-debug-temp.js
+  -e "/insert-error-messages/ r classes/error-messages.js" ^
+  -e "/insert-debug-constructor/ r classes/debug/constructor.js" ^
+  -e "/insert-debug-logging-methods/ r classes/debug/logging-methods.js" ^
+  -e "/insert-debug-controlling-methods/ r classes/debug/controlling-methods.js" ^
+  -e "/insert-debug-helper-methods/ r classes/debug/helper-methods.js" <skeleton.js>algorithmIV-debug-temp.js
 cd ..
 copy /y pre-compiled-debug\algorithmIV-debug-temp.js algorithmIV-debug.js
 del /f pre-compiled-debug\algorithmIV-debug-temp.js
@@ -61,16 +61,18 @@ tests/algorithmIV-tests.js |    |
 
 ## UNIX Commands
 cd tests/pre-compiled-tests
+cat classes/tests/*.js > classes/tests-methods.js
 sed \
   -e "/insert-public-api/ r public-api.js" \
   -e "/insert-module-api/ r module-api.js" \
   -e "/insert-module-vars/ r module-vars.js" \
   -e "/insert-module-methods/ r module-methods.js" \
-  -e "/insert-tests/ r classes/tests.js" \
   -e "/insert-app/ r classes/app.js" \
+  -e "/insert-choice/ r classes/choice.js" \
   -e "/insert-elems/ r classes/elems.js" \
   -e "/insert-test-results/ r classes/test-results.js" \
-  -e "/insert-choice/ r classes/choice.js" <skeleton.js>algorithmIV-tests-temp.js
+  -e "/insert-tests-construct/ r classes/tests-construct.js" \
+  -e "/insert-tests-methods/ r classes/tests-methods.js" <skeleton.js>algorithmIV-tests-temp.js
 cd ..
 cp -u pre-compiled-tests/algorithmIV-tests-temp.js algorithmIV-tests.js
 rm -f pre-compiled-tests/algorithmIV-tests-temp.js
@@ -78,17 +80,19 @@ sed -i "s/^\/\/ insert-[a-zA-Z\-]*//" algorithmIV-tests.js
 rm -f sed*
 
 ## MS-DOS Commands
-cd tests/pre-compiled-tests
+cd tests\pre-compiled-tests
+copy /y classes\tests\*.js classes\tests-methods.js
 sed ^
   -e "/insert-public-api/ r public-api.js" ^
   -e "/insert-module-api/ r module-api.js" ^
   -e "/insert-module-vars/ r module-vars.js" ^
   -e "/insert-module-methods/ r module-methods.js" ^
-  -e "/insert-tests/ r classes/tests.js" ^
   -e "/insert-app/ r classes/app.js" ^
+  -e "/insert-choice/ r classes/choice.js" ^
   -e "/insert-elems/ r classes/elems.js" ^
   -e "/insert-test-results/ r classes/test-results.js" ^
-  -e "/insert-choice/ r classes/choice.js"  <skeleton.js>algorithmIV-tests-temp.js
+  -e "/insert-tests-construct/ r classes/tests-construct.js" ^
+  -e "/insert-tests-methods/ r classes/tests-methods.js"  <skeleton.js>algorithmIV-tests-temp.js
 cd ..
 copy /y pre-compiled-tests\algorithmIV-tests-temp.js algorithmIV-tests.js
 del /f pre-compiled-tests\algorithmIV-tests-temp.js
@@ -150,17 +154,17 @@ rm -f sed*
 ## MS-DOS Commands
 cd src\pre-compiled-parts
 sed ^
-  -e "/insert-aIV-utils/ r dependencies\algorithmIV-utils.min.js" ^
+  -e "/insert-aIV-utils/ r dependencies/algorithmIV-utils.min.js" ^
   -e "/insert-public-api/ r public-api.js" ^
   -e "/insert-module-api/ r module-api.js" ^
   -e "/insert-module-vars/ r module-vars.js" ^
   -e "/insert-module-utils/ r module-utils.js" ^
   -e "/insert-module-methods/ r module-methods.js" ^
-  -e "/insert-error-messages/ r classes\error-messages.js" ^
-  -e "/insert-debug-constructor/ r classes\debug\constructor.js" ^
-  -e "/insert-debug-logging-methods/ r classes\debug\logging-methods.js" ^
-  -e "/insert-debug-controlling-methods/ r classes\debug\controlling-methods.js" ^
-  -e "/insert-debug-helper-methods/ r classes\debug\helper-methods.js" <skeleton.js>algorithmIV-debug-temp.js
+  -e "/insert-error-messages/ r classes/error-messages.js" ^
+  -e "/insert-debug-constructor/ r classes/debug/constructor.js" ^
+  -e "/insert-debug-logging-methods/ r classes/debug/logging-methods.js" ^
+  -e "/insert-debug-controlling-methods/ r classes/debug/controlling-methods.js" ^
+  -e "/insert-debug-helper-methods/ r classes/debug/helper-methods.js" <skeleton.js>algorithmIV-debug-temp.js
 cd ..
 copy /y pre-compiled-parts\algorithmIV-debug-temp.js algorithmIV-debug.js
 del /f pre-compiled-parts\algorithmIV-debug-temp.js
