@@ -94,7 +94,7 @@
 // insert-tests-construct
 
 /* -----------------------------------------------------------------------------
- * The Tests (classes/tests-methods.js)
+ * The Unit Tests (classes/tests/*.js) (classes/tests-methods.js)
  * -------------------------------------------------------------------------- */
 // insert-tests-methods
 
