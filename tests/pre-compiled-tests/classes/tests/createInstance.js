@@ -290,7 +290,7 @@
 
       if (fail) {
         errorMsg = 'aIV.console.create({ turnOffMethods: \'misc\' }) failed to ';
-        errorMsg = 'turn off the instance\'s misc method';
+        errorMsg += 'turn off the instance\'s misc method';
         results.addError(errorMsg);
       }
     };
@@ -326,7 +326,7 @@
 
       if (fail) {
         errorMsg = 'aIV.console.create({ turnOffMethods: \'all\' }) failed to ';
-        errorMsg = 'turn off all of the instance\'s methods';
+        errorMsg += 'turn off all of the instance\'s methods';
         results.addError(errorMsg);
       }
     };
@@ -356,7 +356,7 @@
 
       if (fail) {
         errorMsg = 'aIV.console.create({ turnOffMethods: \'end misc\' }) ';
-        errorMsg = 'failed to turn off the instance\'s end and misc method';
+        errorMsg += 'failed to turn off the instance\'s end and misc method';
         results.addError(errorMsg);
       }
     };
@@ -386,7 +386,134 @@
 
       if (fail) {
         errorMsg = "aIV.console.create({ turnOffMethods: [ 'end', 'misc' ] }) ";
-        errorMsg = 'failed to turn off the instance\'s end and misc method';
+        errorMsg += 'failed to turn off the instance\'s end and misc method';
+        results.addError(errorMsg);
+      }
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testAddBreakpointsOne)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testAddBreakpointsOne = function() {
+
+      /** @type {boolean} */
+      var pass;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create({
+        classTitle    : 'createInst.testAddBreakpointsOne',
+        addBreakpoints: 'misc'
+      });
+
+      pass = consoleInst.getBreakpoint('misc');
+
+      if (!pass) {
+        errorMsg = 'aIV.console.create({ addBreakpoints: \'misc\' }) failed to ';
+        errorMsg += 'add a breakpoint for the instance\'s misc method';
+        results.addError(errorMsg);
+      }
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testAddBreakpointsAll)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testAddBreakpointsAll = function() {
+
+      /** @type {boolean} */
+      var pass;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create({
+        classTitle    : 'createInst.testAddBreakpointsAll',
+        addBreakpoints: 'all'
+      });
+
+      pass = consoleInst.getBreakpoint('init');
+      pass = pass && consoleInst.getBreakpoint('start');
+      pass = pass && consoleInst.getBreakpoint('end');
+      pass = pass && consoleInst.getBreakpoint('args');
+      pass = pass && consoleInst.getBreakpoint('fail');
+      pass = pass && consoleInst.getBreakpoint('group');
+      pass = pass && consoleInst.getBreakpoint('state');
+      pass = pass && consoleInst.getBreakpoint('misc');
+
+      if (!pass) {
+        errorMsg = 'aIV.console.create({ addBreakpoints: \'all\' }) failed to ';
+        errorMsg += 'add breakpoints for all of the instance\'s methods';
+        results.addError(errorMsg);
+      }
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testAddBreakpointsTwo)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testAddBreakpointsTwo = function() {
+
+      /** @type {boolean} */
+      var pass;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create({
+        classTitle    : 'createInst.testAddBreakpointsTwo',
+        addBreakpoints: 'end misc'
+      });
+
+      pass = consoleInst.getBreakpoint('end');
+      pass = pass && consoleInst.getBreakpoint('misc');
+
+      if (!pass) {
+        errorMsg = 'aIV.console.create({ addBreakpoints: \'end misc\' }) ';
+        errorMsg += 'failed to add a breakpoint for the instance\'s ';
+        errorMsg += 'end and misc method';
+        results.addError(errorMsg);
+      }
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testAddBreakpointsTwoArr)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testAddBreakpointsTwoArr = function() {
+
+      /** @type {boolean} */
+      var pass;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create({
+        classTitle    : 'createInst.testAddBreakpointsTwoArr',
+        addBreakpoints: [ 'end', 'misc' ]
+      });
+
+      pass = consoleInst.getBreakpoint('end');
+      pass = pass && consoleInst.getBreakpoint('misc');
+
+      if (!pass) {
+        errorMsg = "aIV.console.create({ addBreakpoints: [ 'end', 'misc' ] }) ";
+        errorMsg += 'failed to add a breakpoint for the instance\'s ';
+        errorMsg += 'end and misc method';
         results.addError(errorMsg);
       }
     };
