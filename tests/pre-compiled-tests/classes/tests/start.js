@@ -135,7 +135,7 @@
 
       consoleInst = aIV.console.create('Tests.start.testLogMsg');
 
-      choiceMsg = 'Verify a start log. The following message should have ';
+      choiceMsg = 'Verify a log. The following message should have ';
       choiceMsg += 'been logged to the console:<br />';
       choiceMsg += '"START: Tests.start.testLogMsg.testMethod(5)"';
       errorMsg = 'Debug.proto.start logged an incorrect message';
