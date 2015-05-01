@@ -124,8 +124,6 @@
      */
     var testLogMsg = function() {
 
-      /** @type {boolean} */
-      var pass;
       /** @type {string} */
       var errorMsg;
       /** @type {string} */

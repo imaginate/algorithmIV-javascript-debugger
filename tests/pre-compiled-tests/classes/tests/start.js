@@ -124,8 +124,6 @@
      */
     var testLogMsg = function() {
 
-      /** @type {boolean} */
-      var pass;
       /** @type {string} */
       var errorMsg;
       /** @type {string} */
@@ -137,7 +135,7 @@
 
       choiceMsg = 'Verify a log. The following message should have ';
       choiceMsg += 'been logged to the console:<br />';
-      choiceMsg += '"START: Tests.start.testLogMsg.testMethod(5)"';
+      choiceMsg += '"CALL: Tests.start.testLogMsg.testMethod(5)"';
       errorMsg = 'Debug.proto.start logged an incorrect message';
       app.addChoice(choiceMsg, results, errorMsg, function() {
         consoleInst.start('testMethod', 5);
