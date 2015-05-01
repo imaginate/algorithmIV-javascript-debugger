@@ -1,60 +1,42 @@
 #Make Debugging Your JavaScript Easy!
 
-####Algorithm IV's debugger is a console wrapper that provides a clear log structure for you to follow, reduces the amount of time and code it takes to find a bug, and gives you complete control over switching logs, breakpoints, tests, and more on or off. With proper use you will know and control the actions of every JavaScript module in your code base!
+####Algorithm IV's debugger is a console wrapper that fixes cross-browser console issues and provides a set of new console methods that make your console more powerful. It will allow you to reduce the amount of time and code it takes to find a bug, automatically insert breakpoints, profiles, and timers, and switch everything on or off with one command. With proper use you will know and control the actions of every JavaScript method in your code base!
+
 
 ##Why aIV.debug?
-I have found that having a detailed log of all the method calls and variable states is extremely helpful for quickly finding the exact location and cause of a front-end JavaScript bug. The reason I built aIV.debug is because of the problem that I encountered managing and organizing the large volume of logs that come with any project containing more than a couple classes. I wanted to remove repetitive code, add the flexibility of turning specific log types on or off, and insert breakpoints, timers, and profiles without hassle per each class for every method. With a bit of work aIV.debug is close to accomplishing it all! Below you will see some examples of my old console log structure and the magic of the aIV.debug way:
 
-```javascript
-var debug = aIV.debug('TheClass');
-var theVar = 'The aIV way!';
+- **The Original Motivation:** The original reason I built aIV.debug was because I wanted to avoid wasting time inserting and removing console logs for every front-end JavaScript bug. The problem was leaving logs in the code base could create messy code and organizing the large volume of logs that are produced by any project containing more than a couple  of methods and classes was difficult. Repetitive code had to be removed and a **short simple API** had to be created. Shortcuts like adding the **flexibility to turn log groups on or off** on a whim and **automatically inserting breakpoints, timers, and profiles** without hassle were a must. With a bit of work Algorithm IV's debugger has now accomplished it all and more!
 
-// START: Logs the start of every method
-// this example logs: "START: TheClass.theMethod('The aIV way!')"
-debug.start('theMethod', theVar);
-// vs
-console.log('START: TheClass.theMethod(%s)', theVar);
-
-// ARGS: Logs an error if a method's args are not the desired data type
-// this example logs: "ARGS: TheClass.theMethod() | Error: Incorrect argument data type."
-debug.args('theMethod', theVar, 'object');
-// vs
-console.assert((typeof theVar === 'object'), 'ARGS: TheClass.theMethod() | Error: Incorrect argument data type.');
-
-// STATE: Logs the current state of a variable
-// this example logs: "STATE: TheClass.theMethod() | theVar= 'The aIV way!'"
-debug.state('theMethod', 'theVar= $$', theVar);
-// vs
-console.log('STATE: TheClass.theMethod() | theVar= %s', theVar);
-```
+- **The Future Gets Even Better:** What is really exciting is what I have learned and ideas I have had throughout the course of this project. At the moment aIV.debug is scheduled to add a **cross-browser compatible console and profiler** with sweet extras like a more **intuitive and flexible UI and log output options** as well as a unique **unit and end-to-end testing framework** that will integrate with the logging system to further reduce code and give you even more code secrets! I hope this helps make your JavaScript projects easier!
 
 
 ##Getting Started
-- Download [algorithmIV-debug.min.js](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/src/algorithmIV-debug.min.js)
+- Download [algorithmIV-debug.min.js](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/src/algorithmIV-debug.min.js)
 - Add algorithmIV-debug.min.js to your HTML head
 ```html
 <html>
-  <head>
-    ...
-    <script src="algorithmIV-debug.min.js"></script>
-    ...
-  </head>
-  <body>...</body>
+    <head>
+        ...
+        <script src="algorithmIV-debug.min.js"></script>
+        ...
+    </head>
+    <body>...</body>
 </html>
 ```
-- Use aIV.debug.setConfig(settings) to change the default settings
+- Use aIV.debug.set(settings) to change the default settings
 ```javascript
-aIV.debug.setConfig({
-  turnOffTypes   : 'start',
-  turnOnDebuggers: 'all'
+aIV.debug.set({
+  turnOffMethods: 'start',
+  addBreakpoints: 'all'
 });
 ```
-- Use aIV.debug(className) to create as many debug object instances as you need like so:
+- Use aIV.debug(classTitle) to create as many debug object instances as you need
 ```javascript
 var debug = aIV.debug({
-  classTitle     : 'Example',
-  turnOffTypes   : 'state',
-  turnOnDebuggers: 'fail'
+  classTitle    : 'Example',
+  turnOffMethods: 'state',
+  addBreakpoints: 'fail',
+  turnOnTimers  : true
 });
 ```
 - Note that this debugger works best in [Chrome](https://www.google.com/chrome/) especially with large volumes of logs
@@ -65,29 +47,33 @@ Each debug object has the following methods for logging to the console:
 
 |           | example calls                                                                  |
 | :-------: | :----------------------------------------------------------------------------- |
+| **init**  | debugInstance.init(methodName, methodArg1, typeForMethodArg1, ...)             |
 | **start** | debugInstance.start(methodName, methodArg1, methodArg2, ...)                   |
+| **end**   | debugInstance.end(methodName, methodReturnValue)                               |
 | **args**  | debugInstance.args(methodName, methodArg1, typeForMethodArg1, ...)             |
 | **fail**  | debugInstance.fail(methodName, truthyValue, errorMessage, optionalVar1, ...)   |
 | **group** | debugInstance.group(methodName, groupType, optionalMessage, optionalVar1, ...) |
 | **state** | debugInstance.state(methodName, logMessage, var1, var2, ...)                   |
 | **misc**  | debugInstance.misc(methodName, logMessage, optionalVar1, ...)                  |
 
-Plus the following methods for disabling logs and adding debugger breakpoints:
+Plus the following methods for disabling logs and automatically adding debugger breakpoints, groups, profiles, and timers:
 
-|                     | example calls                               |
-| :-----------------: | :------------------------------------------ |
-| **turnOn**          | debugInstance.turnOn(categoryName)          |
-| **turnOff**         | debugInstance.turnOff(categoryName)         |
-| **turnOnDebugger**  | debugInstance.turnOnDebugger(categoryName)  |
-| **turnOffDebugger** | debugInstance.turnOffDebugger(categoryName) |
+|                      | example calls                                   |
+| :------------------: | :---------------------------------------------- |
+| **turnOnMethod**     | debugInstance.turnOnMethod(debugMethodName)     |
+| **turnOffMethod**    | debugInstance.turnOffMethod(debugMethodName)    |
+| **addBreakpoint**    | debugInstance.addBreakpoint(debugMethodName)    |
+| **removeBreakpoint** | debugInstance.removeBreakpoint(debugMethodName) |
+| **turnOnAuto**       | debugInstance.turnOnAuto(automationType)        |
+| **turnOffAuto**      | debugInstance.turnOffAuto(automationType)       |
 
 
 ##Contributing
-See [CONTRIBUTING.md](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/CONTRIBUTING.md).
+See [CONTRIBUTING.md](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/CONTRIBUTING.md).
 
 
 ##Example
-To see the debugger in live projects visit [Algorithm IV's Question Manager](https://github.com/imaginate/algorithmIV-question-manager/blob/master/tests/algorithmIV-app.js) or view this debugger's [unit tests](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/tests/pre-compiled-tests/classes/tests.js).
+To see the debugger in live projects visit [Algorithm IV's Question Manager](https://github.com/imaginate/algorithmIV-question-manager/blob/master/tests/algorithmIV-app.js) or view this debugger's [unit tests](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/tests/pre-compiled-tests/classes/tests).
 
 The following example is broken into three parts:
 - [The Example Class](#class)
@@ -254,8 +240,8 @@ example.test2.report();
 
 
 ##Contact Us
-- [Open an issue](https://github.com/imaginate/algorithmIV-javascript-debugger/issues) on GitHub.
-- Send an email to [learn@algorithmiv.com](mailto:learn@algorithmiv.com).
+- [Open an issue](https://github.com/imaginate/algorithmIV-javascript-debugger/issues) on this GitHub repository
+- Send an email to [learn@algorithmiv.com](mailto:learn@algorithmiv.com)
 
 
 --

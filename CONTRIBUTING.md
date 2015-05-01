@@ -4,18 +4,18 @@
 
 
 ##Directions
-**Initial steps:**
+**Initial Steps:**
 - Fork and clone this repository
 - Create a new branch for your additions
 - Add your code to [tests/pre-compiled-debug/](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/tests/pre-compiled-debug)
 - Compile the debug module using the commands found in [compile/compile-commands.txt](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/compile/compile-commands.txt)
 
-**Unit Test steps:**
+**Unit Test Steps:**
 - To add unit tests follow the directions in [tests/pre-compiled-tests/classes/tests/NEW-TESTS-README.txt](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/tests/pre-compiled-tests/classes/tests/NEW-TESTS-README.txt)
 - To update unit tests go to the folder [tests/pre-compiled-tests/classes/tests/](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/tests/pre-compiled-tests/classes/tests)
 - Compile the tests module using the commands found in [compile/compile-commands.txt](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/compile/compile-commands.txt)
 
-**Final steps:**
+**Final Steps:**
 - Load [tests/run-tests.html](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/tests/run-tests.html) in a [Chrome](https://www.google.com/chrome/) browser
 - Open your console, click "Start Tests", and follow the directions until the results are shown
 - Fix any bugs that are found and re-run the tests until they are all passing
