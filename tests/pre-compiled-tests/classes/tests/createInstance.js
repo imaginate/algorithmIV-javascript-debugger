@@ -119,13 +119,13 @@
         turnOffMethods: 'misc'
       });
 
-      pass = consoleInst1.misc('test', 'Instance Test 1');
-      pass = pass && consoleInst2.misc('test', 'Instance Test 2');
+      pass = consoleInst1.getMethod('misc');
+      pass = pass && consoleInst2.getMethod('misc');
 
       consoleInst1.setMethod('misc', false);
 
-      fail = consoleInst1.misc('test', 'Instance Test 3');
-      fail = fail || consoleInst2.misc('test', 'Instance Test 4');
+      fail = consoleInst1.getMethod('misc');
+      fail = fail || consoleInst2.getMethod('misc');
 
       if (!pass || fail) {
         errorMsg = 'aIV.console.create incorrectly created a new Debug ';
@@ -159,13 +159,13 @@
       consoleInst1 = aIV.console.create(classTitle);
       consoleInst2 = aIV.console.create(classTitle + '2');
 
-      pass = consoleInst1.misc('test', 'Instance Test 1');
+      pass = consoleInst1.getMethod('misc');
       consoleInst1.setMethod('misc', false);
-      fail = consoleInst1.misc('test', 'Instance Test 2');
+      fail = consoleInst1.getMethod('misc');
 
-      pass = pass && consoleInst2.misc('test', 'Instance Test 3');
+      pass = pass && consoleInst2.getMethod('misc');
       consoleInst2.setMethod('misc', false);
-      fail = fail || consoleInst2.misc('test', 'Instance Test 4');
+      fail = fail || consoleInst2.getMethod('misc');
 
       if (!pass || fail) {
         errorMsg = 'aIV.console.create failed to create two separate Debug ';
