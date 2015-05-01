@@ -56,7 +56,7 @@
       /** @type {!Debug} */
       var consoleInst;
 
-      consoleInst = aIV.console.create('start.testLog');
+      consoleInst = aIV.console.create('Tests.start.testLog');
 
       pass = consoleInst.start('testMethod');
 
@@ -81,7 +81,7 @@
       /** @type {!Debug} */
       var consoleInst;
 
-      consoleInst = aIV.console.create('start.testLogWithArgs');
+      consoleInst = aIV.console.create('Tests.start.testLogWithArgs');
 
       pass = consoleInst.start('testMethod', 5, [ 5 ]);
 
@@ -106,7 +106,7 @@
       /** @type {!Debug} */
       var consoleInst;
 
-      consoleInst = aIV.console.create('start.testLogWithArgsArr');
+      consoleInst = aIV.console.create('Tests.start.testLogWithArgsArr');
 
       pass = consoleInst.start([ 'testMethod', 5, [ 5 ] ]);
 
