@@ -68,6 +68,9 @@
    */
   App.prototype.runTests = function() {
 
+    /** @type {string} */
+    var prop;
+
     // Turn off the debugger instances for errors
     aIV.console.set({
       errorBreakpoints: false,
