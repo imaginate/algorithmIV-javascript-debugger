@@ -571,9 +571,9 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
     classTitle    : 'unknown',
     turnOffMethods: 'none',
     addBreakpoints: 'args fail',
-    turnOnGroups  : true,
+    turnOnGroups  : false,
     turnOnProfiles: false,
-    turnOnTimers  : true
+    turnOnTimers  : false
   };
 
 /* -----------------------------------------------------------------------------
