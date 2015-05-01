@@ -1,15 +1,28 @@
+DIRECTIONS FOR NEW TESTS                       |
+---------------------------------------------- |
+1. Create a new JavaScript file inside the     |
+   "tests/pre-compiled-tests/classes/tests"    |
+   folder.                                     |
+2. Name the new file the name of the method    |
+   you are testing (methodName.js).            |
+3. Copy and paste the below provided           |
+   JavaScript into the new file.               |
+4. Replace all occurances of "methodName"      |
+   with the name of the method you are         |
+   testing.                                    |
+5. Add your tests.                             |
+------------------------------------------------
 
-// Replace all occurances of methodName with
-// the name of the method you are testing
+/****************************** COPY BELOW HERE *******************************/
 
   /**
    * -------------------------------------------------
    * Public Method (Tests.methodName)
    * -------------------------------------------------
-   * @desc Checks aIV.utils.methodName method.
+   * @desc Checks [add description here].
    * @type {function}
    */
-  Tests.methodName = (function setupTestsMethodName() {
+  Tests.methodName = (function setupTests_methodName() {
 
     ////////////////////////////////////////////////////////////////////////////
     // Define & Setup The Private methodName Variables
@@ -69,7 +82,6 @@
     // The End Of The methodName Module
     ////////////////////////////////////////////////////////////////////////////
 
-// Replace the next line with: return methodName;
-    return function() {};
+    return methodName;
 
   })();
