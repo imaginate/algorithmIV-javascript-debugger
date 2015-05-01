@@ -32,13 +32,30 @@
       testTwoInstanceCreateSame();
       testTwoInstanceCreateDifferent();
 
-      // The remaining tests ensure that aIV.console.create is reading and
-      // using its params correctly
+      // The remaining tests ensure that aIV.console.create
+      // is reading and using its params correctly
 
       // Test the classTitle param
       testClassTitleAsProp();
       testClassTitleAsString();
       testClassTitleAsBlank();
+
+      // Test the turnOffMethods param
+      testTurnOffMethodsOne();
+      testTurnOffMethodsAll();
+      testTurnOffMethodsTwo();
+      testTurnOffMethodsTwoArr();
+
+      // Test the addBreakpoints param
+      testAddBreakpointsOne();
+      testAddBreakpointsAll();
+      testAddBreakpointsTwo();
+      testAddBreakpointsTwoArr();
+
+      // Test the auto insert native console methods params
+      testTurnOnGroups();
+      testTurnOnProfiles();
+      testTurnOnTimers();
 
       // Save the results
       app.results.push(results);
