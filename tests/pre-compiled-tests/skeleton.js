@@ -2,7 +2,7 @@
  * -----------------------------------------------------------------------------
  * Algorithm IV Debugger Tests (v1.1.0)
  * -----------------------------------------------------------------------------
- * @file The module used to run all testing for aIV.conole.
+ * @file The module used to run all unit tests for aIV's debugger.
  * @module aIVConsoleTests
  * @version 1.1.0
  * @author Adam Smith ({@link adamsmith@youlum.com})
