@@ -150,12 +150,8 @@
     // End Of The Class Setup
     ////////////////////////////////////////////////////////////////////////////
 
-    Object.freeze(this.reportResult);
-    Object.freeze(this.reportErrors);
-    Object.freeze(this.getResult);
-    Object.freeze(this.setResult);
-    Object.freeze(this.addError);
-    Object.freeze(this);
+    // Deep freeze
+    aIV.utils.freezeObj(this, true);
   };
 
 ////////////////////////////////////////////////////////////////////////////////

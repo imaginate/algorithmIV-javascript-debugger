@@ -66,10 +66,8 @@
     // End Of The Class Setup
     ////////////////////////////////////////////////////////////////////////////
 
-    Object.freeze(this.fail);
-    Object.freeze(this.before);
-    Object.freeze(this.after);
-    Object.freeze(this);
+    // Deep freeze
+    aIV.utils.freezeObj(this, true);
   };
 
 ////////////////////////////////////////////////////////////////////////////////
