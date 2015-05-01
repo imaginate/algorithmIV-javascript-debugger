@@ -1,5 +1,139 @@
   /**
    * -------------------------------------------------
+   * Public Method (Tests.args)
+   * -------------------------------------------------
+   * @desc Tests aIV.debug().args.
+   * @type {function}
+   */
+  Tests.args = (function setupTests_args() {
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Private args Variables
+    ////////////////////////////////////////////////////////////////////////////
+
+    /** @type {!TestResults} */
+    var results = new TestResults('Tests.args');
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Public args Method
+    ////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * -------------------------------------------------
+     * Public Method (args)
+     * -------------------------------------------------
+     * @desc Tests aIV.debug().args.
+     * @type {function}
+     */
+    var args = function() {
+
+      testLog();
+      testLogWithArr();
+
+      testLogMsg();
+
+      // Save the results
+      app.results.push(results);
+    };
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Private args Methods
+    ////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testLog)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testLog = function() {
+
+      /** @type {boolean} */
+      var pass;
+      /** @type {boolean} */
+      var fail;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create('Tests.args.testLog');
+
+      pass = consoleInst.args('testMethod', 1, 'string');
+
+      fail = consoleInst.args('testMethod', 's', 'string');
+
+      if (!pass || fail) {
+        errorMsg = 'Debug.proto.args failed to log';
+        results.addError(errorMsg);
+      }
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testLogWithArr)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testLogWithArr = function() {
+
+      /** @type {boolean} */
+      var pass;
+      /** @type {boolean} */
+      var fail;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create('Tests.args.testLogWithArr');
+
+      pass = consoleInst.args([ 'testMethod', 1, 'string' ]);
+
+      fail = consoleInst.args([ 'testMethod', 's', 'string' ]);
+
+      if (!pass || fail) {
+        errorMsg = 'Debug.proto.args failed to log with array';
+        results.addError(errorMsg);
+      }
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testLogMsg)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testLogMsg = function() {
+
+      /** @type {string} */
+      var errorMsg;
+      /** @type {string} */
+      var choiceMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create('Tests.args.testLogMsg');
+
+      choiceMsg = 'Verify a log. The following message should have ';
+      choiceMsg += 'been logged to the console:<br />';
+      choiceMsg += '"ARGS: Tests.args.testLogMsg.testMethod() | ';
+      choiceMsg += 'Error: Incorrect argument data type."';
+      errorMsg = 'Debug.proto.args logged an incorrect message';
+      app.addChoice(choiceMsg, results, errorMsg, function() {
+        consoleInst.args('testMethod', 5, 'string');
+      });
+    };
+
+    ////////////////////////////////////////////////////////////////////////////
+    // The End Of The args Module
+    ////////////////////////////////////////////////////////////////////////////
+
+    return args;
+
+  })();
+  /**
+   * -------------------------------------------------
    * Public Method (Tests.createInstance)
    * -------------------------------------------------
    * @desc Tests the aIV.console.create method's functionality.
@@ -788,8 +922,6 @@
      */
     var testLogMsg = function() {
 
-      /** @type {boolean} */
-      var pass;
       /** @type {string} */
       var errorMsg;
       /** @type {string} */
@@ -813,6 +945,364 @@
     ////////////////////////////////////////////////////////////////////////////
 
     return end;
+
+  })();
+  /**
+   * -------------------------------------------------
+   * Public Method (Tests.fail)
+   * -------------------------------------------------
+   * @desc Tests aIV.debug().fail.
+   * @type {function}
+   */
+  Tests.fail = (function setupTests_fail() {
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Private fail Variables
+    ////////////////////////////////////////////////////////////////////////////
+
+    /** @type {!TestResults} */
+    var results = new TestResults('Tests.fail');
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Public fail Method
+    ////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * -------------------------------------------------
+     * Public Method (fail)
+     * -------------------------------------------------
+     * @desc Tests aIV.debug().fail.
+     * @type {function}
+     */
+    var fail = function() {
+
+      testLog();
+      testLogWithArgs();
+      testLogWithArgsArr();
+      testLogWithFunc();
+
+      testLogMsg();
+
+      // Save the results
+      app.results.push(results);
+    };
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Private fail Methods
+    ////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testLog)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testLog = function() {
+
+      /** @type {boolean} */
+      var fail;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create('Tests.fail.testLog');
+
+      fail = consoleInst.fail('testMethod', true, 'Message');
+
+      if (fail) {
+        errorMsg = 'Debug.proto.fail failed to log';
+        results.addError(errorMsg);
+      }
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testLogWithArgs)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testLogWithArgs = function() {
+
+      /** @type {boolean} */
+      var pass;
+      /** @type {boolean} */
+      var fail;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create('Tests.fail.testLogWithArgs');
+
+      pass = consoleInst.fail('testMethod', 0, '5 should be $$', 5);
+
+      fail = consoleInst.fail('testMethod', 1, '5 should be $$', 5);
+
+      if (!pass || fail) {
+        errorMsg = 'Debug.proto.fail failed to log with arguments';
+        results.addError(errorMsg);
+      }
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testLogWithArgsArr)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testLogWithArgsArr = function() {
+
+      /** @type {boolean} */
+      var pass;
+      /** @type {boolean} */
+      var fail;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create('Tests.fail.testLogWithArgsArr');
+
+      pass = consoleInst.fail([ 'testMethod', 0, '5 should be $$', 5 ]);
+
+      fail = consoleInst.fail([ 'testMethod', 1, '5 should be $$', 5 ]);
+
+      if (!pass || fail) {
+        errorMsg = 'Debug.proto.fail failed to log with arguments array';
+        results.addError(errorMsg);
+      }
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testLogWithFunc)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testLogWithFunc = function() {
+
+      /** @type {boolean} */
+      var pass;
+      /** @type {boolean} */
+      var fail;
+      /** @type {function(): boolean} */
+      var passFunc;
+      /** @type {function(): boolean} */
+      var failFunc;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create('Tests.fail.testLogWithFunc');
+      passFunc = function() { return true; };
+      failFunc = function() { return false; };
+
+      pass = consoleInst.fail('testMethod', failFunc, 'Message');
+
+      fail = consoleInst.fail('testMethod', passFunc, 'Message');
+
+      if (!pass || fail) {
+        errorMsg = 'Debug.proto.fail failed to log with function';
+        results.addError(errorMsg);
+      }
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testLogMsg)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testLogMsg = function() {
+
+      /** @type {string} */
+      var errorMsg;
+      /** @type {string} */
+      var choiceMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create('Tests.fail.testLogMsg');
+
+      choiceMsg = 'Verify a log. The following message should have ';
+      choiceMsg += 'been logged to the console:<br />';
+      choiceMsg += '"CALL: Tests.fail.testLogMsg.testMethod() | 5 was 6"';
+      errorMsg = 'Debug.proto.fail logged an incorrect message';
+      app.addChoice(choiceMsg, results, errorMsg, function() {
+        consoleInst.fail('testMethod', false, '5 was $$', 6);
+      });
+    };
+
+    ////////////////////////////////////////////////////////////////////////////
+    // The End Of The fail Module
+    ////////////////////////////////////////////////////////////////////////////
+
+    return fail;
+
+  })();
+  /**
+   * -------------------------------------------------
+   * Public Method (Tests.init)
+   * -------------------------------------------------
+   * @desc Tests aIV.debug().init.
+   * @type {function}
+   */
+  Tests.init = (function setupTests_init() {
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Private init Variables
+    ////////////////////////////////////////////////////////////////////////////
+
+    /** @type {!TestResults} */
+    var results = new TestResults('Tests.init');
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Public init Method
+    ////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * -------------------------------------------------
+     * Public Method (init)
+     * -------------------------------------------------
+     * @desc Tests aIV.debug().init.
+     * @type {function}
+     */
+    var init = function() {
+
+      testLog();
+      testLogWithArgs();
+      testLogWithArgsArr();
+
+      testLogMsg();
+
+      // Save the results
+      app.results.push(results);
+    };
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Private init Methods
+    ////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testLog)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testLog = function() {
+
+      /** @type {boolean} */
+      var fail;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create('Tests.init.testLog');
+
+      fail = consoleInst.init('testMethod');
+
+      if (fail) {
+        errorMsg = 'Debug.proto.init failed to log';
+        results.addError(errorMsg);
+      }
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testLogWithArgs)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testLogWithArgs = function() {
+
+      /** @type {boolean} */
+      var pass;
+      /** @type {boolean} */
+      var fail;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create('Tests.init.testLogWithArgs');
+
+      pass = consoleInst.init('testMethod', 1, 'string');
+
+      fail = consoleInst.init('testMethod', 's', 'string');
+
+      if (!pass || fail) {
+        errorMsg = 'Debug.proto.init failed to log with arguments';
+        results.addError(errorMsg);
+      }
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testLogWithArgsArr)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testLogWithArgsArr = function() {
+
+      /** @type {boolean} */
+      var pass;
+      /** @type {boolean} */
+      var fail;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create('Tests.init.testLogWithArgsArr');
+
+      pass = consoleInst.init([ 'testMethod', 1, 'string' ]);
+
+      fail = consoleInst.init([ 'testMethod', 's', 'string' ]);
+
+      if (!pass || fail) {
+        errorMsg = 'Debug.proto.init failed to log with arguments array';
+        results.addError(errorMsg);
+      }
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testLogMsg)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testLogMsg = function() {
+
+      /** @type {string} */
+      var errorMsg;
+      /** @type {string} */
+      var choiceMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create('Tests.init.testLogMsg');
+
+      choiceMsg = 'Verify logs. The following messages should have ';
+      choiceMsg += 'been logged to the console:<br />';
+      choiceMsg += '"CALL: Tests.start.testLogMsg.testMethod()"<br />';
+      choiceMsg += '"ARGS: Tests.init.testLogMsg.testMethod() | ';
+      choiceMsg += 'Error: Incorrect argument data type."<br />';
+      choiceMsg += '"CALL: Tests.start.testLogMsg.testMethod(5)"';
+      errorMsg = 'Debug.proto.init logged an incorrect message';
+      app.addChoice(choiceMsg, results, errorMsg, function() {
+        consoleInst.init('testMethod');
+        consoleInst.init('testMethod', 5, 'string');
+      });
+    };
+
+    ////////////////////////////////////////////////////////////////////////////
+    // The End Of The init Module
+    ////////////////////////////////////////////////////////////////////////////
+
+    return init;
 
   })();
   /**
@@ -941,8 +1431,6 @@
      */
     var testLogMsg = function() {
 
-      /** @type {boolean} */
-      var pass;
       /** @type {string} */
       var errorMsg;
       /** @type {string} */
@@ -954,7 +1442,7 @@
 
       choiceMsg = 'Verify a log. The following message should have ';
       choiceMsg += 'been logged to the console:<br />';
-      choiceMsg += '"START: Tests.start.testLogMsg.testMethod(5)"';
+      choiceMsg += '"CALL: Tests.start.testLogMsg.testMethod(5)"';
       errorMsg = 'Debug.proto.start logged an incorrect message';
       app.addChoice(choiceMsg, results, errorMsg, function() {
         consoleInst.start('testMethod', 5);
