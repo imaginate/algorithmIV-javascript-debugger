@@ -249,14 +249,11 @@
 
     // Check whether this method has been turned off
     if ( !this.getMethod('end') ) {
-      this.handleAuto('groups', methodName, true);
-      this.handleAuto('profiles', methodName, true);
       this.handleAuto('timers', methodName, true);
+      this.handleAuto('profiles', methodName, true);
+      this.handleAuto('groups', methodName, true);
       return false;
     }
-
-    // Insert auto grouping
-    this.handleAuto('groups', methodName, true);
 
     // Prepare the console message
     message = 'END: ' + this.classTitle + methodName + '() | ';
@@ -269,8 +266,11 @@
     this.insertBreakpoint('end');
 
     // Insert auto profiling and timing
-    this.handleAuto('profiles', methodName, true);
     this.handleAuto('timers', methodName, true);
+    this.handleAuto('profiles', methodName, true);
+
+    // Insert auto grouping
+    this.handleAuto('groups', methodName, true);
 
     return true;
   };
