@@ -619,13 +619,13 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
 
   /**
    * ---------------------------------------------------
-   * Public Method (checkDataTypeStrings)
+   * Public Method (checkDataTypeString)
    * ---------------------------------------------------
    * @desc Evaluates whether each value is a valid data type string.
    * @param {!(string|strings)} types - The strings to evaluate.
    * @return {boolean} The evaluation result.
    */
-  var checkDataTypeStrings = aIV.utils.isValidTypeString;
+  var checkDataTypeString = aIV.utils.isValidTypeString;
 
 /* -----------------------------------------------------------------------------
  * The Public Module Methods (module-methods.js)
