@@ -82,7 +82,7 @@
 
       consoleInst = aIV.console.create('createInst.testOneInstanceCreate');
 
-      pass = Object.prototype.toString.call(consoleInst) === '[object Debug]';
+      pass = (Object.prototype.toString.call(consoleInst) === '[object Debug]');
 
       if (!pass) {
         errorMsg = 'aIV.console.create failed to create a Debug instance';
@@ -100,8 +100,6 @@
 
       /** @type {boolean} */
       var pass;
-      /** @type {boolean} */
-      var fail;
       /** @type {string} */
       var errorMsg;
       /** @type {string} */
@@ -115,19 +113,12 @@
 
       consoleInst1 = aIV.console.create(classTitle);
       consoleInst2 = aIV.console.create({
-        classTitle    : classTitle,
-        turnOffMethods: 'misc'
+        classTitle: classTitle
       });
 
-      pass = consoleInst1.getMethod('misc');
-      pass = pass && consoleInst2.getMethod('misc');
+      pass = (consoleInst1 === consoleInst2);
 
-      consoleInst1.setMethod('misc', false);
-
-      fail = consoleInst1.getMethod('misc');
-      fail = fail || consoleInst2.getMethod('misc');
-
-      if (!pass || fail) {
+      if (!pass) {
         errorMsg = 'aIV.console.create incorrectly created a new Debug ';
         errorMsg += 'instance when it should have retrieved an existing one';
         results.addError(errorMsg);
@@ -143,8 +134,6 @@
     var testTwoInstanceCreateDifferent = function() {
 
       /** @type {boolean} */
-      var pass;
-      /** @type {boolean} */
       var fail;
       /** @type {string} */
       var errorMsg;
@@ -159,15 +148,9 @@
       consoleInst1 = aIV.console.create(classTitle);
       consoleInst2 = aIV.console.create(classTitle + '2');
 
-      pass = consoleInst1.getMethod('misc');
-      consoleInst1.setMethod('misc', false);
-      fail = consoleInst1.getMethod('misc');
+      fail = (consoleInst1 === consoleInst2);
 
-      pass = pass && consoleInst2.getMethod('misc');
-      consoleInst2.setMethod('misc', false);
-      fail = fail || consoleInst2.getMethod('misc');
-
-      if (!pass || fail) {
+      if (fail) {
         errorMsg = 'aIV.console.create failed to create two separate Debug ';
         errorMsg += 'instances correctly';
         results.addError(errorMsg);
@@ -275,6 +258,8 @@
     var testTurnOffMethodsOne = function() {
 
       /** @type {boolean} */
+      var pass;
+      /** @type {boolean} */
       var fail;
       /** @type {string} */
       var errorMsg;
@@ -286,9 +271,17 @@
         turnOffMethods: 'misc'
       });
 
+      pass = consoleInst.getMethod('init');
+      pass = pass && consoleInst.getMethod('start');
+      pass = pass && consoleInst.getMethod('end');
+      pass = pass && consoleInst.getMethod('args');
+      pass = pass && consoleInst.getMethod('fail');
+      pass = pass && consoleInst.getMethod('group');
+      pass = pass && consoleInst.getMethod('state');
+
       fail = consoleInst.getMethod('misc');
 
-      if (fail) {
+      if (!pass || fail) {
         errorMsg = 'aIV.console.create({ turnOffMethods: \'misc\' }) failed to ';
         errorMsg += 'turn off the instance\'s misc method';
         results.addError(errorMsg);
@@ -340,6 +333,8 @@
     var testTurnOffMethodsTwo = function() {
 
       /** @type {boolean} */
+      var pass;
+      /** @type {boolean} */
       var fail;
       /** @type {string} */
       var errorMsg;
@@ -351,10 +346,17 @@
         turnOffMethods: 'end misc'
       });
 
+      pass = consoleInst.getMethod('init');
+      pass = pass && consoleInst.getMethod('start');
+      pass = pass && consoleInst.getMethod('args');
+      pass = pass && consoleInst.getMethod('fail');
+      pass = pass && consoleInst.getMethod('group');
+      pass = pass && consoleInst.getMethod('state');
+
       fail = consoleInst.getMethod('end');
       fail = fail || consoleInst.getMethod('misc');
 
-      if (fail) {
+      if (!pass || fail) {
         errorMsg = 'aIV.console.create({ turnOffMethods: \'end misc\' }) ';
         errorMsg += 'failed to turn off the instance\'s end and misc method';
         results.addError(errorMsg);
@@ -370,6 +372,8 @@
     var testTurnOffMethodsTwoArr = function() {
 
       /** @type {boolean} */
+      var pass;
+      /** @type {boolean} */
       var fail;
       /** @type {string} */
       var errorMsg;
@@ -381,10 +385,17 @@
         turnOffMethods: [ 'end', 'misc' ]
       });
 
+      pass = consoleInst.getMethod('init');
+      pass = pass && consoleInst.getMethod('start');
+      pass = pass && consoleInst.getMethod('args');
+      pass = pass && consoleInst.getMethod('fail');
+      pass = pass && consoleInst.getMethod('group');
+      pass = pass && consoleInst.getMethod('state');
+
       fail = consoleInst.getMethod('end');
       fail = fail || consoleInst.getMethod('misc');
 
-      if (fail) {
+      if (!pass || fail) {
         errorMsg = "aIV.console.create({ turnOffMethods: [ 'end', 'misc' ] }) ";
         errorMsg += 'failed to turn off the instance\'s end and misc method';
         results.addError(errorMsg);
@@ -401,6 +412,8 @@
 
       /** @type {boolean} */
       var pass;
+      /** @type {boolean} */
+      var fail;
       /** @type {string} */
       var errorMsg;
       /** @type {!Debug} */
@@ -413,7 +426,15 @@
 
       pass = consoleInst.getBreakpoint('misc');
 
-      if (!pass) {
+      fail = consoleInst.getBreakpoint('init');
+      fail = fail || consoleInst.getBreakpoint('start');
+      fail = fail || consoleInst.getBreakpoint('end');
+      fail = fail || consoleInst.getBreakpoint('args');
+      fail = fail || consoleInst.getBreakpoint('fail');
+      fail = fail || consoleInst.getBreakpoint('group');
+      fail = fail || consoleInst.getBreakpoint('state');
+
+      if (!pass || fail) {
         errorMsg = 'aIV.console.create({ addBreakpoints: \'misc\' }) failed to ';
         errorMsg += 'add a breakpoint for the instance\'s misc method';
         results.addError(errorMsg);
@@ -466,6 +487,8 @@
 
       /** @type {boolean} */
       var pass;
+      /** @type {boolean} */
+      var fail;
       /** @type {string} */
       var errorMsg;
       /** @type {!Debug} */
@@ -479,7 +502,14 @@
       pass = consoleInst.getBreakpoint('end');
       pass = pass && consoleInst.getBreakpoint('misc');
 
-      if (!pass) {
+      fail = consoleInst.getBreakpoint('init');
+      fail = fail || consoleInst.getBreakpoint('start');
+      fail = fail || consoleInst.getBreakpoint('args');
+      fail = fail || consoleInst.getBreakpoint('fail');
+      fail = fail || consoleInst.getBreakpoint('group');
+      fail = fail || consoleInst.getBreakpoint('state');
+
+      if (!pass || fail) {
         errorMsg = 'aIV.console.create({ addBreakpoints: \'end misc\' }) ';
         errorMsg += 'failed to add a breakpoint for the instance\'s ';
         errorMsg += 'end and misc method';
@@ -497,6 +527,8 @@
 
       /** @type {boolean} */
       var pass;
+      /** @type {boolean} */
+      var fail;
       /** @type {string} */
       var errorMsg;
       /** @type {!Debug} */
@@ -510,7 +542,14 @@
       pass = consoleInst.getBreakpoint('end');
       pass = pass && consoleInst.getBreakpoint('misc');
 
-      if (!pass) {
+      fail = consoleInst.getBreakpoint('init');
+      fail = fail || consoleInst.getBreakpoint('start');
+      fail = fail || consoleInst.getBreakpoint('args');
+      fail = fail || consoleInst.getBreakpoint('fail');
+      fail = fail || consoleInst.getBreakpoint('group');
+      fail = fail || consoleInst.getBreakpoint('state');
+
+      if (!pass || fail) {
         errorMsg = "aIV.console.create({ addBreakpoints: [ 'end', 'misc' ] }) ";
         errorMsg += 'failed to add a breakpoint for the instance\'s ';
         errorMsg += 'end and misc method';
