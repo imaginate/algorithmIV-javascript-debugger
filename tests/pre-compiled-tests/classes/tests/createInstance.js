@@ -266,6 +266,131 @@
       }
     };
 
+    /**
+     * ---------------------------------------------------
+     * Private Method (testTurnOffMethodsOne)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testTurnOffMethodsOne = function() {
+
+      /** @type {boolean} */
+      var fail;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create({
+        classTitle    : 'createInst.testTurnOffMethodsOne',
+        turnOffMethods: 'misc'
+      });
+
+      fail = consoleInst.getMethod('misc');
+
+      if (fail) {
+        errorMsg = 'aIV.console.create({ turnOffMethods: \'misc\' }) failed to ';
+        errorMsg = 'turn off the instance\'s misc method';
+        results.addError(errorMsg);
+      }
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testTurnOffMethodsAll)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testTurnOffMethodsAll = function() {
+
+      /** @type {boolean} */
+      var fail;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create({
+        classTitle    : 'createInst.testTurnOffMethodsAll',
+        turnOffMethods: 'all'
+      });
+
+      fail = consoleInst.getMethod('init');
+      fail = fail || consoleInst.getMethod('start');
+      fail = fail || consoleInst.getMethod('end');
+      fail = fail || consoleInst.getMethod('args');
+      fail = fail || consoleInst.getMethod('fail');
+      fail = fail || consoleInst.getMethod('group');
+      fail = fail || consoleInst.getMethod('state');
+      fail = fail || consoleInst.getMethod('misc');
+
+      if (fail) {
+        errorMsg = 'aIV.console.create({ turnOffMethods: \'all\' }) failed to ';
+        errorMsg = 'turn off all of the instance\'s methods';
+        results.addError(errorMsg);
+      }
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testTurnOffMethodsTwo)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testTurnOffMethodsTwo = function() {
+
+      /** @type {boolean} */
+      var fail;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create({
+        classTitle    : 'createInst.testTurnOffMethodsTwo',
+        turnOffMethods: 'end misc'
+      });
+
+      fail = consoleInst.getMethod('end');
+      fail = fail || consoleInst.getMethod('misc');
+
+      if (fail) {
+        errorMsg = 'aIV.console.create({ turnOffMethods: \'end misc\' }) ';
+        errorMsg = 'failed to turn off the instance\'s end and misc method';
+        results.addError(errorMsg);
+      }
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testTurnOffMethodsTwoArr)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testTurnOffMethodsTwoArr = function() {
+
+      /** @type {boolean} */
+      var fail;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create({
+        classTitle    : 'createInst.testTurnOffMethodsTwoArr',
+        turnOffMethods: [ 'end', 'misc' ]
+      });
+
+      fail = consoleInst.getMethod('end');
+      fail = fail || consoleInst.getMethod('misc');
+
+      if (fail) {
+        errorMsg = "aIV.console.create({ turnOffMethods: [ 'end', 'misc' ] }) ";
+        errorMsg = 'failed to turn off the instance\'s end and misc method';
+        results.addError(errorMsg);
+      }
+    };
+
     ////////////////////////////////////////////////////////////////////////////
     // The End Of The createInstance Module
     ////////////////////////////////////////////////////////////////////////////
