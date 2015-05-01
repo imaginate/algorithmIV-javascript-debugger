@@ -557,6 +557,93 @@
       }
     };
 
+    /**
+     * ---------------------------------------------------
+     * Private Method (testTurnOnGroups)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testTurnOnGroups = function() {
+
+      /** @type {boolean} */
+      var pass;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create({
+        classTitle  : 'createInst.testTurnOnGroups',
+        turnOnGroups: true
+      });
+
+      pass = consoleInst.getAuto('groups');
+
+      if (!pass) {
+        errorMsg = 'aIV.console.create({ turnOnGroups: true }) failed to ';
+        errorMsg += 'turn on the instance\'s auto groups';
+        results.addError(errorMsg);
+      }
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testTurnOnProfiles)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testTurnOnProfiles = function() {
+
+      /** @type {boolean} */
+      var pass;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create({
+        classTitle    : 'createInst.testTurnOnProfiles',
+        turnOnProfiles: true
+      });
+
+      pass = consoleInst.getAuto('profiles');
+
+      if (!pass) {
+        errorMsg = 'aIV.console.create({ turnOnProfiles: true }) failed to ';
+        errorMsg += 'turn on the instance\'s auto profiles';
+        results.addError(errorMsg);
+      }
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testTurnOnTimers)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testTurnOnTimers = function() {
+
+      /** @type {boolean} */
+      var pass;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create({
+        classTitle  : 'createInst.testTurnOnTimers',
+        turnOnTimers: true
+      });
+
+      pass = consoleInst.getAuto('timers');
+
+      if (!pass) {
+        errorMsg = 'aIV.console.create({ turnOnTimers: true }) failed to ';
+        errorMsg += 'turn on the instance\'s auto timers';
+        results.addError(errorMsg);
+      }
+    };
+
     ////////////////////////////////////////////////////////////////////////////
     // The End Of The createInstance Module
     ////////////////////////////////////////////////////////////////////////////
