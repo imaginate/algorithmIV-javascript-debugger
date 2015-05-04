@@ -154,6 +154,21 @@
    */
   var hasOwnProp = aIV.utils.hasOwnProp;
 
+  /**
+   * ---------------------------------------------------
+   * Public Method (checkType)
+   * ---------------------------------------------------
+   * @desc Checks a value's data type against the given optional types.
+   * @param {*} val - The value to be evaluated.
+   * @param {string} type - A string of the data types to evaluate the value
+   *   against. For a complete list of acceptable strings
+   *   [see aIV.utils.checkType]{@link https://github.com/imaginate/algorithmIV-javascript-shortcuts/blob/master/src/pre-compiled-parts/methods/checkType.js}.
+   * @param {boolean=} noTypeValCheck - If true skips the data type string checks.
+   *   The default is false. Use to avoid duplicating checks.
+   * @return {boolean} The evaluation result.
+   */
+  var checkType = aIV.utils.checkType;
+
 /* -----------------------------------------------------------------------------
  * The App Class (classes/app.js)
  * -------------------------------------------------------------------------- */
@@ -609,9 +624,10 @@
    * -----------------------------------------------------
    * @desc Contains the results for a test.
    * @param {string} type - The type of tests that were ran.
+   * @param {number=} amount - The number of tests that were ran.
    * @constructor
    */
-  var TestResults = function(type) {
+  var TestResults = function(type, amount) {
 
     ////////////////////////////////////////////////////////////////////////////
     // Define & Setup The Protected Properties
@@ -631,9 +647,13 @@
      * Protected Property (TestResults.errors)
      * -----------------------------------------------
      * @desc The test errors.
-     * @type {?strings}
+     * @type {!strings}
      */
-    var errors = null;
+    var errors = [];
+
+    if (!checkType(amount, 'number') || amount < 0) {
+      amount = 0;
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     // Define & Setup The Public Methods
@@ -649,18 +669,35 @@
     this.reportResult = function() {
 
       /** @type {string} */
-      var name;
+      var classname;
+      /** @type {number} */
+      var passed;
       /** @type {string} */
       var msg;
       /** @type {string} */
       var report;
 
-      name = (result) ? 'green' : 'red';
-      msg = (result) ? 'Pass' : 'Fail';
-      report = '' +
-        '<li class="' + name + '">' +
-          type + ' =&gt; ' + msg +
-        '</li>';
+      classname = (errors.length) ? 'red' : 'green';
+
+      if (amount && amount > errors.length) {
+        passed = amount - errors.length;
+        report = '' +
+          '<li class="' + classname + '">' +
+            '<span class="title">' + type + '</span>' +
+            ' =&gt; ' +
+            '<span class="passed">' +
+              'Passed ' + passed + ' of ' + amount + ' Tests' +
+            '</span>' +
+          '</li>';
+      }
+      else {
+        msg = (result) ? 'Pass' : 'Fail';
+        report = '' +
+          '<li class="' + classname + '">' +
+            '<span class="title">' + type + '</span>' +
+            ' =&gt; ' + msg +
+          '</li>';
+      }
 
       return report;
     };
@@ -681,25 +718,24 @@
       /** @type {?string} */
       var report;
 
-      report = null;
+      len = errors.length;
 
-      if (errors && errors.length) {
-
-        // The type of results name
-        report = '<li>' + type;
-
-        // The errors
-        report += '<ol id="subErrors">';
-
-        len = errors.length;
-        i = -1;
-
-        while (++i < len) {
-          report += '<li>' + errors[i] + '</li>';
-        }
-
-        report += '</ol></li>';
+      if (!len) {
+        return null;
       }
+
+      // The type of results name
+      report = '<li>' + type;
+
+      // The errors
+      report += '<ol id="subErrors">';
+
+      i = -1;
+      while (++i < len) {
+        report += '<li>' + errors[i] + '</li>';
+      }
+
+      report += '</ol></li>';
 
       return report;
     };
@@ -743,12 +779,7 @@
         msg = 'No error message was provided.';
       }
 
-      if (errors) {
-        errors.push(msg);
-      }
-      else {
-        errors = [ msg ];
-      }
+      errors.push(msg);
     };
 
     ////////////////////////////////////////////////////////////////////////////
@@ -796,7 +827,7 @@
     ////////////////////////////////////////////////////////////////////////////
 
     /** @type {!TestResults} */
-    var results = new TestResults('Tests.args');
+    var results = new TestResults('Debug.proto.args', 3);
 
     ////////////////////////////////////////////////////////////////////////////
     // Define & Setup The Public args Method
@@ -930,7 +961,7 @@
     ////////////////////////////////////////////////////////////////////////////
 
     /** @type {!TestResults} */
-    var results = new TestResults('Tests.createInstance');
+    var results = new TestResults('aIV.console.create', 17);
 
     ////////////////////////////////////////////////////////////////////////////
     // Define & Setup The Public createInstance Method
@@ -1594,7 +1625,7 @@
     ////////////////////////////////////////////////////////////////////////////
 
     /** @type {!TestResults} */
-    var results = new TestResults('Tests.end');
+    var results = new TestResults('Debug.proto.end', 4);
 
     ////////////////////////////////////////////////////////////////////////////
     // Define & Setup The Public end Method
@@ -1745,7 +1776,7 @@
     ////////////////////////////////////////////////////////////////////////////
 
     /** @type {!TestResults} */
-    var results = new TestResults('Tests.fail');
+    var results = new TestResults('Debug.proto.fail', 5);
 
     ////////////////////////////////////////////////////////////////////////////
     // Define & Setup The Public fail Method
@@ -1940,7 +1971,7 @@
     ////////////////////////////////////////////////////////////////////////////
 
     /** @type {!TestResults} */
-    var results = new TestResults('Tests.init');
+    var results = new TestResults('Debug.proto.init', 4);
 
     ////////////////////////////////////////////////////////////////////////////
     // Define & Setup The Public init Method
@@ -2103,7 +2134,7 @@
     ////////////////////////////////////////////////////////////////////////////
 
     /** @type {!TestResults} */
-    var results = new TestResults('Tests.start');
+    var results = new TestResults('Debug.proto.start', 4);
 
     ////////////////////////////////////////////////////////////////////////////
     // Define & Setup The Public start Method

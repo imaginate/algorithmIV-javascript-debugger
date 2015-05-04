@@ -216,6 +216,14 @@ h2 {
   list-style-type:disc;
 }
 
+#results .title {
+  display:inline-block;
+  width:200px;
+}
+#results .passed {
+  margin:0 0 0 10px;
+}
+
 #errors { margin:0 auto; }
 #subErrors { margin:10px auto 0; }
 #errors li { margin:0 0 10px; }

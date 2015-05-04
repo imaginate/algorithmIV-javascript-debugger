@@ -4,9 +4,10 @@
    * -----------------------------------------------------
    * @desc Contains the results for a test.
    * @param {string} type - The type of tests that were ran.
+   * @param {number=} amount - The number of tests that were ran.
    * @constructor
    */
-  var TestResults = function(type) {
+  var TestResults = function(type, amount) {
 
     ////////////////////////////////////////////////////////////////////////////
     // Define & Setup The Protected Properties
@@ -26,9 +27,13 @@
      * Protected Property (TestResults.errors)
      * -----------------------------------------------
      * @desc The test errors.
-     * @type {?strings}
+     * @type {!strings}
      */
-    var errors = null;
+    var errors = [];
+
+    if (!checkType(amount, 'number') || amount < 0) {
+      amount = 0;
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     // Define & Setup The Public Methods
@@ -44,18 +49,35 @@
     this.reportResult = function() {
 
       /** @type {string} */
-      var name;
+      var classname;
+      /** @type {number} */
+      var passed;
       /** @type {string} */
       var msg;
       /** @type {string} */
       var report;
 
-      name = (result) ? 'green' : 'red';
-      msg = (result) ? 'Pass' : 'Fail';
-      report = '' +
-        '<li class="' + name + '">' +
-          type + ' =&gt; ' + msg +
-        '</li>';
+      classname = (errors.length) ? 'red' : 'green';
+
+      if (amount && amount > errors.length) {
+        passed = amount - errors.length;
+        report = '' +
+          '<li class="' + classname + '">' +
+            '<span class="title">' + type + '</span>' +
+            ' =&gt; ' +
+            '<span class="passed">' +
+              'Passed ' + passed + ' of ' + amount + ' Tests' +
+            '</span>' +
+          '</li>';
+      }
+      else {
+        msg = (result) ? 'Pass' : 'Fail';
+        report = '' +
+          '<li class="' + classname + '">' +
+            '<span class="title">' + type + '</span>' +
+            ' =&gt; ' + msg +
+          '</li>';
+      }
 
       return report;
     };
@@ -76,25 +98,24 @@
       /** @type {?string} */
       var report;
 
-      report = null;
+      len = errors.length;
 
-      if (errors && errors.length) {
-
-        // The type of results name
-        report = '<li>' + type;
-
-        // The errors
-        report += '<ol id="subErrors">';
-
-        len = errors.length;
-        i = -1;
-
-        while (++i < len) {
-          report += '<li>' + errors[i] + '</li>';
-        }
-
-        report += '</ol></li>';
+      if (!len) {
+        return null;
       }
+
+      // The type of results name
+      report = '<li>' + type;
+
+      // The errors
+      report += '<ol id="subErrors">';
+
+      i = -1;
+      while (++i < len) {
+        report += '<li>' + errors[i] + '</li>';
+      }
+
+      report += '</ol></li>';
 
       return report;
     };
@@ -138,12 +159,7 @@
         msg = 'No error message was provided.';
       }
 
-      if (errors) {
-        errors.push(msg);
-      }
-      else {
-        errors = [ msg ];
-      }
+      errors.push(msg);
     };
 
     ////////////////////////////////////////////////////////////////////////////

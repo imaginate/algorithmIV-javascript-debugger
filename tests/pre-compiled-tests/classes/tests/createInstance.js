@@ -12,7 +12,7 @@
     ////////////////////////////////////////////////////////////////////////////
 
     /** @type {!TestResults} */
-    var results = new TestResults('Tests.createInstance');
+    var results = new TestResults('aIV.console.create', 17);
 
     ////////////////////////////////////////////////////////////////////////////
     // Define & Setup The Public createInstance Method
