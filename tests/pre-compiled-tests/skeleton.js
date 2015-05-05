@@ -74,9 +74,9 @@
 // insert-app
 
 /* -----------------------------------------------------------------------------
- * The Choice Class (classes/choice.js)
+ * The MockConsole Class (classes/mock-console.js)
  * -------------------------------------------------------------------------- */
-// insert-choice
+// insert-mock-console
 
 /* -----------------------------------------------------------------------------
  * The Elems Class (classes/elems.js)
