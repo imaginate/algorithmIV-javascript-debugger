@@ -1,6 +1,6 @@
   /**
    * -----------------------------------------------
-   * Public Variable (Debug.defaultSettings)
+   * Public Property (Debug.defaultSettings)
    * -----------------------------------------------
    * @desc Sets default settings for all instances of the debugger. Note that
    *   if local settings are provided upon a new instance call they will be used
@@ -33,7 +33,7 @@
    */
   /**
    * -----------------------------------------------
-   * Public Variable (Debug.autoSettings)
+   * Public Property (Debug.autoSettings)
    * -----------------------------------------------
    * @desc The settings for the automated debugger actions.
    * @type {!{
@@ -61,7 +61,7 @@
 
   /**
    * ----------------------------------------------- 
-   * Public Variable (Debug.formatElementsAsObj)
+   * Public Property (Debug.formatElementsAsObj)
    * -----------------------------------------------
    * @desc Controls whether logged DOM elements are shown as expandable
    *   objects or elements.
