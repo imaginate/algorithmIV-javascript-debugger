@@ -1,30 +1,5 @@
   /**
    * ---------------------------------------------------
-   * Public Method (getSubstituteString)
-   * ---------------------------------------------------
-   * @desc Gets the correct substitution string for the given value.
-   * @param {val} val - The value to be evaluated.
-   * @return {string} The correct substitution string.
-   */
-  function getSubstituteString(val) {
-
-    /** @type {string} */
-    var str;
-
-    str = '%s';
-
-    if ( checkType(val, '!number|object|function') ) {
-      str = ( ( checkType(val, 'number') ) ?
-        '%i' : (!Debug.formatElementsAsObj && val instanceof HTMLElement) ?
-          '%o' : '%O'
-      );
-    }
-
-    return str;
-  }
-
-  /**
-   * ---------------------------------------------------
    * Public Method (makeSubstituteStrings)
    * ---------------------------------------------------
    * @desc Creates a string of the correct matching substitution strings
@@ -49,7 +24,7 @@
       if (i) {
         message += ', ';
       }
-      message += getSubstituteString(vals[i]);
+      message += Debug.getSubstituteString(vals[i]);
     }
 
     return message;
@@ -86,7 +61,7 @@
       i = -1;
       while (++i < len) {
 
-        substituteString = getSubstituteString(vals[i]);
+        substituteString = Debug.getSubstituteString(vals[i]);
 
         if ( dualDollarSigns.test(msg) ) {
           substituteString = '$1' + substituteString;

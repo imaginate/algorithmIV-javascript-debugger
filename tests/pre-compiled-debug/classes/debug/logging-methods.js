@@ -257,7 +257,7 @@
 
     // Prepare the console message
     message = 'END: ' + this.classTitle + methodName + '() | ';
-    message += 'return= ' + getSubstituteString(returnVal);
+    message += 'return= ' + Debug.getSubstituteString(returnVal);
 
     // Log the end message
     console.log(message, returnVal);

@@ -144,3 +144,27 @@
 
     return true;
   };
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (Debug.getSubstituteString)
+   * ---------------------------------------------------
+   * @desc Gets the correct substitution string for the given value.
+   * @param {val} val - The value to be evaluated.
+   * @return {string} The correct substitution string.
+   */
+  Debug.getSubstituteString = function(val) {
+
+    /** @type {string} */
+    var str;
+
+    str = '%s';
+
+    if ( checkType(val, '!object|function') ) {
+      str = ( (!Debug.formatElementsAsObj && val instanceof HTMLElement) ?
+        '%o' : '%O'
+      );
+    }
+
+    return str;
+  };
