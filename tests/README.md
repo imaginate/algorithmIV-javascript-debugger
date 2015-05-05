@@ -23,9 +23,9 @@
 
 
 ##<a name="run"></a>Run The Unit Tests
-- Load **[tests/run-tests.html](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/tests/run-tests.html)** in a **[Chrome](https://www.google.com/chrome/)** browser
-- Open your console and click "Start Tests"
-- Follow the directions until the results are shown
+- Load **[tests/run-tests.html](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/tests/run-tests.html)** in a browser
+- Click "Start Tests"
+- View the results
 
 
 ##Contact Us

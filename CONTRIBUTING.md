@@ -16,8 +16,8 @@
 - Compile the tests module using the commands found in [compile/compile-commands.txt](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/compile/compile-commands.txt)
 
 **Final Steps:**
-- Load [tests/run-tests.html](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/tests/run-tests.html) in a [Chrome](https://www.google.com/chrome/) browser
-- Open your console, click "Start Tests", and follow the directions until the results are shown
+- Load [tests/run-tests.html](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/tests/run-tests.html) in a browser
+- Click "Start Tests" and view the results
 - Fix any bugs that are found and re-run the tests until they are all passing
 - Submit a pull request
 
