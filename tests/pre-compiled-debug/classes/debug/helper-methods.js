@@ -158,13 +158,10 @@
     /** @type {string} */
     var str;
 
-    str = '%s';
-
-    if ( checkType(val, '!object|function') ) {
-      str = ( (!Debug.formatElementsAsObj && val instanceof HTMLElement) ?
+    str = ( (!checkType(val, '!object|function')) ?
+      '%s' : (!Debug.formatElementsAsObj && val instanceof HTMLElement) ?
         '%o' : '%O'
-      );
-    }
+    );
 
     return str;
   };
