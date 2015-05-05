@@ -19,12 +19,12 @@ sed \
   -e "/insert-public-api/ r public-api.js" \
   -e "/insert-module-api/ r module-api.js" \
   -e "/insert-module-vars/ r module-vars.js" \
-  -e "/insert-module-utils/ r module-utils.js" \
   -e "/insert-module-methods/ r module-methods.js" \
   -e "/insert-error-messages/ r classes/error-messages.js" \
   -e "/insert-debug-constructor/ r classes/debug/constructor.js" \
   -e "/insert-debug-logging-methods/ r classes/debug/logging-methods.js" \
   -e "/insert-debug-controlling-methods/ r classes/debug/controlling-methods.js" \
+  -e "/insert-debug-helper-properties/ r classes/debug/helper-properties.js" \
   -e "/insert-debug-helper-methods/ r classes/debug/helper-methods.js" <skeleton.js>algorithmIV-debug-temp.js
 cd ..
 cp -u pre-compiled-debug/algorithmIV-debug-temp.js algorithmIV-debug.js
@@ -39,12 +39,12 @@ sed ^
   -e "/insert-public-api/ r public-api.js" ^
   -e "/insert-module-api/ r module-api.js" ^
   -e "/insert-module-vars/ r module-vars.js" ^
-  -e "/insert-module-utils/ r module-utils.js" ^
   -e "/insert-module-methods/ r module-methods.js" ^
   -e "/insert-error-messages/ r classes/error-messages.js" ^
   -e "/insert-debug-constructor/ r classes/debug/constructor.js" ^
   -e "/insert-debug-logging-methods/ r classes/debug/logging-methods.js" ^
   -e "/insert-debug-controlling-methods/ r classes/debug/controlling-methods.js" ^
+  -e "/insert-debug-helper-properties/ r classes/debug/helper-properties.js" ^
   -e "/insert-debug-helper-methods/ r classes/debug/helper-methods.js" <skeleton.js>algorithmIV-debug-temp.js
 cd ..
 copy /y pre-compiled-debug\algorithmIV-debug-temp.js algorithmIV-debug.js
@@ -138,12 +138,12 @@ sed \
   -e "/insert-public-api/ r public-api.js" \
   -e "/insert-module-api/ r module-api.js" \
   -e "/insert-module-vars/ r module-vars.js" \
-  -e "/insert-module-utils/ r module-utils.js" \
   -e "/insert-module-methods/ r module-methods.js" \
   -e "/insert-error-messages/ r classes/error-messages.js" \
   -e "/insert-debug-constructor/ r classes/debug/constructor.js" \
   -e "/insert-debug-logging-methods/ r classes/debug/logging-methods.js" \
   -e "/insert-debug-controlling-methods/ r classes/debug/controlling-methods.js" \
+  -e "/insert-debug-helper-properties/ r classes/debug/helper-properties.js" \
   -e "/insert-debug-helper-methods/ r classes/debug/helper-methods.js" <skeleton.js>algorithmIV-debug-temp.js
 cd ..
 cp -u pre-compiled-parts/algorithmIV-debug-temp.js algorithmIV-debug.js
@@ -158,12 +158,12 @@ sed ^
   -e "/insert-public-api/ r public-api.js" ^
   -e "/insert-module-api/ r module-api.js" ^
   -e "/insert-module-vars/ r module-vars.js" ^
-  -e "/insert-module-utils/ r module-utils.js" ^
   -e "/insert-module-methods/ r module-methods.js" ^
   -e "/insert-error-messages/ r classes/error-messages.js" ^
   -e "/insert-debug-constructor/ r classes/debug/constructor.js" ^
   -e "/insert-debug-logging-methods/ r classes/debug/logging-methods.js" ^
   -e "/insert-debug-controlling-methods/ r classes/debug/controlling-methods.js" ^
+  -e "/insert-debug-helper-properties/ r classes/debug/helper-properties.js" ^
   -e "/insert-debug-helper-methods/ r classes/debug/helper-methods.js" <skeleton.js>algorithmIV-debug-temp.js
 cd ..
 copy /y pre-compiled-parts\algorithmIV-debug-temp.js algorithmIV-debug.js
