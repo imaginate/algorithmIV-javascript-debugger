@@ -1,44 +1,5 @@
   /**
    * ---------------------------------------------------
-   * Public Method (testArgTypes)
-   * ---------------------------------------------------
-   * @desc Evaluates argument data types.
-   * @param {!vals} args - The arguments to be evaluated.
-   * @return {boolean} The evaluation result.
-   */
-  function testArgTypes(args) {
-
-    /** @type {number} */
-    var i;
-    /** @type {boolean} */
-    var pass;
-    /** @type {val} */
-    var arg;
-    /** @type {string} */
-    var dataTypeOpts;
-
-    pass = true;
-
-    i = args.length;
-    while (i--) {
-
-      dataTypeOpts = args[i];
-
-      --i;
-      arg = args[i];
-
-      pass = checkType(arg, dataTypeOpts, true);
-
-      if (!pass) {
-        break;
-      }
-    }
-
-    return pass;
-  }
-
-  /**
-   * ---------------------------------------------------
    * Public Method (stripArgTypeStrings)
    * ---------------------------------------------------
    * @desc Removes the data type strings from an array of arguments.

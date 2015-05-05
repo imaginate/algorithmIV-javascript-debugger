@@ -83,7 +83,7 @@
     Debug.handleAuto.call(this, 'groups', methodName);
 
     // Test the arguments
-    pass = (len) ? testArgTypes(args) : true;
+    pass = (len) ? Debug.testArgTypes(args) : true;
 
     // Log an args error message and insert a debugger breakpoint
     if (!pass) {
@@ -351,7 +351,7 @@
     }
 
     // If test passes end this method
-    if ( testArgTypes(args) ) {
+    if ( Debug.testArgTypes(args) ) {
       return false;
     }
 

@@ -277,3 +277,37 @@
 
     return pass;
   };
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (Debug.testArgTypes)
+   * ---------------------------------------------------
+   * @desc Evaluates argument data types.
+   * @param {!vals} args - The arguments to be evaluated.
+   * @return {boolean} The evaluation result.
+   */
+  Debug.testArgTypes = function(args) {
+
+    /** @type {number} */
+    var i;
+    /** @type {boolean} */
+    var pass;
+    /** @type {string} */
+    var dataTypeOpts;
+
+    pass = true;
+
+    i = args.length;
+    while (i--) {
+
+      dataTypeOpts = args[i];
+      --i;
+      pass = checkType(args[i], dataTypeOpts, true);
+
+      if (!pass) {
+        break;
+      }
+    }
+
+    return pass;
+  };
