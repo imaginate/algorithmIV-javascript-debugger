@@ -58,3 +58,13 @@
     startFunc: function(label) { console.time(label); },
     endFunc  : function(label) { console.timeEnd(label); }
   };
+
+  /**
+   * ----------------------------------------------- 
+   * Public Variable (Debug.formatElementsAsObj)
+   * -----------------------------------------------
+   * @desc Controls whether logged DOM elements are shown as expandable
+   *   objects or elements.
+   * @type {boolean}
+   */
+  Debug.formatElementsAsObj = true;

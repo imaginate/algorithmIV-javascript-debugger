@@ -15,7 +15,7 @@
 
     if ( checkType(val, '!number|object|function') ) {
       str = ( ( checkType(val, 'number') ) ?
-        '%i' : (!formatElementsAsObj && val instanceof HTMLElement) ?
+        '%i' : (!Debug.formatElementsAsObj && val instanceof HTMLElement) ?
           '%o' : '%O'
       );
     }

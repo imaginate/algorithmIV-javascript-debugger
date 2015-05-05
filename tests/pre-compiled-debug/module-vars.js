@@ -15,13 +15,3 @@
    * @type {boolean}
    */
   var errorBreakpoints = true;
-
-  /**
-   * ----------------------------------------------- 
-   * Public Variable (formatElementsAsObj)
-   * -----------------------------------------------
-   * @desc Controls whether logged DOM elements are shown as expandable
-   *   objects or elements.
-   * @type {boolean}
-   */
-  var formatElementsAsObj = true;

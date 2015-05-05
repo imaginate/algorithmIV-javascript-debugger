@@ -282,7 +282,7 @@
     // Set formatElementsAsObj
     if (hasOwnProp(settings, 'formatElementsAsObj') &&
         checkType(settings.formatElementsAsObj, 'boolean')) {
-      formatElementsAsObj = settings.formatElementsAsObj;
+      Debug.formatElementsAsObj = settings.formatElementsAsObj;
     }
   };
 
