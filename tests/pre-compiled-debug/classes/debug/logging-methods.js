@@ -73,14 +73,14 @@
 
     // Check whether this method has been turned off
     if ( !this.getMethod('init') ) {
-      this.handleAuto('groups', methodName);
-      this.handleAuto('profiles', methodName);
-      this.handleAuto('timers', methodName);
+      Debug.handleAuto.call(this, 'groups', methodName);
+      Debug.handleAuto.call(this, 'profiles', methodName);
+      Debug.handleAuto.call(this, 'timers', methodName);
       return false;
     }
 
     // Insert auto grouping
-    this.handleAuto('groups', methodName);
+    Debug.handleAuto.call(this, 'groups', methodName);
 
     // Test the arguments
     pass = (len) ? testArgTypes(args) : true;
@@ -108,8 +108,8 @@
     Debug.insertBreakpoint.call(this, 'init');
 
     // Insert auto profiling and timing
-    this.handleAuto('profiles', methodName);
-    this.handleAuto('timers', methodName);
+    Debug.handleAuto.call(this, 'profiles', methodName);
+    Debug.handleAuto.call(this, 'timers', methodName);
 
     return !pass;
   };
@@ -174,14 +174,14 @@
 
     // Check whether this method has been turned off
     if ( !this.getMethod('start') ) {
-      this.handleAuto('groups', methodName);
-      this.handleAuto('profiles', methodName);
-      this.handleAuto('timers', methodName);
+      Debug.handleAuto.call(this, 'groups', methodName);
+      Debug.handleAuto.call(this, 'profiles', methodName);
+      Debug.handleAuto.call(this, 'timers', methodName);
       return false;
     }
 
     // Insert auto grouping
-    this.handleAuto('groups', methodName);
+    Debug.handleAuto.call(this, 'groups', methodName);
 
     // Prepare the call log message and arguments
     message = 'CALL: ' + this.classTitle + methodName;
@@ -195,8 +195,8 @@
     Debug.insertBreakpoint.call(this, 'start');
 
     // Insert auto profiling and timing
-    this.handleAuto('profiles', methodName);
-    this.handleAuto('timers', methodName);
+    Debug.handleAuto.call(this, 'profiles', methodName);
+    Debug.handleAuto.call(this, 'timers', methodName);
 
     return true;
   };
@@ -249,9 +249,9 @@
 
     // Check whether this method has been turned off
     if ( !this.getMethod('end') ) {
-      this.handleAuto('timers', methodName, true);
-      this.handleAuto('profiles', methodName, true);
-      this.handleAuto('groups', methodName, true);
+      Debug.handleAuto.call(this, 'timers', methodName, true);
+      Debug.handleAuto.call(this, 'profiles', methodName, true);
+      Debug.handleAuto.call(this, 'groups', methodName, true);
       return false;
     }
 
@@ -266,11 +266,11 @@
     Debug.insertBreakpoint.call(this, 'end');
 
     // Insert auto profiling and timing
-    this.handleAuto('timers', methodName, true);
-    this.handleAuto('profiles', methodName, true);
+    Debug.handleAuto.call(this, 'timers', methodName, true);
+    Debug.handleAuto.call(this, 'profiles', methodName, true);
 
     // Insert auto grouping
-    this.handleAuto('groups', methodName, true);
+    Debug.handleAuto.call(this, 'groups', methodName, true);
 
     return true;
   };

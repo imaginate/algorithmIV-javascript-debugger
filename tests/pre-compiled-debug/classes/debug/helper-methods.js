@@ -45,9 +45,10 @@
 
   /**
    * -----------------------------------------------------
-   * Public Method (Debug.prototype.handleAuto)
+   * Public Method (Debug.handleAuto)
    * -----------------------------------------------------
    * @desc Handles the automated actions for a logging method.
+   * @this {!Debug}
    * @param {string} type - The type of automation to handle.
    * @param {string} methodName - The name of the user's method to log.
    * @param {boolean=} end - Controls whether the automation should start
@@ -55,7 +56,7 @@
    * @return {boolean} The automation's success (i.e. whether an action
    *   was made).
    */
-  Debug.prototype.handleAuto = function(type, methodName, end) {
+  Debug.handleAuto = function(type, methodName, end) {
 
     /** @type {string} */
     var label;
