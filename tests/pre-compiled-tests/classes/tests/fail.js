@@ -179,7 +179,7 @@
 
       choiceMsg = 'Verify a log. The following message should have ';
       choiceMsg += 'been logged to the console:<br />';
-      choiceMsg += '"CALL: Tests.fail.testLogMsg.testMethod() | 5 was 6"';
+      choiceMsg += '"FAIL: Tests.fail.testLogMsg.testMethod() | 5 was 6"';
       errorMsg = 'Debug.proto.fail logged an incorrect message';
       app.addChoice(choiceMsg, results, errorMsg, function() {
         consoleInst.fail('testMethod', false, '5 was $$', 6);
