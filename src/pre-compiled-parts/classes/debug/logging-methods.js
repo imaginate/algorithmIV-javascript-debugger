@@ -64,7 +64,7 @@
 
     // Test for each argument's data type string
     if (len) {
-      if ((len % 2) || !checkArgsDataTypeStrings(args)) {
+      if ((len % 2) || !Debug.checkArgsDataTypeStrings(args)) {
         console.error( ErrorMessages.missingTypeStrings('init') );
         insertErrorBreakpoint();
         return;
@@ -73,43 +73,45 @@
 
     // Check whether this method has been turned off
     if ( !this.getMethod('init') ) {
-      this.handleAuto('groups', methodName);
-      this.handleAuto('profiles', methodName);
-      this.handleAuto('timers', methodName);
+      Debug.handleAuto.call(this, 'groups', methodName);
+      Debug.handleAuto.call(this, 'profiles', methodName);
+      Debug.handleAuto.call(this, 'timers', methodName);
       return false;
     }
 
     // Insert auto grouping
-    this.handleAuto('groups', methodName);
+    Debug.handleAuto.call(this, 'groups', methodName);
 
     // Test the arguments
-    pass = (len) ? testArgTypes(args) : true;
+    pass = (len) ? Debug.testArgTypes(args) : true;
 
     // Log an args error message and insert a debugger breakpoint
     if (!pass) {
       message = 'ARGS: ' + this.classTitle + methodName + '() | ';
       message += 'Error: Incorrect argument data type.';
       console.error(message);
-      this.insertBreakpoint('init args');
+      Debug.insertBreakpoint.call(this, 'init args');
     }
 
     // Remove the data type strings
-    args = stripArgTypeStrings(args);
+    if (len) {
+      args = Debug.stripArgTypeStrings(args);
+    }
 
     // Prepare the call log message and arguments
     message = 'CALL: ' + this.classTitle + methodName;
-    message += '(' + makeSubstituteStrings(args) + ')';
+    message += '(' + Debug.makeSubstituteStrings(args) + ')';
     args.unshift(message);
 
     // Log the call message
     console.log.apply(console, args);
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('init');
+    Debug.insertBreakpoint.call(this, 'init');
 
     // Insert auto profiling and timing
-    this.handleAuto('profiles', methodName);
-    this.handleAuto('timers', methodName);
+    Debug.handleAuto.call(this, 'profiles', methodName);
+    Debug.handleAuto.call(this, 'timers', methodName);
 
     return !pass;
   };
@@ -174,29 +176,29 @@
 
     // Check whether this method has been turned off
     if ( !this.getMethod('start') ) {
-      this.handleAuto('groups', methodName);
-      this.handleAuto('profiles', methodName);
-      this.handleAuto('timers', methodName);
+      Debug.handleAuto.call(this, 'groups', methodName);
+      Debug.handleAuto.call(this, 'profiles', methodName);
+      Debug.handleAuto.call(this, 'timers', methodName);
       return false;
     }
 
     // Insert auto grouping
-    this.handleAuto('groups', methodName);
+    Debug.handleAuto.call(this, 'groups', methodName);
 
     // Prepare the call log message and arguments
     message = 'CALL: ' + this.classTitle + methodName;
-    message += '(' + makeSubstituteStrings(args) + ')';
+    message += '(' + Debug.makeSubstituteStrings(args) + ')';
     args.unshift(message);
 
     // Log the start message
     console.log.apply(console, args);
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('start');
+    Debug.insertBreakpoint.call(this, 'start');
 
     // Insert auto profiling and timing
-    this.handleAuto('profiles', methodName);
-    this.handleAuto('timers', methodName);
+    Debug.handleAuto.call(this, 'profiles', methodName);
+    Debug.handleAuto.call(this, 'timers', methodName);
 
     return true;
   };
@@ -249,28 +251,28 @@
 
     // Check whether this method has been turned off
     if ( !this.getMethod('end') ) {
-      this.handleAuto('timers', methodName, true);
-      this.handleAuto('profiles', methodName, true);
-      this.handleAuto('groups', methodName, true);
+      Debug.handleAuto.call(this, 'timers', methodName, true);
+      Debug.handleAuto.call(this, 'profiles', methodName, true);
+      Debug.handleAuto.call(this, 'groups', methodName, true);
       return false;
     }
 
     // Prepare the console message
     message = 'END: ' + this.classTitle + methodName + '() | ';
-    message += 'return= ' + getSubstituteString(returnVal);
+    message += 'return= ' + Debug.getSubstituteString(returnVal);
 
     // Log the end message
     console.log(message, returnVal);
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('end');
+    Debug.insertBreakpoint.call(this, 'end');
 
     // Insert auto profiling and timing
-    this.handleAuto('timers', methodName, true);
-    this.handleAuto('profiles', methodName, true);
+    Debug.handleAuto.call(this, 'timers', methodName, true);
+    Debug.handleAuto.call(this, 'profiles', methodName, true);
 
     // Insert auto grouping
-    this.handleAuto('groups', methodName, true);
+    Debug.handleAuto.call(this, 'groups', methodName, true);
 
     return true;
   };
@@ -339,7 +341,7 @@
     }
 
     // Test each argument's data type string
-    if ((args.length % 2) || !checkArgsDataTypeStrings(args)) {
+    if ((args.length % 2) || !Debug.checkArgsDataTypeStrings(args)) {
       console.error( ErrorMessages.missingTypeStrings('args') );
       insertErrorBreakpoint();
       return;
@@ -351,7 +353,7 @@
     }
 
     // If test passes end this method
-    if ( testArgTypes(args) ) {
+    if ( Debug.testArgTypes(args) ) {
       return false;
     }
 
@@ -361,7 +363,7 @@
     console.error(message);
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('args');
+    Debug.insertBreakpoint.call(this, 'args');
 
     return true;
   };
@@ -462,7 +464,7 @@
 
     // Prepare the message
     if (args.length) {
-      message = insertSubstituteStrings(message, args);
+      message = Debug.insertSubstituteStrings(message, args);
     }
     message = 'FAIL: ' + this.classTitle + methodName + '() | ' + message;
 
@@ -473,7 +475,7 @@
     console.error.apply(console, args);
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('fail');
+    Debug.insertBreakpoint.call(this, 'fail');
 
     return true;
   };
@@ -589,7 +591,7 @@
     // Prepare the message
     if (message || args.length) {
       if (args.length) {
-        message = insertSubstituteStrings(message, args);
+        message = Debug.insertSubstituteStrings(message, args);
       }
       message = ' | ' + message;
     }
@@ -607,7 +609,7 @@
     }
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('group');
+    Debug.insertBreakpoint.call(this, 'group');
 
     return true;
   };
@@ -691,7 +693,7 @@
     }
 
     // Prepare the message and arguments
-    message = insertSubstituteStrings(message, args);
+    message = Debug.insertSubstituteStrings(message, args);
     message = 'STATE: ' + this.classTitle + methodName + '() | ' + message;
     args.unshift(message);
 
@@ -699,7 +701,7 @@
     console.log.apply(console, args);
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('state');
+    Debug.insertBreakpoint.call(this, 'state');
 
     return true;
   };
@@ -784,7 +786,7 @@
 
     // Prepare the message and arguments
     if (args.length) {
-      message = insertSubstituteStrings(message, args);
+      message = Debug.insertSubstituteStrings(message, args);
     }
     message = 'MISC: ' + this.classTitle + methodName + '() | ' + message;
     args.unshift(message);
@@ -793,7 +795,7 @@
     console.log.apply(console, args);
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('misc');
+    Debug.insertBreakpoint.call(this, 'misc');
 
     return true;
   };

@@ -2,7 +2,7 @@
 
 /**
  * -----------------------------------------------------------------------------
- * Algorithm IV Debugger (v1.1.0)
+ * Algorithm IV Debugger (v1.1.1)
  * -----------------------------------------------------------------------------
  * @file Algorithm IV's debugger is a console wrapper that fixes cross-browser
  *   console issues and provides a set of new console methods that make your
@@ -12,7 +12,7 @@
  *   use you will know and control the actions of every JavaScript method in
  *   your code base!
  * @module aIVConsole
- * @version 1.1.0
+ * @version 1.1.1
  * @author Adam Smith ({@link adamsmith@youlum.com})
  * @copyright 2015 Adam A Smith ([github.com/imaginate]{@link https://github.com/imaginate})
  * @license The Apache License ([algorithmiv.com/docs/license]{@link http://algorithmiv.com/docs/license})
@@ -81,11 +81,6 @@
 // insert-module-vars
 
 /* -----------------------------------------------------------------------------
- * The Public Module Utility Methods (module-utils.js)
- * -------------------------------------------------------------------------- */
-// insert-module-utils
-
-/* -----------------------------------------------------------------------------
  * The Public Module Methods (module-methods.js)
  * -------------------------------------------------------------------------- */
 // insert-module-methods
@@ -109,6 +104,11 @@
  * The Debug Class Controlling Methods (classes/debug/controlling-methods.js)
  * -------------------------------------------------------------------------- */
 // insert-debug-controlling-methods
+
+/* -----------------------------------------------------------------------------
+ * The Debug Class Helper Properties (classes/debug/helper-properties.js)
+ * -------------------------------------------------------------------------- */
+// insert-debug-helper-properties
 
 /* -----------------------------------------------------------------------------
  * The Debug Class Helper Methods (classes/debug/helper-methods.js)

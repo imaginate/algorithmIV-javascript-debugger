@@ -24,55 +24,24 @@
    */
   Debug.prototype.turnOnMethod = function(method) {
 
-    /** @type {!strings} */
-    var args;
-    /** @type {number} */
-    var len;
-    /** @type {number} */
-    var i;
-    /** @type {!(string|strings)} */
-    var errors;
+    /** @type {!Debug} */
+    var that;
+    /** @type {function} */
+    var setter;
 
-    // Setup the arguments
-    args = ( ( checkType(method, '!strings') ) ?
-      method.slice(0) : (arguments.length > 1) ?
-        Array.prototype.slice.call(arguments, 0) : [ method ]
-    );
+    that = this;
+    setter = function(method) {
+      return that.setMethod(method, true);
+    };
 
-    // Ensure valid arguments are supplied
-    if ( !checkType(args, '!strings') ) {
-      console.error( ErrorMessages.invalidSetName('turnOnMethod', method) );
-      insertErrorBreakpoint();
-      return;
+    if (arguments.length > 1) {
+      method = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(method, '!strings') ) {
+      method = method.join(' ');
     }
 
-    // Split strings with multiple methods
-    method = args.join(' ');
-    args = method.split(' ');
-
-    // Turn on the methods & save any errors
-    len = args.length;
-    i = -1;
-    while (++i < len) {
-      if ( !this.setMethod(args[i], true) ) {
-        if (!errors) {
-          errors = [];
-        }
-        errors.push("'" + args[i] + "'");
-      }
-    }
-    if (errors) {
-      errors = errors.join(', ');
-    }
-
-    // Report any errors
-    if (errors) {
-      console.error( ErrorMessages.invalidSetName('turnOnMethod', errors) );
-      insertErrorBreakpoint();
-      return;
-    }
-
-    return true;
+    return Debug.handleToggle('turnOnMethod', setter, method);
   };
 
   /**
@@ -110,55 +79,24 @@
    */
   Debug.prototype.turnOffMethod = function(method) {
 
-    /** @type {!strings} */
-    var args;
-    /** @type {number} */
-    var len;
-    /** @type {number} */
-    var i;
-    /** @type {!(string|strings)} */
-    var errors;
+    /** @type {!Debug} */
+    var that;
+    /** @type {function} */
+    var setter;
 
-    // Setup the arguments
-    args = ( ( checkType(method, '!strings') ) ?
-      method.slice(0) : (arguments.length > 1) ?
-        Array.prototype.slice.call(arguments, 0) : [ method ]
-    );
+    that = this;
+    setter = function(method) {
+      return that.setMethod(method, false);
+    };
 
-    // Ensure valid arguments are supplied
-    if ( !checkType(args, '!strings') ) {
-      console.error( ErrorMessages.invalidSetName('turnOffMethod', method) );
-      insertErrorBreakpoint();
-      return;
+    if (arguments.length > 1) {
+      method = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(method, '!strings') ) {
+      method = method.join(' ');
     }
 
-    // Split strings with multiple methods
-    method = args.join(' ');
-    args = method.split(' ');
-
-    // Turn off the methods & save any errors
-    len = args.length;
-    i = -1;
-    while (++i < len) {
-      if ( !this.setMethod(args[i], false) ) {
-        if (!errors) {
-          errors = [];
-        }
-        errors.push("'" + args[i] + "'");
-      }
-    }
-    if (errors) {
-      errors = errors.join(', ');
-    }
-
-    // Report any errors
-    if (errors) {
-      console.error( ErrorMessages.invalidSetName('turnOffMethod', errors) );
-      insertErrorBreakpoint();
-      return;
-    }
-
-    return true;
+    return Debug.handleToggle('turnOffMethod', setter, method);
   };
 
   /**
@@ -196,55 +134,24 @@
    */
   Debug.prototype.addBreakpoint = function(method) {
 
-    /** @type {!strings} */
-    var args;
-    /** @type {number} */
-    var len;
-    /** @type {number} */
-    var i;
-    /** @type {!(string|strings)} */
-    var errors;
+    /** @type {!Debug} */
+    var that;
+    /** @type {function} */
+    var setter;
 
-    // Setup the arguments
-    args = ( ( checkType(method, '!strings') ) ?
-      method.slice(0) : (arguments.length > 1) ?
-        Array.prototype.slice.call(arguments, 0) : [ method ]
-    );
+    that = this;
+    setter = function(method) {
+      return that.setBreakpoint(method, true);
+    };
 
-    // Ensure valid arguments are supplied
-    if ( !checkType(args, '!strings') ) {
-      console.error( ErrorMessages.invalidSetName('addBreakpoint', method) );
-      insertErrorBreakpoint();
-      return;
+    if (arguments.length > 1) {
+      method = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(method, '!strings') ) {
+      method = method.join(' ');
     }
 
-    // Split strings with multiple methods
-    method = args.join(' ');
-    args = method.split(' ');
-
-    // Turn on the method breakpoints & save any errors
-    len = args.length;
-    i = -1;
-    while (++i < len) {
-      if ( !this.setBreakpoint(args[i], true) ) {
-        if (!errors) {
-          errors = [];
-        }
-        errors.push("'" + args[i] + "'");
-      }
-    }
-    if (errors) {
-      errors = errors.join(', ');
-    }
-
-    // Report any errors
-    if (errors) {
-      console.error( ErrorMessages.invalidSetName('addBreakpoint', errors) );
-      insertErrorBreakpoint();
-      return;
-    }
-
-    return true;
+    return Debug.handleToggle('addBreakpoint', setter, method);
   };
 
   /**
@@ -282,55 +189,24 @@
    */
   Debug.prototype.removeBreakpoint = function(method) {
 
-    /** @type {!strings} */
-    var args;
-    /** @type {number} */
-    var len;
-    /** @type {number} */
-    var i;
-    /** @type {!(string|strings)} */
-    var errors;
+    /** @type {!Debug} */
+    var that;
+    /** @type {function} */
+    var setter;
 
-    // Setup the arguments
-    args = ( ( checkType(method, '!strings') ) ?
-      method.slice(0) : (arguments.length > 1) ?
-        Array.prototype.slice.call(arguments, 0) : [ method ]
-    );
+    that = this;
+    setter = function(method) {
+      return that.setBreakpoint(method, false);
+    };
 
-    // Ensure valid arguments are supplied
-    if ( !checkType(args, '!strings') ) {
-      console.error( ErrorMessages.invalidSetName('removeBreakpoint', method) );
-      insertErrorBreakpoint();
-      return;
+    if (arguments.length > 1) {
+      method = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(method, '!strings') ) {
+      method = method.join(' ');
     }
 
-    // Split strings with multiple methods
-    method = args.join(' ');
-    args = method.split(' ');
-
-    // Turn on the method breakpoints & save any errors
-    len = args.length;
-    i = -1;
-    while (++i < len) {
-      if ( !this.setBreakpoint(args[i], false) ) {
-        if (!errors) {
-          errors = [];
-        }
-        errors.push("'" + args[i] + "'");
-      }
-    }
-    if (errors) {
-      errors = errors.join(', ');
-    }
-
-    // Report any errors
-    if (errors) {
-      console.error( ErrorMessages.invalidSetName('removeBreakpoint', errors) );
-      insertErrorBreakpoint();
-      return;
-    }
-
-    return true;
+    return Debug.handleToggle('removeBreakpoint', setter, method);
   };
 
   /**
@@ -368,55 +244,24 @@
    */
   Debug.prototype.turnOnAuto = function(type) {
 
-    /** @type {!strings} */
-    var args;
-    /** @type {number} */
-    var len;
-    /** @type {number} */
-    var i;
-    /** @type {!(string|strings)} */
-    var errors;
+    /** @type {!Debug} */
+    var that;
+    /** @type {function} */
+    var setter;
 
-    // Setup the arguments
-    args = ( ( checkType(type, '!strings') ) ?
-      type.slice(0) : (arguments.length > 1) ?
-        Array.prototype.slice.call(arguments, 0) : [ type ]
-    );
+    that = this;
+    setter = function(type) {
+      return that.setAuto(type, true);
+    };
 
-    // Ensure valid arguments are supplied
-    if ( !checkType(args, '!strings') ) {
-      console.error( ErrorMessages.invalidSetName('turnOnAuto', type) );
-      insertErrorBreakpoint();
-      return;
+    if (arguments.length > 1) {
+      type = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(type, '!strings') ) {
+      type = type.join(' ');
     }
 
-    // Split strings with multiple types
-    type = args.join(' ');
-    args = type.split(' ');
-
-    // Turn on the types & save any errors
-    len = args.length;
-    i = -1;
-    while (++i < len) {
-      if ( !this.setAuto(args[i], true) ) {
-        if (!errors) {
-          errors = [];
-        }
-        errors.push("'" + args[i] + "'");
-      }
-    }
-    if (errors) {
-      errors = errors.join(', ');
-    }
-
-    // Report any errors
-    if (errors) {
-      console.error( ErrorMessages.invalidSetName('turnOnAuto', errors) );
-      insertErrorBreakpoint();
-      return;
-    }
-
-    return true;
+    return Debug.handleToggle('turnOnAuto', setter, type);
   };
 
   /**
@@ -445,53 +290,22 @@
    */
   Debug.prototype.turnOffAuto = function(type) {
 
-    /** @type {!strings} */
-    var args;
-    /** @type {number} */
-    var len;
-    /** @type {number} */
-    var i;
-    /** @type {!(string|strings)} */
-    var errors;
+    /** @type {!Debug} */
+    var that;
+    /** @type {function} */
+    var setter;
 
-    // Setup the arguments
-    args = ( ( checkType(type, '!strings') ) ?
-      type.slice(0) : (arguments.length > 1) ?
-        Array.prototype.slice.call(arguments, 0) : [ type ]
-    );
+    that = this;
+    setter = function(type) {
+      return that.setAuto(type, false);
+    };
 
-    // Ensure valid arguments are supplied
-    if ( !checkType(args, '!strings') ) {
-      console.error( ErrorMessages.invalidSetName('turnOffAuto', type) );
-      insertErrorBreakpoint();
-      return;
+    if (arguments.length > 1) {
+      type = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(type, '!strings') ) {
+      type = type.join(' ');
     }
 
-    // Split strings with multiple types
-    type = args.join(' ');
-    args = type.split(' ');
-
-    // Turn off the types & save any errors
-    len = args.length;
-    i = -1;
-    while (++i < len) {
-      if ( !this.setAuto(args[i], false) ) {
-        if (!errors) {
-          errors = [];
-        }
-        errors.push("'" + args[i] + "'");
-      }
-    }
-    if (errors) {
-      errors = errors.join(', ');
-    }
-
-    // Report any errors
-    if (errors) {
-      console.error( ErrorMessages.invalidSetName('turnOffAuto', errors) );
-      insertErrorBreakpoint();
-      return;
-    }
-
-    return true;
+    return Debug.handleToggle('turnOffAuto', setter, type);
   };

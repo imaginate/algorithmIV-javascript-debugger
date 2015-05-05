@@ -2,7 +2,7 @@
 
 /**
  * -----------------------------------------------------------------------------
- * Algorithm IV Debugger (v1.1.0)
+ * Algorithm IV Debugger (v1.1.1)
  * -----------------------------------------------------------------------------
  * @file Algorithm IV's debugger is a console wrapper that fixes cross-browser
  *   console issues and provides a set of new console methods that make your
@@ -12,7 +12,7 @@
  *   use you will know and control the actions of every JavaScript method in
  *   your code base!
  * @module aIVConsole
- * @version 1.1.0
+ * @version 1.1.1
  * @author Adam Smith ({@link adamsmith@youlum.com})
  * @copyright 2015 Adam A Smith ([github.com/imaginate]{@link https://github.com/imaginate})
  * @license The Apache License ([algorithmiv.com/docs/license]{@link http://algorithmiv.com/docs/license})
@@ -285,7 +285,7 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
     }
 
     // Setup classTitle
-    classTitle = defaultSettings.classTitle;
+    classTitle = Debug.defaultSettings.classTitle;
     if ( checkType(settings, 'string') ) {
       classTitle = settings;
       settings = null;
@@ -303,7 +303,7 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
     if ( !hasOwnProp(debugInstances, classTitle) ) {
 
       // Setup turnOffMethods
-      turnOffMethods = defaultSettings.turnOffMethods;
+      turnOffMethods = Debug.defaultSettings.turnOffMethods;
       if (settings) {
         if ( hasOwnProp(settings, 'turnOffMethods') ) {
           if ( checkType(settings.turnOffMethods, 'string') ) {
@@ -324,7 +324,7 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
       }
 
       // Setup addBreakpoints
-      addBreakpoints = defaultSettings.addBreakpoints;
+      addBreakpoints = Debug.defaultSettings.addBreakpoints;
       if (settings) {
         if ( hasOwnProp(settings, 'addBreakpoints') ) {
           if ( checkType(settings.addBreakpoints, 'string') ) {
@@ -348,21 +348,21 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
       turnOnGroups = ( (settings &&
                         hasOwnProp(settings, 'turnOnGroups') &&
                         checkType(settings.turnOnGroups, 'boolean')) ?
-        settings.turnOnGroups : defaultSettings.turnOnGroups
+        settings.turnOnGroups : Debug.defaultSettings.turnOnGroups
       );
 
       // Setup turnOnProfiles
       turnOnProfiles = ( (settings &&
                           hasOwnProp(settings, 'turnOnProfiles') &&
                           checkType(settings.turnOnProfiles, 'boolean')) ?
-        settings.turnOnProfiles : defaultSettings.turnOnProfiles
+        settings.turnOnProfiles : Debug.defaultSettings.turnOnProfiles
       );
 
       // Setup turnOnTimers
       turnOnTimers = ( (settings &&
                         hasOwnProp(settings, 'turnOnTimers') &&
                         checkType(settings.turnOnTimers, 'boolean')) ?
-        settings.turnOnTimers : defaultSettings.turnOnTimers
+        settings.turnOnTimers : Debug.defaultSettings.turnOnTimers
       );
 
       // Create the new instance's settings object
@@ -442,71 +442,71 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
     // Set the default value for classTitle
     if (hasOwnProp(settings, 'classTitle') &&
         checkType(settings.classTitle, 'string')) {
-      defaultSettings.classTitle = settings.classTitle;
+      Debug.defaultSettings.classTitle = settings.classTitle;
     }
     else if (hasOwnProp(settings, 'className') &&
              checkType(settings.className, 'string')) {
-      defaultSettings.classTitle = settings.className;
+      Debug.defaultSettings.classTitle = settings.className;
     }
 
     // Set the default value for turnOffMethods
     if ( hasOwnProp(settings, 'turnOffMethods') ) {
       if ( checkType(settings.turnOffMethods, 'string') ) {
-        defaultSettings.turnOffMethods = settings.turnOffMethods;
+        Debug.defaultSettings.turnOffMethods = settings.turnOffMethods;
       }
       else if ( checkType(settings.turnOffMethods, '!strings') ) {
-        defaultSettings.turnOffMethods = settings.turnOffMethods.join(' ');
+        Debug.defaultSettings.turnOffMethods = settings.turnOffMethods.join(' ');
       }
     }
     else if ( hasOwnProp(settings, 'turnOffTypes') ) {
       if ( checkType(settings.turnOffTypes, 'string') ) {
-        defaultSettings.turnOffMethods = settings.turnOffTypes;
+        Debug.defaultSettings.turnOffMethods = settings.turnOffTypes;
       }
       else if ( checkType(settings.turnOffTypes, '!strings') ) {
-        defaultSettings.turnOffMethods = settings.turnOffTypes.join(' ');
+        Debug.defaultSettings.turnOffMethods = settings.turnOffTypes.join(' ');
       }
     }
 
     // Set the default value for addBreakpoints
     if ( hasOwnProp(settings, 'addBreakpoints') ) {
       if ( checkType(settings.addBreakpoints, 'string') ) {
-        defaultSettings.addBreakpoints = settings.addBreakpoints;
+        Debug.defaultSettings.addBreakpoints = settings.addBreakpoints;
       }
       else if ( checkType(settings.addBreakpoints, '!strings') ) {
-        defaultSettings.addBreakpoints = settings.addBreakpoints.join(' ');
+        Debug.defaultSettings.addBreakpoints = settings.addBreakpoints.join(' ');
       }
     }
     else if ( hasOwnProp(settings, 'turnOnDebuggers') ) {
       if ( checkType(settings.turnOnDebuggers, 'string') ) {
-        defaultSettings.addBreakpoints = settings.turnOnDebuggers;
+        Debug.defaultSettings.addBreakpoints = settings.turnOnDebuggers;
       }
       else if ( checkType(settings.turnOnDebuggers, '!strings') ) {
-        defaultSettings.addBreakpoints = settings.turnOnDebuggers.join(' ');
+        Debug.defaultSettings.addBreakpoints = settings.turnOnDebuggers.join(' ');
       }
     }
 
     // Set the default value for turnOnGroups
     if (hasOwnProp(settings, 'turnOnGroups') &&
         checkType(settings.turnOnGroups, 'boolean')) {
-      defaultSettings.turnOnGroups = settings.turnOnGroups;
+      Debug.defaultSettings.turnOnGroups = settings.turnOnGroups;
     }
 
     // Set the default value for turnOnProfiles
     if (hasOwnProp(settings, 'turnOnProfiles') &&
         checkType(settings.turnOnProfiles, 'boolean')) {
-      defaultSettings.turnOnProfiles = settings.turnOnProfiles;
+      Debug.defaultSettings.turnOnProfiles = settings.turnOnProfiles;
     }
 
     // Set the default value for turnOnTimers
     if (hasOwnProp(settings, 'turnOnTimers') &&
         checkType(settings.turnOnTimers, 'boolean')) {
-      defaultSettings.turnOnTimers = settings.turnOnTimers;
+      Debug.defaultSettings.turnOnTimers = settings.turnOnTimers;
     }
 
     // Set formatElementsAsObj
     if (hasOwnProp(settings, 'formatElementsAsObj') &&
         checkType(settings.formatElementsAsObj, 'boolean')) {
-      formatElementsAsObj = settings.formatElementsAsObj;
+      Debug.formatElementsAsObj = settings.formatElementsAsObj;
     }
   };
 
@@ -541,44 +541,25 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
    */
   var errorBreakpoints = true;
 
-  /**
-   * ----------------------------------------------- 
-   * Public Variable (formatElementsAsObj)
-   * -----------------------------------------------
-   * @desc Controls whether logged DOM elements are shown as expandable
-   *   objects or elements.
-   * @type {boolean}
-   */
-  var formatElementsAsObj = true;
-
-  /**
-   * ----------------------------------------------- 
-   * Public Variable (defaultSettings)
-   * -----------------------------------------------
-   * @desc Sets default settings for all instances of the debugger. Note that
-   *   if local settings are provided upon a new instance call they will be used
-   *   instead of the default settings.
-   * @type {!{
-   *   classTitle    : string,
-   *   turnOffMethods: string,
-   *   addBreakpoints: string,
-   *   turnOnGroups  : boolean,
-   *   turnOnProfiles: boolean,
-   *   turnOnTimers  : boolean
-   * }}
-   */
-  var defaultSettings = {
-    classTitle    : 'unknown',
-    turnOffMethods: 'none',
-    addBreakpoints: 'args fail',
-    turnOnGroups  : false,
-    turnOnProfiles: false,
-    turnOnTimers  : false
-  };
-
 /* -----------------------------------------------------------------------------
- * The Public Module Utility Methods (module-utils.js)
+ * The Public Module Methods (module-methods.js)
  * -------------------------------------------------------------------------- */
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (insertErrorBreakpoint)
+   * -----------------------------------------------------
+   * @desc Handles whether a debugger breakpoint is inserted for an error.
+   * @return {boolean} Whether a breakpoint was inserted.
+   */
+  function insertErrorBreakpoint() {
+
+    if (errorBreakpoints) {
+      debugger;
+    }
+
+    return errorBreakpoints;
+  };
 
   /**
    * ---------------------------------------------------
@@ -619,241 +600,13 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
 
   /**
    * ---------------------------------------------------
-   * Public Method (checkDataTypeString)
+   * Public Method (isValidTypeString)
    * ---------------------------------------------------
-   * @desc Evaluates whether each value is a valid data type string.
-   * @param {!(string|strings)} types - The strings to evaluate.
+   * @desc Evaluates whether a string is a valid data type string.
+   * @param {string} type - The string to evaluate.
    * @return {boolean} The evaluation result.
    */
-  var checkDataTypeString = aIV.utils.isValidTypeString;
-
-/* -----------------------------------------------------------------------------
- * The Public Module Methods (module-methods.js)
- * -------------------------------------------------------------------------- */
-
-  /**
-   * ---------------------------------------------------
-   * Public Method (getSubstituteString)
-   * ---------------------------------------------------
-   * @desc Gets the correct substitution string for the given value.
-   * @param {val} val - The value to be evaluated.
-   * @return {string} The correct substitution string.
-   */
-  function getSubstituteString(val) {
-
-    /** @type {string} */
-    var str;
-
-    str = '%s';
-
-    if ( checkType(val, '!number|object|function') ) {
-      str = ( ( checkType(val, 'number') ) ?
-        '%i' : (!formatElementsAsObj && val instanceof HTMLElement) ?
-          '%o' : '%O'
-      );
-    }
-
-    return str;
-  }
-
-  /**
-   * ---------------------------------------------------
-   * Public Method (makeSubstituteStrings)
-   * ---------------------------------------------------
-   * @desc Creates a string of the correct matching substitution strings
-   *   for a console log message.
-   * @param {vals} vals - The values to match.
-   * @return {string} The substitution strings.
-   */
-  function makeSubstituteStrings(vals) {
-
-    /** @type {number} */
-    var i;
-    /** @type {number} */
-    var len;
-    /** @type {string} */
-    var message;
-
-    message = '';
-
-    len = vals.length;
-    i = -1;
-    while (++i < len) {
-      if (i) {
-        message += ', ';
-      }
-      message += getSubstituteString(vals[i]);
-    }
-
-    return message;
-  }
-
-  /**
-   * ---------------------------------------------------
-   * Public Method (insertSubstituteStrings)
-   * ---------------------------------------------------
-   * @desc Inserts the correct substitution strings into a log message.
-   * @param {string} msg - The original console message string.
-   * @param {vals} vals - The values to use for finding the
-   *   substitution strings.
-   * @return {string} The prepared console message.
-   */
-  var insertSubstituteStrings = (function() {
-
-    /** @type {!RegExp} */
-    var dualDollarSigns;
-
-    dualDollarSigns = /([^\\]*?)\$\$/;
-
-    return function insertSubstituteStrings(msg, vals) {
-
-      /** @type {number} */
-      var len;
-      /** @type {number} */
-      var i;
-      /** @type {string} */
-      var substituteString;
-
-      // Insert the substitution strings
-      len = vals.length;
-      i = -1;
-      while (++i < len) {
-
-        substituteString = getSubstituteString(vals[i]);
-
-        if ( dualDollarSigns.test(msg) ) {
-          substituteString = '$1' + substituteString;
-          msg = msg.replace(dualDollarSigns, substituteString);
-        }
-        else {
-          msg += ' unnamedVar' + i + '= ' + substituteString + ';';
-        }
-      }
-
-      return msg;
-    };
-  })();
-
-  /**
-   * ---------------------------------------------------
-   * Public Method (checkArgsDataTypeStrings)
-   * ---------------------------------------------------
-   * @desc Evaluates whether the arguments contain valid data type string
-   *   values for each argument.
-   * @param {!vals} args - The arguments to be evaluated.
-   * @return {boolean} The evaluation result.
-   */
-  function checkArgsDataTypeStrings(args) {
-
-    /** @type {number} */
-    var i;
-    /** @type {boolean} */
-    var pass;
-
-    pass = true;
-
-    i = args.length;
-    while (i--) {
-
-      if (i % 2) {
-        pass = checkType(args[i], 'string', true);
-        pass = pass && checkDataTypeString(args[i]);
-      }
-
-      if (!pass) {
-        break;
-      }
-    }
-
-    return pass;
-  }
-
-  /**
-   * ---------------------------------------------------
-   * Public Method (testArgTypes)
-   * ---------------------------------------------------
-   * @desc Evaluates argument data types.
-   * @param {!vals} args - The arguments to be evaluated.
-   * @return {boolean} The evaluation result.
-   */
-  function testArgTypes(args) {
-
-    /** @type {number} */
-    var i;
-    /** @type {boolean} */
-    var pass;
-    /** @type {val} */
-    var arg;
-    /** @type {string} */
-    var dataTypeOpts;
-
-    pass = true;
-
-    i = args.length;
-    while (i--) {
-
-      dataTypeOpts = args[i];
-
-      --i;
-      arg = args[i];
-
-      pass = checkType(arg, dataTypeOpts, true);
-
-      if (!pass) {
-        break;
-      }
-    }
-
-    return pass;
-  }
-
-  /**
-   * ---------------------------------------------------
-   * Public Method (stripArgTypeStrings)
-   * ---------------------------------------------------
-   * @desc Removes the data type strings from an array of arguments.
-   * @param {!vals} args - The arguments.
-   * @return {!vals} An array of the stripped arguments.
-   */
-  function stripArgTypeStrings(args) {
-
-    /** @type {number} */
-    var i;
-    /** @type {number} */
-    var ii;
-    /** @type {number} */
-    var len;
-    /** @type {!vals} */
-    var newArgs;
-
-    len = args.length / 2;
-    newArgs = new Array(len);
-
-    i = args.length;
-    ii = len;
-    while (ii--) {
-      i = i - 2;
-      newArgs[ii] = args[i];
-    }
-
-    return newArgs;
-  }
-
-  /**
-   * -----------------------------------------------------
-   * Public Method (insertErrorBreakpoint)
-   * -----------------------------------------------------
-   * @desc Handles whether a debugger breakpoint is inserted for an error.
-   * @return {boolean} Whether a breakpoint was inserted.
-   */
-  function insertErrorBreakpoint() {
-
-    if (errorBreakpoints) {
-      debugger;
-    }
-
-    return errorBreakpoints;
-  };
+  var isValidTypeString = aIV.utils.isValidTypeString;
 
 /* -----------------------------------------------------------------------------
  * The ErrorMessages Class (classes/error-messages.js)
@@ -1135,7 +888,7 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
   var Debug = function(settings) {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Define The Public Properties
+    // Define & Setup The Public Properties
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -1145,52 +898,7 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
      * @desc The class name for the instance.
      * @type {string}
      */
-    this.classTitle;
-
-    /**
-     * The automated actions object hash map.
-     * @typedef {{
-     *   msgTitle : string,
-     *   startFunc: function(string),
-     *   endFunc  : function(string=)
-     * }} autoMap
-     */
-
-    /**
-     * ---------------------------------------------------
-     * Public Property (Debug.autoSettings)
-     * ---------------------------------------------------
-     * @desc The settings for the automated actions.
-     * @type {{
-     *   groups  : autoMap,
-     *   profiles: autoMap,
-     *   timers  : autoMap
-     * }}
-     */
-    this.autoSettings;
-
-    ////////////////////////////////////////////////////////////////////////////
-    // Setup The Public Properties
-    ////////////////////////////////////////////////////////////////////////////
-
     this.classTitle = settings.classTitle + '.';
-
-    this.autoSettings = {};
-    this.autoSettings.groups = {
-      msgTitle : 'GROUPS',
-      startFunc: function(label) { console.groupCollapsed(label); },
-      endFunc  : function(label) { console.groupEnd(); }
-    };
-    this.autoSettings.profiles = {
-      msgTitle : 'PROFILE',
-      startFunc: function(label) { console.profile(label); },
-      endFunc  : function(label) { console.profileEnd(); }
-    };
-    this.autoSettings.timers = {
-      msgTitle : 'TIME',
-      startFunc: function(label) { console.time(label); },
-      endFunc  : function(label) { console.timeEnd(label); }
-    };
 
     ////////////////////////////////////////////////////////////////////////////
     // Define The Protected Properties
@@ -1584,7 +1292,7 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
 
     // Test for each argument's data type string
     if (len) {
-      if ((len % 2) || !checkArgsDataTypeStrings(args)) {
+      if ((len % 2) || !Debug.checkArgsDataTypeStrings(args)) {
         console.error( ErrorMessages.missingTypeStrings('init') );
         insertErrorBreakpoint();
         return;
@@ -1593,43 +1301,45 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
 
     // Check whether this method has been turned off
     if ( !this.getMethod('init') ) {
-      this.handleAuto('groups', methodName);
-      this.handleAuto('profiles', methodName);
-      this.handleAuto('timers', methodName);
+      Debug.handleAuto.call(this, 'groups', methodName);
+      Debug.handleAuto.call(this, 'profiles', methodName);
+      Debug.handleAuto.call(this, 'timers', methodName);
       return false;
     }
 
     // Insert auto grouping
-    this.handleAuto('groups', methodName);
+    Debug.handleAuto.call(this, 'groups', methodName);
 
     // Test the arguments
-    pass = (len) ? testArgTypes(args) : true;
+    pass = (len) ? Debug.testArgTypes(args) : true;
 
     // Log an args error message and insert a debugger breakpoint
     if (!pass) {
       message = 'ARGS: ' + this.classTitle + methodName + '() | ';
       message += 'Error: Incorrect argument data type.';
       console.error(message);
-      this.insertBreakpoint('init args');
+      Debug.insertBreakpoint.call(this, 'init args');
     }
 
     // Remove the data type strings
-    args = stripArgTypeStrings(args);
+    if (len) {
+      args = Debug.stripArgTypeStrings(args);
+    }
 
     // Prepare the call log message and arguments
     message = 'CALL: ' + this.classTitle + methodName;
-    message += '(' + makeSubstituteStrings(args) + ')';
+    message += '(' + Debug.makeSubstituteStrings(args) + ')';
     args.unshift(message);
 
     // Log the call message
     console.log.apply(console, args);
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('init');
+    Debug.insertBreakpoint.call(this, 'init');
 
     // Insert auto profiling and timing
-    this.handleAuto('profiles', methodName);
-    this.handleAuto('timers', methodName);
+    Debug.handleAuto.call(this, 'profiles', methodName);
+    Debug.handleAuto.call(this, 'timers', methodName);
 
     return !pass;
   };
@@ -1694,29 +1404,29 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
 
     // Check whether this method has been turned off
     if ( !this.getMethod('start') ) {
-      this.handleAuto('groups', methodName);
-      this.handleAuto('profiles', methodName);
-      this.handleAuto('timers', methodName);
+      Debug.handleAuto.call(this, 'groups', methodName);
+      Debug.handleAuto.call(this, 'profiles', methodName);
+      Debug.handleAuto.call(this, 'timers', methodName);
       return false;
     }
 
     // Insert auto grouping
-    this.handleAuto('groups', methodName);
+    Debug.handleAuto.call(this, 'groups', methodName);
 
     // Prepare the call log message and arguments
     message = 'CALL: ' + this.classTitle + methodName;
-    message += '(' + makeSubstituteStrings(args) + ')';
+    message += '(' + Debug.makeSubstituteStrings(args) + ')';
     args.unshift(message);
 
     // Log the start message
     console.log.apply(console, args);
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('start');
+    Debug.insertBreakpoint.call(this, 'start');
 
     // Insert auto profiling and timing
-    this.handleAuto('profiles', methodName);
-    this.handleAuto('timers', methodName);
+    Debug.handleAuto.call(this, 'profiles', methodName);
+    Debug.handleAuto.call(this, 'timers', methodName);
 
     return true;
   };
@@ -1769,28 +1479,28 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
 
     // Check whether this method has been turned off
     if ( !this.getMethod('end') ) {
-      this.handleAuto('timers', methodName, true);
-      this.handleAuto('profiles', methodName, true);
-      this.handleAuto('groups', methodName, true);
+      Debug.handleAuto.call(this, 'timers', methodName, true);
+      Debug.handleAuto.call(this, 'profiles', methodName, true);
+      Debug.handleAuto.call(this, 'groups', methodName, true);
       return false;
     }
 
     // Prepare the console message
     message = 'END: ' + this.classTitle + methodName + '() | ';
-    message += 'return= ' + getSubstituteString(returnVal);
+    message += 'return= ' + Debug.getSubstituteString(returnVal);
 
     // Log the end message
     console.log(message, returnVal);
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('end');
+    Debug.insertBreakpoint.call(this, 'end');
 
     // Insert auto profiling and timing
-    this.handleAuto('timers', methodName, true);
-    this.handleAuto('profiles', methodName, true);
+    Debug.handleAuto.call(this, 'timers', methodName, true);
+    Debug.handleAuto.call(this, 'profiles', methodName, true);
 
     // Insert auto grouping
-    this.handleAuto('groups', methodName, true);
+    Debug.handleAuto.call(this, 'groups', methodName, true);
 
     return true;
   };
@@ -1859,7 +1569,7 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
     }
 
     // Test each argument's data type string
-    if ((args.length % 2) || !checkArgsDataTypeStrings(args)) {
+    if ((args.length % 2) || !Debug.checkArgsDataTypeStrings(args)) {
       console.error( ErrorMessages.missingTypeStrings('args') );
       insertErrorBreakpoint();
       return;
@@ -1871,7 +1581,7 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
     }
 
     // If test passes end this method
-    if ( testArgTypes(args) ) {
+    if ( Debug.testArgTypes(args) ) {
       return false;
     }
 
@@ -1881,7 +1591,7 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
     console.error(message);
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('args');
+    Debug.insertBreakpoint.call(this, 'args');
 
     return true;
   };
@@ -1982,7 +1692,7 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
 
     // Prepare the message
     if (args.length) {
-      message = insertSubstituteStrings(message, args);
+      message = Debug.insertSubstituteStrings(message, args);
     }
     message = 'FAIL: ' + this.classTitle + methodName + '() | ' + message;
 
@@ -1993,7 +1703,7 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
     console.error.apply(console, args);
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('fail');
+    Debug.insertBreakpoint.call(this, 'fail');
 
     return true;
   };
@@ -2109,7 +1819,7 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
     // Prepare the message
     if (message || args.length) {
       if (args.length) {
-        message = insertSubstituteStrings(message, args);
+        message = Debug.insertSubstituteStrings(message, args);
       }
       message = ' | ' + message;
     }
@@ -2127,7 +1837,7 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
     }
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('group');
+    Debug.insertBreakpoint.call(this, 'group');
 
     return true;
   };
@@ -2211,7 +1921,7 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
     }
 
     // Prepare the message and arguments
-    message = insertSubstituteStrings(message, args);
+    message = Debug.insertSubstituteStrings(message, args);
     message = 'STATE: ' + this.classTitle + methodName + '() | ' + message;
     args.unshift(message);
 
@@ -2219,7 +1929,7 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
     console.log.apply(console, args);
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('state');
+    Debug.insertBreakpoint.call(this, 'state');
 
     return true;
   };
@@ -2304,7 +2014,7 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
 
     // Prepare the message and arguments
     if (args.length) {
-      message = insertSubstituteStrings(message, args);
+      message = Debug.insertSubstituteStrings(message, args);
     }
     message = 'MISC: ' + this.classTitle + methodName + '() | ' + message;
     args.unshift(message);
@@ -2313,7 +2023,7 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
     console.log.apply(console, args);
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('misc');
+    Debug.insertBreakpoint.call(this, 'misc');
 
     return true;
   };
@@ -2348,55 +2058,24 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
    */
   Debug.prototype.turnOnMethod = function(method) {
 
-    /** @type {!strings} */
-    var args;
-    /** @type {number} */
-    var len;
-    /** @type {number} */
-    var i;
-    /** @type {!(string|strings)} */
-    var errors;
+    /** @type {!Debug} */
+    var that;
+    /** @type {function} */
+    var setter;
 
-    // Setup the arguments
-    args = ( ( checkType(method, '!strings') ) ?
-      method.slice(0) : (arguments.length > 1) ?
-        Array.prototype.slice.call(arguments, 0) : [ method ]
-    );
+    that = this;
+    setter = function(method) {
+      return that.setMethod(method, true);
+    };
 
-    // Ensure valid arguments are supplied
-    if ( !checkType(args, '!strings') ) {
-      console.error( ErrorMessages.invalidSetName('turnOnMethod', method) );
-      insertErrorBreakpoint();
-      return;
+    if (arguments.length > 1) {
+      method = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(method, '!strings') ) {
+      method = method.join(' ');
     }
 
-    // Split strings with multiple methods
-    method = args.join(' ');
-    args = method.split(' ');
-
-    // Turn on the methods & save any errors
-    len = args.length;
-    i = -1;
-    while (++i < len) {
-      if ( !this.setMethod(args[i], true) ) {
-        if (!errors) {
-          errors = [];
-        }
-        errors.push("'" + args[i] + "'");
-      }
-    }
-    if (errors) {
-      errors = errors.join(', ');
-    }
-
-    // Report any errors
-    if (errors) {
-      console.error( ErrorMessages.invalidSetName('turnOnMethod', errors) );
-      insertErrorBreakpoint();
-      return;
-    }
-
-    return true;
+    return Debug.handleToggle('turnOnMethod', setter, method);
   };
 
   /**
@@ -2434,55 +2113,24 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
    */
   Debug.prototype.turnOffMethod = function(method) {
 
-    /** @type {!strings} */
-    var args;
-    /** @type {number} */
-    var len;
-    /** @type {number} */
-    var i;
-    /** @type {!(string|strings)} */
-    var errors;
+    /** @type {!Debug} */
+    var that;
+    /** @type {function} */
+    var setter;
 
-    // Setup the arguments
-    args = ( ( checkType(method, '!strings') ) ?
-      method.slice(0) : (arguments.length > 1) ?
-        Array.prototype.slice.call(arguments, 0) : [ method ]
-    );
+    that = this;
+    setter = function(method) {
+      return that.setMethod(method, false);
+    };
 
-    // Ensure valid arguments are supplied
-    if ( !checkType(args, '!strings') ) {
-      console.error( ErrorMessages.invalidSetName('turnOffMethod', method) );
-      insertErrorBreakpoint();
-      return;
+    if (arguments.length > 1) {
+      method = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(method, '!strings') ) {
+      method = method.join(' ');
     }
 
-    // Split strings with multiple methods
-    method = args.join(' ');
-    args = method.split(' ');
-
-    // Turn off the methods & save any errors
-    len = args.length;
-    i = -1;
-    while (++i < len) {
-      if ( !this.setMethod(args[i], false) ) {
-        if (!errors) {
-          errors = [];
-        }
-        errors.push("'" + args[i] + "'");
-      }
-    }
-    if (errors) {
-      errors = errors.join(', ');
-    }
-
-    // Report any errors
-    if (errors) {
-      console.error( ErrorMessages.invalidSetName('turnOffMethod', errors) );
-      insertErrorBreakpoint();
-      return;
-    }
-
-    return true;
+    return Debug.handleToggle('turnOffMethod', setter, method);
   };
 
   /**
@@ -2520,55 +2168,24 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
    */
   Debug.prototype.addBreakpoint = function(method) {
 
-    /** @type {!strings} */
-    var args;
-    /** @type {number} */
-    var len;
-    /** @type {number} */
-    var i;
-    /** @type {!(string|strings)} */
-    var errors;
+    /** @type {!Debug} */
+    var that;
+    /** @type {function} */
+    var setter;
 
-    // Setup the arguments
-    args = ( ( checkType(method, '!strings') ) ?
-      method.slice(0) : (arguments.length > 1) ?
-        Array.prototype.slice.call(arguments, 0) : [ method ]
-    );
+    that = this;
+    setter = function(method) {
+      return that.setBreakpoint(method, true);
+    };
 
-    // Ensure valid arguments are supplied
-    if ( !checkType(args, '!strings') ) {
-      console.error( ErrorMessages.invalidSetName('addBreakpoint', method) );
-      insertErrorBreakpoint();
-      return;
+    if (arguments.length > 1) {
+      method = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(method, '!strings') ) {
+      method = method.join(' ');
     }
 
-    // Split strings with multiple methods
-    method = args.join(' ');
-    args = method.split(' ');
-
-    // Turn on the method breakpoints & save any errors
-    len = args.length;
-    i = -1;
-    while (++i < len) {
-      if ( !this.setBreakpoint(args[i], true) ) {
-        if (!errors) {
-          errors = [];
-        }
-        errors.push("'" + args[i] + "'");
-      }
-    }
-    if (errors) {
-      errors = errors.join(', ');
-    }
-
-    // Report any errors
-    if (errors) {
-      console.error( ErrorMessages.invalidSetName('addBreakpoint', errors) );
-      insertErrorBreakpoint();
-      return;
-    }
-
-    return true;
+    return Debug.handleToggle('addBreakpoint', setter, method);
   };
 
   /**
@@ -2606,55 +2223,24 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
    */
   Debug.prototype.removeBreakpoint = function(method) {
 
-    /** @type {!strings} */
-    var args;
-    /** @type {number} */
-    var len;
-    /** @type {number} */
-    var i;
-    /** @type {!(string|strings)} */
-    var errors;
+    /** @type {!Debug} */
+    var that;
+    /** @type {function} */
+    var setter;
 
-    // Setup the arguments
-    args = ( ( checkType(method, '!strings') ) ?
-      method.slice(0) : (arguments.length > 1) ?
-        Array.prototype.slice.call(arguments, 0) : [ method ]
-    );
+    that = this;
+    setter = function(method) {
+      return that.setBreakpoint(method, false);
+    };
 
-    // Ensure valid arguments are supplied
-    if ( !checkType(args, '!strings') ) {
-      console.error( ErrorMessages.invalidSetName('removeBreakpoint', method) );
-      insertErrorBreakpoint();
-      return;
+    if (arguments.length > 1) {
+      method = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(method, '!strings') ) {
+      method = method.join(' ');
     }
 
-    // Split strings with multiple methods
-    method = args.join(' ');
-    args = method.split(' ');
-
-    // Turn on the method breakpoints & save any errors
-    len = args.length;
-    i = -1;
-    while (++i < len) {
-      if ( !this.setBreakpoint(args[i], false) ) {
-        if (!errors) {
-          errors = [];
-        }
-        errors.push("'" + args[i] + "'");
-      }
-    }
-    if (errors) {
-      errors = errors.join(', ');
-    }
-
-    // Report any errors
-    if (errors) {
-      console.error( ErrorMessages.invalidSetName('removeBreakpoint', errors) );
-      insertErrorBreakpoint();
-      return;
-    }
-
-    return true;
+    return Debug.handleToggle('removeBreakpoint', setter, method);
   };
 
   /**
@@ -2692,55 +2278,24 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
    */
   Debug.prototype.turnOnAuto = function(type) {
 
-    /** @type {!strings} */
-    var args;
-    /** @type {number} */
-    var len;
-    /** @type {number} */
-    var i;
-    /** @type {!(string|strings)} */
-    var errors;
+    /** @type {!Debug} */
+    var that;
+    /** @type {function} */
+    var setter;
 
-    // Setup the arguments
-    args = ( ( checkType(type, '!strings') ) ?
-      type.slice(0) : (arguments.length > 1) ?
-        Array.prototype.slice.call(arguments, 0) : [ type ]
-    );
+    that = this;
+    setter = function(type) {
+      return that.setAuto(type, true);
+    };
 
-    // Ensure valid arguments are supplied
-    if ( !checkType(args, '!strings') ) {
-      console.error( ErrorMessages.invalidSetName('turnOnAuto', type) );
-      insertErrorBreakpoint();
-      return;
+    if (arguments.length > 1) {
+      type = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(type, '!strings') ) {
+      type = type.join(' ');
     }
 
-    // Split strings with multiple types
-    type = args.join(' ');
-    args = type.split(' ');
-
-    // Turn on the types & save any errors
-    len = args.length;
-    i = -1;
-    while (++i < len) {
-      if ( !this.setAuto(args[i], true) ) {
-        if (!errors) {
-          errors = [];
-        }
-        errors.push("'" + args[i] + "'");
-      }
-    }
-    if (errors) {
-      errors = errors.join(', ');
-    }
-
-    // Report any errors
-    if (errors) {
-      console.error( ErrorMessages.invalidSetName('turnOnAuto', errors) );
-      insertErrorBreakpoint();
-      return;
-    }
-
-    return true;
+    return Debug.handleToggle('turnOnAuto', setter, type);
   };
 
   /**
@@ -2769,56 +2324,100 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
    */
   Debug.prototype.turnOffAuto = function(type) {
 
-    /** @type {!strings} */
-    var args;
-    /** @type {number} */
-    var len;
-    /** @type {number} */
-    var i;
-    /** @type {!(string|strings)} */
-    var errors;
+    /** @type {!Debug} */
+    var that;
+    /** @type {function} */
+    var setter;
 
-    // Setup the arguments
-    args = ( ( checkType(type, '!strings') ) ?
-      type.slice(0) : (arguments.length > 1) ?
-        Array.prototype.slice.call(arguments, 0) : [ type ]
-    );
+    that = this;
+    setter = function(type) {
+      return that.setAuto(type, false);
+    };
 
-    // Ensure valid arguments are supplied
-    if ( !checkType(args, '!strings') ) {
-      console.error( ErrorMessages.invalidSetName('turnOffAuto', type) );
-      insertErrorBreakpoint();
-      return;
+    if (arguments.length > 1) {
+      type = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(type, '!strings') ) {
+      type = type.join(' ');
     }
 
-    // Split strings with multiple types
-    type = args.join(' ');
-    args = type.split(' ');
-
-    // Turn off the types & save any errors
-    len = args.length;
-    i = -1;
-    while (++i < len) {
-      if ( !this.setAuto(args[i], false) ) {
-        if (!errors) {
-          errors = [];
-        }
-        errors.push("'" + args[i] + "'");
-      }
-    }
-    if (errors) {
-      errors = errors.join(', ');
-    }
-
-    // Report any errors
-    if (errors) {
-      console.error( ErrorMessages.invalidSetName('turnOffAuto', errors) );
-      insertErrorBreakpoint();
-      return;
-    }
-
-    return true;
+    return Debug.handleToggle('turnOffAuto', setter, type);
   };
+
+/* -----------------------------------------------------------------------------
+ * The Debug Class Helper Properties (classes/debug/helper-properties.js)
+ * -------------------------------------------------------------------------- */
+
+  /**
+   * -----------------------------------------------
+   * Public Property (Debug.defaultSettings)
+   * -----------------------------------------------
+   * @desc Sets default settings for all instances of the debugger. Note that
+   *   if local settings are provided upon a new instance call they will be used
+   *   instead of the default settings.
+   * @type {!{
+   *   classTitle    : string,
+   *   turnOffMethods: string,
+   *   addBreakpoints: string,
+   *   turnOnGroups  : boolean,
+   *   turnOnProfiles: boolean,
+   *   turnOnTimers  : boolean
+   * }}
+   */
+  Debug.defaultSettings = {
+    classTitle    : 'unknown',
+    turnOffMethods: 'none',
+    addBreakpoints: 'args fail',
+    turnOnGroups  : false,
+    turnOnProfiles: false,
+    turnOnTimers  : false
+  };
+
+  /**
+   * The automated actions object hash map.
+   * @typedef {!{
+   *   msgTitle : string,
+   *   startFunc: function(string),
+   *   endFunc  : function(string=)
+   * }} autoMap
+   */
+  /**
+   * -----------------------------------------------
+   * Public Property (Debug.autoSettings)
+   * -----------------------------------------------
+   * @desc The settings for the automated debugger actions.
+   * @type {!{
+   *   groups  : autoMap,
+   *   profiles: autoMap,
+   *   timers  : autoMap
+   * }}
+   */
+  Debug.autoSettings = {};
+  Debug.autoSettings.groups = {
+    msgTitle : 'GROUP',
+    startFunc: function(label) { console.groupCollapsed(label); },
+    endFunc  : function(label) { console.groupEnd(); }
+  };
+  Debug.autoSettings.profiles = {
+    msgTitle : 'PROFILE',
+    startFunc: function(label) { console.profile(label); },
+    endFunc  : function(label) { console.profileEnd(); }
+  };
+  Debug.autoSettings.timers = {
+    msgTitle : 'TIME',
+    startFunc: function(label) { console.time(label); },
+    endFunc  : function(label) { console.timeEnd(label); }
+  };
+
+  /**
+   * ----------------------------------------------- 
+   * Public Property (Debug.formatElementsAsObj)
+   * -----------------------------------------------
+   * @desc Controls whether logged DOM elements are shown as expandable
+   *   objects or elements.
+   * @type {boolean}
+   */
+  Debug.formatElementsAsObj = true;
 
 /* -----------------------------------------------------------------------------
  * The Debug Class Helper Methods (classes/debug/helper-methods.js)
@@ -2826,14 +2425,15 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
 
   /**
    * -----------------------------------------------------
-   * Public Method (Debug.prototype.insertBreakpoint)
+   * Public Method (Debug.insertBreakpoint)
    * -----------------------------------------------------
    * @desc Handles whether a debugger breakpoint is inserted for every
    *   logging method.
+   * @this {!Debug}
    * @param {string} method - The name of the method to insert for.
    * @return {boolean} Whether a breakpoint was inserted.
    */
-  Debug.prototype.insertBreakpoint = (function() {
+  Debug.insertBreakpoint = (function() {
 
     /** @type {!RegExp} */
     var space;
@@ -2870,9 +2470,10 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
 
   /**
    * -----------------------------------------------------
-   * Public Method (Debug.prototype.handleAuto)
+   * Public Method (Debug.handleAuto)
    * -----------------------------------------------------
    * @desc Handles the automated actions for a logging method.
+   * @this {!Debug}
    * @param {string} type - The type of automation to handle.
    * @param {string} methodName - The name of the user's method to log.
    * @param {boolean=} end - Controls whether the automation should start
@@ -2880,7 +2481,7 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
    * @return {boolean} The automation's success (i.e. whether an action
    *   was made).
    */
-  Debug.prototype.handleAuto = function(type, methodName, end) {
+  Debug.handleAuto = function(type, methodName, end) {
 
     /** @type {string} */
     var label;
@@ -2893,17 +2494,270 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
       end = false;
     }
 
-    label = this.autoSettings[ type ].msgTitle + ': ';
+    label = Debug.autoSettings[ type ].msgTitle + ': ';
     label += this.classTitle + methodName;
 
     if (end) {
-      this.autoSettings[ type ].endFunc(label);
+      Debug.autoSettings[ type ].endFunc(label);
     }
     else {
-      this.autoSettings[ type ].startFunc(label);
+      Debug.autoSettings[ type ].startFunc(label);
     }
 
     return true;
+  };
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (Debug.handleToggle)
+   * -----------------------------------------------------
+   * @desc Handles the turn on/off actions for a Debug controlling method.
+   * @param {string} callerName - The name of the caller method.
+   * @param {function} setter - The setter to use.
+   * @param {string} type - The type or method name to toggle.
+   * @return {boolean} The toggle's success (i.e. whether an action was made).
+   */
+  Debug.handleToggle = function(callerName, setter, type) {
+
+    /** @type {!strings} */
+    var args;
+    /** @type {number} */
+    var len;
+    /** @type {number} */
+    var i;
+    /** @type {!(string|strings)} */
+    var errors;
+
+    // Ensure invalid type names do not exist
+    if ( !checkType(type, 'string') ) {
+      console.error( ErrorMessages.invalidSetName(callerName, type) );
+      insertErrorBreakpoint();
+      return;
+    }
+
+    // Toggle the values & save any errors
+    args = type.split(' ');
+    len = args.length;
+    i = -1;
+    while (++i < len) {
+      if ( !setter(args[i]) ) {
+        if (!errors) {
+          errors = [];
+        }
+        errors.push("'" + args[i] + "'");
+      }
+    }
+    if (errors) {
+      errors = errors.join(', ');
+    }
+
+    // Report any errors
+    if (errors) {
+      console.error( ErrorMessages.invalidSetName(callerName, errors) );
+      insertErrorBreakpoint();
+      return;
+    }
+
+    return true;
+  };
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (Debug.getSubstituteString)
+   * ---------------------------------------------------
+   * @desc Gets the correct substitution string for the given value.
+   * @param {val} val - The value to be evaluated.
+   * @return {string} The correct substitution string.
+   */
+  Debug.getSubstituteString = function(val) {
+
+    /** @type {string} */
+    var str;
+
+    str = ( (!checkType(val, '!object|function')) ?
+      '%s' : (!Debug.formatElementsAsObj && val instanceof HTMLElement) ?
+        '%o' : '%O'
+    );
+
+    return str;
+  };
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (Debug.makeSubstituteStrings)
+   * ---------------------------------------------------
+   * @desc Creates a string of the correct matching substitution strings
+   *   for a console log message.
+   * @param {vals} vals - The values to match.
+   * @return {string} The substitution strings.
+   */
+  Debug.makeSubstituteStrings = function(vals) {
+
+    /** @type {number} */
+    var i;
+    /** @type {number} */
+    var len;
+    /** @type {string} */
+    var message;
+
+    message = '';
+
+    len = vals.length;
+    i = -1;
+    while (++i < len) {
+      if (i) {
+        message += ', ';
+      }
+      message += Debug.getSubstituteString(vals[i]);
+    }
+
+    return message;
+  };
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (Debug.insertSubstituteStrings)
+   * ---------------------------------------------------
+   * @desc Inserts the correct substitution strings into a log message.
+   * @param {string} msg - The original console message string.
+   * @param {vals} vals - The values to use for finding the
+   *   substitution strings.
+   * @return {string} The prepared console message.
+   */
+  Debug.insertSubstituteStrings = (function() {
+
+    /** @type {!RegExp} */
+    var dualDollarSigns;
+
+    dualDollarSigns = /([^\\]*?)\$\$/;
+
+    return function insertSubstituteStrings(msg, vals) {
+
+      /** @type {number} */
+      var len;
+      /** @type {number} */
+      var i;
+      /** @type {string} */
+      var substituteString;
+
+      // Insert the substitution strings
+      len = vals.length;
+      i = -1;
+      while (++i < len) {
+
+        substituteString = Debug.getSubstituteString(vals[i]);
+
+        if ( dualDollarSigns.test(msg) ) {
+          substituteString = '$1' + substituteString;
+          msg = msg.replace(dualDollarSigns, substituteString);
+        }
+        else {
+          msg += '; unnamedVar' + i + '= ' + substituteString;
+        }
+      }
+
+      return msg;
+    };
+  })();
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (Debug.checkArgsDataTypeStrings)
+   * ---------------------------------------------------
+   * @desc Evaluates whether the arguments contain valid data type string
+   *   values for each argument.
+   * @param {!vals} args - The arguments to be evaluated.
+   * @return {boolean} The evaluation result.
+   */
+  Debug.checkArgsDataTypeStrings = function(args) {
+
+    /** @type {number} */
+    var i;
+    /** @type {boolean} */
+    var pass;
+
+    pass = true;
+
+    i = args.length;
+    while (i--) {
+
+      if (i % 2) {
+        pass = checkType(args[i], 'string', true);
+        pass = pass && isValidTypeString(args[i]);
+      }
+
+      if (!pass) {
+        break;
+      }
+    }
+
+    return pass;
+  };
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (Debug.testArgTypes)
+   * ---------------------------------------------------
+   * @desc Evaluates argument data types.
+   * @param {!vals} args - The arguments to be evaluated.
+   * @return {boolean} The evaluation result.
+   */
+  Debug.testArgTypes = function(args) {
+
+    /** @type {number} */
+    var i;
+    /** @type {boolean} */
+    var pass;
+    /** @type {string} */
+    var dataTypeOpts;
+
+    pass = true;
+
+    i = args.length;
+    while (i--) {
+
+      dataTypeOpts = args[i];
+      --i;
+      pass = checkType(args[i], dataTypeOpts, true);
+
+      if (!pass) {
+        break;
+      }
+    }
+
+    return pass;
+  };
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (Debug.stripArgTypeStrings)
+   * ---------------------------------------------------
+   * @desc Removes the data type strings from an array of arguments.
+   * @param {!vals} args - The arguments.
+   * @return {!vals} An array of the stripped arguments.
+   */
+  Debug.stripArgTypeStrings = function(args) {
+
+    /** @type {number} */
+    var i;
+    /** @type {number} */
+    var ii;
+    /** @type {number} */
+    var len;
+    /** @type {!vals} */
+    var newArgs;
+
+    len = args.length / 2;
+    newArgs = new Array(len);
+
+    i = args.length;
+    ii = len;
+    while (ii--) {
+      i = i - 2;
+      newArgs[ii] = args[i];
+    }
+
+    return newArgs;
   };
 
 ////////////////////////////////////////////////////////////////////////////////
