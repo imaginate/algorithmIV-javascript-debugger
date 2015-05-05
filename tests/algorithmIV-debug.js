@@ -2068,6 +2068,13 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
       return that.setMethod(method, true);
     };
 
+    if (arguments.length > 1) {
+      method = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(method, '!strings') ) {
+      method = method.join(' ');
+    }
+
     return Debug.handleToggle('turnOnMethod', setter, method);
   };
 
@@ -2115,6 +2122,13 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
     setter = function(method) {
       return that.setMethod(method, false);
     };
+
+    if (arguments.length > 1) {
+      method = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(method, '!strings') ) {
+      method = method.join(' ');
+    }
 
     return Debug.handleToggle('turnOffMethod', setter, method);
   };
@@ -2164,6 +2178,13 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
       return that.setBreakpoint(method, true);
     };
 
+    if (arguments.length > 1) {
+      method = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(method, '!strings') ) {
+      method = method.join(' ');
+    }
+
     return Debug.handleToggle('addBreakpoint', setter, method);
   };
 
@@ -2211,6 +2232,13 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
     setter = function(method) {
       return that.setBreakpoint(method, false);
     };
+
+    if (arguments.length > 1) {
+      method = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(method, '!strings') ) {
+      method = method.join(' ');
+    }
 
     return Debug.handleToggle('removeBreakpoint', setter, method);
   };
@@ -2260,6 +2288,13 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
       return that.setAuto(type, true);
     };
 
+    if (arguments.length > 1) {
+      type = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(type, '!strings') ) {
+      type = type.join(' ');
+    }
+
     return Debug.handleToggle('turnOnAuto', setter, type);
   };
 
@@ -2298,6 +2333,13 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
     setter = function(type) {
       return that.setAuto(type, false);
     };
+
+    if (arguments.length > 1) {
+      type = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(type, '!strings') ) {
+      type = type.join(' ');
+    }
 
     return Debug.handleToggle('turnOffAuto', setter, type);
   };
@@ -2486,24 +2528,15 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
     /** @type {!(string|strings)} */
     var errors;
 
-    // Setup the arguments
-    args = ( ( checkType(type, '!strings') ) ?
-      type.slice(0) : (arguments.length > 1) ?
-        Array.prototype.slice.call(arguments, 0) : [ type ]
-    );
-
-    // Ensure valid arguments are supplied
-    if ( !checkType(args, '!strings') ) {
+    // Ensure invalid type names do not exist
+    if ( !checkType(type, 'string') ) {
       console.error( ErrorMessages.invalidSetName(callerName, type) );
       insertErrorBreakpoint();
       return;
     }
 
-    // Split strings with multiple methods
-    type = args.join(' ');
+    // Toggle the values & save any errors
     args = type.split(' ');
-
-    // Turn on the methods & save any errors
     len = args.length;
     i = -1;
     while (++i < len) {

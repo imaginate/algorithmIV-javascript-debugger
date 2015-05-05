@@ -34,6 +34,13 @@
       return that.setMethod(method, true);
     };
 
+    if (arguments.length > 1) {
+      method = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(method, '!strings') ) {
+      method = method.join(' ');
+    }
+
     return Debug.handleToggle('turnOnMethod', setter, method);
   };
 
@@ -81,6 +88,13 @@
     setter = function(method) {
       return that.setMethod(method, false);
     };
+
+    if (arguments.length > 1) {
+      method = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(method, '!strings') ) {
+      method = method.join(' ');
+    }
 
     return Debug.handleToggle('turnOffMethod', setter, method);
   };
@@ -130,6 +144,13 @@
       return that.setBreakpoint(method, true);
     };
 
+    if (arguments.length > 1) {
+      method = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(method, '!strings') ) {
+      method = method.join(' ');
+    }
+
     return Debug.handleToggle('addBreakpoint', setter, method);
   };
 
@@ -177,6 +198,13 @@
     setter = function(method) {
       return that.setBreakpoint(method, false);
     };
+
+    if (arguments.length > 1) {
+      method = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(method, '!strings') ) {
+      method = method.join(' ');
+    }
 
     return Debug.handleToggle('removeBreakpoint', setter, method);
   };
@@ -226,6 +254,13 @@
       return that.setAuto(type, true);
     };
 
+    if (arguments.length > 1) {
+      type = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(type, '!strings') ) {
+      type = type.join(' ');
+    }
+
     return Debug.handleToggle('turnOnAuto', setter, type);
   };
 
@@ -264,6 +299,13 @@
     setter = function(type) {
       return that.setAuto(type, false);
     };
+
+    if (arguments.length > 1) {
+      type = Array.prototype.slice.call(arguments, 0).join(' ');
+    }
+    else if ( checkType(type, '!strings') ) {
+      type = type.join(' ');
+    }
 
     return Debug.handleToggle('turnOffAuto', setter, type);
   };

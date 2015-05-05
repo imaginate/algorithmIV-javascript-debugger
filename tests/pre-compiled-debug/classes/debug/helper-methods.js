@@ -103,24 +103,15 @@
     /** @type {!(string|strings)} */
     var errors;
 
-    // Setup the arguments
-    args = ( ( checkType(type, '!strings') ) ?
-      type.slice(0) : (arguments.length > 1) ?
-        Array.prototype.slice.call(arguments, 0) : [ type ]
-    );
-
-    // Ensure valid arguments are supplied
-    if ( !checkType(args, '!strings') ) {
+    // Ensure invalid type names do not exist
+    if ( !checkType(type, 'string') ) {
       console.error( ErrorMessages.invalidSetName(callerName, type) );
       insertErrorBreakpoint();
       return;
     }
 
-    // Split strings with multiple methods
-    type = args.join(' ');
+    // Toggle the values & save any errors
     args = type.split(' ');
-
-    // Turn on the methods & save any errors
     len = args.length;
     i = -1;
     while (++i < len) {
