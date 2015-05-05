@@ -462,7 +462,7 @@
 
     // Prepare the message
     if (args.length) {
-      message = insertSubstituteStrings(message, args);
+      message = Debug.insertSubstituteStrings(message, args);
     }
     message = 'FAIL: ' + this.classTitle + methodName + '() | ' + message;
 
@@ -589,7 +589,7 @@
     // Prepare the message
     if (message || args.length) {
       if (args.length) {
-        message = insertSubstituteStrings(message, args);
+        message = Debug.insertSubstituteStrings(message, args);
       }
       message = ' | ' + message;
     }
@@ -691,7 +691,7 @@
     }
 
     // Prepare the message and arguments
-    message = insertSubstituteStrings(message, args);
+    message = Debug.insertSubstituteStrings(message, args);
     message = 'STATE: ' + this.classTitle + methodName + '() | ' + message;
     args.unshift(message);
 
@@ -784,7 +784,7 @@
 
     // Prepare the message and arguments
     if (args.length) {
-      message = insertSubstituteStrings(message, args);
+      message = Debug.insertSubstituteStrings(message, args);
     }
     message = 'MISC: ' + this.classTitle + methodName + '() | ' + message;
     args.unshift(message);

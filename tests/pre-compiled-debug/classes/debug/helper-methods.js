@@ -197,3 +197,49 @@
 
     return message;
   };
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (Debug.insertSubstituteStrings)
+   * ---------------------------------------------------
+   * @desc Inserts the correct substitution strings into a log message.
+   * @param {string} msg - The original console message string.
+   * @param {vals} vals - The values to use for finding the
+   *   substitution strings.
+   * @return {string} The prepared console message.
+   */
+  Debug.insertSubstituteStrings = (function() {
+
+    /** @type {!RegExp} */
+    var dualDollarSigns;
+
+    dualDollarSigns = /([^\\]*?)\$\$/;
+
+    return function insertSubstituteStrings(msg, vals) {
+
+      /** @type {number} */
+      var len;
+      /** @type {number} */
+      var i;
+      /** @type {string} */
+      var substituteString;
+
+      // Insert the substitution strings
+      len = vals.length;
+      i = -1;
+      while (++i < len) {
+
+        substituteString = Debug.getSubstituteString(vals[i]);
+
+        if ( dualDollarSigns.test(msg) ) {
+          substituteString = '$1' + substituteString;
+          msg = msg.replace(dualDollarSigns, substituteString);
+        }
+        else {
+          msg += ' unnamedVar' + i + '= ' + substituteString + ';';
+        }
+      }
+
+      return msg;
+    };
+  })();
