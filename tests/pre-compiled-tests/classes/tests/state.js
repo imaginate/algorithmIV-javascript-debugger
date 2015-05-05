@@ -98,22 +98,31 @@
     var testLogMsg = function() {
 
       /** @type {string} */
-      var errorMsg;
+      var log;
+      /** @type {boolean} */
+      var pass;
       /** @type {string} */
-      var choiceMsg;
+      var errorMsg;
       /** @type {!Debug} */
       var consoleInst;
+      /** @type {!MockConsole} */
+      var consoleMock;
 
       consoleInst = aIV.console.create('Tests.state.testLogMsg');
+      consoleMock = new MockConsole();
 
-      choiceMsg = '<strong>Verify a log. The following message should have ';
-      choiceMsg += 'been logged to the console:</strong><br /><br />';
-      choiceMsg += '"CALL: Tests.state.testLogMsg.testMethod() | ';
-      choiceMsg += 'testNumber= 5; unknownVar1= empty"';
-      errorMsg = 'Debug.proto.state logged an incorrect message';
-      app.addChoice(choiceMsg, results, errorMsg, function() {
-        consoleInst.state('testMethod', 'testNumber= $$', 5, 'empty');
-      });
+      consoleInst.state('testMethod', 'testNumber= $$', 5, 'empty');
+
+      consoleMock.reset();
+
+      log = 'LOG: STATE: Tests.state.testLogMsg.testMethod() | ';
+      log += 'testNumber= %s; unknownVar1= %s 5 empty';
+      pass = (consoleMock.logs[0] === log);
+
+      if (!pass) {
+        errorMsg = 'Debug.proto.state logged an incorrect message';
+        results.addError(errorMsg);
+      }
     };
 
     ////////////////////////////////////////////////////////////////////////////

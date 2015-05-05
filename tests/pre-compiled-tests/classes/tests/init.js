@@ -133,25 +133,38 @@
     var testLogMsg = function() {
 
       /** @type {string} */
-      var errorMsg;
+      var log;
+      /** @type {boolean} */
+      var pass;
       /** @type {string} */
-      var choiceMsg;
+      var errorMsg;
       /** @type {!Debug} */
       var consoleInst;
+      /** @type {!MockConsole} */
+      var consoleMock;
 
       consoleInst = aIV.console.create('Tests.init.testLogMsg');
+      consoleMock = new MockConsole();
 
-      choiceMsg = '<strong>Verify logs. The following messages should have ';
-      choiceMsg += 'been logged to the console:</strong><br /><br />';
-      choiceMsg += '"CALL: Tests.start.testLogMsg.testMethod()"<br /><br />';
-      choiceMsg += '"ARGS: Tests.init.testLogMsg.testMethod() | ';
-      choiceMsg += 'Error: Incorrect argument data type."<br /><br />';
-      choiceMsg += '"CALL: Tests.start.testLogMsg.testMethod(5)"';
-      errorMsg = 'Debug.proto.init logged an incorrect message';
-      app.addChoice(choiceMsg, results, errorMsg, function() {
-        consoleInst.init('testMethod');
-        consoleInst.init('testMethod', 5, 'string');
-      });
+      consoleInst.init('testMethod');
+      consoleInst.init('testMethod', 5, 'string');
+
+      consoleMock.reset();
+
+      log = 'LOG: CALL: Tests.start.testLogMsg.testMethod()';
+      pass = (consoleMock.logs[0] === log);
+
+      log = 'ERROR: ARGS: Tests.init.testLogMsg.testMethod() | ';
+      log += 'Error: Incorrect argument data type.';
+      pass = pass && (consoleMock.logs[1] === log);
+
+      log = 'LOG: CALL: Tests.start.testLogMsg.testMethod(%s) 5';
+      pass = pass && (consoleMock.logs[2] === log);
+
+      if (!pass) {
+        errorMsg = 'Debug.proto.init logged an incorrect message';
+        results.addError(errorMsg);
+      }
     };
 
     ////////////////////////////////////////////////////////////////////////////

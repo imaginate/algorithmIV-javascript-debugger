@@ -125,22 +125,31 @@
     var testLogMsg = function() {
 
       /** @type {string} */
-      var errorMsg;
+      var log;
+      /** @type {boolean} */
+      var pass;
       /** @type {string} */
-      var choiceMsg;
+      var errorMsg;
       /** @type {!Debug} */
       var consoleInst;
+      /** @type {!MockConsole} */
+      var consoleMock;
 
       consoleInst = aIV.console.create('Tests.misc.testLogMsg');
+      consoleMock = new MockConsole();
 
-      choiceMsg = '<strong>Verify a log. The following message should have ';
-      choiceMsg += 'been logged to the console:</strong><br /><br />';
-      choiceMsg += '"MISC: Tests.misc.testLogMsg.testMethod() | ';
-      choiceMsg += 'A message with the number 5"';
-      errorMsg = 'Debug.proto.misc logged an incorrect message';
-      app.addChoice(choiceMsg, results, errorMsg, function() {
-        consoleInst.misc('testMethod', 'A message with the number $$', 5);
-      });
+      consoleInst.misc('testMethod', 'A message with the number $$', 5);
+
+      consoleMock.reset();
+
+      log = 'LOG: MISC: Tests.misc.testLogMsg.testMethod() | ';
+      log += 'A message with the number %s 5';
+      pass = (consoleMock.logs[0] === log);
+
+      if (!pass) {
+        errorMsg = 'Debug.proto.misc logged an incorrect message';
+        results.addError(errorMsg);
+      }
     };
 
     ////////////////////////////////////////////////////////////////////////////

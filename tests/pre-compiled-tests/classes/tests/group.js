@@ -152,27 +152,40 @@
     var testLogMsg = function() {
 
       /** @type {string} */
-      var errorMsg;
+      var log;
+      /** @type {boolean} */
+      var pass;
       /** @type {string} */
-      var choiceMsg;
+      var errorMsg;
       /** @type {!Debug} */
       var consoleInst;
+      /** @type {!MockConsole} */
+      var consoleMock;
 
       consoleInst = aIV.console.create('Tests.group.testLogMsg');
+      consoleMock = new MockConsole();
 
-      choiceMsg = '<strong>Verify a log group and a log. The following group ';
-      choiceMsg += 'and log should have been created in the console:</strong>';
-      choiceMsg += '<br /><br />';
-      choiceMsg += '"GROUP: Tests.group.testLogMsg.testMethod() | ';
-      choiceMsg += 'testNumber= 5"<br /><br />';
-      choiceMsg += '"MISC: Tests.group.testLogMsg.testMethod() | ';
-      choiceMsg += 'A test log message."';
-      errorMsg = 'Debug.proto.group logged an incorrect message';
-      app.addChoice(choiceMsg, results, errorMsg, function() {
-        consoleInst.group('testMethod', 'open', 'testNumber= $$', 5);
-        consoleInst.misc('testMethod', 'A test log message.');
-        consoleInst.group('testMethod', 'end');
-      });
+      consoleInst.group('testMethod', 'open', 'testNumber= $$', 5);
+      consoleInst.misc('testMethod', 'A test log message.');
+      consoleInst.group('testMethod', 'end');
+
+      consoleMock.reset();
+
+      log = 'OPEN GROUP: GROUP: Tests.group.testLogMsg.testMethod() | ';
+      log += 'testNumber= %s 5';
+      pass = (consoleMock.logs[0] === log);
+
+      log = 'LOG: MISC: Tests.group.testLogMsg.testMethod() | ';
+      log += 'A test log message.';
+      pass = pass && (consoleMock.logs[1] === log);
+
+      log = 'CLOSE GROUP';
+      pass = pass && (consoleMock.logs[2] === log);
+
+      if (!pass) {
+        errorMsg = 'Debug.proto.group logged an incorrect message';
+        results.addError(errorMsg);
+      }
     };
 
     ////////////////////////////////////////////////////////////////////////////

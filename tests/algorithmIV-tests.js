@@ -183,7 +183,7 @@
   var App = function() {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Define The Public Properties
+    // Define & Setup The Public Properties
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -193,7 +193,7 @@
      * @desc The DOM elements for this app.
      * @type {!Object}
      */
-    this.elems;
+    this.elems = new Elems();
 
     /**
      * ----------------------------------------------- 
@@ -202,24 +202,7 @@
      * @desc Saves the results of the tests.
      * @type {!Array<TestResults>}
      */
-    this.results;
-
-    /**
-     * ----------------------------------------------- 
-     * Public Property (App.choices)
-     * -----------------------------------------------
-     * @desc Saves the choices to be executed.
-     * @type {!Array<Choices>}
-     */
-    this.choices;
-
-    ////////////////////////////////////////////////////////////////////////////
-    // Setup The Public Properties
-    ////////////////////////////////////////////////////////////////////////////
-
-    this.elems = new Elems();
     this.results = [];
-    this.choices = [];
 
     ////////////////////////////////////////////////////////////////////////////
     // End Of The Class Setup
@@ -254,9 +237,6 @@
       turnOnTimers    : false
     });
 
-    // Clear the console
-    console.clear();
-
     // Clear the start message
     this.elems.clearUI();
 
@@ -267,108 +247,18 @@
       }
     }
 
-    // Show the choices and record the results
-    this.choices.reverse();
-    this.showChoices();
+    // Show the results
+    this.showResults();
   };
 
   /**
    * -----------------------------------------------
-   * Public Method (App.prototype.addChoice)
-   * -----------------------------------------------
-   * @desc Adds a new choice to the app.
-   * @param {string} choiceMsg - The choice message.
-   * @param {!TestResults} results - The results object.
-   * @param {string} errorMsg - The error message.
-   * @param {?function=} before - A function that gets called before
-   *   the choice is shown.
-   * @param {?function=} after - A function that gets called after
-   *   a choice is completed.
-   */
-  App.prototype.addChoice = function(choiceMsg, results, errorMsg, before, after) {
-
-    /** @type {!Choice} */
-    var choice;
-    /** @type {string} */
-    var typeErrorMsg;
-
-    if (typeof choiceMsg !== 'string' || !(results instanceof TestResults) ||
-        typeof errorMsg !== 'string') {
-      typeErrorMsg = 'An addChoice call was given an invalid param data type.';
-      throw new TypeError(typeErrorMsg);
-      return;
-    }
-
-    if (!before || typeof before !== 'function') {
-      before = function() {};
-    }
-    if (!after || typeof after !== 'function') {
-      after = function() {};
-    }
-
-    choice = new Choice(choiceMsg, results, errorMsg, before, after);
-
-    this.choices.push(choice);
-  };
-
-  /**
-   * -----------------------------------------------
-   * Public Method (App.prototype.showChoices)
-   * -----------------------------------------------
-   * @desc Show each choice until all results have been recorded.
-   *   Then show the results.
-   * @type {function}
-   */
-  App.prototype.showChoices = function() {
-
-    /** @type {!Choice} */
-    var choice;
-
-    console.clear();
-
-    if (!this.choices.length) {
-      this.shareResults();
-      return;
-    }
-
-    choice = this.choices.pop();
-
-    // Hide the UI while setup is occurring
-    this.elems.ui.style.opacity = '0';
-
-    choice.before();
-
-    setTimeout(function() {
-
-      // Give the choice directions
-      app.elems.msg.innerHTML = choice.msg;
-
-      // Set the #yes onClick event
-      app.elems.yes.onclick = function() {
-        choice.after();
-        app.showChoices();
-      };
-
-      // Set the #no onClick event
-      app.elems.no.onclick = function() {
-        choice.fail();
-        choice.after();
-        app.showChoices();
-      };
-
-      app.elems.choose.style.display = 'block';
-      app.elems.ui.style.opacity = '1';
-    }, 500);
-  };
-
-  /**
-   * -----------------------------------------------
-   * Public Method (App.prototype.shareResults)
+   * Public Method (App.prototype.showResults)
    * -----------------------------------------------
    * @desc Clears the UI and shows all of the results for the tests.
    * @type {function}
    */
-  App.prototype.shareResults = function() {
+  App.prototype.showResults = function() {
 
     /** @type {number} */
     var len;
@@ -425,24 +315,17 @@
   };
 
 /* -----------------------------------------------------------------------------
- * The Choice Class (classes/choice.js)
+ * The MockConsole Class (classes/mock-console.js)
  * -------------------------------------------------------------------------- */
 
   /**
    * -----------------------------------------------------
-   * Public Class (Choice)
+   * Public Class (MockConsole)
    * -----------------------------------------------------
-   * @desc A choice to be executed.
-   * @param {string} choiceMsg - The choice message.
-   * @param {!TestResults} results - The results object.
-   * @param {string} errorMsg - The error message.
-   * @param {function} before - A function that gets called before
-   *   the choice is shown.
-   * @param {function} after - A function that gets called after
-   *   a choice is completed.
+   * @desc Mocks the Console class for testing.
    * @constructor
    */
-  var Choice = function(choiceMsg, results, errorMsg, before, after) {
+  var MockConsole = function() {
 
     ////////////////////////////////////////////////////////////////////////////
     // Define & Setup The Public Properties
@@ -450,12 +333,39 @@
 
     /**
      * ----------------------------------------------- 
-     * Public Property (Choice.msg)
+     * Public Property (MockConsole.logs)
      * -----------------------------------------------
-     * @desc The choice directions.
-     * @type {string}
+     * @desc The logs made.
+     * @type {!strings}
      */
-    this.msg = choiceMsg;
+    this.logs = [];
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Protected Properties
+    ////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * ----------------------------------------------- 
+     * Protected Property (MockConsole.originals)
+     * -----------------------------------------------
+     * @desc The original console methods (that will be temporarily overridden).
+     * @type {!Object<string, function>}
+     */
+    var originals = {
+      log     : console.log,
+      error   : console.error,
+      group   : console.group,
+      groupEnd: console.groupEnd
+    };
+
+    /**
+     * ----------------------------------------------- 
+     * Protected Property (MockConsole.that)
+     * -----------------------------------------------
+     * @desc The MockConsole Instance.
+     * @type {!Object<string, !strings>}
+     */
+    var that = this;
 
     ////////////////////////////////////////////////////////////////////////////
     // Define & Setup The Public Methods
@@ -463,34 +373,112 @@
 
     /**
      * ----------------------------------------------- 
-     * Public Method (Choice.fail)
+     * Public Method (MockConsole.reset)
      * -----------------------------------------------
-     * @desc A function that records an error and the
-     *   failure of a test.
+     * @desc Resets the global Console object to its orginal settings.
      * @type {function}
      */
-    this.fail = function() {
-      results.addError(errorMsg);
-      results.setResult(false);
+    this.reset = function() {
+      console.log = originals.log;
+      console.error = originals.error;
+      console.group = originals.group;
+      console.groupEnd = originals.groupEnd;
+    };
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Mock Methods
+    ////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * -----------------------------------------------
+     * Mock Method (MockConsole.log)
+     * -----------------------------------------------
+     * @type {function}
+     */
+    console.log = function(message) {
+
+      /** @type {string} */
+      var log;
+      /** @type {!strings} */
+      var args;
+
+      args = ( (arguments.length > 1) ?
+        Array.prototype.slice.call(arguments, 1) : []
+      );
+
+      log = 'LOG: ' + message;
+      if (args.length) {
+        log += ' ' + args.join(' ');
+      }
+
+      that.logs.push(log);
     };
 
     /**
-     * ----------------------------------------------- 
-     * Public Method (Choice.before)
      * -----------------------------------------------
-     * @desc Logic to call before showing the choice.
+     * Mock Method (MockConsole.error)
+     * -----------------------------------------------
      * @type {function}
      */
-    this.before = before;
+    console.error = function(message) {
+
+      /** @type {string} */
+      var log;
+      /** @type {!strings} */
+      var args;
+
+      args = ( (arguments.length > 1) ?
+        Array.prototype.slice.call(arguments, 1) : []
+      );
+
+      log = 'ERROR: ' + message;
+      if (args.length) {
+        log += ' ' + args.join(' ');
+      }
+
+      that.logs.push(log);
+    };
 
     /**
-     * ----------------------------------------------- 
-     * Public Method (Choice.after)
      * -----------------------------------------------
-     * @desc Logic to call after completing the choice.
+     * Mock Method (MockConsole.log)
+     * -----------------------------------------------
      * @type {function}
      */
-    this.after = after;
+    console.group = function(message) {
+
+      /** @type {string} */
+      var log;
+      /** @type {!strings} */
+      var args;
+
+      args = ( (arguments.length > 1) ?
+        Array.prototype.slice.call(arguments, 1) : []
+      );
+
+      log = 'OPEN GROUP: ' + message;
+      if (args.length) {
+        log += ' ' + args.join(' ');
+      }
+
+      that.logs.push(log);
+    };
+
+    /**
+     * -----------------------------------------------
+     * Mock Method (MockConsole.log)
+     * -----------------------------------------------
+     * @type {function}
+     */
+    console.groupEnd = function() {
+
+      /** @type {string} */
+      var log;
+
+      log = 'CLOSE GROUP';
+
+      that.logs.push(log);
+    };
 
     ////////////////////////////////////////////////////////////////////////////
     // End Of The Class Setup
@@ -504,7 +492,7 @@
 // The Prototype Methods
 ////////////////////////////////////////////////////////////////////////////////
 
-  Choice.prototype.constructor = Choice;
+  MockConsole.prototype.constructor = MockConsole;
 
 /* -----------------------------------------------------------------------------
  * The Elems Class (classes/elems.js)
@@ -550,33 +538,6 @@
      */
     this.start = getID('start');
 
-    /**
-     * ---------------------------------------------------
-     * Public Property (Elems.choose)
-     * ---------------------------------------------------
-     * @desc Element: #choose
-     * @type {HTMLElement}
-     */
-    this.choose = getID('choose');
-
-    /**
-     * ---------------------------------------------------
-     * Public Property (Elems.yes)
-     * ---------------------------------------------------
-     * @desc Element: #yes
-     * @type {HTMLElement}
-     */
-    this.yes = getID('yes');
-
-    /**
-     * ---------------------------------------------------
-     * Public Property (Elems.no)
-     * ---------------------------------------------------
-     * @desc Element: #no
-     * @type {HTMLElement}
-     */
-    this.no = getID('no');
-
     ////////////////////////////////////////////////////////////////////////////
     // End Of The Class Setup
     ////////////////////////////////////////////////////////////////////////////
@@ -609,7 +570,6 @@
     setTimeout(function() {
       that.msg.innerHTML = 'Tests are running.';
       that.start.style.display = 'none';
-      that.choose.style.display = 'none';
       that.ui.style.opacity = '1';
     }, 500);
   };
@@ -922,22 +882,31 @@
     var testLogMsg = function() {
 
       /** @type {string} */
-      var errorMsg;
+      var log;
+      /** @type {boolean} */
+      var pass;
       /** @type {string} */
-      var choiceMsg;
+      var errorMsg;
       /** @type {!Debug} */
       var consoleInst;
+      /** @type {!MockConsole} */
+      var consoleMock;
 
       consoleInst = aIV.console.create('Tests.args.testLogMsg');
+      consoleMock = new MockConsole();
 
-      choiceMsg = '<strong>Verify a log. The following message should have ';
-      choiceMsg += 'been logged to the console:</strong><br /><br />';
-      choiceMsg += '"ARGS: Tests.args.testLogMsg.testMethod() | ';
-      choiceMsg += 'Error: Incorrect argument data type."';
-      errorMsg = 'Debug.proto.args logged an incorrect message';
-      app.addChoice(choiceMsg, results, errorMsg, function() {
-        consoleInst.args('testMethod', 5, 'string');
-      });
+      consoleInst.args('testMethod', 5, 'string');
+
+      consoleMock.reset();
+
+      log = 'ERROR: ARGS: Tests.args.testLogMsg.testMethod() | ';
+      log += 'Error: Incorrect argument data type.';
+      pass = (consoleMock.logs[0] === log);
+
+      if (!pass) {
+        errorMsg = 'Debug.proto.args logged an incorrect message';
+        results.addError(errorMsg);
+      }
     };
 
     ////////////////////////////////////////////////////////////////////////////
@@ -1738,21 +1707,30 @@
     var testLogMsg = function() {
 
       /** @type {string} */
-      var errorMsg;
+      var log;
+      /** @type {boolean} */
+      var pass;
       /** @type {string} */
-      var choiceMsg;
+      var errorMsg;
       /** @type {!Debug} */
       var consoleInst;
+      /** @type {!MockConsole} */
+      var consoleMock;
 
       consoleInst = aIV.console.create('Tests.end.testLogMsg');
+      consoleMock = new MockConsole();
 
-      choiceMsg = '<strong>Verify a log. The following message should have ';
-      choiceMsg += 'been logged to the console:</strong><br /><br />';
-      choiceMsg += '"END: Tests.end.testLogMsg.testMethod() | return= 5"';
-      errorMsg = 'Debug.proto.end logged an incorrect message';
-      app.addChoice(choiceMsg, results, errorMsg, function() {
-        consoleInst.end('testMethod', 5);
-      });
+      consoleInst.end('testMethod', 5);
+
+      consoleMock.reset();
+
+      log = 'LOG: END: Tests.end.testLogMsg.testMethod() | return= %s 5';
+      pass = (consoleMock.logs[0] === log);
+
+      if (!pass) {
+        errorMsg = 'Debug.proto.end logged an incorrect message';
+        results.addError(errorMsg);
+      }
     };
 
     ////////////////////////////////////////////////////////////////////////////
@@ -1933,21 +1911,31 @@
     var testLogMsg = function() {
 
       /** @type {string} */
-      var errorMsg;
+      var log;
+      /** @type {boolean} */
+      var pass;
       /** @type {string} */
-      var choiceMsg;
+      var errorMsg;
       /** @type {!Debug} */
       var consoleInst;
+      /** @type {!MockConsole} */
+      var consoleMock;
 
       consoleInst = aIV.console.create('Tests.fail.testLogMsg');
+      consoleMock = new MockConsole();
 
-      choiceMsg = '<strong>Verify a log. The following message should have ';
-      choiceMsg += 'been logged to the console:</strong><br /><br />';
-      choiceMsg += '"FAIL: Tests.fail.testLogMsg.testMethod() | 5 was 6"';
-      errorMsg = 'Debug.proto.fail logged an incorrect message';
-      app.addChoice(choiceMsg, results, errorMsg, function() {
-        consoleInst.fail('testMethod', false, '5 was $$', 6);
-      });
+      consoleInst.fail('testMethod', false, '5 was $$', 6);
+
+      consoleMock.reset();
+
+      log = 'ERROR: FAIL: Tests.fail.testLogMsg.testMethod() | ';
+      log += '5 was %s 6';
+      pass = (consoleMock.logs[0] === log);
+
+      if (!pass) {
+        errorMsg = 'Debug.proto.fail logged an incorrect message';
+        results.addError(errorMsg);
+      }
     };
 
     ////////////////////////////////////////////////////////////////////////////
@@ -2111,27 +2099,40 @@
     var testLogMsg = function() {
 
       /** @type {string} */
-      var errorMsg;
+      var log;
+      /** @type {boolean} */
+      var pass;
       /** @type {string} */
-      var choiceMsg;
+      var errorMsg;
       /** @type {!Debug} */
       var consoleInst;
+      /** @type {!MockConsole} */
+      var consoleMock;
 
       consoleInst = aIV.console.create('Tests.group.testLogMsg');
+      consoleMock = new MockConsole();
 
-      choiceMsg = '<strong>Verify a log group and a log. The following group ';
-      choiceMsg += 'and log should have been created in the console:</strong>';
-      choiceMsg += '<br /><br />';
-      choiceMsg += '"GROUP: Tests.group.testLogMsg.testMethod() | ';
-      choiceMsg += 'testNumber= 5"<br /><br />';
-      choiceMsg += '"MISC: Tests.group.testLogMsg.testMethod() | ';
-      choiceMsg += 'A test log message."';
-      errorMsg = 'Debug.proto.group logged an incorrect message';
-      app.addChoice(choiceMsg, results, errorMsg, function() {
-        consoleInst.group('testMethod', 'open', 'testNumber= $$', 5);
-        consoleInst.misc('testMethod', 'A test log message.');
-        consoleInst.group('testMethod', 'end');
-      });
+      consoleInst.group('testMethod', 'open', 'testNumber= $$', 5);
+      consoleInst.misc('testMethod', 'A test log message.');
+      consoleInst.group('testMethod', 'end');
+
+      consoleMock.reset();
+
+      log = 'OPEN GROUP: GROUP: Tests.group.testLogMsg.testMethod() | ';
+      log += 'testNumber= %s 5';
+      pass = (consoleMock.logs[0] === log);
+
+      log = 'LOG: MISC: Tests.group.testLogMsg.testMethod() | ';
+      log += 'A test log message.';
+      pass = pass && (consoleMock.logs[1] === log);
+
+      log = 'CLOSE GROUP';
+      pass = pass && (consoleMock.logs[2] === log);
+
+      if (!pass) {
+        errorMsg = 'Debug.proto.group logged an incorrect message';
+        results.addError(errorMsg);
+      }
     };
 
     ////////////////////////////////////////////////////////////////////////////
@@ -2276,25 +2277,38 @@
     var testLogMsg = function() {
 
       /** @type {string} */
-      var errorMsg;
+      var log;
+      /** @type {boolean} */
+      var pass;
       /** @type {string} */
-      var choiceMsg;
+      var errorMsg;
       /** @type {!Debug} */
       var consoleInst;
+      /** @type {!MockConsole} */
+      var consoleMock;
 
       consoleInst = aIV.console.create('Tests.init.testLogMsg');
+      consoleMock = new MockConsole();
 
-      choiceMsg = '<strong>Verify logs. The following messages should have ';
-      choiceMsg += 'been logged to the console:</strong><br /><br />';
-      choiceMsg += '"CALL: Tests.start.testLogMsg.testMethod()"<br /><br />';
-      choiceMsg += '"ARGS: Tests.init.testLogMsg.testMethod() | ';
-      choiceMsg += 'Error: Incorrect argument data type."<br /><br />';
-      choiceMsg += '"CALL: Tests.start.testLogMsg.testMethod(5)"';
-      errorMsg = 'Debug.proto.init logged an incorrect message';
-      app.addChoice(choiceMsg, results, errorMsg, function() {
-        consoleInst.init('testMethod');
-        consoleInst.init('testMethod', 5, 'string');
-      });
+      consoleInst.init('testMethod');
+      consoleInst.init('testMethod', 5, 'string');
+
+      consoleMock.reset();
+
+      log = 'LOG: CALL: Tests.start.testLogMsg.testMethod()';
+      pass = (consoleMock.logs[0] === log);
+
+      log = 'ERROR: ARGS: Tests.init.testLogMsg.testMethod() | ';
+      log += 'Error: Incorrect argument data type.';
+      pass = pass && (consoleMock.logs[1] === log);
+
+      log = 'LOG: CALL: Tests.start.testLogMsg.testMethod(%s) 5';
+      pass = pass && (consoleMock.logs[2] === log);
+
+      if (!pass) {
+        errorMsg = 'Debug.proto.init logged an incorrect message';
+        results.addError(errorMsg);
+      }
     };
 
     ////////////////////////////////////////////////////////////////////////////
@@ -2431,22 +2445,31 @@
     var testLogMsg = function() {
 
       /** @type {string} */
-      var errorMsg;
+      var log;
+      /** @type {boolean} */
+      var pass;
       /** @type {string} */
-      var choiceMsg;
+      var errorMsg;
       /** @type {!Debug} */
       var consoleInst;
+      /** @type {!MockConsole} */
+      var consoleMock;
 
       consoleInst = aIV.console.create('Tests.misc.testLogMsg');
+      consoleMock = new MockConsole();
 
-      choiceMsg = '<strong>Verify a log. The following message should have ';
-      choiceMsg += 'been logged to the console:</strong><br /><br />';
-      choiceMsg += '"MISC: Tests.misc.testLogMsg.testMethod() | ';
-      choiceMsg += 'A message with the number 5"';
-      errorMsg = 'Debug.proto.misc logged an incorrect message';
-      app.addChoice(choiceMsg, results, errorMsg, function() {
-        consoleInst.misc('testMethod', 'A message with the number $$', 5);
-      });
+      consoleInst.misc('testMethod', 'A message with the number $$', 5);
+
+      consoleMock.reset();
+
+      log = 'LOG: MISC: Tests.misc.testLogMsg.testMethod() | ';
+      log += 'A message with the number %s 5';
+      pass = (consoleMock.logs[0] === log);
+
+      if (!pass) {
+        errorMsg = 'Debug.proto.misc logged an incorrect message';
+        results.addError(errorMsg);
+      }
     };
 
     ////////////////////////////////////////////////////////////////////////////
@@ -2583,21 +2606,30 @@
     var testLogMsg = function() {
 
       /** @type {string} */
-      var errorMsg;
+      var log;
+      /** @type {boolean} */
+      var pass;
       /** @type {string} */
-      var choiceMsg;
+      var errorMsg;
       /** @type {!Debug} */
       var consoleInst;
+      /** @type {!MockConsole} */
+      var consoleMock;
 
       consoleInst = aIV.console.create('Tests.start.testLogMsg');
+      consoleMock = new MockConsole();
 
-      choiceMsg = '<strong>Verify a log. The following message should have ';
-      choiceMsg += 'been logged to the console:</strong><br /><br />';
-      choiceMsg += '"CALL: Tests.start.testLogMsg.testMethod(5)"';
-      errorMsg = 'Debug.proto.start logged an incorrect message';
-      app.addChoice(choiceMsg, results, errorMsg, function() {
-        consoleInst.start('testMethod', 5);
-      });
+      consoleInst.start('testMethod', 5);
+
+      consoleMock.reset();
+
+      log = 'LOG: CALL: Tests.start.testLogMsg.testMethod(%s) 5';
+      pass = (consoleMock.logs[0] === log);
+
+      if (!pass) {
+        errorMsg = 'Debug.proto.start logged an incorrect message';
+        results.addError(errorMsg);
+      }
     };
 
     ////////////////////////////////////////////////////////////////////////////
@@ -2707,22 +2739,31 @@
     var testLogMsg = function() {
 
       /** @type {string} */
-      var errorMsg;
+      var log;
+      /** @type {boolean} */
+      var pass;
       /** @type {string} */
-      var choiceMsg;
+      var errorMsg;
       /** @type {!Debug} */
       var consoleInst;
+      /** @type {!MockConsole} */
+      var consoleMock;
 
       consoleInst = aIV.console.create('Tests.state.testLogMsg');
+      consoleMock = new MockConsole();
 
-      choiceMsg = '<strong>Verify a log. The following message should have ';
-      choiceMsg += 'been logged to the console:</strong><br /><br />';
-      choiceMsg += '"CALL: Tests.state.testLogMsg.testMethod() | ';
-      choiceMsg += 'testNumber= 5; unknownVar1= empty"';
-      errorMsg = 'Debug.proto.state logged an incorrect message';
-      app.addChoice(choiceMsg, results, errorMsg, function() {
-        consoleInst.state('testMethod', 'testNumber= $$', 5, 'empty');
-      });
+      consoleInst.state('testMethod', 'testNumber= $$', 5, 'empty');
+
+      consoleMock.reset();
+
+      log = 'LOG: STATE: Tests.state.testLogMsg.testMethod() | ';
+      log += 'testNumber= %s; unknownVar1= %s 5 empty';
+      pass = (consoleMock.logs[0] === log);
+
+      if (!pass) {
+        errorMsg = 'Debug.proto.state logged an incorrect message';
+        results.addError(errorMsg);
+      }
     };
 
     ////////////////////////////////////////////////////////////////////////////
@@ -2730,6 +2771,162 @@
     ////////////////////////////////////////////////////////////////////////////
 
     return state;
+
+  })();
+  /**
+   * -------------------------------------------------
+   * Public Method (Tests.toggleMethod)
+   * -------------------------------------------------
+   * @desc Tests aIV.debug().turnOn/OffMethod.
+   * @type {function}
+   */
+  Tests.toggleMethod = (function setupTests_toggleMethod() {
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Private toggleMethod Variables
+    ////////////////////////////////////////////////////////////////////////////
+
+    /** @type {!TestResults} */
+    var results = new TestResults('turnOn/OffMethod', 3);
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Public toggleMethod Method
+    ////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * -------------------------------------------------
+     * Public Method (toggleMethod)
+     * -------------------------------------------------
+     * @desc Tests aIV.debug().turnOn/OffMethod.
+     * @type {function}
+     */
+    var toggleMethod = function() {
+
+      testToggleOne();
+      testToggleTwoString();
+      testToggleTwoArr();
+
+      // Save the results
+      app.results.push(results);
+    };
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Define & Setup The Private toggleMethod Methods
+    ////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testToggleOne)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testToggleOne = function() {
+
+      /** @type {boolean} */
+      var pass;
+      /** @type {boolean} */
+      var fail;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create({
+        classTitle    : 'Tests.toggleMethod.testToggleOne',
+        turnOffMethods: 'all'
+      });
+
+      consoleInst.turnOnMethod('end');
+      pass = consoleInst.getMethod('end');
+
+      consoleInst.turnOffMethod('end');
+      fail = consoleInst.getMethod('end');
+
+      if (!pass || fail) {
+        errorMsg = 'Debug.proto.turnOn/OffMethod failed to toggle one method';
+        results.addError(errorMsg);
+      }
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testToggleTwoString)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testToggleTwoString = function() {
+
+      /** @type {boolean} */
+      var pass;
+      /** @type {boolean} */
+      var fail;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create({
+        classTitle    : 'Tests.toggleMethod.testToggleTwoString',
+        turnOffMethods: 'all'
+      });
+
+      consoleInst.turnOnMethod('end init');
+      pass = consoleInst.getMethod('end');
+      pass = pass && consoleInst.getMethod('init');
+
+      consoleInst.turnOffMethod('end init');
+      fail = consoleInst.getMethod('end');
+      fail = fail || consoleInst.getMethod('init');
+
+      if (!pass || fail) {
+        errorMsg = 'Debug.proto.turnOn/OffMethod failed to toggle two methods ';
+        errorMsg += 'with a spaced string';
+        results.addError(errorMsg);
+      }
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testToggleTwoArr)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testToggleTwoArr = function() {
+
+      /** @type {boolean} */
+      var pass;
+      /** @type {boolean} */
+      var fail;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create({
+        classTitle    : 'Tests.toggleMethod.testToggleTwoArr',
+        turnOffMethods: 'all'
+      });
+
+      consoleInst.turnOnMethod([ 'end', 'init' ]);
+      pass = consoleInst.getMethod('end');
+      pass = pass && consoleInst.getMethod('init');
+
+      consoleInst.turnOffMethod([ 'end', 'init' ]);
+      fail = consoleInst.getMethod('end');
+      fail = fail || consoleInst.getMethod('init');
+
+      if (!pass || fail) {
+        errorMsg = 'Debug.proto.turnOn/OffMethod failed to toggle two methods ';
+        errorMsg += 'with an array of strings';
+        results.addError(errorMsg);
+      }
+    };
+
+    ////////////////////////////////////////////////////////////////////////////
+    // The End Of The toggleMethod Module
+    ////////////////////////////////////////////////////////////////////////////
+
+    return toggleMethod;
 
   })();
 
