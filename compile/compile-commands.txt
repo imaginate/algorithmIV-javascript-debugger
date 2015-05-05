@@ -68,7 +68,7 @@ sed \
   -e "/insert-module-vars/ r module-vars.js" \
   -e "/insert-module-methods/ r module-methods.js" \
   -e "/insert-app/ r classes/app.js" \
-  -e "/insert-choice/ r classes/choice.js" \
+  -e "/insert-mock-console/ r classes/mock-console.js" \
   -e "/insert-elems/ r classes/elems.js" \
   -e "/insert-test-results/ r classes/test-results.js" \
   -e "/insert-tests-construct/ r classes/tests-construct.js" \
@@ -88,7 +88,7 @@ sed ^
   -e "/insert-module-vars/ r module-vars.js" ^
   -e "/insert-module-methods/ r module-methods.js" ^
   -e "/insert-app/ r classes/app.js" ^
-  -e "/insert-choice/ r classes/choice.js" ^
+  -e "/insert-mock-console/ r classes/mock-console.js" ^
   -e "/insert-elems/ r classes/elems.js" ^
   -e "/insert-test-results/ r classes/test-results.js" ^
   -e "/insert-tests-construct/ r classes/tests-construct.js" ^
