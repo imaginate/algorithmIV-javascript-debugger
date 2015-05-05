@@ -1,13 +1,14 @@
   /**
    * -----------------------------------------------------
-   * Public Method (Debug.prototype.insertBreakpoint)
+   * Public Method (Debug.insertBreakpoint)
    * -----------------------------------------------------
    * @desc Handles whether a debugger breakpoint is inserted for every
    *   logging method.
+   * @this {!Debug}
    * @param {string} method - The name of the method to insert for.
    * @return {boolean} Whether a breakpoint was inserted.
    */
-  Debug.prototype.insertBreakpoint = (function() {
+  Debug.insertBreakpoint = (function() {
 
     /** @type {!RegExp} */
     var space;

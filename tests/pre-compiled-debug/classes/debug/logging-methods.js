@@ -90,7 +90,7 @@
       message = 'ARGS: ' + this.classTitle + methodName + '() | ';
       message += 'Error: Incorrect argument data type.';
       console.error(message);
-      this.insertBreakpoint('init args');
+      Debug.insertBreakpoint.call(this, 'init args');
     }
 
     // Remove the data type strings
@@ -105,7 +105,7 @@
     console.log.apply(console, args);
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('init');
+    Debug.insertBreakpoint.call(this, 'init');
 
     // Insert auto profiling and timing
     this.handleAuto('profiles', methodName);
@@ -192,7 +192,7 @@
     console.log.apply(console, args);
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('start');
+    Debug.insertBreakpoint.call(this, 'start');
 
     // Insert auto profiling and timing
     this.handleAuto('profiles', methodName);
@@ -263,7 +263,7 @@
     console.log(message, returnVal);
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('end');
+    Debug.insertBreakpoint.call(this, 'end');
 
     // Insert auto profiling and timing
     this.handleAuto('timers', methodName, true);
@@ -361,7 +361,7 @@
     console.error(message);
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('args');
+    Debug.insertBreakpoint.call(this, 'args');
 
     return true;
   };
@@ -473,7 +473,7 @@
     console.error.apply(console, args);
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('fail');
+    Debug.insertBreakpoint.call(this, 'fail');
 
     return true;
   };
@@ -607,7 +607,7 @@
     }
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('group');
+    Debug.insertBreakpoint.call(this, 'group');
 
     return true;
   };
@@ -699,7 +699,7 @@
     console.log.apply(console, args);
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('state');
+    Debug.insertBreakpoint.call(this, 'state');
 
     return true;
   };
@@ -793,7 +793,7 @@
     console.log.apply(console, args);
 
     // Insert a debugger breakpoint
-    this.insertBreakpoint('misc');
+    Debug.insertBreakpoint.call(this, 'misc');
 
     return true;
   };
