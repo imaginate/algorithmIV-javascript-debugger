@@ -141,11 +141,11 @@
 
       consoleInst = aIV.console.create('Tests.init.testLogMsg');
 
-      choiceMsg = 'Verify logs. The following messages should have ';
-      choiceMsg += 'been logged to the console:<br />';
-      choiceMsg += '"CALL: Tests.start.testLogMsg.testMethod()"<br />';
+      choiceMsg = '<strong>Verify logs. The following messages should have ';
+      choiceMsg += 'been logged to the console:</strong><br /><br />';
+      choiceMsg += '"CALL: Tests.start.testLogMsg.testMethod()"<br /><br />';
       choiceMsg += '"ARGS: Tests.init.testLogMsg.testMethod() | ';
-      choiceMsg += 'Error: Incorrect argument data type."<br />';
+      choiceMsg += 'Error: Incorrect argument data type."<br /><br />';
       choiceMsg += '"CALL: Tests.start.testLogMsg.testMethod(5)"';
       errorMsg = 'Debug.proto.init logged an incorrect message';
       app.addChoice(choiceMsg, results, errorMsg, function() {

@@ -177,8 +177,8 @@
 
       consoleInst = aIV.console.create('Tests.fail.testLogMsg');
 
-      choiceMsg = 'Verify a log. The following message should have ';
-      choiceMsg += 'been logged to the console:<br />';
+      choiceMsg = '<strong>Verify a log. The following message should have ';
+      choiceMsg += 'been logged to the console:</strong><br /><br />';
       choiceMsg += '"FAIL: Tests.fail.testLogMsg.testMethod() | 5 was 6"';
       errorMsg = 'Debug.proto.fail logged an incorrect message';
       app.addChoice(choiceMsg, results, errorMsg, function() {

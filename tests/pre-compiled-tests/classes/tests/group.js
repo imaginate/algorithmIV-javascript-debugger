@@ -160,12 +160,11 @@
 
       consoleInst = aIV.console.create('Tests.group.testLogMsg');
 
-      choiceMsg = 'Verify a log group and a log. The following group ';
-      choiceMsg += 'should have been created in the console:<br />';
+      choiceMsg = '<strong>Verify a log group and a log. The following group ';
+      choiceMsg += 'and log should have been created in the console:</strong>';
+      choiceMsg += '<br /><br />';
       choiceMsg += '"GROUP: Tests.group.testLogMsg.testMethod() | ';
-      choiceMsg += 'testNumber= 5"<br />';
-      choiceMsg += 'The following message should have been logged in ';
-      choiceMsg += 'the console group:<br />';
+      choiceMsg += 'testNumber= 5"<br /><br />';
       choiceMsg += '"MISC: Tests.group.testLogMsg.testMethod() | ';
       choiceMsg += 'A test log message."';
       errorMsg = 'Debug.proto.group logged an incorrect message';

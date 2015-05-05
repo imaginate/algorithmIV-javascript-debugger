@@ -115,8 +115,8 @@
 
       consoleInst = aIV.console.create('Tests.args.testLogMsg');
 
-      choiceMsg = 'Verify a log. The following message should have ';
-      choiceMsg += 'been logged to the console:<br />';
+      choiceMsg = '<strong>Verify a log. The following message should have ';
+      choiceMsg += 'been logged to the console:</strong><br /><br />';
       choiceMsg += '"ARGS: Tests.args.testLogMsg.testMethod() | ';
       choiceMsg += 'Error: Incorrect argument data type."';
       errorMsg = 'Debug.proto.args logged an incorrect message';

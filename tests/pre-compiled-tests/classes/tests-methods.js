@@ -115,8 +115,8 @@
 
       consoleInst = aIV.console.create('Tests.args.testLogMsg');
 
-      choiceMsg = 'Verify a log. The following message should have ';
-      choiceMsg += 'been logged to the console:<br />';
+      choiceMsg = '<strong>Verify a log. The following message should have ';
+      choiceMsg += 'been logged to the console:</strong><br /><br />';
       choiceMsg += '"ARGS: Tests.args.testLogMsg.testMethod() | ';
       choiceMsg += 'Error: Incorrect argument data type."';
       errorMsg = 'Debug.proto.args logged an incorrect message';
@@ -220,8 +220,8 @@
 
       consoleInst = aIV.console.create('createInst.testOneInstanceCreate');
 
-      props = String('classTitle autoSettings getMethod getBreakpoint ' +
-                     'getAuto setMethod setBreakpoint setAuto').split(' ');
+      props = String('classTitle getMethod getBreakpoint getAuto ' +
+                     'setMethod setBreakpoint setAuto').split(' ');
 
       pass = true;
       i = props.length;
@@ -931,8 +931,8 @@
 
       consoleInst = aIV.console.create('Tests.end.testLogMsg');
 
-      choiceMsg = 'Verify a log. The following message should have ';
-      choiceMsg += 'been logged to the console:<br />';
+      choiceMsg = '<strong>Verify a log. The following message should have ';
+      choiceMsg += 'been logged to the console:</strong><br /><br />';
       choiceMsg += '"END: Tests.end.testLogMsg.testMethod() | return= 5"';
       errorMsg = 'Debug.proto.end logged an incorrect message';
       app.addChoice(choiceMsg, results, errorMsg, function() {
@@ -1126,8 +1126,8 @@
 
       consoleInst = aIV.console.create('Tests.fail.testLogMsg');
 
-      choiceMsg = 'Verify a log. The following message should have ';
-      choiceMsg += 'been logged to the console:<br />';
+      choiceMsg = '<strong>Verify a log. The following message should have ';
+      choiceMsg += 'been logged to the console:</strong><br /><br />';
       choiceMsg += '"FAIL: Tests.fail.testLogMsg.testMethod() | 5 was 6"';
       errorMsg = 'Debug.proto.fail logged an incorrect message';
       app.addChoice(choiceMsg, results, errorMsg, function() {
@@ -1304,12 +1304,11 @@
 
       consoleInst = aIV.console.create('Tests.group.testLogMsg');
 
-      choiceMsg = 'Verify a log group and a log. The following group ';
-      choiceMsg += 'should have been created in the console:<br />';
+      choiceMsg = '<strong>Verify a log group and a log. The following group ';
+      choiceMsg += 'and log should have been created in the console:</strong>';
+      choiceMsg += '<br /><br />';
       choiceMsg += '"GROUP: Tests.group.testLogMsg.testMethod() | ';
-      choiceMsg += 'testNumber= 5"<br />';
-      choiceMsg += 'The following message should have been logged in ';
-      choiceMsg += 'the console group:<br />';
+      choiceMsg += 'testNumber= 5"<br /><br />';
       choiceMsg += '"MISC: Tests.group.testLogMsg.testMethod() | ';
       choiceMsg += 'A test log message."';
       errorMsg = 'Debug.proto.group logged an incorrect message';
@@ -1470,11 +1469,11 @@
 
       consoleInst = aIV.console.create('Tests.init.testLogMsg');
 
-      choiceMsg = 'Verify logs. The following messages should have ';
-      choiceMsg += 'been logged to the console:<br />';
-      choiceMsg += '"CALL: Tests.start.testLogMsg.testMethod()"<br />';
+      choiceMsg = '<strong>Verify logs. The following messages should have ';
+      choiceMsg += 'been logged to the console:</strong><br /><br />';
+      choiceMsg += '"CALL: Tests.start.testLogMsg.testMethod()"<br /><br />';
       choiceMsg += '"ARGS: Tests.init.testLogMsg.testMethod() | ';
-      choiceMsg += 'Error: Incorrect argument data type."<br />';
+      choiceMsg += 'Error: Incorrect argument data type."<br /><br />';
       choiceMsg += '"CALL: Tests.start.testLogMsg.testMethod(5)"';
       errorMsg = 'Debug.proto.init logged an incorrect message';
       app.addChoice(choiceMsg, results, errorMsg, function() {
@@ -1625,8 +1624,8 @@
 
       consoleInst = aIV.console.create('Tests.start.testLogMsg');
 
-      choiceMsg = 'Verify a log. The following message should have ';
-      choiceMsg += 'been logged to the console:<br />';
+      choiceMsg = '<strong>Verify a log. The following message should have ';
+      choiceMsg += 'been logged to the console:</strong><br /><br />';
       choiceMsg += '"CALL: Tests.start.testLogMsg.testMethod(5)"';
       errorMsg = 'Debug.proto.start logged an incorrect message';
       app.addChoice(choiceMsg, results, errorMsg, function() {
