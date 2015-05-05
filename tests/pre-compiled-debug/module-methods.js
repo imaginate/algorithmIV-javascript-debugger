@@ -1,36 +1,4 @@
   /**
-   * ---------------------------------------------------
-   * Public Method (stripArgTypeStrings)
-   * ---------------------------------------------------
-   * @desc Removes the data type strings from an array of arguments.
-   * @param {!vals} args - The arguments.
-   * @return {!vals} An array of the stripped arguments.
-   */
-  function stripArgTypeStrings(args) {
-
-    /** @type {number} */
-    var i;
-    /** @type {number} */
-    var ii;
-    /** @type {number} */
-    var len;
-    /** @type {!vals} */
-    var newArgs;
-
-    len = args.length / 2;
-    newArgs = new Array(len);
-
-    i = args.length;
-    ii = len;
-    while (ii--) {
-      i = i - 2;
-      newArgs[ii] = args[i];
-    }
-
-    return newArgs;
-  }
-
-  /**
    * -----------------------------------------------------
    * Public Method (insertErrorBreakpoint)
    * -----------------------------------------------------

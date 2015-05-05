@@ -94,7 +94,9 @@
     }
 
     // Remove the data type strings
-    args = stripArgTypeStrings(args);
+    if (len) {
+      args = Debug.stripArgTypeStrings(args);
+    }
 
     // Prepare the call log message and arguments
     message = 'CALL: ' + this.classTitle + methodName;
