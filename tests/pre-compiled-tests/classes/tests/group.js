@@ -59,7 +59,8 @@
 
       consoleInst = aIV.console.create('Tests.group.testLog');
 
-      pass = consoleInst.group('testMethod', 'end');
+      pass = consoleInst.group('testMethod', 'coll');
+      pass = pass && consoleInst.group('testMethod', 'end');
 
       if (!pass) {
         errorMsg = 'Debug.proto.group failed to work';
@@ -85,6 +86,7 @@
       consoleInst = aIV.console.create('Tests.group.testLogWithArr');
 
       pass = consoleInst.group([ 'testMethod', 'open' ]);
+      pass = pass && consoleInst.group([ 'testMethod', 'end' ]);
 
       if (!pass) {
         errorMsg = 'Debug.proto.group failed to work with array';
@@ -109,7 +111,8 @@
 
       consoleInst = aIV.console.create('Tests.group.testLogWithArgs');
 
-      pass = consoleInst.group('testMethod', 'open', 'testNumber= $$', 5);
+      pass = consoleInst.group('testMethod', 'coll', 'testNumber= $$', 5);
+      pass = pass && consoleInst.group('testMethod', 'end');
 
       if (!pass) {
         errorMsg = 'Debug.proto.group failed to work with arguments';
@@ -135,6 +138,7 @@
       consoleInst = aIV.console.create('Tests.group.testLogWithArgsArr');
 
       pass = consoleInst.group([ 'testMethod', 'coll', 'testNumber= $$', 5 ]);
+      pass = pass && consoleInst.group([ 'testMethod', 'end' ]);
 
       if (!pass) {
         errorMsg = 'Debug.proto.group failed to work with an array ';

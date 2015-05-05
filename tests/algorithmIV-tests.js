@@ -412,6 +412,9 @@
       }
 
       that.logs.push(log);
+
+      args.unshift(message);
+      originals.log.apply(console, args);
     };
 
     /**
@@ -437,6 +440,9 @@
       }
 
       that.logs.push(log);
+
+      args.unshift(message);
+      originals.error.apply(console, args);
     };
 
     /**
@@ -462,6 +468,9 @@
       }
 
       that.logs.push(log);
+
+      args.unshift(message);
+      originals.group.apply(console, args);
     };
 
     /**
@@ -478,14 +487,17 @@
       log = 'CLOSE GROUP';
 
       that.logs.push(log);
+
+      originals.groupEnd.call(console);
     };
 
     ////////////////////////////////////////////////////////////////////////////
     // End Of The Class Setup
     ////////////////////////////////////////////////////////////////////////////
 
-    // Deep freeze
-    aIV.utils.freezeObj(this, true);
+    // Freeze class instance & method
+    aIV.utils.freezeObj(this);
+    aIV.utils.freezeObj(this.reset);
   };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2006,7 +2018,8 @@
 
       consoleInst = aIV.console.create('Tests.group.testLog');
 
-      pass = consoleInst.group('testMethod', 'end');
+      pass = consoleInst.group('testMethod', 'coll');
+      pass = pass && consoleInst.group('testMethod', 'end');
 
       if (!pass) {
         errorMsg = 'Debug.proto.group failed to work';
@@ -2032,6 +2045,7 @@
       consoleInst = aIV.console.create('Tests.group.testLogWithArr');
 
       pass = consoleInst.group([ 'testMethod', 'open' ]);
+      pass = pass && consoleInst.group([ 'testMethod', 'end' ]);
 
       if (!pass) {
         errorMsg = 'Debug.proto.group failed to work with array';
@@ -2056,7 +2070,8 @@
 
       consoleInst = aIV.console.create('Tests.group.testLogWithArgs');
 
-      pass = consoleInst.group('testMethod', 'open', 'testNumber= $$', 5);
+      pass = consoleInst.group('testMethod', 'coll', 'testNumber= $$', 5);
+      pass = pass && consoleInst.group('testMethod', 'end');
 
       if (!pass) {
         errorMsg = 'Debug.proto.group failed to work with arguments';
@@ -2082,6 +2097,7 @@
       consoleInst = aIV.console.create('Tests.group.testLogWithArgsArr');
 
       pass = consoleInst.group([ 'testMethod', 'coll', 'testNumber= $$', 5 ]);
+      pass = pass && consoleInst.group([ 'testMethod', 'end' ]);
 
       if (!pass) {
         errorMsg = 'Debug.proto.group failed to work with an array ';
