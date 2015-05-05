@@ -153,56 +153,6 @@ h2 {
 /* ------------------------------- *
  * New Section:
  * ------------------------------- *
- * Choices Container
- * ------------------------------- */
-
-#choose {
-  display:none;
-  width:100%;
-  min-height:45px;
-  text-align:center;
-  font-size:0;
-}
-
-/* ------------------------------- *
- * New Section:
- * ------------------------------- *
- * Yes & No Choices
- * ------------------------------- */
- 
-#yes, #no {
-  display:inline-block;
-  width:150px;
-  height:45px;
-  padding:0;
-  margin:0 20px;
-  line-height:45px;
-  text-align:center;
-  color:#fff;
-  font-size:24px;
-  font-weight:700;
-  cursor:pointer;
-  -webkit-transition:background 500ms;
-  -moz-transition:background 500ms;
-  -o-transition:background 500ms;
-  transition:background 500ms;
-}
-#yes { background:#04663d }
-#no { background:#950613 }
-
-#yes:hover,
-#yes:active {
-  background:#049b40;
-}
-
-#no:hover,
-#no:active {
-  background:#e1091d;
-}
-
-/* ------------------------------- *
- * New Section:
- * ------------------------------- *
  * Results List
  * ------------------------------- */
 

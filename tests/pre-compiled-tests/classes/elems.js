@@ -38,33 +38,6 @@
      */
     this.start = getID('start');
 
-    /**
-     * ---------------------------------------------------
-     * Public Property (Elems.choose)
-     * ---------------------------------------------------
-     * @desc Element: #choose
-     * @type {HTMLElement}
-     */
-    this.choose = getID('choose');
-
-    /**
-     * ---------------------------------------------------
-     * Public Property (Elems.yes)
-     * ---------------------------------------------------
-     * @desc Element: #yes
-     * @type {HTMLElement}
-     */
-    this.yes = getID('yes');
-
-    /**
-     * ---------------------------------------------------
-     * Public Property (Elems.no)
-     * ---------------------------------------------------
-     * @desc Element: #no
-     * @type {HTMLElement}
-     */
-    this.no = getID('no');
-
     ////////////////////////////////////////////////////////////////////////////
     // End Of The Class Setup
     ////////////////////////////////////////////////////////////////////////////
@@ -97,7 +70,6 @@
     setTimeout(function() {
       that.msg.innerHTML = 'Tests are running.';
       that.start.style.display = 'none';
-      that.choose.style.display = 'none';
       that.ui.style.opacity = '1';
     }, 500);
   };
