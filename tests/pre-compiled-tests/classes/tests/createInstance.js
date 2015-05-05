@@ -86,8 +86,8 @@
 
       consoleInst = aIV.console.create('createInst.testOneInstanceCreate');
 
-      props = String('classTitle autoSettings getMethod getBreakpoint ' +
-                     'getAuto setMethod setBreakpoint setAuto').split(' ');
+      props = String('classTitle getMethod getBreakpoint getAuto ' +
+                     'setMethod setBreakpoint setAuto').split(' ');
 
       pass = true;
       i = props.length;
