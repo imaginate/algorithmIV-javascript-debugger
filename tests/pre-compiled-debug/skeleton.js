@@ -81,11 +81,6 @@
 // insert-module-vars
 
 /* -----------------------------------------------------------------------------
- * The Public Module Utility Methods (module-utils.js)
- * -------------------------------------------------------------------------- */
-// insert-module-utils
-
-/* -----------------------------------------------------------------------------
  * The Public Module Methods (module-methods.js)
  * -------------------------------------------------------------------------- */
 // insert-module-methods
@@ -109,6 +104,11 @@
  * The Debug Class Controlling Methods (classes/debug/controlling-methods.js)
  * -------------------------------------------------------------------------- */
 // insert-debug-controlling-methods
+
+/* -----------------------------------------------------------------------------
+ * The Debug Class Helper Properties (classes/debug/helper-properties.js)
+ * -------------------------------------------------------------------------- */
+// insert-debug-helper-properties
 
 /* -----------------------------------------------------------------------------
  * The Debug Class Helper Methods (classes/debug/helper-methods.js)
