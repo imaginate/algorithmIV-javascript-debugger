@@ -2803,7 +2803,7 @@
     ////////////////////////////////////////////////////////////////////////////
 
     /** @type {!TestResults} */
-    var results = new TestResults('turnOn/OffMethod', 3);
+    var results = new TestResults('turnOn/OffMethod', 4);
 
     ////////////////////////////////////////////////////////////////////////////
     // Define & Setup The Public toggleMethod Method
@@ -2821,6 +2821,7 @@
       testToggleOne();
       testToggleTwoString();
       testToggleTwoArr();
+      testToggleTwoStrings();
 
       // Save the results
       app.results.push(results);
@@ -2934,6 +2935,43 @@
       if (!pass || fail) {
         errorMsg = 'Debug.proto.turnOn/OffMethod failed to toggle two methods ';
         errorMsg += 'with an array of strings';
+        results.addError(errorMsg);
+      }
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testToggleTwoStrings)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testToggleTwoStrings = function() {
+
+      /** @type {boolean} */
+      var pass;
+      /** @type {boolean} */
+      var fail;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst;
+
+      consoleInst = aIV.console.create({
+        classTitle    : 'Tests.toggleMethod.testToggleTwoStrings',
+        turnOffMethods: 'all'
+      });
+
+      consoleInst.turnOnMethod('end', 'init');
+      pass = consoleInst.getMethod('end');
+      pass = pass && consoleInst.getMethod('init');
+
+      consoleInst.turnOffMethod('end', 'init');
+      fail = consoleInst.getMethod('end');
+      fail = fail || consoleInst.getMethod('init');
+
+      if (!pass || fail) {
+        errorMsg = 'Debug.proto.turnOn/OffMethod failed to toggle two methods ';
+        errorMsg += 'with two string arguments';
         results.addError(errorMsg);
       }
     };
