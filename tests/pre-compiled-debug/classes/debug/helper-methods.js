@@ -79,3 +79,66 @@
 
     return true;
   };
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (Debug.handleToggle)
+   * -----------------------------------------------------
+   * @desc Handles the turn on/off actions for a Debug controlling method.
+   * @param {string} callerName - The name of the caller method.
+   * @param {function} setter - The setter to use.
+   * @param {string} type - The type or method name to toggle.
+   * @return {boolean} The toggle's success (i.e. whether an action was made).
+   */
+  Debug.handleToggle = function(callerName, setter, type) {
+
+    /** @type {!strings} */
+    var args;
+    /** @type {number} */
+    var len;
+    /** @type {number} */
+    var i;
+    /** @type {!(string|strings)} */
+    var errors;
+
+    // Setup the arguments
+    args = ( ( checkType(type, '!strings') ) ?
+      type.slice(0) : (arguments.length > 1) ?
+        Array.prototype.slice.call(arguments, 0) : [ type ]
+    );
+
+    // Ensure valid arguments are supplied
+    if ( !checkType(args, '!strings') ) {
+      console.error( ErrorMessages.invalidSetName(callerName, type) );
+      insertErrorBreakpoint();
+      return;
+    }
+
+    // Split strings with multiple methods
+    type = args.join(' ');
+    args = type.split(' ');
+
+    // Turn on the methods & save any errors
+    len = args.length;
+    i = -1;
+    while (++i < len) {
+      if ( !setter(args[i]) ) {
+        if (!errors) {
+          errors = [];
+        }
+        errors.push("'" + args[i] + "'");
+      }
+    }
+    if (errors) {
+      errors = errors.join(', ');
+    }
+
+    // Report any errors
+    if (errors) {
+      console.error( ErrorMessages.invalidSetName(callerName, errors) );
+      insertErrorBreakpoint();
+      return;
+    }
+
+    return true;
+  };
