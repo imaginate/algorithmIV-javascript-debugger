@@ -2619,7 +2619,7 @@ arrayDataTypes:/^array$|^strings$|^numbers$|^booleans$|^objects$|^arrays$|^elems
           msg = msg.replace(dualDollarSigns, substituteString);
         }
         else {
-          msg += ' unnamedVar' + i + '= ' + substituteString + ';';
+          msg += '; unnamedVar' + i + '= ' + substituteString;
         }
       }
 
