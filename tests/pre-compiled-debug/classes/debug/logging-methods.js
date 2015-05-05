@@ -98,7 +98,7 @@
 
     // Prepare the call log message and arguments
     message = 'CALL: ' + this.classTitle + methodName;
-    message += '(' + makeSubstituteStrings(args) + ')';
+    message += '(' + Debug.makeSubstituteStrings(args) + ')';
     args.unshift(message);
 
     // Log the call message
@@ -185,7 +185,7 @@
 
     // Prepare the call log message and arguments
     message = 'CALL: ' + this.classTitle + methodName;
-    message += '(' + makeSubstituteStrings(args) + ')';
+    message += '(' + Debug.makeSubstituteStrings(args) + ')';
     args.unshift(message);
 
     // Log the start message

@@ -165,3 +165,35 @@
 
     return str;
   };
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (Debug.makeSubstituteStrings)
+   * ---------------------------------------------------
+   * @desc Creates a string of the correct matching substitution strings
+   *   for a console log message.
+   * @param {vals} vals - The values to match.
+   * @return {string} The substitution strings.
+   */
+  Debug.makeSubstituteStrings = function(vals) {
+
+    /** @type {number} */
+    var i;
+    /** @type {number} */
+    var len;
+    /** @type {string} */
+    var message;
+
+    message = '';
+
+    len = vals.length;
+    i = -1;
+    while (++i < len) {
+      if (i) {
+        message += ', ';
+      }
+      message += Debug.getSubstituteString(vals[i]);
+    }
+
+    return message;
+  };
