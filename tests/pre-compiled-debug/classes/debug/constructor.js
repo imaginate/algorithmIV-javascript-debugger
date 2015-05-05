@@ -22,7 +22,7 @@
   var Debug = function(settings) {
 
     ////////////////////////////////////////////////////////////////////////////
-    // Define The Public Properties
+    // Define & Setup The Public Properties
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -32,52 +32,7 @@
      * @desc The class name for the instance.
      * @type {string}
      */
-    this.classTitle;
-
-    /**
-     * The automated actions object hash map.
-     * @typedef {!{
-     *   msgTitle : string,
-     *   startFunc: function(string),
-     *   endFunc  : function(string=)
-     * }} autoMap
-     */
-
-    /**
-     * ---------------------------------------------------
-     * Public Property (Debug.autoSettings)
-     * ---------------------------------------------------
-     * @desc The settings for the automated actions.
-     * @type {!{
-     *   groups  : autoMap,
-     *   profiles: autoMap,
-     *   timers  : autoMap
-     * }}
-     */
-    this.autoSettings;
-
-    ////////////////////////////////////////////////////////////////////////////
-    // Setup The Public Properties
-    ////////////////////////////////////////////////////////////////////////////
-
     this.classTitle = settings.classTitle + '.';
-
-    this.autoSettings = {};
-    this.autoSettings.groups = {
-      msgTitle : 'GROUP',
-      startFunc: function(label) { console.groupCollapsed(label); },
-      endFunc  : function(label) { console.groupEnd(); }
-    };
-    this.autoSettings.profiles = {
-      msgTitle : 'PROFILE',
-      startFunc: function(label) { console.profile(label); },
-      endFunc  : function(label) { console.profileEnd(); }
-    };
-    this.autoSettings.timers = {
-      msgTitle : 'TIME',
-      startFunc: function(label) { console.time(label); },
-      endFunc  : function(label) { console.timeEnd(label); }
-    };
 
     ////////////////////////////////////////////////////////////////////////////
     // Define The Protected Properties

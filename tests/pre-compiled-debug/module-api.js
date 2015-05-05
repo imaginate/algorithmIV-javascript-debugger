@@ -61,7 +61,7 @@
     }
 
     // Setup classTitle
-    classTitle = defaultSettings.classTitle;
+    classTitle = Debug.defaultSettings.classTitle;
     if ( checkType(settings, 'string') ) {
       classTitle = settings;
       settings = null;
@@ -79,7 +79,7 @@
     if ( !hasOwnProp(debugInstances, classTitle) ) {
 
       // Setup turnOffMethods
-      turnOffMethods = defaultSettings.turnOffMethods;
+      turnOffMethods = Debug.defaultSettings.turnOffMethods;
       if (settings) {
         if ( hasOwnProp(settings, 'turnOffMethods') ) {
           if ( checkType(settings.turnOffMethods, 'string') ) {
@@ -100,7 +100,7 @@
       }
 
       // Setup addBreakpoints
-      addBreakpoints = defaultSettings.addBreakpoints;
+      addBreakpoints = Debug.defaultSettings.addBreakpoints;
       if (settings) {
         if ( hasOwnProp(settings, 'addBreakpoints') ) {
           if ( checkType(settings.addBreakpoints, 'string') ) {
@@ -124,21 +124,21 @@
       turnOnGroups = ( (settings &&
                         hasOwnProp(settings, 'turnOnGroups') &&
                         checkType(settings.turnOnGroups, 'boolean')) ?
-        settings.turnOnGroups : defaultSettings.turnOnGroups
+        settings.turnOnGroups : Debug.defaultSettings.turnOnGroups
       );
 
       // Setup turnOnProfiles
       turnOnProfiles = ( (settings &&
                           hasOwnProp(settings, 'turnOnProfiles') &&
                           checkType(settings.turnOnProfiles, 'boolean')) ?
-        settings.turnOnProfiles : defaultSettings.turnOnProfiles
+        settings.turnOnProfiles : Debug.defaultSettings.turnOnProfiles
       );
 
       // Setup turnOnTimers
       turnOnTimers = ( (settings &&
                         hasOwnProp(settings, 'turnOnTimers') &&
                         checkType(settings.turnOnTimers, 'boolean')) ?
-        settings.turnOnTimers : defaultSettings.turnOnTimers
+        settings.turnOnTimers : Debug.defaultSettings.turnOnTimers
       );
 
       // Create the new instance's settings object
@@ -218,65 +218,65 @@
     // Set the default value for classTitle
     if (hasOwnProp(settings, 'classTitle') &&
         checkType(settings.classTitle, 'string')) {
-      defaultSettings.classTitle = settings.classTitle;
+      Debug.defaultSettings.classTitle = settings.classTitle;
     }
     else if (hasOwnProp(settings, 'className') &&
              checkType(settings.className, 'string')) {
-      defaultSettings.classTitle = settings.className;
+      Debug.defaultSettings.classTitle = settings.className;
     }
 
     // Set the default value for turnOffMethods
     if ( hasOwnProp(settings, 'turnOffMethods') ) {
       if ( checkType(settings.turnOffMethods, 'string') ) {
-        defaultSettings.turnOffMethods = settings.turnOffMethods;
+        Debug.defaultSettings.turnOffMethods = settings.turnOffMethods;
       }
       else if ( checkType(settings.turnOffMethods, '!strings') ) {
-        defaultSettings.turnOffMethods = settings.turnOffMethods.join(' ');
+        Debug.defaultSettings.turnOffMethods = settings.turnOffMethods.join(' ');
       }
     }
     else if ( hasOwnProp(settings, 'turnOffTypes') ) {
       if ( checkType(settings.turnOffTypes, 'string') ) {
-        defaultSettings.turnOffMethods = settings.turnOffTypes;
+        Debug.defaultSettings.turnOffMethods = settings.turnOffTypes;
       }
       else if ( checkType(settings.turnOffTypes, '!strings') ) {
-        defaultSettings.turnOffMethods = settings.turnOffTypes.join(' ');
+        Debug.defaultSettings.turnOffMethods = settings.turnOffTypes.join(' ');
       }
     }
 
     // Set the default value for addBreakpoints
     if ( hasOwnProp(settings, 'addBreakpoints') ) {
       if ( checkType(settings.addBreakpoints, 'string') ) {
-        defaultSettings.addBreakpoints = settings.addBreakpoints;
+        Debug.defaultSettings.addBreakpoints = settings.addBreakpoints;
       }
       else if ( checkType(settings.addBreakpoints, '!strings') ) {
-        defaultSettings.addBreakpoints = settings.addBreakpoints.join(' ');
+        Debug.defaultSettings.addBreakpoints = settings.addBreakpoints.join(' ');
       }
     }
     else if ( hasOwnProp(settings, 'turnOnDebuggers') ) {
       if ( checkType(settings.turnOnDebuggers, 'string') ) {
-        defaultSettings.addBreakpoints = settings.turnOnDebuggers;
+        Debug.defaultSettings.addBreakpoints = settings.turnOnDebuggers;
       }
       else if ( checkType(settings.turnOnDebuggers, '!strings') ) {
-        defaultSettings.addBreakpoints = settings.turnOnDebuggers.join(' ');
+        Debug.defaultSettings.addBreakpoints = settings.turnOnDebuggers.join(' ');
       }
     }
 
     // Set the default value for turnOnGroups
     if (hasOwnProp(settings, 'turnOnGroups') &&
         checkType(settings.turnOnGroups, 'boolean')) {
-      defaultSettings.turnOnGroups = settings.turnOnGroups;
+      Debug.defaultSettings.turnOnGroups = settings.turnOnGroups;
     }
 
     // Set the default value for turnOnProfiles
     if (hasOwnProp(settings, 'turnOnProfiles') &&
         checkType(settings.turnOnProfiles, 'boolean')) {
-      defaultSettings.turnOnProfiles = settings.turnOnProfiles;
+      Debug.defaultSettings.turnOnProfiles = settings.turnOnProfiles;
     }
 
     // Set the default value for turnOnTimers
     if (hasOwnProp(settings, 'turnOnTimers') &&
         checkType(settings.turnOnTimers, 'boolean')) {
-      defaultSettings.turnOnTimers = settings.turnOnTimers;
+      Debug.defaultSettings.turnOnTimers = settings.turnOnTimers;
     }
 
     // Set formatElementsAsObj

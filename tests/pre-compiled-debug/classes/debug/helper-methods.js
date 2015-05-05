@@ -68,14 +68,14 @@
       end = false;
     }
 
-    label = this.autoSettings[ type ].msgTitle + ': ';
+    label = Debug.autoSettings[ type ].msgTitle + ': ';
     label += this.classTitle + methodName;
 
     if (end) {
-      this.autoSettings[ type ].endFunc(label);
+      Debug.autoSettings[ type ].endFunc(label);
     }
     else {
-      this.autoSettings[ type ].startFunc(label);
+      Debug.autoSettings[ type ].startFunc(label);
     }
 
     return true;
