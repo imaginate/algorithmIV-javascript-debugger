@@ -243,3 +243,37 @@
       return msg;
     };
   })();
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (Debug.checkArgsDataTypeStrings)
+   * ---------------------------------------------------
+   * @desc Evaluates whether the arguments contain valid data type string
+   *   values for each argument.
+   * @param {!vals} args - The arguments to be evaluated.
+   * @return {boolean} The evaluation result.
+   */
+  Debug.checkArgsDataTypeStrings = function(args) {
+
+    /** @type {number} */
+    var i;
+    /** @type {boolean} */
+    var pass;
+
+    pass = true;
+
+    i = args.length;
+    while (i--) {
+
+      if (i % 2) {
+        pass = checkType(args[i], 'string', true);
+        pass = pass && isValidTypeString(args[i]);
+      }
+
+      if (!pass) {
+        break;
+      }
+    }
+
+    return pass;
+  };

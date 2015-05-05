@@ -64,7 +64,7 @@
 
     // Test for each argument's data type string
     if (len) {
-      if ((len % 2) || !checkArgsDataTypeStrings(args)) {
+      if ((len % 2) || !Debug.checkArgsDataTypeStrings(args)) {
         console.error( ErrorMessages.missingTypeStrings('init') );
         insertErrorBreakpoint();
         return;
@@ -339,7 +339,7 @@
     }
 
     // Test each argument's data type string
-    if ((args.length % 2) || !checkArgsDataTypeStrings(args)) {
+    if ((args.length % 2) || !Debug.checkArgsDataTypeStrings(args)) {
       console.error( ErrorMessages.missingTypeStrings('args') );
       insertErrorBreakpoint();
       return;
