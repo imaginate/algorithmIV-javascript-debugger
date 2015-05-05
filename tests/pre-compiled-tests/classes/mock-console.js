@@ -92,6 +92,9 @@
       }
 
       that.logs.push(log);
+
+      args.unshift(message);
+      originals.log.apply(console, args);
     };
 
     /**
@@ -117,6 +120,9 @@
       }
 
       that.logs.push(log);
+
+      args.unshift(message);
+      originals.error.apply(console, args);
     };
 
     /**
@@ -142,6 +148,9 @@
       }
 
       that.logs.push(log);
+
+      args.unshift(message);
+      originals.group.apply(console, args);
     };
 
     /**
@@ -158,14 +167,17 @@
       log = 'CLOSE GROUP';
 
       that.logs.push(log);
+
+      originals.groupEnd.call(console);
     };
 
     ////////////////////////////////////////////////////////////////////////////
     // End Of The Class Setup
     ////////////////////////////////////////////////////////////////////////////
 
-    // Deep freeze
-    aIV.utils.freezeObj(this, true);
+    // Freeze class instance & method
+    aIV.utils.freezeObj(this);
+    aIV.utils.freezeObj(this.reset);
   };
 
 ////////////////////////////////////////////////////////////////////////////////
