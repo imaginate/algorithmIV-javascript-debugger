@@ -36,7 +36,7 @@
 
     /**
      * The automated actions object hash map.
-     * @typedef {{
+     * @typedef {!{
      *   msgTitle : string,
      *   startFunc: function(string),
      *   endFunc  : function(string=)
@@ -48,7 +48,7 @@
      * Public Property (Debug.autoSettings)
      * ---------------------------------------------------
      * @desc The settings for the automated actions.
-     * @type {{
+     * @type {!{
      *   groups  : autoMap,
      *   profiles: autoMap,
      *   timers  : autoMap
@@ -64,7 +64,7 @@
 
     this.autoSettings = {};
     this.autoSettings.groups = {
-      msgTitle : 'GROUPS',
+      msgTitle : 'GROUP',
       startFunc: function(label) { console.groupCollapsed(label); },
       endFunc  : function(label) { console.groupEnd(); }
     };
