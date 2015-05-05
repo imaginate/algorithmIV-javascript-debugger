@@ -116,7 +116,7 @@
       consoleMock.reset();
 
       log = 'LOG: STATE: Tests.state.testLogMsg.testMethod() | ';
-      log += 'testNumber= %s; unknownVar1= %s 5 empty';
+      log += 'testNumber= %s; unnamedVar1= %s 5 empty';
       pass = (consoleMock.logs[0] === log);
 
       if (!pass) {

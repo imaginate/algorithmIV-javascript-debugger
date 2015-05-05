@@ -151,14 +151,14 @@
 
       consoleMock.reset();
 
-      log = 'LOG: CALL: Tests.start.testLogMsg.testMethod()';
+      log = 'LOG: CALL: Tests.init.testLogMsg.testMethod()';
       pass = (consoleMock.logs[0] === log);
 
       log = 'ERROR: ARGS: Tests.init.testLogMsg.testMethod() | ';
       log += 'Error: Incorrect argument data type.';
       pass = pass && (consoleMock.logs[1] === log);
 
-      log = 'LOG: CALL: Tests.start.testLogMsg.testMethod(%s) 5';
+      log = 'LOG: CALL: Tests.init.testLogMsg.testMethod(%s) 5';
       pass = pass && (consoleMock.logs[2] === log);
 
       if (!pass) {
