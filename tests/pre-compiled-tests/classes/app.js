@@ -56,10 +56,14 @@
 
     // Turn off the debugger instances for errors
     aIV.console.set({
-      errorBreakpoints: false,
-      addBreakpoints  : 'none',
-      turnOnGroups    : false,
-      turnOnTimers    : false
+      errorBreakpoints   : false,
+      formatElementsAsObj: true,
+      classTitle         : 'unknown',
+      turnOffMethods     : 'none',
+      addBreakpoints     : 'none',
+      turnOnGroups       : false,
+      turnOnProfiles     : false,
+      turnOnTimers       : false
     });
 
     // Clear the start message
