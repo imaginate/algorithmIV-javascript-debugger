@@ -8,12 +8,12 @@
 - Fork and clone this repository
 - Create a new branch for your additions
 - Add your code to [tests/pre-compiled-debug/](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/tests/pre-compiled-debug)
-- Compile the debug module using the commands found in [compile/compile-commands.txt](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/compile/compile-commands.txt)
+- Compile the debug module using the commands found in [compile/compile-commands.txt](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/7743bde3a5c29b3d6e912430c5438dbb04c9213e/compile/compile-commands.txt#L8-54)
 
 **Unit Test Steps:**
 - To add unit tests follow the directions in [tests/pre-compiled-tests/classes/tests/NEW-TESTS-README.txt](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/tests/pre-compiled-tests/classes/tests/NEW-TESTS-README.txt)
 - To update unit tests go to the folder [tests/pre-compiled-tests/classes/tests/](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/tests/pre-compiled-tests/classes/tests)
-- Compile the tests module using the commands found in [compile/compile-commands.txt](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/compile/compile-commands.txt)
+- Compile the tests module using the commands found in [compile/compile-commands.txt](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/7743bde3a5c29b3d6e912430c5438dbb04c9213e/compile/compile-commands.txt#L55-101)
 
 **Final Steps:**
 - Load [tests/run-tests.html](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/tests/run-tests.html) in a browser
