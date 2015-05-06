@@ -47,29 +47,29 @@ Each debug object has the following methods for logging to the console:
 
 |           | example calls                                                                  |
 | :-------: | :----------------------------------------------------------------------------- |
-| **init**  | debugInstance.init(methodName, methodArg1, typeForMethodArg1, ...)             |
-| **start** | debugInstance.start(methodName, methodArg1, methodArg2, ...)                   |
-| **end**   | debugInstance.end(methodName, methodReturnValue)                               |
-| **args**  | debugInstance.args(methodName, methodArg1, typeForMethodArg1, ...)             |
-| **fail**  | debugInstance.fail(methodName, truthyValue, errorMessage, optionalVar1, ...)   |
-| **group** | debugInstance.group(methodName, groupType, optionalMessage, optionalVar1, ...) |
-| **state** | debugInstance.state(methodName, logMessage, var1, var2, ...)                   |
-| **misc**  | debugInstance.misc(methodName, logMessage, optionalVar1, ...)                  |
+| **[init](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/cef372b06bf5805df639c872ed9a4c39b07ec5d6/src/pre-compiled-parts/classes/debug/logging-methods.js#L1-30)**  | debugInstance.init(methodName, methodArg1, typeForMethodArg1, ...)             |
+| **[start](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/cef372b06bf5805df639c872ed9a4c39b07ec5d6/src/pre-compiled-parts/classes/debug/logging-methods.js#L119-145)** | debugInstance.start(methodName, methodArg1, methodArg2, ...)                   |
+| **[end](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/cef372b06bf5805df639c872ed9a4c39b07ec5d6/src/pre-compiled-parts/classes/debug/logging-methods.js#L206-231)**   | debugInstance.end(methodName, methodReturnValue)                               |
+| **[args](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/cef372b06bf5805df639c872ed9a4c39b07ec5d6/src/pre-compiled-parts/classes/debug/logging-methods.js#L280-308)**  | debugInstance.args(methodName, methodArg1, typeForMethodArg1, ...)             |
+| **[fail](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/cef372b06bf5805df639c872ed9a4c39b07ec5d6/src/pre-compiled-parts/classes/debug/logging-methods.js#L371-418)**  | debugInstance.fail(methodName, truthyValue, errorMessage, optionalVar1, ...)   |
+| **[group](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/cef372b06bf5805df639c872ed9a4c39b07ec5d6/src/pre-compiled-parts/classes/debug/logging-methods.js#L483-524)** | debugInstance.group(methodName, groupType, optionalMessage, optionalVar1, ...) |
+| **[state](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/cef372b06bf5805df639c872ed9a4c39b07ec5d6/src/pre-compiled-parts/classes/debug/logging-methods.js#L617-651)** | debugInstance.state(methodName, logMessage, var1, var2, ...)                   |
+| **[misc](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/cef372b06bf5805df639c872ed9a4c39b07ec5d6/src/pre-compiled-parts/classes/debug/logging-methods.js#L709-743)**  | debugInstance.misc(methodName, logMessage, optionalVar1, ...)                  |
 
 Plus the following methods for disabling logs and automatically adding debugger breakpoints, groups, profiles, and timers:
 
 |                      | example calls                                   |
 | :------------------: | :---------------------------------------------- |
-| **turnOnMethod**     | debugInstance.turnOnMethod(debugMethodName)     |
-| **turnOffMethod**    | debugInstance.turnOffMethod(debugMethodName)    |
-| **addBreakpoint**    | debugInstance.addBreakpoint(debugMethodName)    |
-| **removeBreakpoint** | debugInstance.removeBreakpoint(debugMethodName) |
-| **turnOnAuto**       | debugInstance.turnOnAuto(automationType)        |
-| **turnOffAuto**      | debugInstance.turnOffAuto(automationType)       |
+| **[turnOnMethod](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/cef372b06bf5805df639c872ed9a4c39b07ec5d6/src/pre-compiled-parts/classes/debug/controlling-methods.js#L1-24)**     | debugInstance.turnOnMethod(debugMethodName)     |
+| **[turnOffMethod](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/cef372b06bf5805df639c872ed9a4c39b07ec5d6/src/pre-compiled-parts/classes/debug/controlling-methods.js#L56-79)**    | debugInstance.turnOffMethod(debugMethodName)    |
+| **[addBreakpoint](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/cef372b06bf5805df639c872ed9a4c39b07ec5d6/src/pre-compiled-parts/classes/debug/controlling-methods.js#L111-134)**    | debugInstance.addBreakpoint(debugMethodName)    |
+| **[removeBreakpoint](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/cef372b06bf5805df639c872ed9a4c39b07ec5d6/src/pre-compiled-parts/classes/debug/controlling-methods.js#L166-189)** | debugInstance.removeBreakpoint(debugMethodName) |
+| **[turnOnAuto](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/cef372b06bf5805df639c872ed9a4c39b07ec5d6/src/pre-compiled-parts/classes/debug/controlling-methods.js#L221-244)**       | debugInstance.turnOnAuto(automationType)        |
+| **[turnOffAuto](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/cef372b06bf5805df639c872ed9a4c39b07ec5d6/src/pre-compiled-parts/classes/debug/controlling-methods.js#L267-290)**      | debugInstance.turnOffAuto(automationType)       |
 
 
 ##Contributing
-See [CONTRIBUTING.md](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/CONTRIBUTING.md).
+See our [guide to contributing](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/CONTRIBUTING.md).
 
 
 ##Example
