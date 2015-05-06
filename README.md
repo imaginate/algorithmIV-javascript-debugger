@@ -23,14 +23,14 @@
     <body>...</body>
 </html>
 ```
-- Use aIV.debug.set(settings) to change the default settings
+- Use [aIV.debug.set](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/86710137dd6f364f94f324eaf1c7803d5cd1bbb9/src/pre-compiled-parts/public-api.js#L56-95) to change the default settings
 ```javascript
 aIV.debug.set({
   turnOffMethods: 'start',
   addBreakpoints: 'all'
 });
 ```
-- Use aIV.debug(classTitle) to create as many debug object instances as you need
+- Use [aIV.debug](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/86710137dd6f364f94f324eaf1c7803d5cd1bbb9/src/pre-compiled-parts/public-api.js#L21-53) to create as many debug object instances as you need
 ```javascript
 var debug = aIV.debug({
   classTitle    : 'Example',
