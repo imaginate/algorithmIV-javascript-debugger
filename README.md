@@ -79,7 +79,7 @@ To see the debugger in live projects visit [Algorithm IV's Question Manager](htt
 - [View The Example Logic](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/fd68019ad7fcc71ff302e44fa63d28b54e9f70da/example/example.js#L114-190)
 
 ###<a name="logs"></a>A Screenshot of the Example's Console Logs
-<a href="https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/example/console-logs-screenshot.jpg"><img src="http://www.algorithmiv.com/images/debugger-console-logs-screenshot.jpg" alt="Screenshot of the Example's Console Logs" /></a>
+<a href="https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/example/console-logs-screenshot.jpg"><img src="http://www.algorithmiv.com/images/aIV-debugger-console-logs-screenshot.jpg" alt="Screenshot of the Example's Console Logs" /></a>
 
 
 ##Contact Us
