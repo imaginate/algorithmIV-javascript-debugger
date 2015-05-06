@@ -16,7 +16,7 @@
 - Create a new branch for your additions
 - To add a new unit test open **[tests/pre-compiled-tests/classes/tests/NEW-TESTS-README.txt](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/tests/pre-compiled-tests/classes/tests/NEW-TESTS-README.txt)** and follow the directions
 - To update an existing unit test go to the folder **[tests/pre-compiled-tests/classes/tests/](https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/tests/pre-compiled-tests/classes/tests)** and add your updates to the correct test
-- Compile the tests module using the commands found in **[compile/compile-commands.txt](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/compile/compile-commands.txt)**
+- Compile the tests module using the commands found in **[compile/compile-commands.txt](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/7743bde3a5c29b3d6e912430c5438dbb04c9213e/compile/compile-commands.txt#L55-101)**
 - Follow the **[run unit tests instructions](#run)** on this page
 - Fix all bugs found and re-run the tests until all unit tests are passing
 - Submit a pull request
