@@ -1,3 +1,9 @@
+/* Algorithm IV Debugger (v1.1.1) (learn@algorithmiv.com)
+ * Section: JS Example Use
+ * Author: Adam Smith (adamsmith@youlum.com)
+ * Copyright (c) 2015 Adam A Smith (github.com/imaginate)
+ * The Apache License (algorithmiv.com/docs/license) */
+
 window.aIV.example = function () {
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -8,7 +14,7 @@ window.aIV.example = function () {
  * -----------------------------------------------------
  * Public Class (Example)
  * -----------------------------------------------------
- * @desc An example class for the repo readme.
+ * @desc An example class for the debugger.
  * @param {string} name
  * @param {boolean} check
  * @constructor
@@ -109,75 +115,79 @@ Example.prototype.report = function() {
 // THE EXAMPLE LOGIC
 ////////////////////////////////////////////////////////////////////////////////
 
-/** @type {{ test1: Example, test2: Example }} */
-var example = {};
-/** @type {string} */
-var name;
-/** @type {boolean} */
-var check;
+(function testLogic() {
 
-// You can set the default settings for your debug instances
-aIV.debug.set({
-  addBreakpoints: 'none',
-  turnOnGroups  : true,
-  turnOnTimers  : true
-});
+  /** @type {{ test1: Example, test2: Example }} */
+  var example = {};
+  /** @type {string} */
+  var name;
+  /** @type {boolean} */
+  var check;
 
-// When the Example constructor is called its debug methods create a new
-// console group (debug.group), log its start (debug.start), check its
-// arguments (debug.args), and end the group (debug.group)
-example.test1 = new Example('Test 1', true);
-example.test2 = new Example('Test 2', false);
+  // You can set the default settings for your debug instances
+  aIV.debug.set({
+    addBreakpoints: 'none',
+    turnOnGroups  : true,
+    turnOnTimers  : true
+  });
 
-// Start the testLogic examples
-example.test1.debug.start('testLogic');
+  // When the Example constructor is called its debug methods create a new
+  // console group (debug.group), log its start (debug.start), check its
+  // arguments (debug.args), and end the group (debug.group)
+  example.test1 = new Example('Test 1', true);
+  example.test2 = new Example('Test 2', false);
 
-// debug.args will catch the incorrect argument type and log an error
-name = 1;
-example.test1.debug.args('testLogic', name, 'string');
+  // Start the testLogic examples
+  example.test1.debug.start('testLogic');
 
-// debug.args can check for more complex types (first check passes and the
-// second check fails)
-name = [ 'name', 'name' ];
-example.test1.debug.args('testLogic', name, 'strings');
-name = [ 1, 1 ];
-example.test1.debug.args('testLogic', name, 'strings');
+  // debug.args will catch the incorrect argument type and log an error
+  name = 1;
+  example.test1.debug.args('testLogic', name, 'string');
 
-// debug.state shares the state of variables at any moment
-name = 'Test 1';
-check = true;
-example.test1.debug.state('testLogic', 'name= $$, check= $$', name, check);
+  // debug.args can check for more complex types (first check passes and the
+  // second check fails)
+  name = [ 'name', 'name' ];
+  example.test1.debug.args('testLogic', name, 'strings');
+  name = [ 1, 1 ];
+  example.test1.debug.args('testLogic', name, 'strings');
 
-// You can turn off methods with debug.turnOff or in the constructor
-example.test1.debug.turnOffMethod('misc');
-example.test1.debug.misc('testLogic', 'This message is NOT logged.');
+  // debug.state shares the state of variables at any moment
+  name = 'Test 1';
+  check = true;
+  example.test1.debug.state('testLogic', 'name= $$, check= $$', name, check);
 
-// You can turn on methods with debug.turnOn (all methods are turned on by
-// default)
-example.test1.debug.turnOnMethod('misc');
-example.test1.debug.misc('testLogic', 'This message is logged.');
+  // You can turn off methods with debug.turnOff or in the constructor
+  example.test1.debug.turnOffMethod('misc');
+  example.test1.debug.misc('testLogic', 'This message is NOT logged.');
 
-// You can request that any method insert a debugger instance after their logs
-// with debug.turnOnDebugger or in the constructor
-example.test1.debug.addBreakpoint('misc');
-example.test1.debug.misc('testLogic', 'A debugger instance should appear.');
+  // You can turn on methods with debug.turnOn (all methods are turned on by
+  // default)
+  example.test1.debug.turnOnMethod('misc');
+  example.test1.debug.misc('testLogic', 'This message is logged.');
 
-// You can remove debugger instances with debug.turnOffDebugger (all debugger
-// instances are turned off by default)
-example.test1.debug.removeBreakpoint('misc');
-example.test1.debug.misc('testLogic', 'A debugger instance should NOT appear.');
+  // You can request that any method insert a debugger instance after their logs
+  // with debug.turnOnDebugger or in the constructor
+  example.test1.debug.addBreakpoint('misc');
+  example.test1.debug.misc('testLogic', 'A debugger instance should appear.');
 
-// You can add varaiables easily to your log messages with $$
-example.test1.debug.misc('testLogic', 'This log recorded $$\'s name.', name);
+  // You can remove debugger instances with debug.turnOffDebugger (all debugger
+  // instances are turned off by default)
+  example.test1.debug.removeBreakpoint('misc');
+  example.test1.debug.misc('testLogic', 'A debugger instance should NOT appear.');
 
-// The following is an example of catching a bad report from an instance of the
-// example class that could create a bug in a full app (debug.fail creates an
-// error log for the 'Test 2' report)
-example.test1.report();
-example.test2.report();
+  // You can add varaiables easily to your log messages with $$
+  example.test1.debug.misc('testLogic', 'This log recorded $$\'s name.', name);
 
-// End the testLogic examples
-example.test1.debug.end('testLogic');
+  // The following is an example of catching a bad report from an instance of
+  // the example class that could create a bug in a full app (debug.fail creates
+  // an error log for the 'Test 2' report)
+  example.test1.report();
+  example.test2.report();
+
+  // End the testLogic examples
+  example.test1.debug.end('testLogic');
+
+})();
 
 ////////////////////////////////////////////////////////////////////////////////
 

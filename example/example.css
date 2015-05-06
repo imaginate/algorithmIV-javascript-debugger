@@ -1,8 +1,8 @@
-/* Algorithm IV Debug Tests (v1.0.0) (learn@algorithmiv.com)
- * Section: CSS Style Guide
+/* Algorithm IV Debugger (v1.1.1) (learn@algorithmiv.com)
+ * Section: CSS Example Style Guide
  * Author: Adam Smith (adamsmith@youlum.com)
  * Copyright (c) 2015 Adam A Smith (github.com/imaginate)
- * The MIT License (algorithmiv.com/docs/license) */
+ * The Apache License (algorithmiv.com/docs/license) */
 
 /* ------------------------------- *
  * New Section:
@@ -37,6 +37,15 @@ h1 {
   text-align:center;
   color:#000821;
   font-size:30px;
+}
+
+h2 {
+  display:block;
+  padding:0;
+  margin:0 auto 10px;
+  text-align:left;
+  color:#192037;
+  font-size:24px;
 }
 
 /* ------------------------------- *
@@ -95,12 +104,20 @@ h1 {
   display:block;
   min-height:34px;
   padding:0;
-  margin:0 auto 20px;
+  margin:0 auto 40px;
   text-align:center;
   line-height:34px;
   color:#192037;
   font-size:23px;
   font-weight:400;
+}
+
+#msg a {
+  color:inherit;
+}
+#msg a:active,
+#msg a:hover {
+  text-decoration:none;
 }
 
 /* ------------------------------- *
@@ -132,3 +149,41 @@ h1 {
 #start:active {
   background:#002287;
 }
+
+/* ------------------------------- *
+ * New Section:
+ * ------------------------------- *
+ * Results List
+ * ------------------------------- */
+
+#results,
+#errors,
+#subErrors {
+  display:block;
+  margin:0 auto 20px;
+  text-align:left;
+  font-size:23px;
+  list-style-type:disc;
+}
+
+#results .title {
+  display:inline-block;
+  width:255px;
+}
+#results .passed {
+  margin:0 0 0 10px;
+}
+
+#errors { margin:0 auto; }
+#subErrors { margin:10px auto 0; }
+#errors li { margin:0 0 10px; }
+#subErrors li { margin:0 0 10px; }
+
+/* ------------------------------- *
+ * New Section:
+ * ------------------------------- *
+ * Misc
+ * ------------------------------- */
+
+.green { color:#04663d }
+.red { color:#950613 }
