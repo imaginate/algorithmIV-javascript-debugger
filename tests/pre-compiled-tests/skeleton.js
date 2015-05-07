@@ -1,10 +1,10 @@
 /**
  * -----------------------------------------------------------------------------
- * Algorithm IV Debugger Tests (v1.1.1)
+ * Algorithm IV Debugger Tests (v1.1.2)
  * -----------------------------------------------------------------------------
  * @file The module used to run all unit tests for aIV's debugger.
  * @module aIVConsoleTests
- * @version 1.1.1
+ * @version 1.1.2
  * @author Adam Smith ({@link adamsmith@youlum.com})
  * @copyright 2015 Adam A Smith ([github.com/imaginate]{@link https://github.com/imaginate})
  * @license The Apache License ([algorithmiv.com/docs/license]{@link http://algorithmiv.com/docs/license})
@@ -102,7 +102,7 @@
  * Deep Freeze The Tests Class
  * -------------------------------------------------------------------------- */
 
-  aIV.utils.freezeObj(Tests, true);
+  freezeObj(Tests, true);
 
 ////////////////////////////////////////////////////////////////////////////////
 // The Tests Module End
