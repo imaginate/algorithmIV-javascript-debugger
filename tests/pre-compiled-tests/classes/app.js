@@ -33,7 +33,7 @@
     // End Of The Class Setup
     ////////////////////////////////////////////////////////////////////////////
 
-    aIV.utils.freezeObj(this);
+    freezeObj(this);
   };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -71,7 +71,7 @@
 
     // Run all the tests
     for (prop in Tests) {
-      if ( hasOwnProp(Tests, prop) ) {
+      if (hasOwnProp(Tests, prop) && checkType(Tests[ prop ], 'function')) {
         Tests[ prop ]();
       }
     }

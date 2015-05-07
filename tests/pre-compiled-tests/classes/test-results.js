@@ -139,7 +139,7 @@
      * @param {boolean} pass - The test results.
      */
     this.setResult = function(pass) {
-      if (typeof pass === 'boolean') {
+      if ( checkType(pass, 'boolean') ) {
         result = pass;
       }
     };
@@ -155,7 +155,7 @@
 
       result = false;
 
-      if (typeof msg !== 'string') {
+      if ( !checkType(msg, 'string') ) {
         msg = 'No error message was provided.';
       }
 
@@ -167,7 +167,7 @@
     ////////////////////////////////////////////////////////////////////////////
 
     // Deep freeze
-    aIV.utils.freezeObj(this, true);
+    freezeObj(this, true);
   };
 
 ////////////////////////////////////////////////////////////////////////////////

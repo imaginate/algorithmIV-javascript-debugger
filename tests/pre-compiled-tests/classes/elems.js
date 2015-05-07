@@ -18,7 +18,7 @@
      * @desc Element: #msg
      * @type {HTMLElement}
      */
-    this.msg = getID('msg');
+    this.msg = getElemById('msg');
 
     /**
      * ---------------------------------------------------
@@ -27,7 +27,7 @@
      * @desc Element: #ui
      * @type {HTMLElement}
      */
-    this.ui = getID('ui');
+    this.ui = getElemById('ui');
 
     /**
      * ---------------------------------------------------
@@ -36,13 +36,13 @@
      * @desc Element: #start
      * @type {HTMLElement}
      */
-    this.start = getID('start');
+    this.start = getElemById('start');
 
     ////////////////////////////////////////////////////////////////////////////
     // End Of The Class Setup
     ////////////////////////////////////////////////////////////////////////////
 
-    aIV.utils.freezeObj(this);
+    freezeObj(this);
   };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -68,7 +68,7 @@
     this.ui.style.opacity = '0';
 
     setTimeout(function() {
-      that.msg.innerHTML = 'Tests are running.';
+      addElemText(that.msg, 'Tests are running.');
       that.start.style.display = 'none';
       that.ui.style.opacity = '1';
     }, 500);

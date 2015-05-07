@@ -1,10 +1,10 @@
 /**
  * -----------------------------------------------------------------------------
- * Algorithm IV Debugger Tests (v1.1.1)
+ * Algorithm IV Debugger Tests (v1.1.2)
  * -----------------------------------------------------------------------------
  * @file The module used to run all unit tests for aIV's debugger.
  * @module aIVConsoleTests
- * @version 1.1.1
+ * @version 1.1.2
  * @author Adam Smith ({@link adamsmith@youlum.com})
  * @copyright 2015 Adam A Smith ([github.com/imaginate]{@link https://github.com/imaginate})
  * @license The Apache License ([algorithmiv.com/docs/license]{@link http://algorithmiv.com/docs/license})
@@ -133,15 +133,36 @@
 
   /**
    * ---------------------------------------------
-   * Public Method (getID)
+   * Public Method (getElemById)
    * ---------------------------------------------
-   * @desc A shortcut for getElementById.
-   * @param {string} title - The name of the id of the element to select.
-   * @return {HTMLElement} A reference to element with the given id.
+   * @desc A shortcut for the native DOM method - document.getElementById.
+   * @param {string} id - The id of the element to select.
+   * @return {!HTMLElement} The DOM element with the given id.
    */
-  function getID(title) {
-    return document.getElementById(title);
-  }
+  var getElemById = aIV.utils.getElemById;
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (addElemText)
+   * ---------------------------------------------------
+   * @desc A shortcut for the native DOM methods - Element.textContent
+   *   or Element.innerText.
+   * @param {!Element} elem - The element.
+   * @param {string} text - The element's textContent or innerText.
+   * @return {!Element} The DOM element with the given text.
+   */
+  var addElemText = aIV.utils.addElemText;
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (freezeObj)
+   * ---------------------------------------------------
+   * @desc A shortcut for the Object.freeze method with a deep freeze option.
+   * @param {!(Object|function)} obj - The object to freeze.
+   * @param {boolean=} deep - Deep freeze the object. The default is false.
+   * @return {!(Object|function)} The frozen object.
+   */
+  var freezeObj = aIV.utils.freezeObj;
 
   /**
    * ---------------------------------------------------
@@ -168,6 +189,16 @@
    * @return {boolean} The evaluation result.
    */
   var checkType = aIV.utils.checkType;
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (isValidTypeString)
+   * ---------------------------------------------------
+   * @desc Evaluates whether a string is a valid data type string.
+   * @param {string} type - The string to evaluate.
+   * @return {boolean} The evaluation result.
+   */
+  var isValidTypeString = aIV.utils.isValidTypeString;
 
 /* -----------------------------------------------------------------------------
  * The App Class (classes/app.js)
@@ -208,7 +239,7 @@
     // End Of The Class Setup
     ////////////////////////////////////////////////////////////////////////////
 
-    aIV.utils.freezeObj(this);
+    freezeObj(this);
   };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -246,7 +277,7 @@
 
     // Run all the tests
     for (prop in Tests) {
-      if ( hasOwnProp(Tests, prop) ) {
+      if (hasOwnProp(Tests, prop) && checkType(Tests[ prop ], 'function')) {
         Tests[ prop ]();
       }
     }
@@ -500,8 +531,8 @@
     ////////////////////////////////////////////////////////////////////////////
 
     // Freeze class instance & method
-    aIV.utils.freezeObj(this);
-    aIV.utils.freezeObj(this.reset);
+    freezeObj(this);
+    freezeObj(this.reset);
   };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -534,7 +565,7 @@
      * @desc Element: #msg
      * @type {HTMLElement}
      */
-    this.msg = getID('msg');
+    this.msg = getElemById('msg');
 
     /**
      * ---------------------------------------------------
@@ -543,7 +574,7 @@
      * @desc Element: #ui
      * @type {HTMLElement}
      */
-    this.ui = getID('ui');
+    this.ui = getElemById('ui');
 
     /**
      * ---------------------------------------------------
@@ -552,13 +583,13 @@
      * @desc Element: #start
      * @type {HTMLElement}
      */
-    this.start = getID('start');
+    this.start = getElemById('start');
 
     ////////////////////////////////////////////////////////////////////////////
     // End Of The Class Setup
     ////////////////////////////////////////////////////////////////////////////
 
-    aIV.utils.freezeObj(this);
+    freezeObj(this);
   };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -584,7 +615,7 @@
     this.ui.style.opacity = '0';
 
     setTimeout(function() {
-      that.msg.innerHTML = 'Tests are running.';
+      addElemText(that.msg, 'Tests are running.');
       that.start.style.display = 'none';
       that.ui.style.opacity = '1';
     }, 500);
@@ -735,7 +766,7 @@
      * @param {boolean} pass - The test results.
      */
     this.setResult = function(pass) {
-      if (typeof pass === 'boolean') {
+      if ( checkType(pass, 'boolean') ) {
         result = pass;
       }
     };
@@ -751,7 +782,7 @@
 
       result = false;
 
-      if (typeof msg !== 'string') {
+      if ( !checkType(msg, 'string') ) {
         msg = 'No error message was provided.';
       }
 
@@ -763,7 +794,7 @@
     ////////////////////////////////////////////////////////////////////////////
 
     // Deep freeze
-    aIV.utils.freezeObj(this, true);
+    freezeObj(this, true);
   };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3606,7 +3637,7 @@
  * Deep Freeze The Tests Class
  * -------------------------------------------------------------------------- */
 
-  aIV.utils.freezeObj(Tests, true);
+  freezeObj(Tests, true);
 
 ////////////////////////////////////////////////////////////////////////////////
 // The Tests Module End

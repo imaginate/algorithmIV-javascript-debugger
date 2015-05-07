@@ -1,14 +1,35 @@
   /**
    * ---------------------------------------------
-   * Public Method (getID)
+   * Public Method (getElemById)
    * ---------------------------------------------
-   * @desc A shortcut for getElementById.
-   * @param {string} title - The name of the id of the element to select.
-   * @return {HTMLElement} A reference to element with the given id.
+   * @desc A shortcut for the native DOM method - document.getElementById.
+   * @param {string} id - The id of the element to select.
+   * @return {!HTMLElement} The DOM element with the given id.
    */
-  function getID(title) {
-    return document.getElementById(title);
-  }
+  var getElemById = aIV.utils.getElemById;
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (addElemText)
+   * ---------------------------------------------------
+   * @desc A shortcut for the native DOM methods - Element.textContent
+   *   or Element.innerText.
+   * @param {!Element} elem - The element.
+   * @param {string} text - The element's textContent or innerText.
+   * @return {!Element} The DOM element with the given text.
+   */
+  var addElemText = aIV.utils.addElemText;
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (freezeObj)
+   * ---------------------------------------------------
+   * @desc A shortcut for the Object.freeze method with a deep freeze option.
+   * @param {!(Object|function)} obj - The object to freeze.
+   * @param {boolean=} deep - Deep freeze the object. The default is false.
+   * @return {!(Object|function)} The frozen object.
+   */
+  var freezeObj = aIV.utils.freezeObj;
 
   /**
    * ---------------------------------------------------
@@ -35,3 +56,13 @@
    * @return {boolean} The evaluation result.
    */
   var checkType = aIV.utils.checkType;
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (isValidTypeString)
+   * ---------------------------------------------------
+   * @desc Evaluates whether a string is a valid data type string.
+   * @param {string} type - The string to evaluate.
+   * @return {boolean} The evaluation result.
+   */
+  var isValidTypeString = aIV.utils.isValidTypeString;
