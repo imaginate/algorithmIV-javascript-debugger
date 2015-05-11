@@ -68,7 +68,7 @@
     this.ui.style.opacity = '0';
 
     setTimeout(function() {
-      addElemText(that.msg, 'Tests are running.');
+      setElemText(that.msg, 'Tests are running.');
       that.start.style.display = 'none';
       that.ui.style.opacity = '1';
     }, 500);

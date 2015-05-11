@@ -143,15 +143,16 @@
 
   /**
    * ---------------------------------------------------
-   * Public Method (addElemText)
+   * Public Method (setElemText)
    * ---------------------------------------------------
-   * @desc A shortcut for the native DOM methods - Element.textContent
+   * @desc A shortcut that sets the native DOM property - Element.textContent
    *   or Element.innerText.
-   * @param {!Element} elem - The element.
-   * @param {string} text - The element's textContent or innerText.
-   * @return {!Element} The DOM element with the given text.
+   * @param {!Element} elem - The DOM element.
+   * @param {string} text - The text to set the DOM element's textContent or
+   *   innerText to.
+   * @return {!Element} The updated DOM element.
    */
-  var addElemText = aIV.utils.addElemText;
+  var setElemText = aIV.utils.setElemText;
 
   /**
    * ---------------------------------------------------
@@ -615,7 +616,7 @@
     this.ui.style.opacity = '0';
 
     setTimeout(function() {
-      addElemText(that.msg, 'Tests are running.');
+      setElemText(that.msg, 'Tests are running.');
       that.start.style.display = 'none';
       that.ui.style.opacity = '1';
     }, 500);
