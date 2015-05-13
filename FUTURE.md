@@ -1,32 +1,36 @@
-# Algorithm IV Dev Tools: The Future
+# The Future - Algorithm IV Developer Tools
 
-**This Gist is an attempt to share [my](https://github.com/imaginate) vision for [Algorithm IV's Dev Tools](https://github.com/imaginate/algorithmIV-javascript-debugger) project.**
+**This file shares the vision for the [Algorithm IV's Debugger](https://github.com/imaginate/algorithmIV-javascript-debugger) project. Your thoughts and suggestions as a developer would be highly appreciated!**
 
 ## Overview
 
 ### Build Schedule
-- [Console](#console)
-- [Profiler](#profiler)
-- [Tester](#tester)
+- **[Console](#console)** ~ A JavaScript Console (e.g. [Chrome Console](https://developer.chrome.com/devtools#console) or [Firebug](http://getfirebug.com/)).
+- **[Profiler](#profiler)** ~ A JavaScript Performance Profiler (e.g. [Chrome Profiler](https://developer.chrome.com/devtools#javascript-performance) or [FireFox Profiler](https://developer.mozilla.org/en-US/docs/Tools/Profiler)).
+- **[Testing Framework](#test)** ~ A JavaScript & DOM unit, integration, & end-to-end testing framework (e.g. [Jasmine](http://jasmine.github.io/) and [Mocha](http://mochajs.org/)).
+
+Note: Each tool is meant for a **web browser** and primarily **front-end** portions of projects.
 
 ### Build Requirements
-- Cross-Browser
+- Cross-Browser Compatible
 - Clean & Simple UI / API
 - Intuitive UI / API
-- Aesthetically Pleasing UI
+
+### Build Goals
+- Maintain the same console, profiler, & testing experience across every browser.
+- Gain more insight into the actions of every JavaScript action with minimal effort.
+- Test the actions of private JavaScript functions without inserting tests into your code base.
+- Complete unit, integration, or end-to-end tests with the same API & test structure.
 
 ### Conclusion
-- [Overall Project Impacts](#impact)
-- [Share Your Insight](#share)
-- [Become A Core Contributor](#contribute)
-- [Final Words](#final)
+- **[Project Impacts](#impact)**
+- **[Share Your Insight](#share)**
+- **[Become A Core Contributor](#contribute)**
+- **[Final Words](#final)**
 
-
+<br />
 ## <a name="console"></a>Console
-
-### Purpose
-- Maintain the same console experience across every browser
-- Improve the management of logs
+This section outlines the actions that must be made to add the Console to the existing code base.
 
 ### Capturing Logs
 - Add ``` aIV.logs ``` to manage the logs
@@ -38,13 +42,9 @@
 - Add a listener to ``` aIV.logs ``` which adds each new log
 - Attach [event listeners](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener) to the new window to provide interactive log management
 
-
+<br />
 ## <a name="profiler"></a>Profiler
-
-### Purpose
-- Maintain the same profiling experience across every browser
-- Add a cross-browser compatible profiler for older browsers (as far as I am aware this does not exist)
-- Improve the management of profiles
+This section outlines the actions that must be made to add the Profiler to the existing code base with a completed Console.
 
 ### Capturing Profiles
 - Add ``` aIV.profiles ``` to manage the profiles
@@ -56,12 +56,12 @@
 - Add a listener to ``` aIV.profiles ``` which adds each new profile and its details
 - Attach [event listeners](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener) to the new tab in the console window to provide interactive profile management
 
-
-## <a name="tester"></a>Tester
+<br />
+## <a name="test"></a>Testing Framework
 Details coming soon.
 
-
-## <a name="impact"></a>Overall Project Impacts
+<br />
+## <a name="impact"></a>Project Impacts
 Details coming soon.
 
 
