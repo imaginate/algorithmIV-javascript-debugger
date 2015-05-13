@@ -53,7 +53,9 @@ console.log(message);
 ```javascript
 Construct = function() {
   this.debug = aIV.debug('Construct');
+  this.debug.start('init');
   ...
+  this.debug.end('init');
 };
 
 Construct.prototype.method = function(arg1, arg2) {
@@ -82,7 +84,9 @@ This Profiler requires the user to add [start](https://github.com/imaginate/algo
 ```javascript
 Construct = function() {
   this.debug = aIV.debug('Construct');
+  this.debug.start('init');
   ...
+  this.debug.end('init');
 };
 
 Construct.prototype.method = function(arg1, arg2) {
@@ -95,7 +99,86 @@ Construct.prototype.method = function(arg1, arg2) {
 
 <br />
 ## <a name="test"></a>Testing Framework
-Details coming soon.
+
+### Build Steps: Running Tests
+Details to come.
+
+### Build Steps: Sharing Results
+Details to come.
+
+### User Experience
+- **The Tests API** ~ The first draft for the API to be used to write the tests.
+
+```javascript
+$$ = aIV.tests;
+
+// Define a test
+$$.declare('The Tests Title', 'An optional description.', function() {
+
+  // Prepare the test environment
+  $$.setup('optional.html', optionalFunction);
+
+  // Test a single private function call (calls tested in watch order)
+  $$.watch('Class.method', function() {
+    $$.mockAjax(passOrFail, returnedValue, timeout);
+    $$.expect(TypeError); // Ensures that thrown errors are not flagged as a failed test
+    $$.args(valueOrTypeArg1ShouldBe, valueOrTypeArg2ShouldBe);
+    $$.checkpoint(valueOrTypeVarShouldBe);
+    $$.result(valueOrTypeResultShouldBe);
+    $$.limit(executionTimeLimit);
+  });
+
+  // Test all private function calls for a method
+  $$.watchAll('Class.method', function() {
+    // Same options as the above $$.watch example
+  });
+
+  // Start the test
+  $$.invoke('An Optional Title', valueOrTypeResultShouldBe, function() {
+    // Call the publically available method
+  });
+
+  // Close the test environment
+  $$.teardown();
+});
+```
+
+- **The Unit Test Support Code** ~ For unit tests the user will be required to add [start](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/cef372b0/src/pre-compiled-parts/classes/debug/logging-methods.js#L119-145) and [end](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/cef372b0/src/pre-compiled-parts/classes/debug/logging-methods.js#L206-231) API calls to each public method being tested. Note that the existence of the API calls also allows the user to add more automated functionality without adding any more calls (e.g. log the start & end values, insert breakpoints, & analyze the execution time).
+
+```javascript
+Construct = function() {
+  this.debug = aIV.debug('Construct');
+  this.debug.start('init');
+  ...
+  this.debug.end('init');
+};
+
+Construct.prototype.method = function(arg1, arg2) {
+  this.debug.start('method', arg1, arg2);
+  ...
+  this.debug.end('method', result);
+  return result;
+};
+```
+
+- **The Integration & End-to-End Test Support Code** ~ For integration & end-to-end tests the user will be required to add [start](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/cef372b0/src/pre-compiled-parts/classes/debug/logging-methods.js#L119-145), [end](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/cef372b0/src/pre-compiled-parts/classes/debug/logging-methods.js#L206-231), and repair API calls to each public & private method being tested. Note that the existence of the start & end API calls also allow the user to add more automated functionality without adding any more calls (e.g. log the start & end values, insert breakpoints, & analyze the execution time).
+
+```javascript
+// See above example for this.debug setup
+Construct.prototype.method = function(arg1, arg2) {
+  this.debug.start('method', arg1, arg2);
+  aIV.repair && arg1 = aIV.repair[0];
+  aIV.repair && arg2 = aIV.repair[1];
+  ...
+  // Additional checkpoints may be added as desired
+  this.debug.checkpoint('method', var1);
+  aIV.repair && var1 = aIV.repair[0];
+  ...
+  this.debug.end('method', result);
+  aIV.repair && result = aIV.repair[0];
+  return result;
+};
+```
 
 <br />
 ## Conclusion
