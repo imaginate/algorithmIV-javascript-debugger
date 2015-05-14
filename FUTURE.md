@@ -190,7 +190,7 @@ $T.declare('The Test Title', 'An optional description.', function() {
 ## Conclusion
 
 ### <a name="share"></a>Share Your Insight
-Your insight is needed to help decide how this project will develop. Please go to https://gist.github.com/imaginate/0856a2945d5dd7805257 and leave your feedback, question, or response as comment on the Gist.
+Your insight is needed to help decide how this project will develop. Please go to https://gist.github.com/imaginate/0856a2945d5dd7805257 and leave your feedback, question, or response as a comment on the Gist.
 
 ### <a name="contribute"></a>Become A Core Contributor
 I will need a core group of contributors to help make Algorithm IV Dev Tools an awesome reality! If you are interested please send an email to adamsmith@algorithmiv.com with the following information:
