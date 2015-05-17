@@ -8,6 +8,16 @@
    */
   var debugModuleAPI = {};
 
+
+  /**
+   * -----------------------------------------------------
+   * Public Object (debugModuleAPI.console)
+   * -----------------------------------------------------
+   * @desc The container for aIV's console.
+   * @type {!Object<string, function(*)>}
+   */
+  debugModuleAPI.console = {};
+
   /**
    * -----------------------------------------------------
    * Public Method (debugModuleAPI.init)
@@ -190,12 +200,3 @@
       }
     };
   })();
-
-  /**
-   * -----------------------------------------------------
-   * Public Object (debugModuleAPI.console)
-   * -----------------------------------------------------
-   * @desc The container for aIV's console.
-   * @type {!Object<string, function(*)>}
-   */
-  debugModuleAPI.console = {};
