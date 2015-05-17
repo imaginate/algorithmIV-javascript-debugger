@@ -32,6 +32,10 @@
    * @param {boolean=} settings.turnOnGroups - Enables/disables automatic
    *   grouping of all logs, timers, and profiles between every start and end
    *   method for this Debug instance.
+   * @param {boolean=} settings.openGroups - For enabled automatic log grouping
+   *   determines whether groups should be open or collapsed for this Debug
+   *   instance (i.e. if turnOnGroups is enabled then openGroups controls
+   *   whether the auto log groups are open or collapsed).
    * @param {boolean=} settings.turnOnProfiles - Enables/disables automatic
    *   profiling for all logic between every start and end method for this
    *   Debug instance.
@@ -44,16 +48,6 @@
 
     /** @type {string} */
     var classTitle;
-    /** @type {string} */
-    var turnOffMethods;
-    /** @type {string} */
-    var addBreakpoints;
-    /** @type {boolean} */
-    var turnOnGroups;
-    /** @type {boolean} */
-    var turnOnProfiles;
-    /** @type {boolean} */
-    var turnOnTimers;
 
     // Catch incorrect data types for settings
     if ( !checkType(settings, '?(string|object)') ) {
@@ -61,98 +55,23 @@
     }
 
     // Setup classTitle
-    classTitle = Debug.defaultSettings.classTitle;
+    classTitle = Debug.defaults.classTitle;
     if ( checkType(settings, 'string') ) {
       classTitle = settings;
       settings = null;
     }
+
+    // Correct any old/alternate properties used
     if (settings) {
-      if ( hasOwnProp(settings, 'classTitle') ) {
+      settings = Debug.replaceOldSettings(settings);
+      if (settings.classTitle && checkType(settings.classTitle, 'string')) {
         classTitle = settings.classTitle;
-      }
-      else if ( hasOwnProp(settings, 'className') ) {
-        classTitle = settings.className;
       }
     }
 
     // Create a new Debug instance
     if ( !hasOwnProp(debugInstances, classTitle) ) {
-
-      // Setup turnOffMethods
-      turnOffMethods = Debug.defaultSettings.turnOffMethods;
-      if (settings) {
-        if ( hasOwnProp(settings, 'turnOffMethods') ) {
-          if ( checkType(settings.turnOffMethods, 'string') ) {
-            turnOffMethods = settings.turnOffMethods;
-          }
-          else if ( checkType(settings.turnOffMethods, '!strings') ) {
-            turnOffMethods = settings.turnOffMethods.join(' ');
-          }
-        }
-        else if ( hasOwnProp(settings, 'turnOffTypes') ) {
-          if ( checkType(settings.turnOffTypes, 'string') ) {
-            turnOffMethods = settings.turnOffTypes;
-          }
-          else if ( checkType(settings.turnOffTypes, '!strings') ) {
-            turnOffMethods = settings.turnOffTypes.join(' ');
-          }
-        }
-      }
-
-      // Setup addBreakpoints
-      addBreakpoints = Debug.defaultSettings.addBreakpoints;
-      if (settings) {
-        if ( hasOwnProp(settings, 'addBreakpoints') ) {
-          if ( checkType(settings.addBreakpoints, 'string') ) {
-            addBreakpoints = settings.addBreakpoints;
-          }
-          else if ( checkType(settings.addBreakpoints, '!strings') ) {
-            addBreakpoints = settings.addBreakpoints.join(' ');
-          }
-        }
-        else if ( hasOwnProp(settings, 'turnOnDebuggers') ) {
-          if ( checkType(settings.turnOnDebuggers, 'string') ) {
-            addBreakpoints = settings.turnOnDebuggers;
-          }
-          else if ( checkType(settings.turnOnDebuggers, '!strings') ) {
-            addBreakpoints = settings.turnOnDebuggers.join(' ');
-          }
-        }
-      }
-
-      // Setup turnOnGroups
-      turnOnGroups = ( (settings &&
-                        hasOwnProp(settings, 'turnOnGroups') &&
-                        checkType(settings.turnOnGroups, 'boolean')) ?
-        settings.turnOnGroups : Debug.defaultSettings.turnOnGroups
-      );
-
-      // Setup turnOnProfiles
-      turnOnProfiles = ( (settings &&
-                          hasOwnProp(settings, 'turnOnProfiles') &&
-                          checkType(settings.turnOnProfiles, 'boolean')) ?
-        settings.turnOnProfiles : Debug.defaultSettings.turnOnProfiles
-      );
-
-      // Setup turnOnTimers
-      turnOnTimers = ( (settings &&
-                        hasOwnProp(settings, 'turnOnTimers') &&
-                        checkType(settings.turnOnTimers, 'boolean')) ?
-        settings.turnOnTimers : Debug.defaultSettings.turnOnTimers
-      );
-
-      // Create the new instance's settings object
-      settings = {
-        classTitle    : classTitle,
-        turnOffMethods: turnOffMethods,
-        addBreakpoints: addBreakpoints,
-        turnOnGroups  : turnOnGroups,
-        turnOnProfiles: turnOnProfiles,
-        turnOnTimers  : turnOnTimers
-      };
-
-      // Setup and save the new Debug instance
-      debugInstances[ classTitle ] = new Debug(settings);
+      makeNewDebugInst(classTitle, settings);
     }
 
     return debugInstances[ classTitle ];
@@ -188,6 +107,9 @@
    * @param {boolean=} settings.turnOnGroups - The default setting for automatic
    *   grouping of all logs, timers, and profiles between every start and end
    *   method.
+   * @param {boolean=} settings.openGroups - The default open or collapsed
+   *   setting for automatic log grouping (i.e. if turnOnGroups is enabled then
+   *   openGroups determines if the auto log groups are open or collapsed).
    * @param {boolean=} settings.turnOnProfiles - The default setting for
    *   automatic profiling for all logic between every start and end method.
    * @param {boolean=} settings.turnOnTimers - The default setting for automatic
@@ -197,94 +119,77 @@
    *   differences between the two logging styles (specifier '%o' vs '%O')
    *   [see Google's Console API Reference]{@link https://developer.chrome.com/devtools/docs/console-api#consolelogobject-object}.
    */
-  debugModuleAPI.set = function(settings) {
+  debugModuleAPI.set = (function setup_set() {
 
-    if ( !checkType(settings, '!object') ) {
-      console.error( ErrorMessages.setConsoleTypeError(settings) );
-      insertErrorBreakpoint();
-      return;
-    }
+    /** @type {!Object} */
+    var defaultTypes;
+    /** @type {string} */
+    var propName;
+    /** @type {!Object<string, function>} */
+    var setters;
 
-    // Set errorBreakpoints
-    if (hasOwnProp(settings, 'errorBreakpoints') &&
-        checkType(settings.errorBreakpoints, 'boolean')) {
-      errorBreakpoints = settings.errorBreakpoints;
-    }
-    else if (hasOwnProp(settings, 'errorDebuggers') &&
-             checkType(settings.errorDebuggers, 'boolean')) {
-      errorBreakpoints = settings.errorDebuggers;
-    }
+    setters = {};
 
-    // Set the default value for classTitle
-    if (hasOwnProp(settings, 'classTitle') &&
-        checkType(settings.classTitle, 'string')) {
-      Debug.defaultSettings.classTitle = settings.classTitle;
-    }
-    else if (hasOwnProp(settings, 'className') &&
-             checkType(settings.className, 'string')) {
-      Debug.defaultSettings.classTitle = settings.className;
-    }
-
-    // Set the default value for turnOffMethods
-    if ( hasOwnProp(settings, 'turnOffMethods') ) {
-      if ( checkType(settings.turnOffMethods, 'string') ) {
-        Debug.defaultSettings.turnOffMethods = settings.turnOffMethods;
+    // Setup the non-default setters
+    setters.errorBreakpoints = function(newVal) {
+      if ( checkType(newVal, 'boolean') ) {
+        errorBreakpoints = newVal;
       }
-      else if ( checkType(settings.turnOffMethods, '!strings') ) {
-        Debug.defaultSettings.turnOffMethods = settings.turnOffMethods.join(' ');
+    };
+    setters.formatElementsAsObj = function(newVal) {
+      if ( checkType(newVal, 'boolean') ) {
+        Debug.formatElementsAsObj = newVal;
       }
-    }
-    else if ( hasOwnProp(settings, 'turnOffTypes') ) {
-      if ( checkType(settings.turnOffTypes, 'string') ) {
-        Debug.defaultSettings.turnOffMethods = settings.turnOffTypes;
-      }
-      else if ( checkType(settings.turnOffTypes, '!strings') ) {
-        Debug.defaultSettings.turnOffMethods = settings.turnOffTypes.join(' ');
+    };
+
+    // Setup the default setters
+    defaultTypes = Debug_DEFAULT_TYPES;
+    for (propName in defaultTypes) {
+      if ( hasOwnProp(defaultTypes, propName) ) {
+        setters[ propName ] = (function(propName, propType) {
+          return function setADebugDefault(propVal) {
+            if ( checkType(propVal, propType) ) {
+              if ( checkType(propVal, '!strings') ) {
+                propVal = propVal.join(' ');
+              }
+              Debug.defaults[ propName ] = propVal;
+            }
+          };
+        })(propName, defaultTypes[ propName ]);
       }
     }
 
-    // Set the default value for addBreakpoints
-    if ( hasOwnProp(settings, 'addBreakpoints') ) {
-      if ( checkType(settings.addBreakpoints, 'string') ) {
-        Debug.defaultSettings.addBreakpoints = settings.addBreakpoints;
-      }
-      else if ( checkType(settings.addBreakpoints, '!strings') ) {
-        Debug.defaultSettings.addBreakpoints = settings.addBreakpoints.join(' ');
-      }
-    }
-    else if ( hasOwnProp(settings, 'turnOnDebuggers') ) {
-      if ( checkType(settings.turnOnDebuggers, 'string') ) {
-        Debug.defaultSettings.addBreakpoints = settings.turnOnDebuggers;
-      }
-      else if ( checkType(settings.turnOnDebuggers, '!strings') ) {
-        Debug.defaultSettings.addBreakpoints = settings.turnOnDebuggers.join(' ');
-      }
-    }
+    return function set(settings) {
 
-    // Set the default value for turnOnGroups
-    if (hasOwnProp(settings, 'turnOnGroups') &&
-        checkType(settings.turnOnGroups, 'boolean')) {
-      Debug.defaultSettings.turnOnGroups = settings.turnOnGroups;
-    }
+      /** @type {string} */
+      var propName;
+      /** @type {*} */
+      var propVal;
 
-    // Set the default value for turnOnProfiles
-    if (hasOwnProp(settings, 'turnOnProfiles') &&
-        checkType(settings.turnOnProfiles, 'boolean')) {
-      Debug.defaultSettings.turnOnProfiles = settings.turnOnProfiles;
-    }
+      if ( checkType(settings, '!object') ) {
 
-    // Set the default value for turnOnTimers
-    if (hasOwnProp(settings, 'turnOnTimers') &&
-        checkType(settings.turnOnTimers, 'boolean')) {
-      Debug.defaultSettings.turnOnTimers = settings.turnOnTimers;
-    }
+        // Replace any old property names with the correct property name
+        if (hasOwnProp(settings, 'errorDebuggers') &&
+            !hasOwnProp(settings, 'errorBreakpoints')) {
+          settings.errorBreakpoints = settings.errorDebuggers;
+        }
+        settings = Debug.replaceOldSettings(settings);
 
-    // Set formatElementsAsObj
-    if (hasOwnProp(settings, 'formatElementsAsObj') &&
-        checkType(settings.formatElementsAsObj, 'boolean')) {
-      Debug.formatElementsAsObj = settings.formatElementsAsObj;
-    }
-  };
+        // Set each new setting
+        for (propName in settings) {
+          if (hasOwnProp(settings, propName) &&
+              hasOwnProp(setters, propName)) {
+            propVal = settings[ propName ];
+            setters[ propName ](propVal);
+          }
+        }
+      }
+      else {
+        Errors.setConsoleTypeError( getTypeOf(settings) );
+        insertErrorBreakpoint();
+      }
+    };
+  })();
 
   /**
    * -----------------------------------------------------
