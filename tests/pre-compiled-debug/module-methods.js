@@ -60,3 +60,15 @@
    * @return {boolean} The evaluation result.
    */
   var isValidTypeString = aIV.utils.isValidTypeString;
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (getTypeOf)
+   * ---------------------------------------------------
+   * @desc A shortcut for the native typeof operator that additionally
+   *   distinguishes null, array, document, and element types from an
+   *   object type.
+   * @param {*} val - The value to get the typeof.
+   * @return {string} The value's type.
+   */
+  var getTypeOf = aIV.utils.getTypeOf;
