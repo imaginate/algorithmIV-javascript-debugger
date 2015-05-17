@@ -1,4 +1,51 @@
   /**
+   * -----------------------------------------------
+   * Public Property (Debug.replaceOldSettings)
+   * -----------------------------------------------
+   * @desc Handles moving old setting properties to the correct namespace.
+   * @param {!Object} settings
+   * @param {string=} settings.classTitle
+   * @param {string=} settings.className
+   * @param {(string|!strings)=} settings.turnOffMethods
+   * @param {(string|!strings)=} settings.turnOffTypes
+   * @param {(string|!strings)=} settings.addBreakpoints
+   * @param {(string|!strings)=} settings.turnOnDebuggers
+   * @param {boolean=} settings.turnOnGroups
+   * @param {boolean=} settings.openGroups
+   * @param {boolean=} settings.turnOnProfiles
+   * @param {boolean=} settings.turnOnTimers
+   * @return {!Object} The corrected settings object.
+   */
+  Debug.replaceOldSettings = function(settings) {
+
+    /** @type {string} */
+    var oldProp;
+    /** @type {string} */
+    var newProp;
+    /** @type {!Object} */
+    var props;
+
+    // A hash map of oldProp => newProp
+    props = {
+      className      : 'classTitle',
+      turnOffTypes   : 'turnOffMethods',
+      turnOnDebuggers: 'addBreakpoints'
+    };
+
+    // Check the settings for any old properties & correct them
+    for (oldProp in props) {
+      if ( hasOwnProp(props, oldProp) ) {
+        newProp = props[ prop ];
+        if ( !hasOwnProp(settings, newProp) ) {
+          settings[ newProp ] = settings[ oldProp ];
+        }
+      }
+    }
+
+    return settings;
+  };
+
+  /**
    * -----------------------------------------------------
    * Public Method (Debug.insertBreakpoint)
    * -----------------------------------------------------
