@@ -27,7 +27,7 @@
     var propVal;
 
     newSettings = {};
-    defaults = Debug.defaultSettings;
+    defaults = Debug.defaults;
 
     // Set the new instance's settings to the defaults
     for (propName in defaults) {
@@ -38,7 +38,7 @@
 
     // Update the new instance's settings with any local settings
     if (settings) {
-      defaultTypes = Debug.DEFAULT_TYPES;
+      defaultTypes = Debug_DEFAULT_TYPES;
       for (propName in settings) {
         if (hasOwnProp(settings, propName) && hasOwnProp(defaults, propName)) {
           propVal = settings[ propName ];
