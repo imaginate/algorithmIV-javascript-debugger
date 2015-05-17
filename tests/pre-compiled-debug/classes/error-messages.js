@@ -26,10 +26,9 @@
     message += 'be an object with string => value pairs that match the module ';
     message += 'properties you want to set and their new value (e.g. property ';
     message += '=> value). The invalid settings data type was \'';
-    message += (settings === null) ? 'null' : typeof settings;
-    message += '\'';
+    message += getTypeOf(settings) + '\'';
 
-    return message;
+    throw new TypeError(message);
   };
 
   /**
