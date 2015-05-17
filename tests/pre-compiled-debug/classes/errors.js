@@ -12,11 +12,10 @@
    * -----------------------------------------------------
    * Public Method (Errors.setConsoleTypeError)
    * -----------------------------------------------------
-   * @desc Creates an error message for a param type error in aIV.console.set.
-   * @param {*} settings - The new settings.
-   * @return {string} The error message.
+   * @desc Throws a TypeError for an invalid settings param in aIV.console.set.
+   * @param {string} settingsType - The invalid data type for the settings param.
    */
-  Errors.setConsoleTypeError = function(settings) {
+  Errors.setConsoleTypeError = function(settingsType) {
 
     /** @type {string} */
     var message;
@@ -26,7 +25,7 @@
     message += 'be an object with string => value pairs that match the module ';
     message += 'properties you want to set and their new value (e.g. property ';
     message += '=> value). The invalid settings data type was \'';
-    message += getTypeOf(settings) + '\'';
+    message += settingsType + '\'';
 
     throw new TypeError(message);
   };
