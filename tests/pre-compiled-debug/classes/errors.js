@@ -1,22 +1,22 @@
   /**
    * -----------------------------------------------------
-   * Public Class (ErrorMessages)
+   * Public Class (Errors)
    * -----------------------------------------------------
-   * @desc Error messages used throughout this module.
+   * @desc Throws all of the Errors for the debugger.
    * @type {!Object<string, function>}
    * @struct
    */
-  var ErrorMessages = {};
+  var Errors = {};
 
   /**
    * -----------------------------------------------------
-   * Public Method (ErrorMessages.setConsoleTypeError)
+   * Public Method (Errors.setConsoleTypeError)
    * -----------------------------------------------------
    * @desc Creates an error message for a param type error in aIV.console.set.
    * @param {*} settings - The new settings.
    * @return {string} The error message.
    */
-  ErrorMessages.setConsoleTypeError = function(settings) {
+  Errors.setConsoleTypeError = function(settings) {
 
     /** @type {string} */
     var message;
@@ -33,7 +33,7 @@
 
   /**
    * -----------------------------------------------------
-   * Public Method (ErrorMessages.invalidGetName)
+   * Public Method (Errors.invalidGetName)
    * -----------------------------------------------------
    * @desc Creates an error message for an invalid method/type name
    *   parameter in a Debug get method.
@@ -41,7 +41,7 @@
    * @param {string} name - The user's method/type name parameter.
    * @return {string} The error message.
    */
-  ErrorMessages.invalidGetName = function(method, name) {
+  Errors.invalidGetName = function(method, name) {
 
     /** @type {string} */
     var message;
@@ -56,7 +56,7 @@
 
   /**
    * -----------------------------------------------------
-   * Public Method (ErrorMessages.missingMethodName)
+   * Public Method (Errors.missingMethodName)
    * -----------------------------------------------------
    * @desc Creates an error message for a missing method name
    *   parameter in a Debug logging method.
@@ -64,7 +64,7 @@
    * @param {*} methodName - The user's method name parameter.
    * @return {string} The error message.
    */
-  ErrorMessages.missingMethodName = function(method, methodName) {
+  Errors.missingMethodName = function(method, methodName) {
 
     /** @type {string} */
     var message;
@@ -80,14 +80,14 @@
 
   /**
    * -----------------------------------------------------
-   * Public Method (ErrorMessages.missingTypeStrings)
+   * Public Method (Errors.missingTypeStrings)
    * -----------------------------------------------------
    * @desc Creates an error message for missing type string parameters
    *   in a Debug logging method.
    * @param {string} method - The name of the method that failed.
    * @return {string} The error message.
    */
-  ErrorMessages.missingTypeStrings = function(method) {
+  Errors.missingTypeStrings = function(method) {
 
     /** @type {string} */
     var message;
@@ -103,13 +103,13 @@
 
   /**
    * -----------------------------------------------------
-   * Public Method (ErrorMessages.missingTestArgs)
+   * Public Method (Errors.missingTestArgs)
    * -----------------------------------------------------
    * @desc Creates an error message for missing type string parameters
    *   in a Debug logging method.
    * @return {string} The error message.
    */
-  ErrorMessages.missingTestArgs = function() {
+  Errors.missingTestArgs = function() {
 
     /** @type {string} */
     var message;
@@ -127,14 +127,14 @@
 
   /**
    * -----------------------------------------------------
-   * Public Method (ErrorMessages.invalidGroupType)
+   * Public Method (Errors.invalidGroupType)
    * -----------------------------------------------------
    * @desc Creates an error message for an invalid console group type
    *   in a Debug logging method.
    * @param {*} groupType - The invalid group type.
    * @return {string} The error message.
    */
-  ErrorMessages.invalidGroupType = function(groupType) {
+  Errors.invalidGroupType = function(groupType) {
 
     /** @type {string} */
     var message;
@@ -152,14 +152,14 @@
 
   /**
    * -----------------------------------------------------
-   * Public Method (ErrorMessages.missingErrorMessage)
+   * Public Method (Errors.missingErrorMessage)
    * -----------------------------------------------------
    * @desc Creates an error message for a missing error message parameter
    *   in a Debug logging method.
    * @param {string} logMessage - The log message.
    * @return {string} The error message.
    */
-  ErrorMessages.missingErrorMessage = function(logMessage) {
+  Errors.missingErrorMessage = function(logMessage) {
 
     /** @type {string} */
     var message;
@@ -176,13 +176,13 @@
 
   /**
    * -----------------------------------------------------
-   * Public Method (ErrorMessages.missingStateValues)
+   * Public Method (Errors.missingStateValues)
    * -----------------------------------------------------
    * @desc Creates an error message for missing values in a Debug.proto.state
    *   call.
    * @return {string} The error message.
    */
-  ErrorMessages.missingStateValues = function() {
+  Errors.missingStateValues = function() {
 
     /** @type {string} */
     var message;
@@ -198,14 +198,14 @@
 
   /**
    * -----------------------------------------------------
-   * Public Method (ErrorMessages.missingLogMessage)
+   * Public Method (Errors.missingLogMessage)
    * -----------------------------------------------------
    * @desc Creates an error message for a missing log message parameter
    *   in a Debug logging method.
    * @param {string} logMessage - The log message.
    * @return {string} The error message.
    */
-  ErrorMessages.missingLogMessage = function(logMessage) {
+  Errors.missingLogMessage = function(logMessage) {
 
     /** @type {string} */
     var message;
@@ -222,7 +222,7 @@
 
   /**
    * -----------------------------------------------------
-   * Public Method (ErrorMessages.invalidSetName)
+   * Public Method (Errors.invalidSetName)
    * -----------------------------------------------------
    * @desc Creates an error message for an invalid method/type name
    *   parameter in a Debug controlling method.
@@ -230,7 +230,7 @@
    * @param {*} name - The user's method/type name parameter.
    * @return {string} The error message.
    */
-  ErrorMessages.invalidSetName = function(method, name) {
+  Errors.invalidSetName = function(method, name) {
 
     /** @type {string} */
     var message;
@@ -243,4 +243,4 @@
     return message;
   };
 
-  freezeObj(ErrorMessages, true);
+  freezeObj(Errors, true);

@@ -20,7 +20,7 @@ sed \
   -e "/insert-module-api/ r module-api.js" \
   -e "/insert-module-vars/ r module-vars.js" \
   -e "/insert-module-methods/ r module-methods.js" \
-  -e "/insert-error-messages/ r classes/error-messages.js" \
+  -e "/insert-errors/ r classes/errors.js" \
   -e "/insert-debug-constructor/ r classes/debug/constructor.js" \
   -e "/insert-debug-logging-methods/ r classes/debug/logging-methods.js" \
   -e "/insert-debug-controlling-methods/ r classes/debug/controlling-methods.js" \
@@ -40,7 +40,7 @@ sed ^
   -e "/insert-module-api/ r module-api.js" ^
   -e "/insert-module-vars/ r module-vars.js" ^
   -e "/insert-module-methods/ r module-methods.js" ^
-  -e "/insert-error-messages/ r classes/error-messages.js" ^
+  -e "/insert-errors/ r classes/errors.js" ^
   -e "/insert-debug-constructor/ r classes/debug/constructor.js" ^
   -e "/insert-debug-logging-methods/ r classes/debug/logging-methods.js" ^
   -e "/insert-debug-controlling-methods/ r classes/debug/controlling-methods.js" ^
@@ -139,7 +139,7 @@ sed \
   -e "/insert-module-api/ r module-api.js" \
   -e "/insert-module-vars/ r module-vars.js" \
   -e "/insert-module-methods/ r module-methods.js" \
-  -e "/insert-error-messages/ r classes/error-messages.js" \
+  -e "/insert-errors/ r classes/errors.js" \
   -e "/insert-debug-constructor/ r classes/debug/constructor.js" \
   -e "/insert-debug-logging-methods/ r classes/debug/logging-methods.js" \
   -e "/insert-debug-controlling-methods/ r classes/debug/controlling-methods.js" \
@@ -159,7 +159,7 @@ sed ^
   -e "/insert-module-api/ r module-api.js" ^
   -e "/insert-module-vars/ r module-vars.js" ^
   -e "/insert-module-methods/ r module-methods.js" ^
-  -e "/insert-error-messages/ r classes/error-messages.js" ^
+  -e "/insert-errors/ r classes/errors.js" ^
   -e "/insert-debug-constructor/ r classes/debug/constructor.js" ^
   -e "/insert-debug-logging-methods/ r classes/debug/logging-methods.js" ^
   -e "/insert-debug-controlling-methods/ r classes/debug/controlling-methods.js" ^

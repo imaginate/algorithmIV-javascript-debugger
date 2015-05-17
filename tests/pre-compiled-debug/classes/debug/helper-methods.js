@@ -152,7 +152,7 @@
 
     // Ensure invalid type names do not exist
     if ( !checkType(type, 'string') ) {
-      console.error( ErrorMessages.invalidSetName(callerName, type) );
+      console.error( Errors.invalidSetName(callerName, type) );
       insertErrorBreakpoint();
       return;
     }
@@ -175,7 +175,7 @@
 
     // Report any errors
     if (errors) {
-      console.error( ErrorMessages.invalidSetName(callerName, errors) );
+      console.error( Errors.invalidSetName(callerName, errors) );
       insertErrorBreakpoint();
       return;
     }

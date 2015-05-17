@@ -171,7 +171,7 @@
     this.getMethod = function(method) {
 
       if (!checkType(method, 'string') ||  !hasOwnProp(methods, method)) {
-        console.error( ErrorMessages.invalidGetName('getMethod', method) );
+        console.error( Errors.invalidGetName('getMethod', method) );
         insertErrorBreakpoint();
         return;
       }
@@ -192,7 +192,7 @@
     this.getBreakpoint = function(method) {
 
       if (!checkType(method, 'string') || !hasOwnProp(breakpoints, method)) {
-        console.error( ErrorMessages.invalidGetName('getBreakpoint', method) );
+        console.error( Errors.invalidGetName('getBreakpoint', method) );
         insertErrorBreakpoint();
         return;
       }
@@ -220,7 +220,7 @@
       };
 
       if (!checkType(prop, 'string') || !hasOwnProp(props, prop)) {
-        console.error( ErrorMessages.invalidGetName('getAuto', prop) );
+        console.error( Errors.invalidGetName('getAuto', prop) );
         insertErrorBreakpoint();
         return;
       }

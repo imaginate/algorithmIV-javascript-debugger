@@ -54,7 +54,7 @@
 
     // Test the method name
     if ( !checkType(methodName, 'string') ) {
-      console.error( ErrorMessages.missingMethodName('init', methodName) );
+      console.error( Errors.missingMethodName('init', methodName) );
       insertErrorBreakpoint();
       return;
     }
@@ -65,7 +65,7 @@
     // Test for each argument's data type string
     if (len) {
       if ((len % 2) || !Debug.checkArgsDataTypeStrings(args)) {
-        console.error( ErrorMessages.missingTypeStrings('init') );
+        console.error( Errors.missingTypeStrings('init') );
         insertErrorBreakpoint();
         return;
       }
@@ -169,7 +169,7 @@
 
     // Test the method name before executing
     if ( !checkType(methodName, 'string') ) {
-      console.error( ErrorMessages.missingMethodName('start', methodName) );
+      console.error( Errors.missingMethodName('start', methodName) );
       insertErrorBreakpoint();
       return;
     }
@@ -244,7 +244,7 @@
 
     // Test the method name before executing
     if ( !checkType(methodName, 'string') ) {
-      console.error( ErrorMessages.missingMethodName('end', methodName) );
+      console.error( Errors.missingMethodName('end', methodName) );
       insertErrorBreakpoint();
       return;
     }
@@ -328,21 +328,21 @@
 
     // Test the method name
     if ( !checkType(methodName, 'string') ) {
-      console.error( ErrorMessages.missingMethodName('args', methodName) );
+      console.error( Errors.missingMethodName('args', methodName) );
       insertErrorBreakpoint();
       return;
     }
 
     // Test for arguments
     if (args.length < 2) {
-      console.error( ErrorMessages.missingTestArgs() );
+      console.error( Errors.missingTestArgs() );
       insertErrorBreakpoint();
       return;
     }
 
     // Test each argument's data type string
     if ((args.length % 2) || !Debug.checkArgsDataTypeStrings(args)) {
-      console.error( ErrorMessages.missingTypeStrings('args') );
+      console.error( Errors.missingTypeStrings('args') );
       insertErrorBreakpoint();
       return;
     }
@@ -440,14 +440,14 @@
 
     // Test the method name
     if ( !checkType(methodName, 'string') ) {
-      console.error( ErrorMessages.missingMethodName('fail', methodName) );
+      console.error( Errors.missingMethodName('fail', methodName) );
       insertErrorBreakpoint();
       return;
     }
 
     // Test the error message
     if ( !checkType(message, 'string') ) {
-      console.error( ErrorMessages.missingErrorMessage(message) );
+      console.error( Errors.missingErrorMessage(message) );
       insertErrorBreakpoint();
       return false;
     }
@@ -565,14 +565,14 @@
 
     // Test the method name
     if ( !checkType(methodName, 'string') ) {
-      console.error( ErrorMessages.missingMethodName('group', methodName) );
+      console.error( Errors.missingMethodName('group', methodName) );
       insertErrorBreakpoint();
       return;
     }
 
     // Test the group type
     if (!checkType(groupType, 'string') || !hasOwnProp(groupTypes, groupType)) {
-      console.error( ErrorMessages.invalidGroupType(groupType) );
+      console.error( Errors.invalidGroupType(groupType) );
       insertErrorBreakpoint();
       return;
     }
@@ -675,14 +675,14 @@
 
     // Test the method name
     if ( !checkType(methodName, 'string') ) {
-      console.error( ErrorMessages.missingMethodName('state', methodName) );
+      console.error( Errors.missingMethodName('state', methodName) );
       insertErrorBreakpoint();
       return;
     }
 
     // Test the remaining arguments
     if (!args.length) {
-      console.error( ErrorMessages.missingStateValues() );
+      console.error( Errors.missingStateValues() );
       insertErrorBreakpoint();
       return;
     }
@@ -767,14 +767,14 @@
 
     // Test the method name
     if ( !checkType(methodName, 'string') ) {
-      console.error( ErrorMessages.missingMethodName('misc', methodName) );
+      console.error( Errors.missingMethodName('misc', methodName) );
       insertErrorBreakpoint();
       return;
     }
 
     // Test the log message
     if (!message && !args.length) {
-      console.error( ErrorMessages.missingLogMessage(message) );
+      console.error( Errors.missingLogMessage(message) );
       insertErrorBreakpoint();
       return;
     }

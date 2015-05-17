@@ -86,9 +86,9 @@
 // insert-module-methods
 
 /* -----------------------------------------------------------------------------
- * The ErrorMessages Class (classes/error-messages.js)
+ * The Errors Class (classes/errors.js)
  * -------------------------------------------------------------------------- */
-// insert-error-messages
+// insert-errors
 
 /* -----------------------------------------------------------------------------
  * The Debug Class Constructor (classes/debug/constructor.js)
