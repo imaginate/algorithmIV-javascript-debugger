@@ -180,7 +180,7 @@
       that.logs.push(log);
 
       args.unshift(message);
-      originals.group.apply(console, args);
+      originals.groupCollapsed.apply(console, args);
     };
 
     /**
