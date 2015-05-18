@@ -133,3 +133,75 @@
    * @return {string} The value's type.
    */
   var getTypeOf = aIV.utils.getTypeOf;
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (makeResetString)
+   * -----------------------------------------------------
+   * @desc Makes an array of strings representing each value to be reset.
+   * @param {Array<string>=} settings - The settings to reset.
+   * @return {Array<string>} The array of strings to reset.
+   */
+  var makeResetString = (function setup_makeResetString() {
+
+    /** @type {!Object<string, string>} */
+    var props;
+    /** @type {string} */
+    var propName;
+
+    // A hash map of propName => propName
+    props = {
+      errorBreakpoints   : 'errorBreakpoints',
+      errorDebuggers     : 'errorBreakpoints',
+      className          : 'classTitle',
+      turnOffTypes       : 'turnOffMethods',
+      turnOnDebuggers    : 'addBreakpoints',
+      formatElementsAsObj: 'formatElementsAsObj'
+    };
+
+    for (propName in Debug_DEFAULTS) {
+      if ( hasOwnProp(Debug_DEFAULTS, propName) ) {
+        props[ propName ] = propName;
+      }
+    }
+
+    return function makeResetString(settings) {
+
+      /** @type {!Array<string>} */
+      var result;
+      /** @type {string} */
+      var prop;
+      /** @type {number} */
+      var len;
+      /** @type {number} */
+      var i;
+
+      if ( checkType(settings, '?null=') ) {
+        result = [];
+        // Add all props to the result
+        for (prop in props) {
+          if ( hasOwnProp(props, prop) ) {
+            result.push(props[ prop ]);
+          }
+        }
+      }
+      else {
+        if ( checkType(settings, '!strings') ) {
+          result = [];
+          // Add the correct props to the result
+          i = settings.length;
+          while (i--) {
+            prop = args[i];
+            if ( hasOwnProp(props, prop) ) {
+              result.push(props[ prop ]);
+            }
+          }
+        }
+        else {
+          result = null;
+        }
+      }
+
+      return result;
+    };
+  })();
