@@ -12,7 +12,7 @@
     ////////////////////////////////////////////////////////////////////////////
 
     /** @type {!TestResults} */
-    var results = new TestResults('aIV.console.create', 17);
+    var results = new TestResults('aIV.console.create', 18);
 
     ////////////////////////////////////////////////////////////////////////////
     // Define & Setup The Public createInstance Method
@@ -54,6 +54,7 @@
 
       // Test the auto insert native console methods params
       testTurnOnGroups();
+      testOpenGroups();
       testTurnOnProfiles();
       testTurnOnTimers();
 
@@ -593,6 +594,56 @@
       if (!pass) {
         errorMsg = 'aIV.console.create({ turnOnGroups: true }) failed to ';
         errorMsg += 'turn on the instance\'s auto groups';
+        results.addError(errorMsg);
+      }
+    };
+
+    /**
+     * ---------------------------------------------------
+     * Private Method (testOpenGroups)
+     * ---------------------------------------------------
+     * @type {function}
+     */
+    var testOpenGroups = function() {
+
+      /** @type {string} */
+      var log;
+      /** @type {boolean} */
+      var pass;
+      /** @type {string} */
+      var errorMsg;
+      /** @type {!Debug} */
+      var consoleInst1;
+      /** @type {!Debug} */
+      var consoleInst2;
+      /** @type {!MockConsole} */
+      var consoleMock;
+
+      consoleInst1 = aIV.console.create({
+        classTitle  : 'createInst.testOpenGroups.1',
+        turnOnGroups: true,
+        openGroups  : true
+      });
+      consoleInst2 = aIV.console.create({
+        classTitle  : 'createInst.testOpenGroups.2',
+        turnOnGroups: true,
+        openGroups  : false
+      });
+
+      consoleInst1.start('testMethod');
+      consoleInst2.start('testMethod');
+
+      consoleMock.reset();
+
+      log = 'OPEN GROUP: GROUP: createInst.testOpenGroups.1.testMethod()';
+      pass = (consoleMock.logs[0] === log);
+
+      log = 'COLL GROUP: GROUP: createInst.testOpenGroups.2.testMethod()';
+      pass = pass && (consoleMock.logs[3] === log);
+
+      if (!pass) {
+        errorMsg = 'aIV.console.create({ openGroups: true }) failed to ';
+        errorMsg += 'automate groups correctly';
         results.addError(errorMsg);
       }
     };
