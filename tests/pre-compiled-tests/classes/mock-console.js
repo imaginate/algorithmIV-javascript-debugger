@@ -32,10 +32,11 @@
      * @type {!Object<string, function>}
      */
     var originals = {
-      log     : console.log,
-      error   : console.error,
-      group   : console.group,
-      groupEnd: console.groupEnd
+      log           : console.log,
+      error         : console.error,
+      group         : console.group,
+      groupCollapsed: console.groupCollapsed,
+      groupEnd      : console.groupEnd
     };
 
     /**
@@ -62,6 +63,7 @@
       console.log = originals.log;
       console.error = originals.error;
       console.group = originals.group;
+      console.groupCollapsed = originals.groupCollapsed;
       console.groupEnd = originals.groupEnd;
     };
 
@@ -127,7 +129,7 @@
 
     /**
      * -----------------------------------------------
-     * Mock Method (MockConsole.log)
+     * Mock Method (MockConsole.group)
      * -----------------------------------------------
      * @type {function}
      */
@@ -155,7 +157,35 @@
 
     /**
      * -----------------------------------------------
-     * Mock Method (MockConsole.log)
+     * Mock Method (MockConsole.groupCollapsed)
+     * -----------------------------------------------
+     * @type {function}
+     */
+    console.groupCollapsed = function(message) {
+
+      /** @type {string} */
+      var log;
+      /** @type {!strings} */
+      var args;
+
+      args = ( (arguments.length > 1) ?
+        Array.prototype.slice.call(arguments, 1) : []
+      );
+
+      log = 'COLL GROUP: ' + message;
+      if (args.length) {
+        log += ' ' + args.join(' ');
+      }
+
+      that.logs.push(log);
+
+      args.unshift(message);
+      originals.group.apply(console, args);
+    };
+
+    /**
+     * -----------------------------------------------
+     * Mock Method (MockConsole.groupEnd)
      * -----------------------------------------------
      * @type {function}
      */
