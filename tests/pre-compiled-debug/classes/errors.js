@@ -32,6 +32,24 @@
 
   /**
    * -----------------------------------------------------
+   * Public Method (Errors.resetConsoleTypeError)
+   * -----------------------------------------------------
+   * @desc Throws a TypeError for an invalid setting param in aIV.console.reset.
+   * @type {function}
+   */
+  Errors.resetConsoleTypeError = function() {
+
+    /** @type {string} */
+    var message;
+
+    message = 'An aIV.console.reset call received an invalid setting ';
+    message += 'parameter (should be a string or an array of strings).';
+
+    throw new TypeError(message);
+  };
+
+  /**
+   * -----------------------------------------------------
    * Public Method (Errors.invalidGetName)
    * -----------------------------------------------------
    * @desc Creates an error message for an invalid method/type name
