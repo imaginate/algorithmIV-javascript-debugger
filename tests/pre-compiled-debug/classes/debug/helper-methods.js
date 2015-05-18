@@ -16,13 +16,9 @@
    * @param {boolean=} settings.turnOnTimers
    * @return {!Object} The corrected settings object.
    */
-  Debug.replaceOldSettings = function(settings) {
+  Debug.replaceOldSettings = (function setup_replaceOldSettings() {
 
-    /** @type {string} */
-    var oldProp;
-    /** @type {string} */
-    var newProp;
-    /** @type {!Object} */
+    /** @type {!Object<string, string>} */
     var props;
 
     // A hash map of oldProp => newProp
@@ -32,18 +28,26 @@
       turnOnDebuggers: 'addBreakpoints'
     };
 
-    // Check the settings for any old properties & correct them
-    for (oldProp in props) {
-      if ( hasOwnProp(props, oldProp) ) {
-        newProp = props[ prop ];
-        if ( !hasOwnProp(settings, newProp) ) {
-          settings[ newProp ] = settings[ oldProp ];
+    return function replaceOldSettings(settings) {
+
+      /** @type {string} */
+      var oldProp;
+      /** @type {string} */
+      var newProp;
+
+      // Check the settings for any old properties & correct them
+      for (oldProp in props) {
+        if (hasOwnProp(props, oldProp) && hasOwnProp(settings, oldProp)) {
+          newProp = props[ oldProp ];
+          if ( !hasOwnProp(settings, newProp) ) {
+            settings[ newProp ] = settings[ oldProp ];
+          }
         }
       }
-    }
 
-    return settings;
-  };
+      return settings;
+    };
+  })();
 
   /**
    * -----------------------------------------------------
