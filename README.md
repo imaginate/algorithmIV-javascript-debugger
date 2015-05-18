@@ -23,14 +23,16 @@
     <body>...</body>
 </html>
 ```
-- Use [aIV.debug.set](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/86710137dd6f364f94f324eaf1c7803d5cd1bbb9/src/pre-compiled-parts/public-api.js#L56-95) to change the default settings
+- Use [aIV.debug.set](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/e6f4e24865509d/src/pre-compiled-parts/public-api.js#L60-103) and [aIV.debug.reset](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/e6f4e24865509d/src/pre-compiled-parts/public-api.js#L105-114) to change the default settings
 ```javascript
 aIV.debug.set({
   turnOffMethods: 'start',
   addBreakpoints: 'all'
 });
+aIV.debug.reset('errorBreakpoints', 'openGroups');
+aIV.debug.reset(); // Resets all options
 ```
-- Use [aIV.debug](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/86710137dd6f364f94f324eaf1c7803d5cd1bbb9/src/pre-compiled-parts/public-api.js#L21-53) to create as many debug object instances as you need
+- Use [aIV.debug](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/e6f4e24865509d/src/pre-compiled-parts/public-api.js#L21-58) to create as many debug object instances as you need
 ```javascript
 var debug = aIV.debug({
   classTitle    : 'Example',
