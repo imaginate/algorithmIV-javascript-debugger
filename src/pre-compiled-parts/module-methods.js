@@ -1,5 +1,66 @@
   /**
    * -----------------------------------------------------
+   * Public Method (makeNewDebugInst)
+   * -----------------------------------------------------
+   * @desc Creates a new Debug object instance. For more details about the
+   *   parameters [see debugModuleAPI.init]{@link debugModuleAPI#init}.
+   * @param {string} classTitle
+   * @param {Object} settings
+   * @param {(string|!strings)=} settings.turnOffMethods
+   * @param {(string|!strings)=} settings.addBreakpoints
+   * @param {boolean=} settings.turnOnGroups
+   * @param {boolean=} settings.openGroups
+   * @param {boolean=} settings.turnOnProfiles
+   * @param {boolean=} settings.turnOnTimers
+   */
+  function makeNewDebugInst(classTitle, settings) {
+
+    /** @type {!Object} */
+    var defaultTypes;
+    /** @type {!Object} */
+    var newSettings;
+    /** @type {!Object} */
+    var defaults;
+    /** @type {string} */
+    var propName;
+    /** @type {*} */
+    var propVal;
+
+    newSettings = {};
+    defaults = Debug.defaults;
+
+    // Set the new instance's settings to the defaults
+    for (propName in defaults) {
+      if ( hasOwnProp(defaults, propName) ) {
+        newSettings[ propName ] = defaults[ propName ];
+      }
+    }
+
+    // Update the new instance's settings with any local settings
+    if (settings) {
+      defaultTypes = Debug_DEFAULT_TYPES;
+      for (propName in settings) {
+        if (hasOwnProp(settings, propName) && hasOwnProp(defaults, propName)) {
+          propVal = settings[ propName ];
+          if ( checkType(propVal, defaultTypes[ propName ]) ) {
+            if ( checkType(propVal, '!strings') ) {
+              propVal = propVal.join(' ');
+            }
+            newSettings[ propName ] = propVal;
+          }
+        }
+      }
+    }
+
+    // Update the new instance's class title
+    newSettings.classTitle = classTitle;
+
+    // Setup and save the new Debug instance
+    debugInstances[ classTitle ] = new Debug(newSettings);
+  };
+
+  /**
+   * -----------------------------------------------------
    * Public Method (insertErrorBreakpoint)
    * -----------------------------------------------------
    * @desc Handles whether a debugger breakpoint is inserted for an error.
@@ -60,3 +121,87 @@
    * @return {boolean} The evaluation result.
    */
   var isValidTypeString = aIV.utils.isValidTypeString;
+
+  /**
+   * ---------------------------------------------------
+   * Public Method (getTypeOf)
+   * ---------------------------------------------------
+   * @desc A shortcut for the native typeof operator that additionally
+   *   distinguishes null, array, document, and element types from an
+   *   object type.
+   * @param {*} val - The value to get the typeof.
+   * @return {string} The value's type.
+   */
+  var getTypeOf = aIV.utils.getTypeOf;
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (makeResetString)
+   * -----------------------------------------------------
+   * @desc Makes an array of strings representing each value to be reset.
+   * @param {Array<string>=} settings - The settings to reset.
+   * @return {Array<string>} The array of strings to reset.
+   */
+  var makeResetString = (function setup_makeResetString() {
+
+    /** @type {!Object<string, string>} */
+    var props;
+    /** @type {string} */
+    var propName;
+
+    // A hash map of propName => propName
+    props = {
+      errorBreakpoints   : 'errorBreakpoints',
+      errorDebuggers     : 'errorBreakpoints',
+      className          : 'classTitle',
+      turnOffTypes       : 'turnOffMethods',
+      turnOnDebuggers    : 'addBreakpoints',
+      formatElementsAsObj: 'formatElementsAsObj'
+    };
+
+    for (propName in Debug_DEFAULTS) {
+      if ( hasOwnProp(Debug_DEFAULTS, propName) ) {
+        props[ propName ] = propName;
+      }
+    }
+
+    return function makeResetString(settings) {
+
+      /** @type {!Array<string>} */
+      var result;
+      /** @type {string} */
+      var prop;
+      /** @type {number} */
+      var len;
+      /** @type {number} */
+      var i;
+
+      if ( checkType(settings, '?null=') ) {
+        result = [];
+        // Add all props to the result
+        for (prop in props) {
+          if ( hasOwnProp(props, prop) ) {
+            result.push(props[ prop ]);
+          }
+        }
+      }
+      else {
+        if ( checkType(settings, '!strings') ) {
+          result = [];
+          // Add the correct props to the result
+          i = settings.length;
+          while (i--) {
+            prop = args[i];
+            if ( hasOwnProp(props, prop) ) {
+              result.push(props[ prop ]);
+            }
+          }
+        }
+        else {
+          result = null;
+        }
+      }
+
+      return result;
+    };
+  })();

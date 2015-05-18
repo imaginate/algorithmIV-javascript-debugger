@@ -1,4 +1,55 @@
   /**
+   * -----------------------------------------------
+   * Public Property (Debug.replaceOldSettings)
+   * -----------------------------------------------
+   * @desc Handles moving old setting properties to the correct namespace.
+   * @param {!Object} settings
+   * @param {string=} settings.classTitle
+   * @param {string=} settings.className
+   * @param {(string|!strings)=} settings.turnOffMethods
+   * @param {(string|!strings)=} settings.turnOffTypes
+   * @param {(string|!strings)=} settings.addBreakpoints
+   * @param {(string|!strings)=} settings.turnOnDebuggers
+   * @param {boolean=} settings.turnOnGroups
+   * @param {boolean=} settings.openGroups
+   * @param {boolean=} settings.turnOnProfiles
+   * @param {boolean=} settings.turnOnTimers
+   * @return {!Object} The corrected settings object.
+   */
+  Debug.replaceOldSettings = (function setup_replaceOldSettings() {
+
+    /** @type {!Object<string, string>} */
+    var props;
+
+    // A hash map of oldProp => newProp
+    props = {
+      className      : 'classTitle',
+      turnOffTypes   : 'turnOffMethods',
+      turnOnDebuggers: 'addBreakpoints'
+    };
+
+    return function replaceOldSettings(settings) {
+
+      /** @type {string} */
+      var oldProp;
+      /** @type {string} */
+      var newProp;
+
+      // Check the settings for any old properties & correct them
+      for (oldProp in props) {
+        if (hasOwnProp(props, oldProp) && hasOwnProp(settings, oldProp)) {
+          newProp = props[ oldProp ];
+          if ( !hasOwnProp(settings, newProp) ) {
+            settings[ newProp ] = settings[ oldProp ];
+          }
+        }
+      }
+
+      return settings;
+    };
+  })();
+
+  /**
    * -----------------------------------------------------
    * Public Method (Debug.insertBreakpoint)
    * -----------------------------------------------------
@@ -58,28 +109,27 @@
    */
   Debug.handleAuto = function(type, methodName, end) {
 
+    /** @type {boolean} */
+    var pass;
     /** @type {string} */
     var label;
 
-    if ( !this.getAuto(type) ) {
-      return false;
+    pass = this.getAuto(type);
+
+    if (pass) {
+
+      label = Debug.autoSettings[ type ].msgTitle + ': ';
+      label += this.classTitle + methodName;
+
+      if (end) {
+        Debug.autoSettings[ type ].endFunc(label);
+      }
+      else {
+        Debug.autoSettings[ type ].startFunc(label, this.openGroups);
+      }
     }
 
-    if ( !checkType(end, 'boolean') ) {
-      end = false;
-    }
-
-    label = Debug.autoSettings[ type ].msgTitle + ': ';
-    label += this.classTitle + methodName;
-
-    if (end) {
-      Debug.autoSettings[ type ].endFunc(label);
-    }
-    else {
-      Debug.autoSettings[ type ].startFunc(label);
-    }
-
-    return true;
+    return pass;
   };
 
   /**
@@ -105,7 +155,7 @@
 
     // Ensure invalid type names do not exist
     if ( !checkType(type, 'string') ) {
-      console.error( ErrorMessages.invalidSetName(callerName, type) );
+      console.error( Errors.invalidSetName(callerName, type) );
       insertErrorBreakpoint();
       return;
     }
@@ -128,7 +178,7 @@
 
     // Report any errors
     if (errors) {
-      console.error( ErrorMessages.invalidSetName(callerName, errors) );
+      console.error( Errors.invalidSetName(callerName, errors) );
       insertErrorBreakpoint();
       return;
     }

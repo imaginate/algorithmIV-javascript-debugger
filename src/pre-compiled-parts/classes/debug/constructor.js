@@ -13,6 +13,10 @@
    * @param {boolean} settings.turnOnGroups - Enables/disables automatic
    *   grouping of all logs, timers, and profiles between every start and end
    *   method.
+   * @param {boolean} settings.openGroups - For enabled automatic log grouping
+   *   determines whether groups should be open or collapsed for this Debug
+   *   instance (i.e. if turnOnGroups is enabled then openGroups controls
+   *   whether the auto log groups are open or collapsed).
    * @param {boolean} settings.turnOnProfiles - Enables/disables automatic
    *   profiling for all logic between every start and end method.
    * @param {boolean} settings.turnOnTimers - Enables/disables automatic
@@ -29,10 +33,19 @@
      * ---------------------------------------------------
      * Public Property (Debug.classTitle)
      * ---------------------------------------------------
-     * @desc The class name for the instance.
+     * @desc The class name for this instance.
      * @type {string}
      */
     this.classTitle = settings.classTitle + '.';
+
+    /**
+     * ---------------------------------------------------
+     * Public Property (Debug.openGroups)
+     * ---------------------------------------------------
+     * @desc Whether auto log groups should be open or collapsed.
+     * @type {boolean}
+     */
+    this.openGroups = settings.openGroups;
 
     ////////////////////////////////////////////////////////////////////////////
     // Define The Protected Properties
@@ -171,7 +184,7 @@
     this.getMethod = function(method) {
 
       if (!checkType(method, 'string') ||  !hasOwnProp(methods, method)) {
-        console.error( ErrorMessages.invalidGetName('getMethod', method) );
+        console.error( Errors.invalidGetName('getMethod', method) );
         insertErrorBreakpoint();
         return;
       }
@@ -192,7 +205,7 @@
     this.getBreakpoint = function(method) {
 
       if (!checkType(method, 'string') || !hasOwnProp(breakpoints, method)) {
-        console.error( ErrorMessages.invalidGetName('getBreakpoint', method) );
+        console.error( Errors.invalidGetName('getBreakpoint', method) );
         insertErrorBreakpoint();
         return;
       }
@@ -220,7 +233,7 @@
       };
 
       if (!checkType(prop, 'string') || !hasOwnProp(props, prop)) {
-        console.error( ErrorMessages.invalidGetName('getAuto', prop) );
+        console.error( Errors.invalidGetName('getAuto', prop) );
         insertErrorBreakpoint();
         return;
       }

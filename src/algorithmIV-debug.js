@@ -2,7 +2,7 @@
 
 /**
  * -----------------------------------------------------------------------------
- * Algorithm IV Debugger (v1.1.2)
+ * Algorithm IV Debugger (v1.1.3)
  * -----------------------------------------------------------------------------
  * @file Algorithm IV's debugger is a console wrapper that fixes cross-browser
  *   console issues and provides a set of new console methods that make your
@@ -12,7 +12,7 @@
  *   use you will know and control the actions of every JavaScript method in
  *   your code base!
  * @module aIVConsole
- * @version 1.1.2
+ * @version 1.1.3
  * @author Adam Smith ({@link adamsmith@youlum.com})
  * @copyright 2015 Adam A Smith ([github.com/imaginate]{@link https://github.com/imaginate})
  * @license The Apache License ([algorithmiv.com/docs/license]{@link http://algorithmiv.com/docs/license})
@@ -94,9 +94,9 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
  * -------------------------------------------------------------------------- */
 
   /**
-   * ---------------------------------------------------
+   * ---------------------------------------------------------------
    * Global Object (aIV)
-   * ---------------------------------------------------
+   * ---------------------------------------------------------------
    * @desc Holds the public API for aIV's apps, tools, and libraries.
    * @struct
    * @global
@@ -104,9 +104,9 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
   window.aIV = window.aIV || {};
 
   /**
-   * ---------------------------------------------------
+   * ---------------------------------------------------------------
    * Global Object (aIV.console)
-   * ---------------------------------------------------
+   * ---------------------------------------------------------------
    * @desc Holds the public API for aIV's console.
    * @struct
    * @global
@@ -114,9 +114,9 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
   aIV.console = debugModuleAPI.console;
 
   /**
-   * ---------------------------------------------------
-   * Global Method (aIV.console.create)
-   * ---------------------------------------------------
+   * ---------------------------------------------------------------
+   * Global Method (aIV.console.create) (SAME AS aIV.debug)
+   * ---------------------------------------------------------------
    * @desc Creates or retrieves an instance of aIV's Debug class.
    * @param {?(string|Object)=} settings - A string of the Debug instance's
    *   class name or an object with the Debug instance's settings.
@@ -137,6 +137,10 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
    * @param {boolean=} settings.turnOnGroups - Enables/disables automatic
    *   grouping of all logs, timers, and profiles between every start and end
    *   method for this Debug instance.
+   * @param {boolean=} settings.openGroups - For enabled automatic log grouping
+   *   determines whether groups should be open or collapsed for this Debug
+   *   instance (i.e. if turnOnGroups is enabled then openGroups controls
+   *   whether the auto log groups are open or collapsed).
    * @param {boolean=} settings.turnOnProfiles - Enables/disables automatic
    *   profiling for all logic between every start and end method for this
    *   Debug instance.
@@ -149,9 +153,9 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
   aIV.console.create = debugModuleAPI.init;
 
   /**
-   * ---------------------------------------------------
-   * Global Method (aIV.console.set)
-   * ---------------------------------------------------
+   * ---------------------------------------------------------------
+   * Global Method (aIV.console.set) (SAME AS aIV.debug.set)
+   * ---------------------------------------------------------------
    * @desc Allows you to configure the default settings for each new Debug class
    *   instance and enable/disable inserted breakpoints for user errors that
    *   occur upon any Debug class method call (e.g. if you forget to add the
@@ -178,6 +182,9 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
    * @param {boolean=} settings.turnOnGroups - The default setting for automatic
    *   grouping of all logs, timers, and profiles between every start and end
    *   method.
+   * @param {boolean=} settings.openGroups - The default open or collapsed
+   *   setting for automatic log grouping (i.e. if turnOnGroups is enabled then
+   *   openGroups determines if the auto log groups are open or collapsed).
    * @param {boolean=} settings.turnOnProfiles - The default setting for
    *   automatic profiling for all logic between every start and end method.
    * @param {boolean=} settings.turnOnTimers - The default setting for automatic
@@ -191,9 +198,20 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
   aIV.console.set = debugModuleAPI.set;
 
   /**
-   * ---------------------------------------------------
-   * Global Method (aIV.debug)
-   * ---------------------------------------------------
+   * ---------------------------------------------------------------
+   * Global Method (aIV.console.reset) (SAME AS aIV.debug.reset)
+   * ---------------------------------------------------------------
+   * @desc Allows you to reset any of the settings for the debugger.
+   * @param {...(string|strings)=} setting - A setting to reset. If no arguments
+   *   are given this method will automatically reset all of the options.
+   * @return {boolean} The success of the new settings update.
+   */
+  aIV.console.reset = debugModuleAPI.reset;
+
+  /**
+   * ---------------------------------------------------------------
+   * Global Method (aIV.debug) (SAME AS aIV.console.create)
+   * ---------------------------------------------------------------
    * @desc The same as {@link aIV.console.create}.
    * @type {function(!Object)}
    * @global
@@ -201,9 +219,9 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
   aIV.debug = debugModuleAPI.init;
 
   /**
-   * ---------------------------------------------------
-   * Global Method (aIV.debug.set)
-   * ---------------------------------------------------
+   * ---------------------------------------------------------------
+   * Global Method (aIV.debug.set) (SAME AS aIV.console.set)
+   * ---------------------------------------------------------------
    * @desc The same as {@link aIV.console.set}.
    * @type {function(!Object)}
    * @global
@@ -211,9 +229,19 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
   aIV.debug.set = debugModuleAPI.set;
 
   /**
-   * ---------------------------------------------------
-   * Global Method (aIV.debug.setConfig)
-   * ---------------------------------------------------
+   * ---------------------------------------------------------------
+   * Global Method (aIV.debug.reset) (SAME AS aIV.console.reset)
+   * ---------------------------------------------------------------
+   * @desc The same as {@link aIV.console.reset}.
+   * @type {function}
+   * @global
+   */
+  aIV.debug.reset = debugModuleAPI.reset;
+
+  /**
+   * ---------------------------------------------------------------
+   * Global Method (aIV.debug.setConfig) (SAME AS aIV.console.set)
+   * ---------------------------------------------------------------
    * @desc The same as {@link aIV.console.set}. Maintains backward
    *   compatibility.
    * @type {function(!Object)}
@@ -229,307 +257,6 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
 
 (function(window, document, undefined) {
   "use strict";
-
-/* -----------------------------------------------------------------------------
- * The Debug Module API (module-api.js)
- * -------------------------------------------------------------------------- */
-
-  /**
-   * -----------------------------------------------------
-   * Public Variable (debugModuleAPI)
-   * -----------------------------------------------------
-   * @desc Holds the module's public properties and methods.
-   * @type {!Object<string, function>}
-   * @struct
-   */
-  var debugModuleAPI = {};
-
-  /**
-   * -----------------------------------------------------
-   * Public Method (debugModuleAPI.init)
-   * -----------------------------------------------------
-   * @desc Creates or retrieves an instance of the Debug class.
-   * @param {?(string|Object)=} settings - A string of the Debug instance's
-   *   class name or an object with the Debug instance's settings.
-   * @param {string=} settings.classTitle - The Debug instance's class name.
-   * @param {string=} settings.className - The same as settings.classTitle.
-   * @param {!(string|strings)=} settings.turnOffMethods - Contains the methods
-   *   to disable for this Debug instance. The options are 'all', 'none',
-   *   'init', 'start', 'end', 'args', 'fail', 'group', 'state', and 'misc'.
-   *   This setting does override the module defaults.
-   * @param {!(string|strings)=} settings.turnOffTypes - The same as
-   *   settings.turnOffMethods. Maintains backward compatibility.
-   * @param {!(string|strings)=} settings.addBreakpoints - Contains the methods
-   *   to add debugger breakpoints to for this Debug instance. The options are
-   *   'all', 'none', 'init', 'start', 'end', 'args', 'fail', 'group', 'state',
-   *   and 'misc'. This setting does override the module defaults.
-   * @param {!(string|strings)=} settings.turnOnDebuggers - The same as
-   *   settings.addBreakpoints. Maintains backward compatibility.
-   * @param {boolean=} settings.turnOnGroups - Enables/disables automatic
-   *   grouping of all logs, timers, and profiles between every start and end
-   *   method for this Debug instance.
-   * @param {boolean=} settings.turnOnProfiles - Enables/disables automatic
-   *   profiling for all logic between every start and end method for this
-   *   Debug instance.
-   * @param {boolean=} settings.turnOnTimers - Enables/disables automatic
-   *   timing for all logic between every start and end method for this
-   *   Debug instance.
-   * @return {!Debug} A new or existing Debug object.
-   */
-  debugModuleAPI.init = function(settings) {
-
-    /** @type {string} */
-    var classTitle;
-    /** @type {string} */
-    var turnOffMethods;
-    /** @type {string} */
-    var addBreakpoints;
-    /** @type {boolean} */
-    var turnOnGroups;
-    /** @type {boolean} */
-    var turnOnProfiles;
-    /** @type {boolean} */
-    var turnOnTimers;
-
-    // Catch incorrect data types for settings
-    if ( !checkType(settings, '?(string|object)') ) {
-      settings = null;
-    }
-
-    // Setup classTitle
-    classTitle = Debug.defaultSettings.classTitle;
-    if ( checkType(settings, 'string') ) {
-      classTitle = settings;
-      settings = null;
-    }
-    if (settings) {
-      if ( hasOwnProp(settings, 'classTitle') ) {
-        classTitle = settings.classTitle;
-      }
-      else if ( hasOwnProp(settings, 'className') ) {
-        classTitle = settings.className;
-      }
-    }
-
-    // Create a new Debug instance
-    if ( !hasOwnProp(debugInstances, classTitle) ) {
-
-      // Setup turnOffMethods
-      turnOffMethods = Debug.defaultSettings.turnOffMethods;
-      if (settings) {
-        if ( hasOwnProp(settings, 'turnOffMethods') ) {
-          if ( checkType(settings.turnOffMethods, 'string') ) {
-            turnOffMethods = settings.turnOffMethods;
-          }
-          else if ( checkType(settings.turnOffMethods, '!strings') ) {
-            turnOffMethods = settings.turnOffMethods.join(' ');
-          }
-        }
-        else if ( hasOwnProp(settings, 'turnOffTypes') ) {
-          if ( checkType(settings.turnOffTypes, 'string') ) {
-            turnOffMethods = settings.turnOffTypes;
-          }
-          else if ( checkType(settings.turnOffTypes, '!strings') ) {
-            turnOffMethods = settings.turnOffTypes.join(' ');
-          }
-        }
-      }
-
-      // Setup addBreakpoints
-      addBreakpoints = Debug.defaultSettings.addBreakpoints;
-      if (settings) {
-        if ( hasOwnProp(settings, 'addBreakpoints') ) {
-          if ( checkType(settings.addBreakpoints, 'string') ) {
-            addBreakpoints = settings.addBreakpoints;
-          }
-          else if ( checkType(settings.addBreakpoints, '!strings') ) {
-            addBreakpoints = settings.addBreakpoints.join(' ');
-          }
-        }
-        else if ( hasOwnProp(settings, 'turnOnDebuggers') ) {
-          if ( checkType(settings.turnOnDebuggers, 'string') ) {
-            addBreakpoints = settings.turnOnDebuggers;
-          }
-          else if ( checkType(settings.turnOnDebuggers, '!strings') ) {
-            addBreakpoints = settings.turnOnDebuggers.join(' ');
-          }
-        }
-      }
-
-      // Setup turnOnGroups
-      turnOnGroups = ( (settings &&
-                        hasOwnProp(settings, 'turnOnGroups') &&
-                        checkType(settings.turnOnGroups, 'boolean')) ?
-        settings.turnOnGroups : Debug.defaultSettings.turnOnGroups
-      );
-
-      // Setup turnOnProfiles
-      turnOnProfiles = ( (settings &&
-                          hasOwnProp(settings, 'turnOnProfiles') &&
-                          checkType(settings.turnOnProfiles, 'boolean')) ?
-        settings.turnOnProfiles : Debug.defaultSettings.turnOnProfiles
-      );
-
-      // Setup turnOnTimers
-      turnOnTimers = ( (settings &&
-                        hasOwnProp(settings, 'turnOnTimers') &&
-                        checkType(settings.turnOnTimers, 'boolean')) ?
-        settings.turnOnTimers : Debug.defaultSettings.turnOnTimers
-      );
-
-      // Create the new instance's settings object
-      settings = {
-        classTitle    : classTitle,
-        turnOffMethods: turnOffMethods,
-        addBreakpoints: addBreakpoints,
-        turnOnGroups  : turnOnGroups,
-        turnOnProfiles: turnOnProfiles,
-        turnOnTimers  : turnOnTimers
-      };
-
-      // Setup and save the new Debug instance
-      debugInstances[ classTitle ] = new Debug(settings);
-    }
-
-    return debugInstances[ classTitle ];
-  };
-
-  /**
-   * -----------------------------------------------------
-   * Public Method (debugModuleAPI.set)
-   * -----------------------------------------------------
-   * @desc Allows you to configure the default settings for each new Debug class
-   *   instance and enable/disable inserted breakpoints for user errors that
-   *   occur upon any Debug class method call (e.g. if you forget to add the
-   *   method's name to a debug.start call an error will be logged and if
-   *   errorBreakpoints is enabled a debugger breakpoint will be inserted
-   *   after the error has been logged).
-   * @param {!Object} settings - The Debug module's settings.
-   * @param {boolean=} settings.errorBreakpoints - Controls if
-   *   debugger breakpoints are inserted when any Debug class method call
-   *   encounters an error.
-   * @param {boolean=} settings.errorDebuggers - The same as
-   *   settings.errorBreakpoints.
-   * @param {string=} settings.classTitle - The default class title.
-   * @param {string=} settings.className - The same as settings.classTitle.
-   * @param {!(string|strings)=} settings.turnOffMethods - The default methods
-   *   to disable for all new Debug instances created after this call.
-   * @param {!(string|strings)=} settings.turnOffTypes - The same as
-   *   settings.turnOffMethods. Maintains backward compatibility.
-   * @param {!(string|strings)=} settings.addBreakpoints - The default
-   *   methods to add debugger breakpoints to for all new Debug instances
-   *   created after this call.
-   * @param {!(string|strings)=} settings.turnOnDebuggers - The same as
-   *   settings.addBreakpoints. Maintains backward compatibility.
-   * @param {boolean=} settings.turnOnGroups - The default setting for automatic
-   *   grouping of all logs, timers, and profiles between every start and end
-   *   method.
-   * @param {boolean=} settings.turnOnProfiles - The default setting for
-   *   automatic profiling for all logic between every start and end method.
-   * @param {boolean=} settings.turnOnTimers - The default setting for automatic
-   *   timing for all logic between every start and end method.
-   * @param {boolean=} settings.formatElementsAsObj - Controls whether elements
-   *   are logged as JavaScript objects or DOM elements. For more details on the
-   *   differences between the two logging styles (specifier '%o' vs '%O')
-   *   [see Google's Console API Reference]{@link https://developer.chrome.com/devtools/docs/console-api#consolelogobject-object}.
-   */
-  debugModuleAPI.set = function(settings) {
-
-    if ( !checkType(settings, '!object') ) {
-      console.error( ErrorMessages.setConsoleTypeError(settings) );
-      insertErrorBreakpoint();
-      return;
-    }
-
-    // Set errorBreakpoints
-    if (hasOwnProp(settings, 'errorBreakpoints') &&
-        checkType(settings.errorBreakpoints, 'boolean')) {
-      errorBreakpoints = settings.errorBreakpoints;
-    }
-    else if (hasOwnProp(settings, 'errorDebuggers') &&
-             checkType(settings.errorDebuggers, 'boolean')) {
-      errorBreakpoints = settings.errorDebuggers;
-    }
-
-    // Set the default value for classTitle
-    if (hasOwnProp(settings, 'classTitle') &&
-        checkType(settings.classTitle, 'string')) {
-      Debug.defaultSettings.classTitle = settings.classTitle;
-    }
-    else if (hasOwnProp(settings, 'className') &&
-             checkType(settings.className, 'string')) {
-      Debug.defaultSettings.classTitle = settings.className;
-    }
-
-    // Set the default value for turnOffMethods
-    if ( hasOwnProp(settings, 'turnOffMethods') ) {
-      if ( checkType(settings.turnOffMethods, 'string') ) {
-        Debug.defaultSettings.turnOffMethods = settings.turnOffMethods;
-      }
-      else if ( checkType(settings.turnOffMethods, '!strings') ) {
-        Debug.defaultSettings.turnOffMethods = settings.turnOffMethods.join(' ');
-      }
-    }
-    else if ( hasOwnProp(settings, 'turnOffTypes') ) {
-      if ( checkType(settings.turnOffTypes, 'string') ) {
-        Debug.defaultSettings.turnOffMethods = settings.turnOffTypes;
-      }
-      else if ( checkType(settings.turnOffTypes, '!strings') ) {
-        Debug.defaultSettings.turnOffMethods = settings.turnOffTypes.join(' ');
-      }
-    }
-
-    // Set the default value for addBreakpoints
-    if ( hasOwnProp(settings, 'addBreakpoints') ) {
-      if ( checkType(settings.addBreakpoints, 'string') ) {
-        Debug.defaultSettings.addBreakpoints = settings.addBreakpoints;
-      }
-      else if ( checkType(settings.addBreakpoints, '!strings') ) {
-        Debug.defaultSettings.addBreakpoints = settings.addBreakpoints.join(' ');
-      }
-    }
-    else if ( hasOwnProp(settings, 'turnOnDebuggers') ) {
-      if ( checkType(settings.turnOnDebuggers, 'string') ) {
-        Debug.defaultSettings.addBreakpoints = settings.turnOnDebuggers;
-      }
-      else if ( checkType(settings.turnOnDebuggers, '!strings') ) {
-        Debug.defaultSettings.addBreakpoints = settings.turnOnDebuggers.join(' ');
-      }
-    }
-
-    // Set the default value for turnOnGroups
-    if (hasOwnProp(settings, 'turnOnGroups') &&
-        checkType(settings.turnOnGroups, 'boolean')) {
-      Debug.defaultSettings.turnOnGroups = settings.turnOnGroups;
-    }
-
-    // Set the default value for turnOnProfiles
-    if (hasOwnProp(settings, 'turnOnProfiles') &&
-        checkType(settings.turnOnProfiles, 'boolean')) {
-      Debug.defaultSettings.turnOnProfiles = settings.turnOnProfiles;
-    }
-
-    // Set the default value for turnOnTimers
-    if (hasOwnProp(settings, 'turnOnTimers') &&
-        checkType(settings.turnOnTimers, 'boolean')) {
-      Debug.defaultSettings.turnOnTimers = settings.turnOnTimers;
-    }
-
-    // Set formatElementsAsObj
-    if (hasOwnProp(settings, 'formatElementsAsObj') &&
-        checkType(settings.formatElementsAsObj, 'boolean')) {
-      Debug.formatElementsAsObj = settings.formatElementsAsObj;
-    }
-  };
-
-  /**
-   * -----------------------------------------------------
-   * Public Object (debugModuleAPI.console)
-   * -----------------------------------------------------
-   * @desc The container for aIV's console.
-   * @type {!Object<string, function(*)>}
-   */
-  debugModuleAPI.console = {};
 
 /* -----------------------------------------------------------------------------
  * The Public Module Variables (module-vars.js)
@@ -553,9 +280,112 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
    */
   var errorBreakpoints = true;
 
+  /**
+   * -----------------------------------------------
+   * Public Variable (Debug_DEFAULTS)
+   * -----------------------------------------------
+   * @desc The original default settings for a new Debug instance.
+   * @type {!{
+   *   classTitle    : string,
+   *   turnOffMethods: string,
+   *   addBreakpoints: string,
+   *   turnOnGroups  : boolean,
+   *   openGroups    : boolean,
+   *   turnOnProfiles: boolean,
+   *   turnOnTimers  : boolean
+   * }}
+   */
+  var Debug_DEFAULTS = {
+    classTitle    : 'unknown',
+    turnOffMethods: 'none',
+    addBreakpoints: 'args fail',
+    turnOnGroups  : true,
+    openGroups    : false,
+    turnOnProfiles: false,
+    turnOnTimers  : false
+  };
+
+  /**
+   * -----------------------------------------------
+   * Public Variable (Debug_DEFAULT_TYPES)
+   * -----------------------------------------------
+   * @desc The data types for each settings property.
+   * @type {!Object<string, string>}
+   */
+  var Debug_DEFAULT_TYPES = {
+    classTitle    : 'string',
+    turnOffMethods: 'string|!strings',
+    addBreakpoints: 'string|!strings',
+    turnOnGroups  : 'boolean',
+    openGroups    : 'boolean',
+    turnOnProfiles: 'boolean',
+    turnOnTimers  : 'boolean'
+  };
+
 /* -----------------------------------------------------------------------------
  * The Public Module Methods (module-methods.js)
  * -------------------------------------------------------------------------- */
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (makeNewDebugInst)
+   * -----------------------------------------------------
+   * @desc Creates a new Debug object instance. For more details about the
+   *   parameters [see debugModuleAPI.init]{@link debugModuleAPI#init}.
+   * @param {string} classTitle
+   * @param {Object} settings
+   * @param {(string|!strings)=} settings.turnOffMethods
+   * @param {(string|!strings)=} settings.addBreakpoints
+   * @param {boolean=} settings.turnOnGroups
+   * @param {boolean=} settings.openGroups
+   * @param {boolean=} settings.turnOnProfiles
+   * @param {boolean=} settings.turnOnTimers
+   */
+  function makeNewDebugInst(classTitle, settings) {
+
+    /** @type {!Object} */
+    var defaultTypes;
+    /** @type {!Object} */
+    var newSettings;
+    /** @type {!Object} */
+    var defaults;
+    /** @type {string} */
+    var propName;
+    /** @type {*} */
+    var propVal;
+
+    newSettings = {};
+    defaults = Debug.defaults;
+
+    // Set the new instance's settings to the defaults
+    for (propName in defaults) {
+      if ( hasOwnProp(defaults, propName) ) {
+        newSettings[ propName ] = defaults[ propName ];
+      }
+    }
+
+    // Update the new instance's settings with any local settings
+    if (settings) {
+      defaultTypes = Debug_DEFAULT_TYPES;
+      for (propName in settings) {
+        if (hasOwnProp(settings, propName) && hasOwnProp(defaults, propName)) {
+          propVal = settings[ propName ];
+          if ( checkType(propVal, defaultTypes[ propName ]) ) {
+            if ( checkType(propVal, '!strings') ) {
+              propVal = propVal.join(' ');
+            }
+            newSettings[ propName ] = propVal;
+          }
+        }
+      }
+    }
+
+    // Update the new instance's class title
+    newSettings.classTitle = classTitle;
+
+    // Setup and save the new Debug instance
+    debugInstances[ classTitle ] = new Debug(newSettings);
+  };
 
   /**
    * -----------------------------------------------------
@@ -620,29 +450,392 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
    */
   var isValidTypeString = aIV.utils.isValidTypeString;
 
+  /**
+   * ---------------------------------------------------
+   * Public Method (getTypeOf)
+   * ---------------------------------------------------
+   * @desc A shortcut for the native typeof operator that additionally
+   *   distinguishes null, array, document, and element types from an
+   *   object type.
+   * @param {*} val - The value to get the typeof.
+   * @return {string} The value's type.
+   */
+  var getTypeOf = aIV.utils.getTypeOf;
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (makeResetString)
+   * -----------------------------------------------------
+   * @desc Makes an array of strings representing each value to be reset.
+   * @param {Array<string>=} settings - The settings to reset.
+   * @return {Array<string>} The array of strings to reset.
+   */
+  var makeResetString = (function setup_makeResetString() {
+
+    /** @type {!Object<string, string>} */
+    var props;
+    /** @type {string} */
+    var propName;
+
+    // A hash map of propName => propName
+    props = {
+      errorBreakpoints   : 'errorBreakpoints',
+      errorDebuggers     : 'errorBreakpoints',
+      className          : 'classTitle',
+      turnOffTypes       : 'turnOffMethods',
+      turnOnDebuggers    : 'addBreakpoints',
+      formatElementsAsObj: 'formatElementsAsObj'
+    };
+
+    for (propName in Debug_DEFAULTS) {
+      if ( hasOwnProp(Debug_DEFAULTS, propName) ) {
+        props[ propName ] = propName;
+      }
+    }
+
+    return function makeResetString(settings) {
+
+      /** @type {!Array<string>} */
+      var result;
+      /** @type {string} */
+      var prop;
+      /** @type {number} */
+      var len;
+      /** @type {number} */
+      var i;
+
+      if ( checkType(settings, '?null=') ) {
+        result = [];
+        // Add all props to the result
+        for (prop in props) {
+          if ( hasOwnProp(props, prop) ) {
+            result.push(props[ prop ]);
+          }
+        }
+      }
+      else {
+        if ( checkType(settings, '!strings') ) {
+          result = [];
+          // Add the correct props to the result
+          i = settings.length;
+          while (i--) {
+            prop = args[i];
+            if ( hasOwnProp(props, prop) ) {
+              result.push(props[ prop ]);
+            }
+          }
+        }
+        else {
+          result = null;
+        }
+      }
+
+      return result;
+    };
+  })();
+
 /* -----------------------------------------------------------------------------
- * The ErrorMessages Class (classes/error-messages.js)
+ * The Debug Module API (module-api.js)
  * -------------------------------------------------------------------------- */
 
   /**
    * -----------------------------------------------------
-   * Public Class (ErrorMessages)
+   * Public Variable (debugModuleAPI)
    * -----------------------------------------------------
-   * @desc Error messages used throughout this module.
+   * @desc Holds the module's public properties and methods.
    * @type {!Object<string, function>}
    * @struct
    */
-  var ErrorMessages = {};
+  var debugModuleAPI = {};
+
 
   /**
    * -----------------------------------------------------
-   * Public Method (ErrorMessages.setConsoleTypeError)
+   * Public Object (debugModuleAPI.console)
    * -----------------------------------------------------
-   * @desc Creates an error message for a param type error in aIV.console.set.
-   * @param {*} settings - The new settings.
-   * @return {string} The error message.
+   * @desc The container for aIV's console.
+   * @type {!Object<string, function(*)>}
    */
-  ErrorMessages.setConsoleTypeError = function(settings) {
+  debugModuleAPI.console = {};
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (debugModuleAPI.init)
+   * -----------------------------------------------------
+   * @desc Creates or retrieves an instance of the Debug class.
+   * @param {?(string|Object)=} settings - A string of the Debug instance's
+   *   class name or an object with the Debug instance's settings.
+   * @param {string=} settings.classTitle - The Debug instance's class name.
+   * @param {string=} settings.className - The same as settings.classTitle.
+   * @param {!(string|strings)=} settings.turnOffMethods - Contains the methods
+   *   to disable for this Debug instance. The options are 'all', 'none',
+   *   'init', 'start', 'end', 'args', 'fail', 'group', 'state', and 'misc'.
+   *   This setting does override the module defaults.
+   * @param {!(string|strings)=} settings.turnOffTypes - The same as
+   *   settings.turnOffMethods. Maintains backward compatibility.
+   * @param {!(string|strings)=} settings.addBreakpoints - Contains the methods
+   *   to add debugger breakpoints to for this Debug instance. The options are
+   *   'all', 'none', 'init', 'start', 'end', 'args', 'fail', 'group', 'state',
+   *   and 'misc'. This setting does override the module defaults.
+   * @param {!(string|strings)=} settings.turnOnDebuggers - The same as
+   *   settings.addBreakpoints. Maintains backward compatibility.
+   * @param {boolean=} settings.turnOnGroups - Enables/disables automatic
+   *   grouping of all logs, timers, and profiles between every start and end
+   *   method for this Debug instance.
+   * @param {boolean=} settings.openGroups - For enabled automatic log grouping
+   *   determines whether groups should be open or collapsed for this Debug
+   *   instance (i.e. if turnOnGroups is enabled then openGroups controls
+   *   whether the auto log groups are open or collapsed).
+   * @param {boolean=} settings.turnOnProfiles - Enables/disables automatic
+   *   profiling for all logic between every start and end method for this
+   *   Debug instance.
+   * @param {boolean=} settings.turnOnTimers - Enables/disables automatic
+   *   timing for all logic between every start and end method for this
+   *   Debug instance.
+   * @return {!Debug} A new or existing Debug object.
+   */
+  debugModuleAPI.init = function(settings) {
+
+    /** @type {string} */
+    var classTitle;
+
+    // Catch incorrect data types for settings
+    if ( !checkType(settings, '?(string|object)') ) {
+      settings = null;
+    }
+
+    // Setup classTitle
+    classTitle = Debug.defaults.classTitle;
+    if ( checkType(settings, 'string') ) {
+      classTitle = settings;
+      settings = null;
+    }
+
+    // Correct any old/alternate properties used
+    if (settings) {
+      settings = Debug.replaceOldSettings(settings);
+      if (settings.classTitle && checkType(settings.classTitle, 'string')) {
+        classTitle = settings.classTitle;
+      }
+    }
+
+    // Create a new Debug instance
+    if ( !hasOwnProp(debugInstances, classTitle) ) {
+      makeNewDebugInst(classTitle, settings);
+    }
+
+    return debugInstances[ classTitle ];
+  };
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (debugModuleAPI.set)
+   * -----------------------------------------------------
+   * @desc Allows you to configure the default settings for each new Debug class
+   *   instance and enable/disable inserted breakpoints for user errors that
+   *   occur upon any Debug class method call (e.g. if you forget to add the
+   *   method's name to a debug.start call an error will be logged and if
+   *   errorBreakpoints is enabled a debugger breakpoint will be inserted
+   *   after the error has been logged).
+   * @param {!Object} settings - The Debug module's settings.
+   * @param {boolean=} settings.errorBreakpoints - Controls if
+   *   debugger breakpoints are inserted when any Debug class method call
+   *   encounters an error.
+   * @param {boolean=} settings.errorDebuggers - The same as
+   *   settings.errorBreakpoints.
+   * @param {string=} settings.classTitle - The default class title.
+   * @param {string=} settings.className - The same as settings.classTitle.
+   * @param {!(string|strings)=} settings.turnOffMethods - The default methods
+   *   to disable for all new Debug instances created after this call.
+   * @param {!(string|strings)=} settings.turnOffTypes - The same as
+   *   settings.turnOffMethods. Maintains backward compatibility.
+   * @param {!(string|strings)=} settings.addBreakpoints - The default
+   *   methods to add debugger breakpoints to for all new Debug instances
+   *   created after this call.
+   * @param {!(string|strings)=} settings.turnOnDebuggers - The same as
+   *   settings.addBreakpoints. Maintains backward compatibility.
+   * @param {boolean=} settings.turnOnGroups - The default setting for automatic
+   *   grouping of all logs, timers, and profiles between every start and end
+   *   method.
+   * @param {boolean=} settings.openGroups - The default open or collapsed
+   *   setting for automatic log grouping (i.e. if turnOnGroups is enabled then
+   *   openGroups determines if the auto log groups are open or collapsed).
+   * @param {boolean=} settings.turnOnProfiles - The default setting for
+   *   automatic profiling for all logic between every start and end method.
+   * @param {boolean=} settings.turnOnTimers - The default setting for automatic
+   *   timing for all logic between every start and end method.
+   * @param {boolean=} settings.formatElementsAsObj - Controls whether elements
+   *   are logged as JavaScript objects or DOM elements. For more details on the
+   *   differences between the two logging styles (specifier '%o' vs '%O')
+   *   [see Google's Console API Reference]{@link https://developer.chrome.com/devtools/docs/console-api#consolelogobject-object}.
+   */
+  debugModuleAPI.set = (function setup_set() {
+
+    /** @type {!Object} */
+    var defaultTypes;
+    /** @type {string} */
+    var propName;
+    /** @type {!Object<string, function(*)>} */
+    var setters;
+
+    setters = {};
+
+    // Setup the non-default setters
+    setters.errorBreakpoints = function(newVal) {
+      if ( checkType(newVal, 'boolean') ) {
+        errorBreakpoints = newVal;
+      }
+    };
+    setters.formatElementsAsObj = function(newVal) {
+      if ( checkType(newVal, 'boolean') ) {
+        Debug.formatElementsAsObj = newVal;
+      }
+    };
+
+    // Setup the default setters
+    defaultTypes = Debug_DEFAULT_TYPES;
+    for (propName in defaultTypes) {
+      if ( hasOwnProp(defaultTypes, propName) ) {
+        setters[ propName ] = (function(propName, propType) {
+          return function setADebugDefault(propVal) {
+            if ( checkType(propVal, propType) ) {
+              if ( checkType(propVal, '!strings') ) {
+                propVal = propVal.join(' ');
+              }
+              Debug.defaults[ propName ] = propVal;
+            }
+          };
+        })(propName, defaultTypes[ propName ]);
+      }
+    }
+
+    return function set(settings) {
+
+      /** @type {string} */
+      var propName;
+      /** @type {*} */
+      var propVal;
+
+      if ( checkType(settings, '!object') ) {
+
+        // Replace any old property names with the correct property name
+        if (hasOwnProp(settings, 'errorDebuggers') &&
+            !hasOwnProp(settings, 'errorBreakpoints')) {
+          settings.errorBreakpoints = settings.errorDebuggers;
+        }
+        settings = Debug.replaceOldSettings(settings);
+
+        // Set each new setting
+        for (propName in settings) {
+          if (hasOwnProp(settings, propName) &&
+              hasOwnProp(setters, propName)) {
+            propVal = settings[ propName ];
+            setters[ propName ](propVal);
+          }
+        }
+      }
+      else {
+        Errors.setConsoleTypeError( getTypeOf(settings) );
+        insertErrorBreakpoint();
+      }
+    };
+  })();
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (debugModuleAPI.reset)
+   * -----------------------------------------------------
+   * @desc Allows you to reset any of the settings for the debugger.
+   * @param {...(string|strings)=} setting - A setting to reset. If no arguments
+   *   are given this method will automatically reset all of the options.
+   * @return {boolean} The success of the new settings update.
+   */
+  debugModuleAPI.reset = (function setup_reset() {
+
+    /** @type {string} */
+    var propName;
+    /** @type {!Object<string, function>} */
+    var setters;
+
+    setters = {};
+
+    // Setup the non-default setters
+    setters.errorBreakpoints = function() {
+      errorBreakpoints = true;
+    };
+    setters.formatElementsAsObj = function() {
+      Debug.formatElementsAsObj = true;
+    };
+
+    // Setup the default setters
+    for (propName in Debug_DEFAULTS) {
+      if ( hasOwnProp(Debug_DEFAULTS, propName) ) {
+        setters[ propName ] = (function(propName) {
+          return function resetADebugDefault() {
+            Debug.defaults[ propName ] = Debug_DEFAULTS[ propName ];
+          };
+        })(propName);
+      }
+    }
+
+    return function reset() {
+
+      /** @type {!Array<string>} */
+      var args;
+      /** @type {string} */
+      var prop;
+      /** @type {number} */
+      var len;
+      /** @type {number} */
+      var i;
+
+      len  = arguments.length;
+      args = ( (!len) ?
+        null : (len > 1) ?
+          Array.prototype.slice.call(arguments, 0) : (Array.isArray(arguments[0])) ?
+            arguments[0] : [ arguments[0] ]
+      );
+      args = makeResetString(args);
+
+      if (args) {
+        // Reset each value
+        i = args.length;
+        while (i--) {
+          prop = args[i];
+          setters[ prop ]();
+        }
+      }
+      else {
+        Errors.resetConsoleTypeError();
+        insertErrorBreakpoint();
+      }
+
+      return !!args;
+    };
+  })();
+
+/* -----------------------------------------------------------------------------
+ * The Errors Class (classes/errors.js)
+ * -------------------------------------------------------------------------- */
+
+  /**
+   * -----------------------------------------------------
+   * Public Class (Errors)
+   * -----------------------------------------------------
+   * @desc Throws all of the Errors for the debugger.
+   * @type {!Object<string, function>}
+   * @struct
+   */
+  var Errors = {};
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (Errors.setConsoleTypeError)
+   * -----------------------------------------------------
+   * @desc Throws a TypeError for an invalid settings param in aIV.console.set.
+   * @param {string} settingsType - The invalid data type for the settings param.
+   */
+  Errors.setConsoleTypeError = function(settingsType) {
 
     /** @type {string} */
     var message;
@@ -652,15 +845,32 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
     message += 'be an object with string => value pairs that match the module ';
     message += 'properties you want to set and their new value (e.g. property ';
     message += '=> value). The invalid settings data type was \'';
-    message += (settings === null) ? 'null' : typeof settings;
-    message += '\'';
+    message += settingsType + '\'';
 
-    return message;
+    throw new TypeError(message);
   };
 
   /**
    * -----------------------------------------------------
-   * Public Method (ErrorMessages.invalidGetName)
+   * Public Method (Errors.resetConsoleTypeError)
+   * -----------------------------------------------------
+   * @desc Throws a TypeError for an invalid setting param in aIV.console.reset.
+   * @type {function}
+   */
+  Errors.resetConsoleTypeError = function() {
+
+    /** @type {string} */
+    var message;
+
+    message = 'An aIV.console.reset call received an invalid setting ';
+    message += 'parameter (should be a string or an array of strings).';
+
+    throw new TypeError(message);
+  };
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (Errors.invalidGetName)
    * -----------------------------------------------------
    * @desc Creates an error message for an invalid method/type name
    *   parameter in a Debug get method.
@@ -668,7 +878,7 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
    * @param {string} name - The user's method/type name parameter.
    * @return {string} The error message.
    */
-  ErrorMessages.invalidGetName = function(method, name) {
+  Errors.invalidGetName = function(method, name) {
 
     /** @type {string} */
     var message;
@@ -683,7 +893,7 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
 
   /**
    * -----------------------------------------------------
-   * Public Method (ErrorMessages.missingMethodName)
+   * Public Method (Errors.missingMethodName)
    * -----------------------------------------------------
    * @desc Creates an error message for a missing method name
    *   parameter in a Debug logging method.
@@ -691,7 +901,7 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
    * @param {*} methodName - The user's method name parameter.
    * @return {string} The error message.
    */
-  ErrorMessages.missingMethodName = function(method, methodName) {
+  Errors.missingMethodName = function(method, methodName) {
 
     /** @type {string} */
     var message;
@@ -707,14 +917,14 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
 
   /**
    * -----------------------------------------------------
-   * Public Method (ErrorMessages.missingTypeStrings)
+   * Public Method (Errors.missingTypeStrings)
    * -----------------------------------------------------
    * @desc Creates an error message for missing type string parameters
    *   in a Debug logging method.
    * @param {string} method - The name of the method that failed.
    * @return {string} The error message.
    */
-  ErrorMessages.missingTypeStrings = function(method) {
+  Errors.missingTypeStrings = function(method) {
 
     /** @type {string} */
     var message;
@@ -730,13 +940,13 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
 
   /**
    * -----------------------------------------------------
-   * Public Method (ErrorMessages.missingTestArgs)
+   * Public Method (Errors.missingTestArgs)
    * -----------------------------------------------------
    * @desc Creates an error message for missing type string parameters
    *   in a Debug logging method.
    * @return {string} The error message.
    */
-  ErrorMessages.missingTestArgs = function() {
+  Errors.missingTestArgs = function() {
 
     /** @type {string} */
     var message;
@@ -754,14 +964,14 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
 
   /**
    * -----------------------------------------------------
-   * Public Method (ErrorMessages.invalidGroupType)
+   * Public Method (Errors.invalidGroupType)
    * -----------------------------------------------------
    * @desc Creates an error message for an invalid console group type
    *   in a Debug logging method.
    * @param {*} groupType - The invalid group type.
    * @return {string} The error message.
    */
-  ErrorMessages.invalidGroupType = function(groupType) {
+  Errors.invalidGroupType = function(groupType) {
 
     /** @type {string} */
     var message;
@@ -779,14 +989,14 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
 
   /**
    * -----------------------------------------------------
-   * Public Method (ErrorMessages.missingErrorMessage)
+   * Public Method (Errors.missingErrorMessage)
    * -----------------------------------------------------
    * @desc Creates an error message for a missing error message parameter
    *   in a Debug logging method.
    * @param {string} logMessage - The log message.
    * @return {string} The error message.
    */
-  ErrorMessages.missingErrorMessage = function(logMessage) {
+  Errors.missingErrorMessage = function(logMessage) {
 
     /** @type {string} */
     var message;
@@ -803,13 +1013,13 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
 
   /**
    * -----------------------------------------------------
-   * Public Method (ErrorMessages.missingStateValues)
+   * Public Method (Errors.missingStateValues)
    * -----------------------------------------------------
    * @desc Creates an error message for missing values in a Debug.proto.state
    *   call.
    * @return {string} The error message.
    */
-  ErrorMessages.missingStateValues = function() {
+  Errors.missingStateValues = function() {
 
     /** @type {string} */
     var message;
@@ -825,14 +1035,14 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
 
   /**
    * -----------------------------------------------------
-   * Public Method (ErrorMessages.missingLogMessage)
+   * Public Method (Errors.missingLogMessage)
    * -----------------------------------------------------
    * @desc Creates an error message for a missing log message parameter
    *   in a Debug logging method.
    * @param {string} logMessage - The log message.
    * @return {string} The error message.
    */
-  ErrorMessages.missingLogMessage = function(logMessage) {
+  Errors.missingLogMessage = function(logMessage) {
 
     /** @type {string} */
     var message;
@@ -849,7 +1059,7 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
 
   /**
    * -----------------------------------------------------
-   * Public Method (ErrorMessages.invalidSetName)
+   * Public Method (Errors.invalidSetName)
    * -----------------------------------------------------
    * @desc Creates an error message for an invalid method/type name
    *   parameter in a Debug controlling method.
@@ -857,7 +1067,7 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
    * @param {*} name - The user's method/type name parameter.
    * @return {string} The error message.
    */
-  ErrorMessages.invalidSetName = function(method, name) {
+  Errors.invalidSetName = function(method, name) {
 
     /** @type {string} */
     var message;
@@ -870,7 +1080,7 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
     return message;
   };
 
-  freezeObj(ErrorMessages, true);
+  freezeObj(Errors, true);
 
 /* -----------------------------------------------------------------------------
  * The Debug Class Constructor (classes/debug/constructor.js)
@@ -891,6 +1101,10 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
    * @param {boolean} settings.turnOnGroups - Enables/disables automatic
    *   grouping of all logs, timers, and profiles between every start and end
    *   method.
+   * @param {boolean} settings.openGroups - For enabled automatic log grouping
+   *   determines whether groups should be open or collapsed for this Debug
+   *   instance (i.e. if turnOnGroups is enabled then openGroups controls
+   *   whether the auto log groups are open or collapsed).
    * @param {boolean} settings.turnOnProfiles - Enables/disables automatic
    *   profiling for all logic between every start and end method.
    * @param {boolean} settings.turnOnTimers - Enables/disables automatic
@@ -907,10 +1121,19 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
      * ---------------------------------------------------
      * Public Property (Debug.classTitle)
      * ---------------------------------------------------
-     * @desc The class name for the instance.
+     * @desc The class name for this instance.
      * @type {string}
      */
     this.classTitle = settings.classTitle + '.';
+
+    /**
+     * ---------------------------------------------------
+     * Public Property (Debug.openGroups)
+     * ---------------------------------------------------
+     * @desc Whether auto log groups should be open or collapsed.
+     * @type {boolean}
+     */
+    this.openGroups = settings.openGroups;
 
     ////////////////////////////////////////////////////////////////////////////
     // Define The Protected Properties
@@ -1049,7 +1272,7 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
     this.getMethod = function(method) {
 
       if (!checkType(method, 'string') ||  !hasOwnProp(methods, method)) {
-        console.error( ErrorMessages.invalidGetName('getMethod', method) );
+        console.error( Errors.invalidGetName('getMethod', method) );
         insertErrorBreakpoint();
         return;
       }
@@ -1070,7 +1293,7 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
     this.getBreakpoint = function(method) {
 
       if (!checkType(method, 'string') || !hasOwnProp(breakpoints, method)) {
-        console.error( ErrorMessages.invalidGetName('getBreakpoint', method) );
+        console.error( Errors.invalidGetName('getBreakpoint', method) );
         insertErrorBreakpoint();
         return;
       }
@@ -1098,7 +1321,7 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
       };
 
       if (!checkType(prop, 'string') || !hasOwnProp(props, prop)) {
-        console.error( ErrorMessages.invalidGetName('getAuto', prop) );
+        console.error( Errors.invalidGetName('getAuto', prop) );
         insertErrorBreakpoint();
         return;
       }
@@ -1294,7 +1517,7 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
 
     // Test the method name
     if ( !checkType(methodName, 'string') ) {
-      console.error( ErrorMessages.missingMethodName('init', methodName) );
+      console.error( Errors.missingMethodName('init', methodName) );
       insertErrorBreakpoint();
       return;
     }
@@ -1305,7 +1528,7 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
     // Test for each argument's data type string
     if (len) {
       if ((len % 2) || !Debug.checkArgsDataTypeStrings(args)) {
-        console.error( ErrorMessages.missingTypeStrings('init') );
+        console.error( Errors.missingTypeStrings('init') );
         insertErrorBreakpoint();
         return;
       }
@@ -1409,7 +1632,7 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
 
     // Test the method name before executing
     if ( !checkType(methodName, 'string') ) {
-      console.error( ErrorMessages.missingMethodName('start', methodName) );
+      console.error( Errors.missingMethodName('start', methodName) );
       insertErrorBreakpoint();
       return;
     }
@@ -1484,7 +1707,7 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
 
     // Test the method name before executing
     if ( !checkType(methodName, 'string') ) {
-      console.error( ErrorMessages.missingMethodName('end', methodName) );
+      console.error( Errors.missingMethodName('end', methodName) );
       insertErrorBreakpoint();
       return;
     }
@@ -1568,21 +1791,21 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
 
     // Test the method name
     if ( !checkType(methodName, 'string') ) {
-      console.error( ErrorMessages.missingMethodName('args', methodName) );
+      console.error( Errors.missingMethodName('args', methodName) );
       insertErrorBreakpoint();
       return;
     }
 
     // Test for arguments
     if (args.length < 2) {
-      console.error( ErrorMessages.missingTestArgs() );
+      console.error( Errors.missingTestArgs() );
       insertErrorBreakpoint();
       return;
     }
 
     // Test each argument's data type string
     if ((args.length % 2) || !Debug.checkArgsDataTypeStrings(args)) {
-      console.error( ErrorMessages.missingTypeStrings('args') );
+      console.error( Errors.missingTypeStrings('args') );
       insertErrorBreakpoint();
       return;
     }
@@ -1680,14 +1903,14 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
 
     // Test the method name
     if ( !checkType(methodName, 'string') ) {
-      console.error( ErrorMessages.missingMethodName('fail', methodName) );
+      console.error( Errors.missingMethodName('fail', methodName) );
       insertErrorBreakpoint();
       return;
     }
 
     // Test the error message
     if ( !checkType(message, 'string') ) {
-      console.error( ErrorMessages.missingErrorMessage(message) );
+      console.error( Errors.missingErrorMessage(message) );
       insertErrorBreakpoint();
       return false;
     }
@@ -1805,14 +2028,14 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
 
     // Test the method name
     if ( !checkType(methodName, 'string') ) {
-      console.error( ErrorMessages.missingMethodName('group', methodName) );
+      console.error( Errors.missingMethodName('group', methodName) );
       insertErrorBreakpoint();
       return;
     }
 
     // Test the group type
     if (!checkType(groupType, 'string') || !hasOwnProp(groupTypes, groupType)) {
-      console.error( ErrorMessages.invalidGroupType(groupType) );
+      console.error( Errors.invalidGroupType(groupType) );
       insertErrorBreakpoint();
       return;
     }
@@ -1915,14 +2138,14 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
 
     // Test the method name
     if ( !checkType(methodName, 'string') ) {
-      console.error( ErrorMessages.missingMethodName('state', methodName) );
+      console.error( Errors.missingMethodName('state', methodName) );
       insertErrorBreakpoint();
       return;
     }
 
     // Test the remaining arguments
     if (!args.length) {
-      console.error( ErrorMessages.missingStateValues() );
+      console.error( Errors.missingStateValues() );
       insertErrorBreakpoint();
       return;
     }
@@ -2007,14 +2230,14 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
 
     // Test the method name
     if ( !checkType(methodName, 'string') ) {
-      console.error( ErrorMessages.missingMethodName('misc', methodName) );
+      console.error( Errors.missingMethodName('misc', methodName) );
       insertErrorBreakpoint();
       return;
     }
 
     // Test the log message
     if (!message && !args.length) {
-      console.error( ErrorMessages.missingLogMessage(message) );
+      console.error( Errors.missingLogMessage(message) );
       insertErrorBreakpoint();
       return;
     }
@@ -2362,7 +2585,7 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
 
   /**
    * -----------------------------------------------
-   * Public Property (Debug.defaultSettings)
+   * Public Property (Debug.defaults)
    * -----------------------------------------------
    * @desc Sets default settings for all instances of the debugger. Note that
    *   if local settings are provided upon a new instance call they will be used
@@ -2372,17 +2595,19 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
    *   turnOffMethods: string,
    *   addBreakpoints: string,
    *   turnOnGroups  : boolean,
+   *   openGroups    : boolean,
    *   turnOnProfiles: boolean,
    *   turnOnTimers  : boolean
    * }}
    */
-  Debug.defaultSettings = {
-    classTitle    : 'unknown',
-    turnOffMethods: 'none',
-    addBreakpoints: 'args fail',
-    turnOnGroups  : false,
-    turnOnProfiles: false,
-    turnOnTimers  : false
+  Debug.defaults = {
+    classTitle    : Debug_DEFAULTS.classTitle,
+    turnOffMethods: Debug_DEFAULTS.turnOffMethods,
+    addBreakpoints: Debug_DEFAULTS.addBreakpoints,
+    turnOnGroups  : Debug_DEFAULTS.turnOnGroups,
+    openGroups    : Debug_DEFAULTS.openGroups,
+    turnOnProfiles: Debug_DEFAULTS.turnOnProfiles,
+    turnOnTimers  : Debug_DEFAULTS.turnOnTimers
   };
 
   /**
@@ -2407,18 +2632,35 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
   Debug.autoSettings = {};
   Debug.autoSettings.groups = {
     msgTitle : 'GROUP',
-    startFunc: function(label) { console.groupCollapsed(label); },
-    endFunc  : function(label) { console.groupEnd(); }
+    startFunc: function(label, openGroup) {
+      if (openGroup) {
+        console.group(label);
+      }
+      else {
+        console.groupCollapsed(label);
+      }
+    },
+    endFunc: function() {
+      console.groupEnd();
+    }
   };
   Debug.autoSettings.profiles = {
     msgTitle : 'PROFILE',
-    startFunc: function(label) { console.profile(label); },
-    endFunc  : function(label) { console.profileEnd(); }
+    startFunc: function(label) {
+      console.profile(label);
+    },
+    endFunc: function() {
+      console.profileEnd();
+    }
   };
   Debug.autoSettings.timers = {
     msgTitle : 'TIME',
-    startFunc: function(label) { console.time(label); },
-    endFunc  : function(label) { console.timeEnd(label); }
+    startFunc: function(label) {
+      console.time(label);
+    },
+    endFunc: function(label) {
+      console.timeEnd(label);
+    }
   };
 
   /**
@@ -2434,6 +2676,57 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
 /* -----------------------------------------------------------------------------
  * The Debug Class Helper Methods (classes/debug/helper-methods.js)
  * -------------------------------------------------------------------------- */
+
+  /**
+   * -----------------------------------------------
+   * Public Property (Debug.replaceOldSettings)
+   * -----------------------------------------------
+   * @desc Handles moving old setting properties to the correct namespace.
+   * @param {!Object} settings
+   * @param {string=} settings.classTitle
+   * @param {string=} settings.className
+   * @param {(string|!strings)=} settings.turnOffMethods
+   * @param {(string|!strings)=} settings.turnOffTypes
+   * @param {(string|!strings)=} settings.addBreakpoints
+   * @param {(string|!strings)=} settings.turnOnDebuggers
+   * @param {boolean=} settings.turnOnGroups
+   * @param {boolean=} settings.openGroups
+   * @param {boolean=} settings.turnOnProfiles
+   * @param {boolean=} settings.turnOnTimers
+   * @return {!Object} The corrected settings object.
+   */
+  Debug.replaceOldSettings = (function setup_replaceOldSettings() {
+
+    /** @type {!Object<string, string>} */
+    var props;
+
+    // A hash map of oldProp => newProp
+    props = {
+      className      : 'classTitle',
+      turnOffTypes   : 'turnOffMethods',
+      turnOnDebuggers: 'addBreakpoints'
+    };
+
+    return function replaceOldSettings(settings) {
+
+      /** @type {string} */
+      var oldProp;
+      /** @type {string} */
+      var newProp;
+
+      // Check the settings for any old properties & correct them
+      for (oldProp in props) {
+        if (hasOwnProp(props, oldProp) && hasOwnProp(settings, oldProp)) {
+          newProp = props[ oldProp ];
+          if ( !hasOwnProp(settings, newProp) ) {
+            settings[ newProp ] = settings[ oldProp ];
+          }
+        }
+      }
+
+      return settings;
+    };
+  })();
 
   /**
    * -----------------------------------------------------
@@ -2495,28 +2788,27 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
    */
   Debug.handleAuto = function(type, methodName, end) {
 
+    /** @type {boolean} */
+    var pass;
     /** @type {string} */
     var label;
 
-    if ( !this.getAuto(type) ) {
-      return false;
+    pass = this.getAuto(type);
+
+    if (pass) {
+
+      label = Debug.autoSettings[ type ].msgTitle + ': ';
+      label += this.classTitle + methodName;
+
+      if (end) {
+        Debug.autoSettings[ type ].endFunc(label);
+      }
+      else {
+        Debug.autoSettings[ type ].startFunc(label, this.openGroups);
+      }
     }
 
-    if ( !checkType(end, 'boolean') ) {
-      end = false;
-    }
-
-    label = Debug.autoSettings[ type ].msgTitle + ': ';
-    label += this.classTitle + methodName;
-
-    if (end) {
-      Debug.autoSettings[ type ].endFunc(label);
-    }
-    else {
-      Debug.autoSettings[ type ].startFunc(label);
-    }
-
-    return true;
+    return pass;
   };
 
   /**
@@ -2542,7 +2834,7 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
 
     // Ensure invalid type names do not exist
     if ( !checkType(type, 'string') ) {
-      console.error( ErrorMessages.invalidSetName(callerName, type) );
+      console.error( Errors.invalidSetName(callerName, type) );
       insertErrorBreakpoint();
       return;
     }
@@ -2565,7 +2857,7 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
 
     // Report any errors
     if (errors) {
-      console.error( ErrorMessages.invalidSetName(callerName, errors) );
+      console.error( Errors.invalidSetName(callerName, errors) );
       insertErrorBreakpoint();
       return;
     }

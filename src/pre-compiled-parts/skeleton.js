@@ -2,7 +2,7 @@
 
 /**
  * -----------------------------------------------------------------------------
- * Algorithm IV Debugger (v1.1.2)
+ * Algorithm IV Debugger (v1.1.3)
  * -----------------------------------------------------------------------------
  * @file Algorithm IV's debugger is a console wrapper that fixes cross-browser
  *   console issues and provides a set of new console methods that make your
@@ -12,7 +12,7 @@
  *   use you will know and control the actions of every JavaScript method in
  *   your code base!
  * @module aIVConsole
- * @version 1.1.2
+ * @version 1.1.3
  * @author Adam Smith ({@link adamsmith@youlum.com})
  * @copyright 2015 Adam A Smith ([github.com/imaginate]{@link https://github.com/imaginate})
  * @license The Apache License ([algorithmiv.com/docs/license]{@link http://algorithmiv.com/docs/license})
@@ -71,11 +71,6 @@
   "use strict";
 
 /* -----------------------------------------------------------------------------
- * The Debug Module API (module-api.js)
- * -------------------------------------------------------------------------- */
-// insert-module-api
-
-/* -----------------------------------------------------------------------------
  * The Public Module Variables (module-vars.js)
  * -------------------------------------------------------------------------- */
 // insert-module-vars
@@ -86,9 +81,14 @@
 // insert-module-methods
 
 /* -----------------------------------------------------------------------------
- * The ErrorMessages Class (classes/error-messages.js)
+ * The Debug Module API (module-api.js)
  * -------------------------------------------------------------------------- */
-// insert-error-messages
+// insert-module-api
+
+/* -----------------------------------------------------------------------------
+ * The Errors Class (classes/errors.js)
+ * -------------------------------------------------------------------------- */
+// insert-errors
 
 /* -----------------------------------------------------------------------------
  * The Debug Class Constructor (classes/debug/constructor.js)

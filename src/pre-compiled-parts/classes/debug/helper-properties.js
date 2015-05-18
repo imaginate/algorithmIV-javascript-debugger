@@ -1,6 +1,6 @@
   /**
    * -----------------------------------------------
-   * Public Property (Debug.defaultSettings)
+   * Public Property (Debug.defaults)
    * -----------------------------------------------
    * @desc Sets default settings for all instances of the debugger. Note that
    *   if local settings are provided upon a new instance call they will be used
@@ -10,17 +10,19 @@
    *   turnOffMethods: string,
    *   addBreakpoints: string,
    *   turnOnGroups  : boolean,
+   *   openGroups    : boolean,
    *   turnOnProfiles: boolean,
    *   turnOnTimers  : boolean
    * }}
    */
-  Debug.defaultSettings = {
-    classTitle    : 'unknown',
-    turnOffMethods: 'none',
-    addBreakpoints: 'args fail',
-    turnOnGroups  : false,
-    turnOnProfiles: false,
-    turnOnTimers  : false
+  Debug.defaults = {
+    classTitle    : Debug_DEFAULTS.classTitle,
+    turnOffMethods: Debug_DEFAULTS.turnOffMethods,
+    addBreakpoints: Debug_DEFAULTS.addBreakpoints,
+    turnOnGroups  : Debug_DEFAULTS.turnOnGroups,
+    openGroups    : Debug_DEFAULTS.openGroups,
+    turnOnProfiles: Debug_DEFAULTS.turnOnProfiles,
+    turnOnTimers  : Debug_DEFAULTS.turnOnTimers
   };
 
   /**
@@ -45,18 +47,35 @@
   Debug.autoSettings = {};
   Debug.autoSettings.groups = {
     msgTitle : 'GROUP',
-    startFunc: function(label) { console.groupCollapsed(label); },
-    endFunc  : function(label) { console.groupEnd(); }
+    startFunc: function(label, openGroup) {
+      if (openGroup) {
+        console.group(label);
+      }
+      else {
+        console.groupCollapsed(label);
+      }
+    },
+    endFunc: function() {
+      console.groupEnd();
+    }
   };
   Debug.autoSettings.profiles = {
     msgTitle : 'PROFILE',
-    startFunc: function(label) { console.profile(label); },
-    endFunc  : function(label) { console.profileEnd(); }
+    startFunc: function(label) {
+      console.profile(label);
+    },
+    endFunc: function() {
+      console.profileEnd();
+    }
   };
   Debug.autoSettings.timers = {
     msgTitle : 'TIME',
-    startFunc: function(label) { console.time(label); },
-    endFunc  : function(label) { console.timeEnd(label); }
+    startFunc: function(label) {
+      console.time(label);
+    },
+    endFunc: function(label) {
+      console.timeEnd(label);
+    }
   };
 
   /**
