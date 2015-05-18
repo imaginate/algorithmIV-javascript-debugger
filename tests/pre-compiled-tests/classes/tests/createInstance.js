@@ -620,26 +620,29 @@
       var consoleMock;
 
       consoleInst1 = aIV.console.create({
-        classTitle  : 'createInst.testOpenGroups.1',
+        classTitle  : 'createInst.testOpenGroups1',
         turnOnGroups: true,
         openGroups  : true
       });
       consoleInst2 = aIV.console.create({
-        classTitle  : 'createInst.testOpenGroups.2',
+        classTitle  : 'createInst.testOpenGroups2',
         turnOnGroups: true,
         openGroups  : false
       });
+      consoleMock = new MockConsole();
 
       consoleInst1.start('testMethod');
+      consoleInst1.end('testMethod');
       consoleInst2.start('testMethod');
+      consoleInst2.end('testMethod');
 
       consoleMock.reset();
 
-      log = 'OPEN GROUP: GROUP: createInst.testOpenGroups.1.testMethod()';
+      log = 'OPEN GROUP: GROUP: createInst.testOpenGroups1.testMethod';
       pass = (consoleMock.logs[0] === log);
 
-      log = 'COLL GROUP: GROUP: createInst.testOpenGroups.2.testMethod()';
-      pass = pass && (consoleMock.logs[3] === log);
+      log = 'COLL GROUP: GROUP: createInst.testOpenGroups2.testMethod';
+      pass = pass && (consoleMock.logs[4] === log);
 
       if (!pass) {
         errorMsg = 'aIV.console.create({ openGroups: true }) failed to ';
