@@ -269,6 +269,7 @@
       turnOffMethods     : 'none',
       addBreakpoints     : 'none',
       turnOnGroups       : false,
+      openGroups         : false,
       turnOnProfiles     : false,
       turnOnTimers       : false
     });
@@ -2576,6 +2577,7 @@
         turnOffMethods     : 'none',
         addBreakpoints     : 'none',
         turnOnGroups       : false,
+        openGroups         : false,
         turnOnProfiles     : false,
         turnOnTimers       : false
       });

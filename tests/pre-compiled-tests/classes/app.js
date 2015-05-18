@@ -62,6 +62,7 @@
       turnOffMethods     : 'none',
       addBreakpoints     : 'none',
       turnOnGroups       : false,
+      openGroups         : false,
       turnOnProfiles     : false,
       turnOnTimers       : false
     });
