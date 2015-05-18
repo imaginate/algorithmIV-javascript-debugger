@@ -128,6 +128,7 @@ Example.prototype.report = function() {
   aIV.debug.set({
     addBreakpoints: 'none',
     turnOnGroups  : true,
+    openGroups    : true,
     turnOnTimers  : true
   });
 
