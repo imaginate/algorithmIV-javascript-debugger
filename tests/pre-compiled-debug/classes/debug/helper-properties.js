@@ -10,6 +10,7 @@
    *   turnOffMethods: string,
    *   addBreakpoints: string,
    *   turnOnGroups  : boolean,
+   *   openGroups    : boolean,
    *   turnOnProfiles: boolean,
    *   turnOnTimers  : boolean
    * }}
