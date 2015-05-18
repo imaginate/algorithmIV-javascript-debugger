@@ -135,7 +135,7 @@
     var defaultTypes;
     /** @type {string} */
     var propName;
-    /** @type {!Object<string, function>} */
+    /** @type {!Object<string, function(*)>} */
     var setters;
 
     setters = {};
@@ -198,5 +198,77 @@
         Errors.setConsoleTypeError( getTypeOf(settings) );
         insertErrorBreakpoint();
       }
+    };
+  })();
+
+  /**
+   * -----------------------------------------------------
+   * Public Method (debugModuleAPI.reset)
+   * -----------------------------------------------------
+   * @desc Allows you to reset any of the settings for the debugger.
+   * @param {...(string|strings)=} setting - A setting to reset.
+   * @return {boolean} The success of the new settings update.
+   */
+  debugModuleAPI.reset = (function setup_reset() {
+
+    /** @type {string} */
+    var propName;
+    /** @type {!Object<string, function>} */
+    var setters;
+
+    setters = {};
+
+    // Setup the non-default setters
+    setters.errorBreakpoints = function() {
+      errorBreakpoints = true;
+    };
+    setters.formatElementsAsObj = function() {
+      Debug.formatElementsAsObj = true;
+    };
+
+    // Setup the default setters
+    for (propName in Debug_DEFAULTS) {
+      if ( hasOwnProp(Debug_DEFAULTS, propName) ) {
+        setters[ propName ] = (function(propName) {
+          return function resetADebugDefault() {
+            Debug.defaults[ propName ] = Debug_DEFAULTS[ propName ];
+          };
+        })(propName);
+      }
+    }
+
+    return function reset() {
+
+      /** @type {!Array<string>} */
+      var args;
+      /** @type {string} */
+      var prop;
+      /** @type {number} */
+      var len;
+      /** @type {number} */
+      var i;
+
+      len  = arguments.length;
+      args = ( (!len) ?
+        null : (len > 1) ?
+          Array.prototype.slice.call(arguments, 0) : (Array.isArray(arguments[0])) ?
+            arguments[0] : [ arguments[0] ]
+      );
+      args = makeResetString(args);
+
+      if (args) {
+        // Reset each value
+        i = args.length;
+        while (i--) {
+          prop = args[i];
+          setters[ prop ]();
+        }
+      }
+      else {
+        Errors.resetConsoleTypeError();
+        insertErrorBreakpoint();
+      }
+
+      return !!args;
     };
   })();
