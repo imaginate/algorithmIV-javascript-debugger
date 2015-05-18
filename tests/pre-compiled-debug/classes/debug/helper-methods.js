@@ -105,28 +105,27 @@
    */
   Debug.handleAuto = function(type, methodName, end) {
 
+    /** @type {boolean} */
+    var pass;
     /** @type {string} */
     var label;
 
-    if ( !this.getAuto(type) ) {
-      return false;
+    pass = this.getAuto(type);
+
+    if (pass) {
+
+      label = Debug.autoSettings[ type ].msgTitle + ': ';
+      label += this.classTitle + methodName;
+
+      if (end) {
+        Debug.autoSettings[ type ].endFunc(label);
+      }
+      else {
+        Debug.autoSettings[ type ].startFunc(label, this.openGroups);
+      }
     }
 
-    if ( !checkType(end, 'boolean') ) {
-      end = false;
-    }
-
-    label = Debug.autoSettings[ type ].msgTitle + ': ';
-    label += this.classTitle + methodName;
-
-    if (end) {
-      Debug.autoSettings[ type ].endFunc(label);
-    }
-    else {
-      Debug.autoSettings[ type ].startFunc(label);
-    }
-
-    return true;
+    return pass;
   };
 
   /**
