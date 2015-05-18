@@ -199,6 +199,17 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
 
   /**
    * ---------------------------------------------------------------
+   * Global Method (aIV.console.reset) (SAME AS aIV.debug.reset)
+   * ---------------------------------------------------------------
+   * @desc Allows you to reset any of the settings for the debugger.
+   * @param {...(string|strings)=} setting - A setting to reset. If no arguments
+   *   are given this method will automatically reset all of the options.
+   * @return {boolean} The success of the new settings update.
+   */
+  aIV.console.reset = debugModuleAPI.reset;
+
+  /**
+   * ---------------------------------------------------------------
    * Global Method (aIV.debug) (SAME AS aIV.console.create)
    * ---------------------------------------------------------------
    * @desc The same as {@link aIV.console.create}.
@@ -216,6 +227,16 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
    * @global
    */
   aIV.debug.set = debugModuleAPI.set;
+
+  /**
+   * ---------------------------------------------------------------
+   * Global Method (aIV.debug.reset) (SAME AS aIV.console.reset)
+   * ---------------------------------------------------------------
+   * @desc The same as {@link aIV.console.reset}.
+   * @type {function}
+   * @global
+   */
+  aIV.debug.reset = debugModuleAPI.reset;
 
   /**
    * ---------------------------------------------------------------
@@ -725,7 +746,8 @@ new TypeError(a);return!0}}();e.reset=function(){var b,a,c;b=(b=arguments.length
    * Public Method (debugModuleAPI.reset)
    * -----------------------------------------------------
    * @desc Allows you to reset any of the settings for the debugger.
-   * @param {...(string|strings)=} setting - A setting to reset.
+   * @param {...(string|strings)=} setting - A setting to reset. If no arguments
+   *   are given this method will automatically reset all of the options.
    * @return {boolean} The success of the new settings update.
    */
   debugModuleAPI.reset = (function setup_reset() {

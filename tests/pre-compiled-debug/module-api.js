@@ -206,7 +206,8 @@
    * Public Method (debugModuleAPI.reset)
    * -----------------------------------------------------
    * @desc Allows you to reset any of the settings for the debugger.
-   * @param {...(string|strings)=} setting - A setting to reset.
+   * @param {...(string|strings)=} setting - A setting to reset. If no arguments
+   *   are given this method will automatically reset all of the options.
    * @return {boolean} The success of the new settings update.
    */
   debugModuleAPI.reset = (function setup_reset() {
