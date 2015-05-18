@@ -47,18 +47,35 @@
   Debug.autoSettings = {};
   Debug.autoSettings.groups = {
     msgTitle : 'GROUP',
-    startFunc: function(label) { console.groupCollapsed(label); },
-    endFunc  : function(label) { console.groupEnd(); }
+    startFunc: function(label, openGroup) {
+      if (openGroup) {
+        console.group(label);
+      }
+      else {
+        console.groupCollapsed(label);
+      }
+    },
+    endFunc: function() {
+      console.groupEnd();
+    }
   };
   Debug.autoSettings.profiles = {
     msgTitle : 'PROFILE',
-    startFunc: function(label) { console.profile(label); },
-    endFunc  : function(label) { console.profileEnd(); }
+    startFunc: function(label) {
+      console.profile(label);
+    },
+    endFunc: function() {
+      console.profileEnd();
+    }
   };
   Debug.autoSettings.timers = {
     msgTitle : 'TIME',
-    startFunc: function(label) { console.time(label); },
-    endFunc  : function(label) { console.timeEnd(label); }
+    startFunc: function(label) {
+      console.time(label);
+    },
+    endFunc: function(label) {
+      console.timeEnd(label);
+    }
   };
 
   /**
