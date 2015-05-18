@@ -1,6 +1,6 @@
 # The Future - Algorithm IV Developer Tools
 
-**This file shares the vision for the [Algorithm IV's Debugger](https://github.com/imaginate/algorithmIV-javascript-debugger) project. Your thoughts and suggestions as a developer would be highly appreciated!**
+**This file shares the vision for the [Algorithm IV Debugger](https://github.com/imaginate/algorithmIV-javascript-debugger) project. Your thoughts and suggestions as a developer would be highly appreciated!**
 
 ## Overview
 
