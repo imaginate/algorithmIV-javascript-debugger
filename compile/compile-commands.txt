@@ -179,7 +179,7 @@ src/algorithmIV-debug.js   |    |
 ----------------------------    v
 
 ## UNIX Commands
-sed "3,29 d;43,84 d" <src/algorithmIV-debug.js>compile/algorithmIV-debug.js
+sed "3,29 d;43,104 d" <src/algorithmIV-debug.js>compile/algorithmIV-debug.js
 cd compile
 java \
   -jar minifier.jar \
@@ -195,7 +195,7 @@ sed \
 rm -f compile/algorithmIV-debug.min.js
 
 ## MS-DOS Commands
-sed "3,29 d;43,84 d" <src\algorithmIV-debug.js>compile\algorithmIV-debug.js
+sed "3,29 d;43,104 d" <src\algorithmIV-debug.js>compile\algorithmIV-debug.js
 cd compile
 java ^
   -jar minifier.jar ^
