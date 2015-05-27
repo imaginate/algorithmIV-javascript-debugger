@@ -1,5 +1,5 @@
-/* Algorithm IV Debugger (v1.1.3) (learn@algorithmiv.com)
+/* Algorithm IV Debugger (v1.1.4) (learn@algorithmiv.com)
  * Section: The Main JavaScript Module
- * Author: Adam Smith (adamsmith@youlum.com)
+ * Author: Adam Smith (adamsmith@algorithmiv.com)
  * Copyright (c) 2015 Adam A Smith (github.com/imaginate)
  * The Apache License (algorithmiv.com/docs/license) */
