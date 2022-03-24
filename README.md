@@ -32,7 +32,7 @@ control the actions of every JavaScript method in your code base!
   and [share your thoughts](https://gist.github.com/imaginate/0856a2945d5dd7805257).
 
 
-##Getting Started
+## Getting Started
 - Download [algorithmIV-debug.min.js](https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/src/algorithmIV-debug.min.js)
 - Add algorithmIV-debug.min.js to your HTML head
     ```html
@@ -109,7 +109,7 @@ To see the debugger in action view our [unit tests](https://github.com/imaginate
 
 <a name="logs"></a>
 ### A Screenshot of the Example's Console Logs
-<a href="https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/example/console-logs-screenshot.jpg"><img src="https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/example/console-logs-screenshot.jpg?raw=true" alt="Screenshot of the Example's Console Logs" /></a>
+<a href="https://github.com/imaginate/algorithmIV-javascript-debugger/tree/master/example/console-logs-screenshot.jpg"><img src="https://github.com/imaginate/algorithmIV-javascript-debugger/blob/master/example/console-logs-screenshot.jpg?raw=true" alt="Screenshot of the Example's Console Logs" /></a>
 
 
 ## Contact
