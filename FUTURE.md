@@ -193,17 +193,15 @@ $T.declare('The Test Title', 'An optional description.', function() {
 Your insight is needed to help decide how this project will develop. Please go to https://gist.github.com/imaginate/0856a2945d5dd7805257 and leave your feedback, question, or response as a comment on the Gist.
 
 ### <a name="contribute"></a>Become A Core Contributor
-I will need a core group of contributors to help make Algorithm IV Dev Tools an awesome reality! If you are interested please send an email to adamsmith@algorithmiv.com with the following information:
+I will need a core group of contributors to help make Algorithm IV Dev Tools an awesome reality! If you are interested please send an email to imagineadamsmith@gmail.com with the following information:
 - Your interest in the project
 - Your development preferences
 - Your available time to develop
 - A link to your GitHub profile
 
 ### <a name="final"></a>Final Words
-Thank you for spending the time to read this outline and share your thoughts! If you like my work and want to talk about anything unrelated to this project, you can email me at adamsmith@algorithmiv.com. All the best!
+Thank you for spending the time to read this outline and share your thoughts! If you like my work and want to talk about anything unrelated to this project, you can email me at imagineadamsmith@gmail.com. All the best!
 
 <br />
 --
 **[Adam Smith](https://github.com/imaginate)**
-
-<a href="http://www.algorithmiv.com"><img src="http://www.algorithmiv.com/images/aIV-logo.png" alt="Algorithm IV Logo" /></a>

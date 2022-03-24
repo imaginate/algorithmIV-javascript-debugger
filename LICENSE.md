@@ -1,6 +1,6 @@
-##License for [Algorithm IV JavaScript Debugger](https://github.com/imaginate/algorithmIV-javascript-debugger)
+## License for [Algorithm IV JavaScript Debugger](https://github.com/imaginate/algorithmIV-javascript-debugger)
 
-**Copyright 2015 Adam A Smith (github.com/imaginate)**
+**Copyright 2022 Adam A Smith <imagineadamsmith@gmail.com> (https://github.com/imaginate)**
 
 Licensed under the **Apache License**, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -13,6 +13,3 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-
---
-<a href="http://www.algorithmiv.com"><img src="http://www.algorithmiv.com/images/aIV-logo.png" alt="Algorithm IV Logo" /></a>

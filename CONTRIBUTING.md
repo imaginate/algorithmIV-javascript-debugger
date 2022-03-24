@@ -1,9 +1,9 @@
-#Join The Debugging Crew
+# Join The Debugging Crew
 
-####All contributors are welcome!
+#### All contributors are welcome!
 
 
-##Directions
+## Directions
 **Initial Steps:**
 - Fork and clone this repository
 - Create a new branch for your additions
@@ -22,18 +22,16 @@
 - Submit a pull request
 
 
-##Pointers
+## Pointers
 - Follow the coding conventions you see in the existing code (see [Google's style guide](https://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml?showone=Code_formatting#Code_formatting) for similar conventions)
 - Know and use [JSDoc3](http://usejsdoc.org/) with [Closure Compiler specific syntax](https://developers.google.com/closure/compiler/docs/js-for-compiler)
 - Ensure that all unit tests are passing before submitting a pull request
 
 
-##Contact
+## Contact
 - [Open an issue](https://github.com/imaginate/algorithmIV-javascript-debugger/issues) on this GitHub repository
-- Send an email to [learn@algorithmiv.com](mailto:learn@algorithmiv.com)
+- Send an email to [imagineadamsmith@gmail.com](mailto:imagineadamsmith@gmail.com)
 
 
 --
-**Thanks for being a part of the aIV team,**
-
-<a href="http://www.algorithmiv.com"><img src="http://www.algorithmiv.com/images/aIV-logo.png" alt="Algorithm IV Logo" /></a>
+**Thanks for being a part of the aIV team**

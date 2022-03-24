@@ -13,9 +13,9 @@
  *   your code base!
  * @module aIVConsole
  * @version 1.1.4
- * @author Adam Smith [adamsmith@algorithmiv.com]{@link mailto:adamsmith@algorithmiv.com}
- * @copyright 2015 Adam A Smith [github.com/imaginate]{@link https://github.com/imaginate}
- * @license The Apache License [algorithmiv.com/docs/license]{@link http://algorithmiv.com/docs/license}
+ * @author Adam Smith [imagineadamsmith@gmail.com]{@link mailto:imagineadamsmith@gmail.com}
+ * @copyright 2022 Adam A Smith [github.com/imaginate]{@link https://github.com/imaginate}
+ * @license The Apache License [www.apache.org/licenses/LICENSE-2.0]{@link http://www.apache.org/licenses/LICENSE-2.0}
  * @desc More details about aIV.console:
  * <ol>
  *   <li>annotations: 
